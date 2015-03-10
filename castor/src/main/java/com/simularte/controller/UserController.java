@@ -71,6 +71,18 @@ public class UserController {
 	}
 	
 	//NAVIGATION
+	@RequestMapping("toDashboard")
+	public String toDashboard(HttpServletRequest req){
+		String path = null;
+		
+		switch(req.getSession().getAttribute("tipo").toString()){
+		case "empresa":
+			path = "empresa/dashboard";
+			break;
+		}
+		return path;
+	}
+	
 	@RequestMapping("toMyCompany")
 	public String toMyCompany(HttpServletRequest req){
 		String path = "";
