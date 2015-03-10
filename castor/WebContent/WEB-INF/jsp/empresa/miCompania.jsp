@@ -111,6 +111,7 @@ jQuery(document).ready(function() {
 	
 	$(document).on('click','.eventBtn', function(e){
 		switch(this.id){
+		//INFORMACION
 		case "btnEditarInfo":
 			$('#informacionInit').hide();
 			$('#informacionEdit').show();
@@ -121,6 +122,7 @@ jQuery(document).ready(function() {
 			break;
 		case "btnGrabarInfo":
 			break;
+		//OFICINA
 		case "btnNuevaOfi":
 			$('#oficinasInit').hide();
 			$('#oficinasNueva').show();
@@ -130,6 +132,31 @@ jQuery(document).ready(function() {
 			$('#oficinasNueva').hide();
 			$('#oficinasInit').show();
 			MapsGoogle.init();
+			break;
+		//CLIENTE
+		case "btnIrCrearCliente":
+			$('#clienteInit').hide();
+			$('#clienteCrear').show();
+			break;
+		case "btnCancelarCliente":
+			$('#clienteCrear').hide();
+			$('#clienteInit').show();
+			break;
+		case "btnCrearCliente":
+			if($('#txtNombre').val() != ''){
+				$.ajax({
+	    			url: '/ajaxCrearCliente',
+					type: 'post',
+					dataType: 'json',
+					data: $('#frmCrearClienteAjax').serialize(),
+					success: function(clients){
+						$("#txtName").val("");
+						//getInitClients();
+						alert('Ok');
+					}
+	    		
+	    		});
+			}
 			break;
 		}
 		

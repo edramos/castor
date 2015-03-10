@@ -23,28 +23,30 @@ public class UserServiceImpl implements UserService{
 	public boolean crearCuenta(Usuario usuario){
 		boolean result = false;
 		
-		usuario.setFechaCreacion(Dates.fechaCreacion());
-		usuario.setEstado("enabled");
-		
 		try{
-			em.persist(usuario);
-			System.out.println(usuario.getEmail() + ", " + usuario.getPassword());
-			Perfil perfil = new Perfil();
-			
-			perfil.setPerfilUsuario(usuario);
-			perfil.setRol("administrador");
-			perfil.setFechaCreacion(Dates.fechaCreacion());
-			perfil.setEstado("enabled");
-			
-			em.persist(perfil);
-			System.out.println(perfil.getEstado());
 			Empresa empresa = new Empresa();
 			
 			empresa.setFechaCreacion(Dates.fechaCreacion());
 			empresa.setEstado("enabled");
 			
 			em.persist(empresa);
-			System.out.println(empresa.getEstado());
+			
+			usuario.setUsuarioEmpresa(empresa);
+			usuario.setFechaCreacion(Dates.fechaCreacion());
+			usuario.setEstado("enabled");
+			
+			em.persist(usuario);
+			System.out.println(usuario.getEmail() + ", " + usuario.getPassword());
+			Perfil perfil = new Perfil();
+			
+			perfil.setPerfilUsuario(usuario);
+			perfil.setTipo("empresa");
+			perfil.setRol("administrador");
+			perfil.setFechaCreacion(Dates.fechaCreacion());
+			perfil.setEstado("enabled");
+			
+			em.persist(perfil);
+			
 			result = true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -66,19 +68,14 @@ public class UserServiceImpl implements UserService{
 			
 			if(usuarioSR.getIdUsuario() != null){
 				session.setAttribute("idUser", usuarioSR.getIdUsuario());
+				session.setAttribute("idEmpresa", usuarioSR.getUsuarioEmpresa().getIdEmpresa());
 				
-				TypedQuery<Perfil> tqPerfil = em.createQuery("SELECT p FROM Perfil p JOIN p.usuario u WHERE u.idUsuario =:idusuario", Perfil.class);
+				TypedQuery<Perfil> tqPerfil = em.createQuery("SELECT p FROM Perfil p JOIN p.perfilUsuario u WHERE u.idUsuario =:idusuario", Perfil.class);
 				tqPerfil.setParameter("idusuario", usuarioSR.getIdUsuario());
 				
 				Perfil profileSR = tqPerfil.getSingleResult();
 				session.setAttribute("tipo", profileSR.getTipo());
 				session.setAttribute("rol", profileSR.getRol());
-				
-				TypedQuery<Empresa> tqEmpresa = em.createQuery("SELECT e FROM Empresa e JOIN e.usuario u WHERE u.idUsuario =:idusuario", Empresa.class);
-				tqEmpresa.setParameter("idusuario", usuarioSR.getIdUsuario());
-				
-				Empresa empresaSR = tqEmpresa.getSingleResult();
-				session.setAttribute("idEmpresa", empresaSR.getIdEmpresa());
 				
 				result = true;
 			}			
