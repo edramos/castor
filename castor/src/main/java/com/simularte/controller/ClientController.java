@@ -55,8 +55,9 @@ public class ClientController {
 		
 		return clientes;
 	}
-	@RequestMapping(value = "ajaxListarClientes", method = RequestMethod.POST)@ResponseBody
-	public List<ClienteBean> ajaxListarClientes(@ModelAttribute Cliente cliente, HttpServletRequest req){
+	@RequestMapping(value = "ajaxListarClientes", method = RequestMethod.POST)
+	@ResponseBody
+	public List<ClienteBean> ajaxListarClientes(HttpServletRequest req){
 		List<ClienteBean> clientes = new ArrayList<ClienteBean>();
 		clientes = clienteservice.listarClientes(req);
 		return clientes;

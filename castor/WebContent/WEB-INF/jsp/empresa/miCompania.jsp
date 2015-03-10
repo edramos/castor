@@ -73,6 +73,9 @@
 							<div class="tab-pane" id="tab_1_1_4">
 								<jsp:include page="miCompania/tabClientes.jsp"/>
 							</div>
+							<div class="tab-pane" id="tab_1_1_5">
+								<jsp:include page="miCompania/tabProveedores.jsp"/>
+							</div>
 						</div>
 						<!-- END TABS -->
 					</div>
@@ -155,11 +158,34 @@ jQuery(document).ready(function() {
 				//modificarCliente();				
 			//}
 			break;	
+		//PROVEEDOR
+		case "btnIrCrearProveedor":
+			$('#proveedorInit').hide();
+			$('#proveedorCrear').show();
+			break;
+		case "btnCancelarProveedor":
+			$('#proveedorCrear').hide();
+			$('#proveedorModificar').hide();
+			$('#proveedorInit').show();
+			break;
+		case "btnCrearProveedor":
+			$('#frmCrearProveedor').submit();
+			//if($('#txtNombre').val() != ''){
+				//crearProveedor();				
+			//}
+			break;
+		case "btnModificarProveedor":
+			$('#frmCrearProveedor').submit();
+			//if($('#txtNombreE').val() != ''){
+				//modificarProveedor();				
+			//}
+			break;		
 			
 		}
 		
 	});
 	listarClientes();
+	listarProveedores();
 	var flag = 0;
 	$('a[href="#tab_1_1_2"]').on('shown.bs.tab', function(e){
 		if(flag == 0){
@@ -195,6 +221,34 @@ $(document).ready(function(){
 		},
 		submitHandler: function(form){
 			modificarCliente();
+		}
+	});
+	
+	$("#frmCrearProveedor").validate({
+		rules: {
+			nombre: {
+				required: true,
+			}                                   
+		},
+		messages: {
+			nombre: "*"
+		},
+		submitHandler: function(form){
+			crearProveedor();
+		}
+	});
+	
+	$("#frmModificarProveedor").validate({
+		rules: {
+			nombre: {
+				required: true,
+			}                                   
+		},
+		messages: {
+			nombre: "*"
+		},
+		submitHandler: function(form){
+			modificarProveedor();
 		}
 	});
 });	
