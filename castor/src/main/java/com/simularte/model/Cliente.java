@@ -22,8 +22,8 @@ public class Cliente {
 	@JoinColumn(name = "idempresa", nullable = false)
 	private Empresa clienteEmpresa;
 	
-	@OneToMany(mappedBy = "proyectoDetCliente")
-	private Collection<ProyectoDetalle> proyectosDetalleCli;
+	@OneToMany(mappedBy = "proyectoCliente")
+	private Collection<Proyecto> proyectosCli;
 	
 	@Column(length = 180, nullable = true)
 	private String nombre;	
@@ -31,6 +31,9 @@ public class Cliente {
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
 	private String estado;
+	
+	@Column(name = "creadopor", nullable = false)
+	private Integer creadoPor;
 	
 	public Integer getIdCliente() {
 		return idCliente;
@@ -44,12 +47,11 @@ public class Cliente {
 	public void setClienteEmpresa(Empresa clienteEmpresa) {
 		this.clienteEmpresa = clienteEmpresa;
 	}
-	public Collection<ProyectoDetalle> getProyectosDetalleCli() {
-		return proyectosDetalleCli;
+	public Collection<Proyecto> getProyectosCli() {
+		return proyectosCli;
 	}
-	public void setProyectosDetalleCli(
-			Collection<ProyectoDetalle> proyectosDetalleCli) {
-		this.proyectosDetalleCli = proyectosDetalleCli;
+	public void setProyectosCli(Collection<Proyecto> proyectosCli) {
+		this.proyectosCli = proyectosCli;
 	}
 	public String getNombre() {
 		return nombre;
@@ -69,5 +71,13 @@ public class Cliente {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+	public Integer getCreadoPor() {
+		return creadoPor;
+	}
+	public void setCreadoPor(Integer creadoPor) {
+		this.creadoPor = creadoPor;
+	}
+	
+	
 	
 }

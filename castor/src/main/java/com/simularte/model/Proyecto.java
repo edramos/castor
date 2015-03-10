@@ -18,10 +18,16 @@ public class Proyecto {
 	@Id @GeneratedValue @Column(name = "idproyecto")	
 	private Integer idProyecto;	
 	
+	
 	//References
 	@ManyToOne 
-	@JoinColumn(name = "idusuario", nullable = false)
-	private Usuario proyectoUsuario;
+	@JoinColumn(name = "idcliente", nullable = false)
+	private Cliente proyectoCliente;
+	
+	//References
+	@ManyToOne 
+	@JoinColumn(name = "idempresa", nullable = false)
+	private Empresa proyectoEmpresa;
 		
 	@OneToOne(mappedBy = "ordenProyecto")
 	private Orden proyectoOrden;
@@ -48,17 +54,26 @@ public class Proyecto {
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
+	@Column(name = "creadopor", nullable = false)
+	private Integer creadoPor;
+	
 	public Integer getIdProyecto() {
 		return idProyecto;
 	}
 	public void setIdProyecto(Integer idProyecto) {
 		this.idProyecto = idProyecto;
 	}
-	public Usuario getProyectoUsuario() {
-		return proyectoUsuario;
+	public Cliente getProyectoCliente() {
+		return proyectoCliente;
 	}
-	public void setProyectoUsuario(Usuario proyectoUsuario) {
-		this.proyectoUsuario = proyectoUsuario;
+	public void setProyectoCliente(Cliente proyectoCliente) {
+		this.proyectoCliente = proyectoCliente;
+	}
+	public Empresa getProyectoEmpresa() {
+		return proyectoEmpresa;
+	}
+	public void setProyectoEmpresa(Empresa proyectoEmpresa) {
+		this.proyectoEmpresa = proyectoEmpresa;
 	}
 	public Orden getProyectoOrden() {
 		return proyectoOrden;
@@ -126,6 +141,12 @@ public class Proyecto {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Integer getCreadoPor() {
+		return creadoPor;
+	}
+	public void setCreadoPor(Integer creadoPor) {
+		this.creadoPor = creadoPor;
 	}
 	
 }

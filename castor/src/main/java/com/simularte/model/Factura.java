@@ -18,6 +18,9 @@ public class Factura {
 	@OneToOne(cascade = CascadeType.ALL) 
 	@JoinColumn(name = "idorden", nullable = false)
 	private Orden facturaOrden;
+	
+	@Column(name = "creadopor", nullable = false)
+	private Integer creadoPor;
 
 	public Integer getIdFactura() {
 		return idFactura;
@@ -33,6 +36,14 @@ public class Factura {
 
 	public void setFacturaOrden(Orden facturaOrden) {
 		this.facturaOrden = facturaOrden;
+	}
+
+	public Integer getCreadoPor() {
+		return creadoPor;
+	}
+
+	public void setCreadoPor(Integer creadoPor) {
+		this.creadoPor = creadoPor;
 	}
 	
 }

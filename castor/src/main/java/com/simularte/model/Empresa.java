@@ -28,6 +28,9 @@ public class Empresa {
 	@OneToMany(mappedBy = "proveedorEmpresa")
 	private Collection<Proveedor> proveedoresEmp;
 	
+	@OneToMany(mappedBy = "proyectoEmpresa")
+	private Collection<Proyecto> proyectosEmp;
+	
 	@Column(length = 90, nullable = true)
 	private String nombre;
 	@Column(length = 30, nullable = true)
@@ -71,6 +74,12 @@ public class Empresa {
 	}
 	public void setProveedoresEmp(Collection<Proveedor> proveedoresEmp) {
 		this.proveedoresEmp = proveedoresEmp;
+	}
+	public Collection<Proyecto> getProyectosEmp() {
+		return proyectosEmp;
+	}
+	public void setProyectosEmp(Collection<Proyecto> proyectosEmp) {
+		this.proyectosEmp = proyectosEmp;
 	}
 	public String getNombre() {
 		return nombre;

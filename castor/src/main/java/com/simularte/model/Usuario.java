@@ -1,7 +1,6 @@
 package com.simularte.model;
 
 import java.sql.Timestamp;
-import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -25,9 +23,6 @@ public class Usuario {
 	//References
 	@OneToOne(mappedBy = "perfilUsuario")
 	private Perfil usuarioPerfil;
-	
-	@OneToMany(mappedBy = "proyectoUsuario")
-	private Collection<Proyecto> proyectosUsu;
 	
 	@Column(length = 60, nullable = false)
 	private String email;	
@@ -55,12 +50,6 @@ public class Usuario {
 	}
 	public void setUsuarioPerfil(Perfil usuarioPerfil) {
 		this.usuarioPerfil = usuarioPerfil;
-	}
-	public Collection<Proyecto> getProyectosUsu() {
-		return proyectosUsu;
-	}
-	public void setProyectosUsu(Collection<Proyecto> proyectosUsu) {
-		this.proyectosUsu = proyectosUsu;
 	}
 	public String getEmail() {
 		return email;

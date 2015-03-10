@@ -17,11 +17,6 @@ public class ProyectoDetalle {
 	@Id @GeneratedValue @Column(name = "idproyectodetalle")
 	private Integer idProyectoDetalle;
 	
-	//References
-	@ManyToOne 
-	@JoinColumn(name = "idcliente", nullable = false)
-	private Cliente proyectoDetCliente;
-	
 	@ManyToOne 
 	@JoinColumn(name = "idproveedor", nullable = false)
 	private Proveedor proyectoDetProveedor; 
@@ -42,12 +37,6 @@ public class ProyectoDetalle {
 	}
 	public void setIdProyectoDetalle(Integer idProyectoDetalle) {
 		this.idProyectoDetalle = idProyectoDetalle;
-	}
-	public Cliente getProyectoDetCliente() {
-		return proyectoDetCliente;
-	}
-	public void setProyectoDetCliente(Cliente proyectoDetCliente) {
-		this.proyectoDetCliente = proyectoDetCliente;
 	}
 	public Proveedor getProyectoDetProveedor() {
 		return proyectoDetProveedor;
@@ -79,4 +68,6 @@ public class ProyectoDetalle {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+	
+	
 }

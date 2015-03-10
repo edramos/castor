@@ -33,6 +33,9 @@ public class Proveedor {
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
+	@Column(name = "creadopor", nullable = false)
+	private Integer creadoPor;
+	
 	public Integer getIdProveedor() {
 		return idProveedor;
 	}
@@ -69,6 +72,12 @@ public class Proveedor {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Integer getCreadoPor() {
+		return creadoPor;
+	}
+	public void setCreadoPor(Integer creadoPor) {
+		this.creadoPor = creadoPor;
 	}
 	
 }
