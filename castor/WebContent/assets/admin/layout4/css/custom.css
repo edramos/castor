@@ -25,3 +25,11 @@ Rounded Portlets
 .table .table-scrollable{
 	margin: 0px 0px 0px 0px;
 }
+
+label.error {
+    margin-left: 10px;
+    width: auto;
+    display: inline;
+    color: #F00;
+    font-weight: bold;
+}

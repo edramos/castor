@@ -140,28 +140,26 @@ jQuery(document).ready(function() {
 			break;
 		case "btnCancelarCliente":
 			$('#clienteCrear').hide();
+			$('#clienteModificar').hide();
 			$('#clienteInit').show();
 			break;
 		case "btnCrearCliente":
-			if($('#txtNombre').val() != ''){
-				$.ajax({
-	    			url: '/ajaxCrearCliente',
-					type: 'post',
-					dataType: 'json',
-					data: $('#frmCrearClienteAjax').serialize(),
-					success: function(clients){
-						$("#txtName").val("");
-						//getInitClients();
-						alert('Ok');
-					}
-	    		
-	    		});
-			}
+			$('#frmCrearCliente').submit();
+			//if($('#txtNombre').val() != ''){
+				//crearCliente();				
+			//}
 			break;
+		case "btnModificarCliente":
+			$('#frmModificarCliente').submit();
+			//if($('#txtNombreE').val() != ''){
+				//modificarCliente();				
+			//}
+			break;	
+			
 		}
 		
 	});
-	
+	listarClientes();
 	var flag = 0;
 	$('a[href="#tab_1_1_2"]').on('shown.bs.tab', function(e){
 		if(flag == 0){
@@ -170,6 +168,36 @@ jQuery(document).ready(function() {
 		}
     });
 });
+
+$(document).ready(function(){
+	$("#frmCrearCliente").validate({
+		rules: {
+			nombre: {
+				required: true,
+			}                                   
+		},
+		messages: {
+			nombre: "*"
+		},
+		submitHandler: function(form){
+			crearCliente();
+		}
+	});
+	
+	$("#frmModificarCliente").validate({
+		rules: {
+			nombre: {
+				required: true,
+			}                                   
+		},
+		messages: {
+			nombre: "*"
+		},
+		submitHandler: function(form){
+			modificarCliente();
+		}
+	});
+});	
 </script>
 </body>
 </html>
