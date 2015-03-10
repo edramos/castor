@@ -50,7 +50,7 @@
 					<div class="portlet-title">
 						<div class="caption"><i class="icon-share"></i>Proyectos</div>
 						<div class="actions">
-							<a id="btnCrearProy" class="btn btn-default btn-sm eventBtn"><i class="fa fa-plus"></i> Crear Proyecto </a>							
+							<a id="btnCrearProy" href="toCrearProyecto" class="btn btn-default btn-sm eventBtn"><i class="fa fa-plus"></i> Crear Proyecto </a>							
 							<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 						</div>
 					</div>

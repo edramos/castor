@@ -87,4 +87,9 @@ public class UserController {
 		
 		return path;
 	}
+	
+	@RequestMapping("toCrearProyecto")
+	public String toCrearProyecto(){
+		return "empresa/crearProyecto";
+	}
 }
