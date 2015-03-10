@@ -15,4 +15,6 @@
 <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+
+<script src="assets/global/plugins/handlebars-v3.0.0.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
