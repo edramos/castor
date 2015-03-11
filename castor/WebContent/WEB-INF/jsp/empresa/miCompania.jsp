@@ -175,7 +175,7 @@ jQuery(document).ready(function() {
 			//}
 			break;
 		case "btnModificarProveedor":
-			$('#frmCrearProveedor').submit();
+			$('#frmModificarProveedor').submit();
 			//if($('#txtNombreE').val() != ''){
 				//modificarProveedor();				
 			//}

@@ -69,7 +69,7 @@ function crearProveedor(){
  		dataType: 'json',
  		data: $('#frmCrearProveedor').serialize(),
  		success: function(resultado){
- 			$('#txtNombreProvE').val('');
+ 			$('#txtNombreProv').val('');
  			listarProveedores(); 			
  		}
  	});	
@@ -182,7 +182,7 @@ function listarProveedores(){
 			
 			<form:form id="frmCrearProveedor" commandName="proveedor">
 				<div class="input-group col-md-6">
-					<input type="text" class="form-control" id="txtNombre" name="nombre" placeholder="Nombre Proveedor">
+					<input type="text" class="form-control" id="txtNombreProv" name="nombre" placeholder="Nombre Proveedor">
 				</div>
 			</form:form>
 			
