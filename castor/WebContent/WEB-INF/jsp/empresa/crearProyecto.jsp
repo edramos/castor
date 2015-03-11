@@ -72,9 +72,6 @@
 								<div class="form-group">
 									<div class="col-md-12">
 										<select id="sltCliente" class="form-control">
-											<option>Desarrollos Terrestres</option>
-											<option>D'site</option>
-											<option>HF Telecom</option>
 										</select>
 									</div>
 								</div>
@@ -107,7 +104,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<select id="sltCliente" class="form-control">
+										<select id="sltDistrito" class="form-control">
 											<option>Lima</option>
 											<option>Cajamarca</option>
 											<option>Ancash</option>
@@ -206,12 +203,7 @@
 										</tr>
 										<tr role="row" class="filter">
 											<td>
-												<select name="order_status" class="form-control form-filter input-sm">
-													<option value="">CGM</option>
-													<option value="pending">JME</option>
-													<option value="closed">Brahmco</option>
-													<option value="hold">CYM Angelo</option>
-													<option value="fraud">ESB</option>
+												<select id="sltProveedor_1" name="order_status" class="form-control form-filter input-sm">
 												</select>
 											</td>
 											<td>
@@ -253,12 +245,8 @@
 										</tr>
 										<tr role="row" class="filter">
 											<td>
-												<select name="order_status" class="form-control form-filter input-sm">
-													<option value="">CGM</option>
-													<option value="pending">JME</option>
-													<option value="closed">Brahmco</option>
-													<option value="hold">CYM Angelo</option>
-													<option value="fraud">ESB</option>
+												<select id="sltProveedor_2" name="order_status" class="form-control form-filter input-sm">
+												
 												</select>
 											</td>
 											<td>
@@ -344,7 +332,61 @@ jQuery(document).ready(function() {
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
    	FormValidation.init();
+	
+	//Cargo Selector de Cliente
+	listarSelectorClientes('sltCliente');
+	listarSelectorProveedores('sltProveedor_1');
+	listarSelectorProveedores('sltProveedor_2');
 });
+
+function listarSelectorClientes(nombreSelector){
+	var html = '';
+    $.ajax({
+ 		url: 'ajaxListarClientes',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(clientes){
+ 			$.each(clientes, function(i, cliente){
+	 			var source = $("#templateSelectorClientes").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(cliente);
+	 			
+ 			});		
+ 			$("#"+nombreSelector).html(html);	        
+ 		},
+ 		complete: function() {	 			
+ 			
+  		}
+ 	});
+}
+
+function listarSelectorProveedores(nombreSelector){
+	var html = '';
+    $.ajax({
+ 		url: 'ajaxListarProveedores',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(proveedores){
+ 			$.each(proveedores, function(i, proveedor){
+	 			var source = $("#templateSelectorProveedores").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(proveedor);	 			
+ 			});		
+ 			$("#"+nombreSelector).html(html);	        
+ 		},
+ 		complete: function() {	 			
+ 			
+  		}
+ 	});
+}
+</script>
+<script id="templateSelectorClientes" type="text/x-handlebars-template">
+	<option value="{{idCliente}}">{{nombre}}</option>
+</script>
+<script id="templateSelectorProveedores" type="text/x-handlebars-template">
+	<option value="{{idProveedor}}">{{nombre}}</option>
 </script>
 </body>
 </html>
