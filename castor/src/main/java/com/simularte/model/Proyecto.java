@@ -1,5 +1,6 @@
 package com.simularte.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -18,15 +19,11 @@ public class Proyecto {
 	@Id @GeneratedValue @Column(name = "idproyecto")	
 	private Integer idProyecto;	
 	
-	
 	//References
-	@ManyToOne 
-	@JoinColumn(name = "idcliente", nullable = false)
+	@ManyToOne @JoinColumn(name = "idcliente", nullable = false)
 	private Cliente proyectoCliente;
 	
-	//References
-	@ManyToOne 
-	@JoinColumn(name = "idempresa", nullable = false)
+	@ManyToOne @JoinColumn(name = "idempresa", nullable = false)
 	private Empresa proyectoEmpresa;
 		
 	@OneToOne(mappedBy = "ordenProyecto")
@@ -41,6 +38,8 @@ public class Proyecto {
 	private String nombre;
 	@Column(length = 60, nullable = true)
 	private String tipo;
+	@Column(nullable = false)
+	private BigDecimal oferta;
 	@Column(length = 255, nullable = true)
 	private String direccion;
 	@Column(length = 60, nullable = true)
@@ -48,15 +47,23 @@ public class Proyecto {
 	@Column(length = 60, nullable = true)
 	private String ciudad;
 	@Column(length = 60, nullable = true)
-	private String departamento;	
+	private String departamento;
+	@Column(name = "creadopor", nullable = false)
+	private Integer creadoPor;
+	
 	@Column(name = "fechacreacion", nullable = false)
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
-	@Column(name = "creadopor", nullable = false)
-	private Integer creadoPor;
 	
+	
+	public BigDecimal getOferta() {
+		return oferta;
+	}
+	public void setOferta(BigDecimal oferta) {
+		this.oferta = oferta;
+	}
 	public Integer getIdProyecto() {
 		return idProyecto;
 	}
@@ -148,5 +155,4 @@ public class Proyecto {
 	public void setCreadoPor(Integer creadoPor) {
 		this.creadoPor = creadoPor;
 	}
-	
 }

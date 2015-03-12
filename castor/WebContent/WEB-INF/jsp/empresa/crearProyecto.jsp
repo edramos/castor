@@ -87,7 +87,6 @@
 							</div>
 						</div>
 						
-						<h4 class="form-section">Ubicacion</h4>
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
@@ -290,7 +289,6 @@
 										<thead>
 										<tr role="row" class="heading">
 											<th width="15%">Proveedor</th>
-											<th width="15%">Costo</th>
 											<th width="20%">Pago 1</th>
 											<th width="20%">Pago 2</th>
 											<th width="20%">Pago 3</th>
@@ -300,79 +298,61 @@
 											<td>
 												<select id="sltProveedor_1" name="order_status" class="form-control form-filter input-sm">
 												</select>
+												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="Monto USD $/.">
 											</td>
 											<td>
-												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/.">
+												<table class="table" style="margin-bottom: 5px;">
+												<tr>
+													<td width="25%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%"></td>
+													<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/."></td>
+												</tr>
+												<tr>
+													<td style="padding: 1px;" colspan="2">
+														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+															<input type="text" class="form-control form-filter input-sm" name="order_date_from" placeholder="Cobrar">
+															<span class="input-group-btn">
+															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+															</span>
+														</div>
+													</td>
+												</tr>
+												</table>
 											</td>
 											<td>
-												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%">
-												<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-													<input type="text" class="form-control form-filter input-sm" readonly name="order_date_from" placeholder="Pagar">
-													<span class="input-group-btn">
-													<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-													</span>
-												</div>
+												<table class="table" style="margin-bottom: 5px;">
+												<tr>
+													<td width="25%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%"></td>
+													<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/."></td>
+												</tr>
+												<tr>
+													<td style="padding: 1px;" colspan="2">
+														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+															<input type="text" class="form-control form-filter input-sm" name="order_date_from" placeholder="Cobrar">
+															<span class="input-group-btn">
+															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+															</span>
+														</div>
+													</td>
+												</tr>
+												</table>
 											</td>
 											<td>
-												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%">
-												<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-													<input type="text" class="form-control form-filter input-sm" readonly name="order_date_from" placeholder="Pagar">
-													<span class="input-group-btn">
-													<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-													</span>
-												</div>
-											</td>
-											<td>
-												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%">
-												<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-													<input type="text" class="form-control form-filter input-sm" readonly name="order_date_from" placeholder="Pagar">
-													<span class="input-group-btn">
-													<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-													</span>
-												</div>
-											</td>
-											<td>
-												<div class="margin-bottom-5">
-													<button class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></button>
-													<button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></button>
-												</div>
-											</td>
-										</tr>
-										<tr role="row" class="filter">
-											<td>
-												<select id="sltProveedor_2" name="order_status" class="form-control form-filter input-sm">
-												
-												</select>
-											</td>
-											<td>
-												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/.">
-											</td>
-											<td>
-												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%">
-												<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-													<input type="text" class="form-control form-filter input-sm" readonly name="order_date_from" placeholder="Pagar">
-													<span class="input-group-btn">
-													<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-													</span>
-												</div>
-											</td>
-											<td>
-												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%">
-												<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-													<input type="text" class="form-control form-filter input-sm" readonly name="order_date_from" placeholder="Pagar">
-													<span class="input-group-btn">
-													<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-													</span>
-												</div>
-											</td>
-											<td>
-												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%">
-												<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-													<input type="text" class="form-control form-filter input-sm" readonly name="order_date_from" placeholder="Pagar">
-													<span class="input-group-btn">
-													<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-													</span>
-												</div>
+												<table class="table" style="margin-bottom: 5px;">
+												<tr>
+													<td width="25%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%"></td>
+													<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/."></td>
+												</tr>
+												<tr>
+													<td style="padding: 1px;" colspan="2">
+														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+															<input type="text" class="form-control form-filter input-sm" name="order_date_from" placeholder="Cobrar">
+															<span class="input-group-btn">
+															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+															</span>
+														</div>
+													</td>
+												</tr>
+												</table>
 											</td>
 											<td>
 												<div class="margin-bottom-5">
@@ -381,6 +361,7 @@
 												</div>
 											</td>
 										</tr>
+										
 										</thead>
 										</table>
 									</div>

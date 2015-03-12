@@ -17,20 +17,23 @@ public class ProyectoDetalle {
 	@Id @GeneratedValue @Column(name = "idproyectodetalle")
 	private Integer idProyectoDetalle;
 	
-	@ManyToOne 
-	@JoinColumn(name = "idproveedor", nullable = false)
-	private Proveedor proyectoDetProveedor; 
-	
-	@ManyToOne 
-	@JoinColumn(name = "idproyecto", nullable = false)
+	//References
+	@ManyToOne @JoinColumn(name = "idproveedor", nullable = false)
+	private Proveedor proyectoDetProveedor;
+	@ManyToOne @JoinColumn(name = "idproyecto", nullable = false)
 	private Proyecto proyectoDetProyecto; 
 	
 	@Column(nullable = false)
-	private BigDecimal costo;	
+	private BigDecimal monto;
+	@Column(length = 30, nullable = true)
+	private String tipo;
+	
 	@Column(name = "fechacreacion", nullable = false)
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
 	private String estado;
+	
+	
 	
 	public Integer getIdProyectoDetalle() {
 		return idProyectoDetalle;
@@ -49,12 +52,6 @@ public class ProyectoDetalle {
 	}
 	public void setProyectoDetProyecto(Proyecto proyectoDetProyecto) {
 		this.proyectoDetProyecto = proyectoDetProyecto;
-	}
-	public BigDecimal getCosto() {
-		return costo;
-	}
-	public void setCosto(BigDecimal costo) {
-		this.costo = costo;
 	}
 	public Timestamp getFechaCreacion() {
 		return fechaCreacion;
