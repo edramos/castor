@@ -64,6 +64,8 @@
 											<option>Obra</option>
 											<option>Estudio</option>
 											<option>Adecuacion</option>
+											<option>Proyecto</option>
+											<option>Estructura Metalica</option>
 										</select>
 									</div>
 								</div>
@@ -77,11 +79,11 @@
 								</div>
 							</div>
 							<div class="col-md-3">
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<div class="col-md-12">
 										<input id="txtOferta" class="form-control" placeholder="Oferta USD $/."/>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						
@@ -113,6 +115,99 @@
 								</div>
 							</div>
 						</div>
+						
+						
+						
+						<h4 class="form-section">Subcontratos</h4>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<div class="col-md-12">
+										<input id="txtOferta" class="form-control" placeholder="Oferta USD $/."/>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<div class="col-md-12">
+										<input id="txtOferta" class="form-control" placeholder="% Eficiencia"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<div class="col-md-12">
+										<input id="txtOferta" class="form-control" placeholder="Utilidad Bruta"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-container">
+									<div class="table-scrollable">
+										<table class="table table-striped table-bordered table-hover dataTable no-footer">
+										<thead>
+											<tr role="row" class="heading">
+												<th width="20%">Nombre</th>
+												<th width="20%">Tipo</th>
+												<th width="20%">Monto</th>
+												<th width="10%">Acciones</th>
+											</tr>
+											<tr role="row" class="filter">
+												<td>
+													<select id="sltTipo" class="form-control">
+														<option>Proveedores</option>
+													</select>
+												</td>
+												<td>
+													<select id="sltTipo" class="form-control">
+														<option>Obra</option>
+														<option>Estudio</option>
+														<option>Adecuacion</option>
+														<option>Proyecto</option>
+														<option>Estructura Metalica</option>
+													</select>
+												</td>
+												<td>
+													<input id="txtOferta" class="form-control" placeholder="Monto USD$/."/>
+												</td>
+												<td>
+													<div class="margin-bottom-5">
+														<button class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></button>
+														<button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></button>
+													</div>
+												</td>
+											</tr>
+										</thead>
+										
+										<tbody>
+											<tr>
+												<td></td>
+												<td></td>
+												<td>SubTotal</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td></td>
+												<td></td>
+												<td>GG</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td></td>
+												<td></td>
+												<td>TOTAL:</td>
+												<td></td>
+											</tr>
+										</tbody>	
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
 						
 						<h4 class="form-section">Cobro Cliente</h4>
 						<div class="row">
