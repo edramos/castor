@@ -70,6 +70,9 @@
 							<div class="tab-pane" id="tab_1_1_2">
 								<jsp:include page="miCompania/tabOficinas.jsp"/>
 							</div>
+							<div class="tab-pane" id="tab_1_1_3">
+								<jsp:include page="miCompania/tabEmpleados.jsp"/>
+							</div>
 							<div class="tab-pane" id="tab_1_1_4">
 								<jsp:include page="miCompania/tabClientes.jsp"/>
 							</div>
