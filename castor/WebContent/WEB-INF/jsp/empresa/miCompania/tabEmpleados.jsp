@@ -8,8 +8,9 @@
 </style>
 <div id="empleadoInit" class="portlet box blue-hoki">
 	<div class="portlet-title">
-		<div class="caption">Empleados</div>
+		<div class="caption">Empleados <a id="btnIrCrearCliente" class="btn btn-default btn-sm eventBtn"><i class="fa fa-plus"></i> Nuevo </a></div>
 		<div id="dynamicActions" class="actions">
+			
 			<div class="inputs">
 				<div class="portlet-input input-inline input-medium">
 					<div class="input-group">
