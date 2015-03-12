@@ -137,16 +137,26 @@ var MapsGoogle = function () {
 	            	    position: results[0].geometry.location,
 	            	    draggable: true
 	            	});
-	            	
+	                
 	            	google.maps.event.addListener(myMarker, 'dragend', function(e) {
 	            		alert('Hi' + e.latLng.lat().toFixed(6) + ', ' + e.latLng.lng().toFixed(6));
 	            		map.setCenter(myMarker.position);
+	            		//
+	            		$('#txtLatitud').val(e.latLng.lat().toFixed(6));
+	            		$('#txtLongitud').val(e.latLng.lng().toFixed(6));
+	            		
 	            	});
 	                
 	                //map.setCenter(results[0].geometry.location);
 	                
 	                map.setCenter(myMarker.position);
 	            	myMarker.setMap(map);
+	            	//
+	            	var markerLatLng = myMarker.getPosition();
+	                alert('Hi2' + markerLatLng.lat().toFixed(6) + ', ' + markerLatLng.lng().toFixed(6));
+	                //
+            		$('#txtLatitud').val(markerLatLng.lat().toFixed(6));
+            		$('#txtLongitud').val(markerLatLng.lng().toFixed(6));
 	            }else{
 	            	result = null;
 	                //alert('Geocode of Address: \"'+ address +'\" was not successful for the following reason: '+status);

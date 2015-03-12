@@ -24,7 +24,8 @@ public class ProveedorController {
 	@Autowired
 	ProveedorService proveedorservice;
 	
-	@RequestMapping(value = "ajaxCrearProveedor", method = RequestMethod.POST)@ResponseBody
+	@RequestMapping(value = "ajaxCrearProveedor", method = RequestMethod.POST)
+	@ResponseBody
 	public List<ProveedorBean> ajaxCrearProveedor(@ModelAttribute Proveedor proveedor, HttpServletRequest req){
 		List<ProveedorBean> proveedores = new ArrayList<ProveedorBean>();		
 		if(proveedorservice.crearProveedor(proveedor, req)){
@@ -34,7 +35,8 @@ public class ProveedorController {
 		}
 		return proveedores;
 	}
-	@RequestMapping(value = "ajaxModificarProveedor", method = RequestMethod.POST)@ResponseBody
+	@RequestMapping(value = "ajaxModificarProveedor", method = RequestMethod.POST)
+	@ResponseBody
 	public List<ProveedorBean> ajaxModificarProveedor(@ModelAttribute Proveedor proveedor, HttpServletRequest req){
 		List<ProveedorBean> proveedores = new ArrayList<ProveedorBean>();		
 		if(proveedorservice.modificarProveedor(proveedor, req)){
@@ -45,7 +47,8 @@ public class ProveedorController {
 		
 		return proveedores;
 	}
-	@RequestMapping(value = "ajaxEliminarProveedor-{idProveedor}", method = RequestMethod.POST)@ResponseBody
+	@RequestMapping(value = "ajaxEliminarProveedor-{idProveedor}", method = RequestMethod.POST)
+	@ResponseBody
 	public List<ProveedorBean> ajaxEliminarProveedor(@PathVariable("idProveedor") Integer idProveedor, HttpServletRequest req){
 		List<ProveedorBean> proveedores = new ArrayList<ProveedorBean>();
 		if(proveedorservice.eliminarProveedor(idProveedor, req)){

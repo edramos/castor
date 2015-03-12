@@ -33,6 +33,11 @@ public class Oficina {
 	@Column(name = "telefonooficina", length = 30, nullable = true)
 	private String telefonoOficina;
 	
+	@Column(name = "latitud", nullable = true)
+	private Double latitud;
+	@Column(name = "longitud", nullable = true)
+	private Double longitud;
+	
 	@Column(name = "fechacreacion", nullable = false)
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
@@ -106,5 +111,17 @@ public class Oficina {
 	}
 	public void setCreadoPor(Integer creadoPor) {
 		this.creadoPor = creadoPor;
+	}
+	public Double getLatitud() {
+		return latitud;
+	}
+	public void setLatitud(Double latitud) {
+		this.latitud = latitud;
+	}
+	public Double getLongitud() {
+		return longitud;
+	}
+	public void setLongitud(Double longitud) {
+		this.longitud = longitud;
 	}
 }

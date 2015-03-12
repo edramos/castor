@@ -107,6 +107,7 @@
 <script src="assets/admin/pages/scripts/form-icheck.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
+var flag = 0;
 jQuery(document).ready(function() {    
     Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
@@ -129,15 +130,23 @@ jQuery(document).ready(function() {
 		case "btnGrabarInfo":
 			break;
 		//OFICINA
-		case "btnNuevaOfi":
-			$('#oficinasInit').hide();
-			$('#oficinasNueva').show();
-			MapsGoogle.init();
+		case "btnIrCrearOficina":
+			$('#oficinaInit').hide();
+			$('#oficinaCrear').show();
+			//MapsGoogle.init();
+			initMapaCrearOficina();
 			break;
-		case "btnCancelarOfi":
-			$('#oficinasNueva').hide();
-			$('#oficinasInit').show();
-			MapsGoogle.init();
+		case "btnCancelarOficina":
+			$('#oficinaCrear').hide();
+			$('#oficinaModificar').hide();
+			$('#oficinaInit').show();
+			//MapsGoogle.init();
+			break;
+		case "btnCrearOficina":
+			$('#frmCrearOficina').submit();
+			break;
+		case "btnModificarOficina":
+			$('#frmModificarOficina').submit();
 			break;
 		//CLIENTE
 		case "btnIrCrearCliente":
@@ -151,15 +160,9 @@ jQuery(document).ready(function() {
 			break;
 		case "btnCrearCliente":
 			$('#frmCrearCliente').submit();
-			//if($('#txtNombre').val() != ''){
-				//crearCliente();				
-			//}
 			break;
 		case "btnModificarCliente":
 			$('#frmModificarCliente').submit();
-			//if($('#txtNombreE').val() != ''){
-				//modificarCliente();				
-			//}
 			break;	
 		//PROVEEDOR
 		case "btnIrCrearProveedor":
@@ -173,15 +176,9 @@ jQuery(document).ready(function() {
 			break;
 		case "btnCrearProveedor":
 			$('#frmCrearProveedor').submit();
-			//if($('#txtNombre').val() != ''){
-				//crearProveedor();				
-			//}
 			break;
 		case "btnModificarProveedor":
 			$('#frmModificarProveedor').submit();
-			//if($('#txtNombreE').val() != ''){
-				//modificarProveedor();				
-			//}
 			break;		
 			
 		}
@@ -189,11 +186,13 @@ jQuery(document).ready(function() {
 	});
 	listarClientes();
 	listarProveedores();
-	var flag = 0;
+	listarOficinas();
+	
 	$('a[href="#tab_1_1_2"]').on('shown.bs.tab', function(e){
 		if(flag == 0){
 			flag = -1;
-			MapsGoogle.init();
+			//MapsGoogle.init();
+			initMapOficinas(oficinasArray);
 		}
     });
 });
@@ -252,6 +251,47 @@ $(document).ready(function(){
 		},
 		submitHandler: function(form){
 			modificarProveedor();
+		}
+	});
+	
+	
+	$("#frmCrearOficina").validate({
+		rules: {
+			direccionCompleta: {
+				required: true,
+			},nombre: {
+				required: true,
+			},telefonoOficina: {
+				required: true,
+			}                                 
+		},
+		messages: {
+			direccionCompleta: "*",
+			nombre: "*",
+			telefonoOficina: "*"
+		},
+		submitHandler: function(form){
+			crearOficina();
+		}
+	});
+	
+	$("#frmModificarOficina").validate({
+		rules: {
+			direccionCompleta: {
+				required: true,
+			},nombre: {
+				required: true,
+			},telefonoOficina: {
+				required: true,
+			}                                   
+		},
+		messages: {
+			direccionCompleta: "*",
+			nombre: "*",
+			telefonoOficina: "*"
+		},
+		submitHandler: function(form){
+			modificarOficina();
 		}
 	});
 });	

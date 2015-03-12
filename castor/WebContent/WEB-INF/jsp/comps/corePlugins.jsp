@@ -20,4 +20,10 @@
 
 <script src="assets/global/plugins/jquery.validate.js" type="text/javascript"></script>
 <script src="assets/global/plugins/jquery.validate.min.js" type="text/javascript"></script>
+
+<script src="assets/global/plugins/map.js" type="text/javascript"></script>
+
+
+
+
 <!-- END CORE PLUGINS -->
