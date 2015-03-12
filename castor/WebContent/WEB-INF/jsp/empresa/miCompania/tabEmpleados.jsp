@@ -46,7 +46,7 @@
 				<td>Administrador</td>
 				<td><span class="label label-sm label-success">Enabled </span></td>
 				<td>
-					<a href="#" class="btn btn-icon-only bg-green-meadow btn-sm"><i class="fa fa-pencil"></i></a>
+					<a href="#" class="btn bg-green-meadow btn-sm"><i class="fa fa-pencil"></i></a>
 					<a href="#" class="btn red-sunglo btn-sm"><i class="fa fa-trash"></i></a>
 				</td>				
 			</tr>
@@ -56,7 +56,11 @@
 				<td>949-546-515</td>
 				<td>261-1605</td>
 				<td>Cobranza</td>
-				<td><span class="label label-sm label-info">Pendiente </span></td>				
+				<td><span class="label label-sm label-info">Pendiente </span></td>
+				<td>
+					<a href="#" class="btn bg-green-meadow btn-sm"><i class="fa fa-pencil"></i></a>
+					<a href="#" class="btn red-sunglo btn-sm"><i class="fa fa-trash"></i></a>
+				</td>				
 			</tr>
 			<tr>
 				<td>Eduardo H. Ramos Barrientos</td>
@@ -64,7 +68,11 @@
 				<td>949-546-515</td>
 				<td>261-1605</td>
 				<td>Proyecto</td>
-				<td><span class="label label-sm label-warning">Suspendido </span></td>				
+				<td><span class="label label-sm label-warning">Suspendido </span></td>
+				<td>
+					<a href="#" class="btn bg-green-meadow btn-sm"><i class="fa fa-pencil"></i></a>
+					<a href="#" class="btn red-sunglo btn-sm"><i class="fa fa-trash"></i></a>
+				</td>				
 			</tr>
 			<tr>
 				<td>Eduardo H. Ramos Barrientos</td>
@@ -72,15 +80,12 @@
 				<td>949-546-515</td>
 				<td>261-1605</td>
 				<td>Pagos</td>
-				<td><span class="label label-sm label-danger">Disabled </span></td>				
+				<td><span class="label label-sm label-danger">Disabled </span></td>	
+				<td>
+					<a href="#" class="btn bg-green-meadow btn-sm"><i class="fa fa-pencil"></i></a>
+					<a href="#" class="btn red-sunglo btn-sm"><i class="fa fa-trash"></i></a>
+				</td>			
 			</tr>
-			
-			
-			
-			
-			
-			
-			
 			</tbody>
 			</table>
 		</div>
