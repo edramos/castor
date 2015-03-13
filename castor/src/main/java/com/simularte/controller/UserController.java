@@ -104,4 +104,9 @@ public class UserController {
 	public String toCrearProyecto(){
 		return "empresa/crearProyecto";
 	}
+	//Se puede crear un evento para que los links directos traigan una variable que nos permita hacer switch para los return a paginas directas
+	@RequestMapping("toProyecto")
+	public String toProyecto(){
+		return "empresa/proyecto";
+	}
 }

@@ -4,6 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Castor | Dashboard</title>
 <jsp:include page="comps/headMandatory.jsp"/>
+<!-- BEGIN PAGE LEVEL STYLES -->
+<!-- END PAGE LEVEL STYLES -->
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
@@ -26,5 +28,10 @@
 
 <jsp:include page="comps/footer.jsp"/>
 <jsp:include page="comps/corePlugins.jsp"/>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<!-- END PAGE LEVEL PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<!-- END PAGE LEVEL SCRIPTS -->
 </body>
 </html>
