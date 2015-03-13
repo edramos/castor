@@ -1,12 +1,15 @@
 package com.simularte.model;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Pago {
@@ -18,9 +21,16 @@ public class Pago {
 	/*1 Proveedor puede recibir 1-n pagos para el mismo proyecto, esta tabla debe tener estas Keys:
 	 * idPago(PK), idOrden(FK), idProveedor(FK) el idProveedor se saca de ProyectoDetalle*/
 	
+	@ManyToOne 
+	@JoinColumn(name = "idorden", nullable = false)
+	private Orden pagoOrden;
 	
-	@Column(name = "fechacobro", nullable = false)
-	private Timestamp fechaCobro;
+	@ManyToOne 
+	@JoinColumn(name = "idproveedor", nullable = false)
+	private Proveedor pagoProveedor;
+	
+	@Column(name = "fechapago", nullable = false)
+	private Date fechaPago;
 	@Column(nullable = false)
 	private BigDecimal monto;
 	
@@ -37,11 +47,11 @@ public class Pago {
 	public void setIdPago(Integer idPago) {
 		this.idPago = idPago;
 	}
-	public Timestamp getFechaCobro() {
-		return fechaCobro;
+	public Date getFechaPago() {
+		return fechaPago;
 	}
-	public void setFechaCobro(Timestamp fechaCobro) {
-		this.fechaCobro = fechaCobro;
+	public void setFechaPago(Date fechaPago) {
+		this.fechaPago = fechaPago;
 	}
 	public BigDecimal getMonto() {
 		return monto;
@@ -60,5 +70,17 @@ public class Pago {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Orden getPagoOrden() {
+		return pagoOrden;
+	}
+	public void setPagoOrden(Orden pagoOrden) {
+		this.pagoOrden = pagoOrden;
+	}
+	public Proveedor getPagoProveedor() {
+		return pagoProveedor;
+	}
+	public void setPagoProveedor(Proveedor pagoProveedor) {
+		this.pagoProveedor = pagoProveedor;
 	}
 }

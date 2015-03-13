@@ -2,6 +2,7 @@ package com.simularte.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -36,6 +38,12 @@ public class Orden {
 	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
+	
+	@OneToMany(mappedBy = "cobroOrden")
+	private Collection<Cobro> cobrosOrd;
+	
+	@OneToMany(mappedBy = "pagoOrden")
+	private Collection<Pago> pagosOrd;
 	
 	public Integer getIdOrden() {
 		return idOrden;
@@ -84,6 +92,18 @@ public class Orden {
 	}
 	public void setCreadoPor(Integer creadoPor) {
 		this.creadoPor = creadoPor;
+	}
+	public Collection<Cobro> getCobrosOrd() {
+		return cobrosOrd;
+	}
+	public void setCobrosOrd(Collection<Cobro> cobrosOrd) {
+		this.cobrosOrd = cobrosOrd;
+	}
+	public Collection<Pago> getPagosOrd() {
+		return pagosOrd;
+	}
+	public void setPagosOrd(Collection<Pago> pagosOrd) {
+		this.pagosOrd = pagosOrd;
 	}
 
 }

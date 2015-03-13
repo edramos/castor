@@ -38,8 +38,6 @@ public class Proyecto {
 	private String nombre;
 	@Column(length = 60, nullable = true)
 	private String tipo;
-	@Column(nullable = false)
-	private BigDecimal oferta;
 	@Column(length = 255, nullable = true)
 	private String direccion;
 	@Column(length = 60, nullable = true)
@@ -56,6 +54,20 @@ public class Proyecto {
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
+	//Datos de Subcontratos
+	@Column(name = "oferta", nullable = true)
+	private BigDecimal oferta;
+	@Column(name = "eficiencia", nullable = true)
+	private Double eficiencia;
+	@Column(name = "utilidadbruta", nullable = true)
+	private BigDecimal utilidadBruta;
+	
+	@Column(name = "subtotal", nullable = true)
+	private BigDecimal subTotal;
+	@Column(name = "gastosgenerales", nullable = true)
+	private BigDecimal gastosGenerales;
+	@Column(name = "total", nullable = true)
+	private BigDecimal total;
 	
 	
 	public BigDecimal getOferta() {
@@ -154,5 +166,35 @@ public class Proyecto {
 	}
 	public void setCreadoPor(Integer creadoPor) {
 		this.creadoPor = creadoPor;
+	}
+	public Double getEficiencia() {
+		return eficiencia;
+	}
+	public void setEficiencia(Double eficiencia) {
+		this.eficiencia = eficiencia;
+	}
+	public BigDecimal getUtilidadBruta() {
+		return utilidadBruta;
+	}
+	public void setUtilidadBruta(BigDecimal utilidadBruta) {
+		this.utilidadBruta = utilidadBruta;
+	}
+	public BigDecimal getSubTotal() {
+		return subTotal;
+	}
+	public void setSubTotal(BigDecimal subTotal) {
+		this.subTotal = subTotal;
+	}
+	public BigDecimal getGastosGenerales() {
+		return gastosGenerales;
+	}
+	public void setGastosGenerales(BigDecimal gastosGenerales) {
+		this.gastosGenerales = gastosGenerales;
+	}
+	public BigDecimal getTotal() {
+		return total;
+	}
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
 }

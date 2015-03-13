@@ -46,26 +46,26 @@
 			</div>
 			<div class="portlet-body form">
 			
-				<form:form id="frmCrearProyecto" class="form-horizontal">
+				<form:form id="frmCrearProyecto" method="post" action="ajaxCrearProyecto" class="form-horizontal" commandName="proyecto">
 					<div class="form-body">
 						<h4 class="form-section">General</h4>
 						<div class="row">
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtNombre" class="form-control" placeholder="Nombre Proyecto"/>
+										<input id="txtNombre" class="form-control" placeholder="Nombre Proyecto" name="nombre"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<select id="sltTipo" class="form-control">
-											<option>Obra</option>
-											<option>Estudio</option>
-											<option>Adecuacion</option>
-											<option>Proyecto</option>
-											<option>Estructura Metalica</option>
+										<select id="sltTipo" class="form-control" name="tipo">
+											<option value="Obra">Obra</option>
+											<option value="Estudio">Estudio</option>
+											<option value="Adecuacion">Adecuacion</option>
+											<option value="Proyecto">Proyecto</option>
+											<option value="Estructura Metalica">Estructura Metalica</option>
 										</select>
 									</div>
 								</div>
@@ -73,7 +73,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<select id="sltCliente" class="form-control">
+										<select id="sltCliente" class="form-control" name="idCliente">
 										</select>
 									</div>
 								</div>
@@ -91,21 +91,29 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtDireccion" class="form-control" placeholder="Direccion"/>
+										<input id="txtDireccion" class="form-control" placeholder="Direccion" name="direccion"/>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtCiudad" class="form-control" placeholder="Ciudad"/>
+										<input id="txtDistrito" class="form-control" placeholder="Distrito" name="distrito"/>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<div class="col-md-12">
-										<select id="sltDistrito" class="form-control">
+										<input id="txtCiudad" class="form-control" placeholder="Ciudad" name="ciudad"/>
+									</div>
+								</div>
+							</div>							
+
+							<div class="col-md-2">
+								<div class="form-group">
+									<div class="col-md-12">
+										<select id="sltDepartamento" class="form-control" name="departamento">
 											<option>Lima</option>
 											<option>Cajamarca</option>
 											<option>Ancash</option>
@@ -115,32 +123,34 @@
 							</div>
 						</div>
 						
-						
+						<!-- Seccion subcontratos -->
 						
 						<h4 class="form-section">Subcontratos</h4>
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtOferta" class="form-control" placeholder="Oferta USD $/."/>
+										<input id="txtOferta" class="form-control" placeholder="Oferta USD $/." name="oferta"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtOferta" class="form-control" placeholder="% Eficiencia"/>
+										<input id="txtEficiencia" class="form-control" placeholder="% Eficiencia" name="eficiencia"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtOferta" class="form-control" placeholder="Utilidad Bruta"/>
+										<input id="txtUtilidadBruta" class="form-control" placeholder="Utilidad Bruta" name="utilidadBruta"/>
 									</div>
 								</div>
 							</div>
 						</div>
+						
+						
 						<div class="row">
 							<div class="col-md-12">
 								<div class="table-container">
@@ -153,14 +163,14 @@
 												<th width="20%">Monto</th>
 												<th width="10%">Acciones</th>
 											</tr>
-											<tr role="row" class="filter">
+											<tr role="row" class="filter" id="fila_SC_0">
 												<td>
-													<select id="sltTipo" class="form-control">
+													<select id="sltProveedorSC_0" class="form-control" name="idProveedorSC" onchange="cambiarSelectorProveedorPago(0);">
 														<option>Proveedores</option>
 													</select>
 												</td>
 												<td>
-													<select id="sltTipo" class="form-control">
+													<select id="sltTipoSC_0" class="form-control" name="tipoSC">
 														<option>Obra</option>
 														<option>Estudio</option>
 														<option>Adecuacion</option>
@@ -169,35 +179,40 @@
 													</select>
 												</td>
 												<td>
-													<input id="txtOferta" class="form-control" placeholder="Monto USD$/."/>
+													<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" id="txtMontoSC_0" class="form-control" placeholder="Monto USD$/." name="montoSC"/>
 												</td>
 												<td>
 													<div class="margin-bottom-5">
-														<button class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></button>
-														<button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></button>
+														<span class="btn btn-sm green filter-submit margin-bottom" onclick="agregarNuevaFilaSubcontratos();"><i class="fa fa-plus"></i></span>
+														<span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
 													</div>
 												</td>
 											</tr>
 										</thead>
+										
+										<tbody id="vistaTablaSubcontratosProveedores">
+										
+										</tbody>
+										
 										
 										<tbody>
 											<tr>
 												<td></td>
 												<td></td>
 												<td>SubTotal</td>
-												<td></td>
+												<td><input id="txtSubTotal" class="form-control" placeholder="SubTotal" name="subTotal"/></td>
 											</tr>
 											<tr>
 												<td></td>
 												<td></td>
 												<td>GG</td>
-												<td></td>
+												<td><input id="txtGastosGenerales" onchange="recalcularTotalesSubcontratos();" class="form-control" placeholder="Gastos Generales" name="gastosGenerales"/></td>
 											</tr>
 											<tr>
 												<td></td>
 												<td></td>
 												<td>TOTAL:</td>
-												<td></td>
+												<td><input id="txtTotal" class="form-control" placeholder="Total" name="total"/></td>
 											</tr>
 										</tbody>	
 										</table>
@@ -224,11 +239,11 @@
 												<td style="padding-bottom: 0px;">
 													<table class="table" style="margin-bottom: 5px;">
 													<tr>
-														<td width="15%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%"></td>
-														<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/."></td>
+														<td width="15%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="cobro_porcentaje" placeholder="%"></td>
+														<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="cobro_monto" placeholder="USD $/."></td>
 														<td style="padding: 1px;">
 															<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-																<input type="text" class="form-control form-filter input-sm" name="order_date_from" placeholder="Cobrar">
+																<input type="text" class="form-control form-filter input-sm" name="cobro_fecha" placeholder="Cobrar">
 																<span class="input-group-btn">
 																<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 																</span>
@@ -240,11 +255,11 @@
 												<td style="padding-bottom: 0px;">
 													<table class="table" style="margin-bottom: 5px;">
 													<tr>
-														<td width="15%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%"></td>
-														<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/."></td>
+														<td width="15%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="cobro_porcentaje" placeholder="%"></td>
+														<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="cobro_monto" placeholder="USD $/."></td>
 														<td style="padding: 1px;">
 															<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-																<input type="text" class="form-control form-filter input-sm" name="order_date_from" placeholder="Cobrar">
+																<input type="text" class="form-control form-filter input-sm" name="cobro_fecha" placeholder="Cobrar">
 																<span class="input-group-btn">
 																<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 																</span>
@@ -256,11 +271,11 @@
 												<td style="padding-bottom: 0px;">
 													<table class="table" style="margin-bottom: 5px;">
 													<tr>
-														<td width="15%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%"></td>
-														<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/."></td>
+														<td width="15%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="cobro_porcentaje" placeholder="%"></td>
+														<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="cobro_monto" placeholder="USD $/."></td>
 														<td style="padding: 1px;">
 															<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-																<input type="text" class="form-control form-filter input-sm" name="order_date_from" placeholder="Cobrar">
+																<input type="text" class="form-control form-filter input-sm" name="cobro_fecha" placeholder="Cobrar">
 																<span class="input-group-btn">
 																<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 																</span>
@@ -270,7 +285,7 @@
 													</table>
 												</td>
 											</tr>
-										</thead>
+										</thead>						
 											
 										</table>
 									</div>
@@ -294,22 +309,22 @@
 											<th width="20%">Pago 3</th>
 											<th width="10%">Acciones</th>
 										</tr>
-										<tr role="row" class="filter">
+										<tr role="row" class="filter" id="fila_pago_0">
 											<td>
-												<select id="sltProveedor_1" name="order_status" class="form-control form-filter input-sm">
+												<select id="sltProveedor_0" name="pago_idProveedor" class="form-control form-filter input-sm">
 												</select>
-												<input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="Monto USD $/.">
+												<input id="montoTotal_0" type="text" class="form-control form-filter input-sm" name="pago_montoTotal" placeholder="Monto USD $/.">
 											</td>
 											<td>
 												<table class="table" style="margin-bottom: 5px;">
 												<tr>
-													<td width="25%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%"></td>
-													<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/."></td>
+													<td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago1(0)" id="txtPorcentaje_pago1_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+													<td style="padding: 1px;"><input id="txtPagoParcial_pago1_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
 												</tr>
 												<tr>
 													<td style="padding: 1px;" colspan="2">
 														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input type="text" class="form-control form-filter input-sm" name="order_date_from" placeholder="Cobrar">
+															<input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
 															<span class="input-group-btn">
 															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 															</span>
@@ -321,13 +336,13 @@
 											<td>
 												<table class="table" style="margin-bottom: 5px;">
 												<tr>
-													<td width="25%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%"></td>
-													<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/."></td>
+													<td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago2(0)" id="txtPorcentaje_pago2_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+													<td style="padding: 1px;"><input id="txtPagoParcial_pago2_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
 												</tr>
 												<tr>
 													<td style="padding: 1px;" colspan="2">
 														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input type="text" class="form-control form-filter input-sm" name="order_date_from" placeholder="Cobrar">
+															<input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
 															<span class="input-group-btn">
 															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 															</span>
@@ -339,13 +354,13 @@
 											<td>
 												<table class="table" style="margin-bottom: 5px;">
 												<tr>
-													<td width="25%" style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="%"></td>
-													<td style="padding: 1px;"><input type="text" class="form-control form-filter input-sm" name="order_customer_name" placeholder="USD $/."></td>
+													<td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago3(0)" id="txtPorcentaje_pago3_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+													<td style="padding: 1px;"><input id="txtPagoParcial_pago3_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
 												</tr>
 												<tr>
 													<td style="padding: 1px;" colspan="2">
 														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input type="text" class="form-control form-filter input-sm" name="order_date_from" placeholder="Cobrar">
+															<input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
 															<span class="input-group-btn">
 															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 															</span>
@@ -356,19 +371,26 @@
 											</td>
 											<td>
 												<div class="margin-bottom-5">
-													<button class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></button>
-													<button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></button>
+													<span class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></span>
+													<span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
 												</div>
 											</td>
 										</tr>
 										
 										</thead>
+										
+										<tbody id="vistaTablaPagos">
+										
+										</tbody>
+										
 										</table>
 									</div>
 								</div>
 							</div>
 						</div>
 						
+						
+						 <a id="btnGrabar" class="btn btn-default btn-sm eventBtn" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
 					</div>
 				</form:form>
 			
@@ -411,8 +433,10 @@ jQuery(document).ready(function() {
 	
 	//Cargo Selector de Cliente
 	listarSelectorClientes('sltCliente');
-	listarSelectorProveedores('sltProveedor_1');
-	listarSelectorProveedores('sltProveedor_2');
+	listarSelectorProveedores('sltProveedor_0');
+	
+	
+	listarSelectorProveedores('sltProveedorSC_0');
 });
 
 function listarSelectorClientes(nombreSelector){
@@ -457,6 +481,109 @@ function listarSelectorProveedores(nombreSelector){
   		}
  	});
 }
+var idFila=0;
+
+function agregarNuevaFilaSubcontratos(){
+	idFila++;
+	var entidadFila = new Object();
+	entidadFila.idFila = idFila;
+	var html = '';
+	var source = $("#templateProveedoresSubcontratos_tabla").html();
+	var template = Handlebars.compile(source);
+	html += template(entidadFila);
+	$("#vistaTablaSubcontratosProveedores").append(html);
+	listarSelectorProveedores('sltProveedorSC_'+idFila);
+	recalcularTotalesSubcontratos();
+	
+	//
+	agregarNuevaFilaPagos(idFila);
+}
+
+function agregarNuevaFilaPagos(idFilaTemp){
+	var entidadFila2 = new Object();
+	entidadFila2.idFila = idFilaTemp;
+	var html = '';
+	var source = $("#templateProveedoresPago_tabla").html();
+	var template = Handlebars.compile(source);
+	html += template(entidadFila2);
+	$("#vistaTablaPagos").append(html);
+	listarSelectorProveedores('sltProveedor_'+idFilaTemp);	
+}
+
+function recalcularTotalesSubcontratos(){
+	var subtotal = 0;
+	var gastosg = 0;
+	var total = 0;
+	
+	arregloMontoSC = document.getElementsByName('montoSC');
+		for (var x=0; x < arregloMontoSC.length; x++) {
+			if(arregloMontoSC[x].value==''){
+				
+			}else{
+				subtotal = parseFloat(arregloMontoSC[x].value) + subtotal;	
+			}
+	  	}
+	
+	if($('#txtGastosGenerales').val()==''){
+		gastosg = 0;
+		$('#txtGastosGenerales').val(gastosg)
+	}else{
+		gastosg = $('#txtGastosGenerales').val();
+	}
+	
+	total = subtotal + parseFloat(gastosg);
+	$('#txtSubTotal').val(subtotal);
+	$('#txtTotal').val(total);
+	
+	//
+	var eficiencia = 0;
+	var oferta = 0; 
+	var utilidadBruta = 0;
+	if($('#txtOferta').val()==''){
+		oferta = 0;
+	}else{
+		oferta = $('#txtOferta').val();
+	}
+	eficiencia = total / oferta;
+	$('#txtEficiencia').val(eficiencia);
+	
+	utilidadBruta = oferta - total;
+	$('#txtUtilidadBruta').val(utilidadBruta);
+}
+
+function cambiarSelectorProveedorPago(idTempFila){
+	$('#sltProveedor_'+idTempFila).val($('#sltProveedorSC_'+idTempFila).val());
+}
+
+function cambiarPagoProveedor(idTempFila){
+	$('#montoTotal_'+idTempFila).val($('#txtMontoSC_'+idTempFila).val());
+}
+
+
+function calcularMontoParcialxPorcentaje_Pago1(idTempFila){
+	var monto = $('#montoTotal_'+idTempFila).val();
+	var porcentaje = $('#txtPorcentaje_pago1_'+idTempFila).val();
+	var montoParcial = (monto*(porcentaje/100));
+	$('#txtPagoParcial_pago1_'+idTempFila).val(montoParcial);
+		
+}
+function calcularMontoParcialxPorcentaje_Pago2(idTempFila){
+	var monto = $('#montoTotal_'+idTempFila).val();
+	var porcentaje = $('#txtPorcentaje_pago2_'+idTempFila).val();
+	var montoParcial = (monto*(porcentaje/100));
+	$('#txtPagoParcial_pago2_'+idTempFila).val(montoParcial);
+}
+function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
+	var monto = $('#montoTotal_'+idTempFila).val();
+	var porcentaje = $('#txtPorcentaje_pago3_'+idTempFila).val();
+	var montoParcial = (monto*(porcentaje/100));
+	$('#txtPagoParcial_pago3_'+idTempFila).val(montoParcial);
+}
+
+function grabarProyecto(){
+	$('#frmCrearProyecto').submit();
+}
+
 </script>
 <script id="templateSelectorClientes" type="text/x-handlebars-template">
 	<option value="{{idCliente}}">{{nombre}}</option>
@@ -464,5 +591,105 @@ function listarSelectorProveedores(nombreSelector){
 <script id="templateSelectorProveedores" type="text/x-handlebars-template">
 	<option value="{{idProveedor}}">{{nombre}}</option>
 </script>
+
+<!-- Filas de Tabla Subcontratos -->
+<script id="templateProveedoresSubcontratos_tabla" type="text/x-handlebars-template">
+	<tr role="row" class="filter" id="fila_SC_{{idFila}}">
+		<td>
+			<select id="sltProveedorSC_{{idFila}}" class="form-control" name="idProveedorSC" onchange="cambiarSelectorProveedorPago({{idFila}});">
+				<option>Proveedores</option>
+			</select>
+		</td>
+		<td>
+			<select id="sltTipoSC_{{idFila}}" class="form-control" name="tipoSC">
+				<option>Obra</option>
+				<option>Estudio</option>
+				<option>Adecuacion</option>
+				<option>Proyecto</option>
+				<option>Estructura Metalica</option>
+			</select>
+		</td>
+		<td>
+			<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor({{idFila}});" id="txtMontoSC_{{idFila}}" class="form-control" placeholder="Monto USD$/." name="montoSC"/>
+		</td>
+		<td>
+			<div class="margin-bottom-5">
+				
+				<span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
+			</div>
+		</td>
+	</tr>
+</script>
+
+<script id="templateProveedoresPago_tabla" type="text/x-handlebars-template">
+	<tr role="row" class="filter" id="fila_pago_{{idFila}}">
+		 <td>
+			 <select id="sltProveedor_{{idFila}}" name="pago_idProveedor" class="form-control form-filter input-sm">
+			 </select>
+			 <input id="montoTotal_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoTotal" placeholder="Monto USD $/.">
+		 </td>
+		 <td>
+			 <table class="table" style="margin-bottom: 5px;">
+			 <tr>
+				 <td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago1({{idFila}})" id="txtPorcentaje_pago1_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+				 <td style="padding: 1px;"><input id="txtPagoParcial_pago1_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
+			 </tr>
+			 <tr>
+				 <td style="padding: 1px;" colspan="2">
+					 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+						 <input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
+						 <span class="input-group-btn">
+						 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+						 </span>
+					 </div>
+				 </td>
+			 </tr>
+			 </table>
+		 </td>
+		 <td>
+			 <table class="table" style="margin-bottom: 5px;">
+			 <tr>
+				 <td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago2({{idFila}})" id="txtPorcentaje_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+				 <td style="padding: 1px;"><input id="txtPagoParcial_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
+			 </tr>
+			 <tr>
+				 <td style="padding: 1px;" colspan="2">
+					 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+						 <input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
+						 <span class="input-group-btn">
+						 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+						 </span>
+					 </div>
+				 </td>
+			 </tr>
+			 </table>
+		 </td>
+		 <td>
+			 <table class="table" style="margin-bottom: 5px;">
+			 <tr>
+				 <td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago3({{idFila}})" id="txtPorcentaje_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+				 <td style="padding: 1px;"><input id="txtPagoParcial_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
+			 </tr>
+			 <tr>
+				 <td style="padding: 1px;" colspan="2">
+					 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+						 <input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
+						 <span class="input-group-btn">
+						 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+						 </span>
+					 </div>
+				 </td>
+			 </tr>
+			 </table>
+		 </td>
+		 <td>
+			 <div class="margin-bottom-5">
+				 <span class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></span>
+				 <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
+			 </div>
+		 </td>
+	 </tr>
+</script>
+
 </body>
 </html>
