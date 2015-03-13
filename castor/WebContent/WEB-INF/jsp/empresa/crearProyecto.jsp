@@ -545,7 +545,7 @@ function recalcularTotalesSubcontratos(){
 		oferta = $('#txtOferta').val();
 	}
 	eficiencia = total / oferta;
-	$('#txtEficiencia').val(eficiencia*100);
+	$('#txtEficiencia').val((eficiencia*100).toFixed(2));
 	
 	utilidadBruta = oferta - total;
 	$('#txtUtilidadBruta').val(utilidadBruta);
