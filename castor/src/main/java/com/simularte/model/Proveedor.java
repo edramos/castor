@@ -36,6 +36,9 @@ public class Proveedor {
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
 	
+	@OneToMany(mappedBy = "pagoProveedor")
+	private Collection<Pago> pagosProv;
+	
 	public Integer getIdProveedor() {
 		return idProveedor;
 	}
@@ -78,6 +81,12 @@ public class Proveedor {
 	}
 	public void setCreadoPor(Integer creadoPor) {
 		this.creadoPor = creadoPor;
+	}
+	public Collection<Pago> getPagosProv() {
+		return pagosProv;
+	}
+	public void setPagosProv(Collection<Pago> pagosProv) {
+		this.pagosProv = pagosProv;
 	}
 	
 }
