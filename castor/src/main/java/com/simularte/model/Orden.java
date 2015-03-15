@@ -56,8 +56,8 @@ public class Orden {
 	/*Se registraran cuando la Orden ya ese finalizada*/
 	@Column(nullable = true)
 	private float eficiencia;
-	@Column(name = "utiliadbruta", nullable = true) 
-	private BigDecimal utiliadBruta;
+	@Column(name = "utilidadbruta", nullable = true) 
+	private BigDecimal utilidadBruta;
 	@Column(name = "subtotal", nullable = true)
 	private BigDecimal subTotal;
 	@Column(name = "gastosgenerales", nullable = true)
@@ -176,11 +176,11 @@ public class Orden {
 	public void setEficiencia(float eficiencia) {
 		this.eficiencia = eficiencia;
 	}
-	public BigDecimal getUtiliadBruta() {
-		return utiliadBruta;
+	public BigDecimal getUtilidadBruta() {
+		return utilidadBruta;
 	}
-	public void setUtiliadBruta(BigDecimal utiliadBruta) {
-		this.utiliadBruta = utiliadBruta;
+	public void setUtilidadBruta(BigDecimal utilidadBruta) {
+		this.utilidadBruta = utilidadBruta;
 	}
 	public BigDecimal getSubTotal() {
 		return subTotal;
@@ -217,5 +217,5 @@ public class Orden {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}	
+	}
 }

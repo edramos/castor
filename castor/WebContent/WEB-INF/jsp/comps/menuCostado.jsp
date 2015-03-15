@@ -15,16 +15,6 @@
 				<a href="toDashboard"><i class="icon-home"></i><span class="title">Dashboard</span></a>
 			</li>
 			<li>
-				<a href="javascript:;"><i class="icon-share"></i>
-				<span class="title">Proyectos</span>
-				<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li><a href="toCrearConvocatoria"><i class="icon-share"></i>Crear Proyecto</a></li>
-					<li><a href="#"><i class="icon-magnifier"></i>Buscar Proyecto</a></li>
-				</ul>
-			</li>
-			<li>
 				<a href="javascript:;"><i class="icon-basket"></i>
 				<span class="title">Ordenes</span>
 				<span class="arrow "></span>

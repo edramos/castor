@@ -49,7 +49,7 @@
 			</div>
 			<div class="portlet-body form">
 			
-				<form:form id="frmCrearProyecto" method="post" action="ajaxCrearProyecto" class="form-horizontal" commandName="proyecto">
+				<form:form id="frmCrearProyecto" class="form-horizontal" action="crearOrden" method="post" commandName="orden">
 					<div class="form-body">
 						<h4 class="form-section">General</h4>
 						<div class="row">
@@ -71,7 +71,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<select id="sltTipo" class="form-control" name="tipoOT">
+										<select id="sltTipo" class="form-control" name="tipoOrden">
 											<option value="Obra">Obra Civil</option>
 											<option value="Estudio">Trabajos Varios</option>
 										</select>
@@ -81,7 +81,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<select id="sltTipo" class="form-control" name="tipo">
+										<select id="sltTipo" class="form-control" name="tipoTrabajo">
 											<option value="Obra">Obra</option>
 											<option value="Estudio">Estudio</option>
 											<option value="Adecuacion">Adecuacion</option>
@@ -104,7 +104,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtDistrito" class="form-control" placeholder="Longitud" name="lng"/>
+										<input id="txtDistrito" class="form-control" placeholder="Longitud" name="lon"/>
 									</div>
 								</div>
 							</div>
@@ -119,9 +119,9 @@
 								<div class="form-group">
 									<div class="col-md-12">
 										<select id="sltDepartamento" class="form-control" name="departamento">
-											<option>Lima</option>
-											<option>Cajamarca</option>
-											<option>Ancash</option>
+											<option value="Lima">Lima</option>
+											<option value="Cajamarca">Cajamarca</option>
+											<option value="Ancash">Ancash</option>
 										</select>
 									</div>
 								</div>
@@ -135,17 +135,17 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtOferta" class="form-control" placeholder="Oferta" name="oferta"/>
+										<select id="sltDepartamento" class="form-control" name="moneda">
+											<option value="dolar americano">USD</option>
+											<option value="nuevo sol">S/.</option>
+										</select>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<select id="sltDepartamento" class="form-control" name="tipoOferta">
-											<option>USD</option>
-											<option>S/.</option>
-										</select>
+										<input id="txtOferta" class="form-control" placeholder="Oferta" name="oferta"/>
 									</div>
 								</div>
 							</div>
@@ -171,7 +171,7 @@
 						<!-- Seccion subcontratos -->
 						
 						<h4 class="form-section">Subcontratos</h4>
-						<div class="row">
+						<!-- <div class="row">
 							<div class="col-md-12">
 								<div class="table-container">
 									<div class="table-scrollable">
@@ -203,16 +203,14 @@
 													<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" id="txtMontoSC_0" class="form-control" placeholder="Monto USD$/." name="montoSC"/>
 												</td>
 												<td>
-													
-														<div class="form-group">
-															<div class="col-md-12">
-																<select id="sltDepartamento" class="form-control" name="tipoOferta">
-																	<option>USD</option>
-																	<option>S/.</option>
-																</select>
-															</div>
+													<div class="form-group">
+														<div class="col-md-12">
+															<select id="sltDepartamento" class="form-control" name="tipoOferta">
+																<option>USD</option>
+																<option>S/.</option>
+															</select>
 														</div>
-													
+													</div>
 												</td>
 												<td>
 													<div class="margin-bottom-5">
@@ -239,7 +237,7 @@
 											</td>
 											<td></td><td></td>
 										</tr>
-										<!-- <tr>
+										<tr>
 											<td></td>
 											<td></td>
 											<td>SubTotal</td>
@@ -259,18 +257,18 @@
 											<td>TOTAL:</td>
 											<td><input id="txtTotal" class="form-control" placeholder="Total" name="total"/></td>
 											<td></td>
-										</tr> -->
+										</tr>
 										</tbody>	
 										</table>
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						
 						
 						
 						<h4 class="form-section">Cobro Cliente</h4>
-						<div class="row">
+						<!-- <div class="row">
 							<div class="col-md-12">
 								<div class="table-container">
 									<div class="table-scrollable">
@@ -337,12 +335,12 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						
 						
 						
 						<h4 class="form-section">Pago Proveedores</h4>
-						<div class="row">
+						<!-- <div class="row">
 							<div class="col-md-12">
 								<div class="table-container">
 									<div class="table-scrollable">
@@ -433,7 +431,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						
 						
 						 <a id="btnGrabar" class="btn btn-default btn-sm eventBtn" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
@@ -463,6 +461,7 @@
 <script type="text/javascript" src="assets/global/plugins/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js"></script>
 <script type="text/javascript" src="assets/global/plugins/bootstrap-markdown/lib/markdown.js"></script>
+<script type="text/javascript" src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL STYLES -->
 <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
@@ -480,9 +479,16 @@ jQuery(document).ready(function() {
 	//Cargo Selector de Cliente
 	listarSelectorClientes('sltCliente');
 	listarSelectorProveedores('sltProveedor_0');
-	
-	
 	listarSelectorProveedores('sltProveedorSC_0');
+	
+	$("#txtOferta").inputmask("decimal",{
+		radixPoint: ".", 
+        groupSeparator: ",", 
+        digits: 2,
+        autoGroup: true,
+    });
+	
+	
 });
 
 function listarSelectorClientes(nombreSelector){
@@ -736,6 +742,9 @@ function grabarProyecto(){
 		 </td>
 	 </tr>
 </script>
+<script>
+        
+    </script>
 
 </body>
 </html>

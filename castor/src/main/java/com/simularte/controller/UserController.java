@@ -100,7 +100,7 @@ public class UserController {
 		return path;
 	}
 	//EMPRESA NAVIGATION
-	@RequestMapping("empNav")
+	/*@RequestMapping("empNav")
 	public String toCrearProyecto(@RequestParam("url")String url){
 		String path = "";
 		
@@ -113,5 +113,11 @@ public class UserController {
 			break;
 		}
 		return path;
+	}*/
+	@RequestMapping("toCrearOrden")
+	public String toCrearOrden(){
+		return "empresa/crearOrden";
 	}
+	
+	
 }

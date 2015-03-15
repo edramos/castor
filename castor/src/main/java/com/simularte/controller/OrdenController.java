@@ -8,25 +8,28 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.simularte.bean.OrdenBean;
 import com.simularte.model.Orden;
 import com.simularte.service.OrdenService;
 
 
 @Controller
-public class ProyectoController {
+public class OrdenController {
 
 	@Autowired
 	OrdenService ordenserv;
 	
-	@RequestMapping(value = "ajaxCrearProyecto", method = RequestMethod.POST)
-	public String ajaxCrearProyecto(@ModelAttribute("orden") Orden orden, HttpServletRequest req) {
-		int idCliente = Integer.parseInt(req.getParameter("idClient"));
+	@RequestMapping(value = "crearOrden", method = RequestMethod.POST)
+	public String crearOrden(@ModelAttribute("orden") OrdenBean orden, HttpServletRequest req) {
 		
-		if(ordenserv.crearOrden(orden, idCliente, req)){
+		
+		System.out.println(orden.getTipoOrden() + orden.getTipoTrabajo() + ", " + orden.getIdCliente() + "-" + orden.getOferta());
+		
+		/*if(ordenserv.crearOrden(orden, idCliente, req)){
 			
 		}else{
 			
-		}
+		}*/
 		return "redirect:toCrearOrden";
 	}
 	
