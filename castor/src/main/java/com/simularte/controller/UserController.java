@@ -70,7 +70,7 @@ public class UserController {
 		return path;
 	}
 	
-	//NAVIGATION
+	//GENERAL NAVIGATION
 	@RequestMapping("toDashboard")
 	public String toDashboard(HttpServletRequest req){
 		String path = null;
@@ -99,14 +99,19 @@ public class UserController {
 		
 		return path;
 	}
-	
-	@RequestMapping("toCrearProyecto")
-	public String toCrearProyecto(){
-		return "empresa/crearProyecto";
-	}
-	//Se puede crear un evento para que los links directos traigan una variable que nos permita hacer switch para los return a paginas directas
-	@RequestMapping("toProyecto")
-	public String toProyecto(){
-		return "empresa/proyecto";
+	//EMPRESA NAVIGATION
+	@RequestMapping("empNav")
+	public String toCrearProyecto(@RequestParam("url")String url){
+		String path = "";
+		
+		switch(url){
+		case "toCrearOrden":
+			path = "empresa/crearOrden";
+			break;
+		case "toOrden":
+			path = "empresa/orden";
+			break;
+		}
+		return path;
 	}
 }

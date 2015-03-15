@@ -13,14 +13,6 @@
 <!-- BEGIN PAGE STYLES -->
 <link href="assets/admin/pages/css/tasks.css" rel="stylesheet" type="text/css"/>
 <!-- END PAGE STYLES -->
-<!-- BEGIN THEME STYLES -->
-<!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
-<link href="assets/global/css/components-rounded.css" id="style_components" rel="stylesheet" type="text/css"/>
-<link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
-<link href="assets/admin/layout4/css/layout.css" rel="stylesheet" type="text/css"/>
-<link href="assets/admin/layout4/css/themes/light.css" rel="stylesheet" type="text/css" id="style_color"/>
-<link href="assets/admin/layout4/css/custom.css" rel="stylesheet" type="text/css"/>
-<!-- END THEME STYLES -->
 <link rel="shortcut icon" href="favicon.ico"/>
 <style>
 .table-scrollable {
@@ -50,7 +42,7 @@
 					<div class="portlet-title">
 						<div class="caption"><i class="icon-share"></i>Proyectos</div>
 						<div class="actions">
-							<a id="btnCrearProy" href="toCrearProyecto" class="btn btn-default btn-sm eventBtn"><i class="fa fa-plus"></i> Crear Proyecto </a>							
+							<a id="btnCrearProy" href="empNav?url=toCrearOrden" class="btn btn-default btn-sm eventBtn"><i class="fa fa-plus"></i> Crear OT </a>							
 							<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 						</div>
 					</div>

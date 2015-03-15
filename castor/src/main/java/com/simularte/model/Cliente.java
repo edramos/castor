@@ -18,22 +18,22 @@ public class Cliente {
 	private Integer idCliente;
 	
 	//References
-	@ManyToOne 
-	@JoinColumn(name = "idempresa", nullable = false)
+	@ManyToOne @JoinColumn(name = "idempresa", nullable = false)
 	private Empresa clienteEmpresa;
-	
-	@OneToMany(mappedBy = "proyectoCliente")
-	private Collection<Proyecto> proyectosCli;
+	@OneToMany(mappedBy = "ordenCliente")
+	private Collection<Orden> ordenesCli;
 	
 	@Column(length = 180, nullable = true)
 	private String nombre;	
+	@Column(name = "creadopor", nullable = false)
+	private Integer creadoPor;
+	
 	@Column(name = "fechacreacion", nullable = false)
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
-	@Column(name = "creadopor", nullable = false)
-	private Integer creadoPor;
+	
 	
 	public Integer getIdCliente() {
 		return idCliente;
@@ -47,17 +47,23 @@ public class Cliente {
 	public void setClienteEmpresa(Empresa clienteEmpresa) {
 		this.clienteEmpresa = clienteEmpresa;
 	}
-	public Collection<Proyecto> getProyectosCli() {
-		return proyectosCli;
+	public Collection<Orden> getOrdenesCli() {
+		return ordenesCli;
 	}
-	public void setProyectosCli(Collection<Proyecto> proyectosCli) {
-		this.proyectosCli = proyectosCli;
+	public void setOrdenesCli(Collection<Orden> ordenesCli) {
+		this.ordenesCli = ordenesCli;
 	}
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public Integer getCreadoPor() {
+		return creadoPor;
+	}
+	public void setCreadoPor(Integer creadoPor) {
+		this.creadoPor = creadoPor;
 	}
 	public Timestamp getFechaCreacion() {
 		return fechaCreacion;
@@ -71,13 +77,4 @@ public class Cliente {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public Integer getCreadoPor() {
-		return creadoPor;
-	}
-	public void setCreadoPor(Integer creadoPor) {
-		this.creadoPor = creadoPor;
-	}
-	
-	
-	
 }

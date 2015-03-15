@@ -49,7 +49,7 @@ public class ClienteServiceImpl implements ClienteService {
 	public boolean modificarCliente(Cliente cliente, HttpServletRequest req) {
 		boolean result = false;
 		try{
-			HttpSession session = req.getSession();
+			//HttpSession session = req.getSession();
 			//Empresa
 			Cliente clienteX = em.find(Cliente.class, cliente.getIdCliente());
 			Cliente clienteY = em.merge(clienteX);
@@ -67,7 +67,7 @@ public class ClienteServiceImpl implements ClienteService {
 	public boolean eliminarCliente(Integer idCliente, HttpServletRequest req) {
 		boolean result = false;
 		try{
-			HttpSession session = req.getSession();
+			//HttpSession session = req.getSession();
 			//Empresa
 			Cliente clienteX = em.find(Cliente.class, idCliente);
 			Cliente clienteY = em.merge(clienteX);
@@ -86,6 +86,7 @@ public class ClienteServiceImpl implements ClienteService {
 	public List<ClienteBean> listarClientes(HttpServletRequest req) {
 		List<Cliente> lc = new ArrayList<Cliente>();
 		List<ClienteBean> lcb = new ArrayList<ClienteBean>();
+		
 		try{
 			HttpSession session = req.getSession();
 			Query query = null;

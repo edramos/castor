@@ -17,27 +17,26 @@ public class Proveedor {
 	@Id @GeneratedValue @Column(name = "idproveedor")	
 	private Integer idProveedor;
 	
-	@ManyToOne
-	@JoinColumn(name = "idempresa", nullable = false)
+	//References
+	@OneToMany(mappedBy = "pagoProveedor")
+	private Collection<Pago> pagosProv;
+	@OneToMany(mappedBy = "proveedorSubcontrato")
+	private Collection<Subcrontrato> subcontratosProveedor;
+	@ManyToOne @JoinColumn(name = "idempresa", nullable = false)
 	private Empresa proveedorEmpresa;
 	
-	//References
-	@OneToMany(mappedBy = "proyectoDetProveedor")
-	private Collection<ProyectoDetalle> proyectosDetalleProv;
 	
 	@Column(length = 180, nullable = true)
 	private String nombre;
+	@Column(name = "creadopor", nullable = false)
+	private Integer creadoPor;
 	
 	@Column(name = "fechacreacion", nullable = false)
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
-	@Column(name = "creadopor", nullable = false)
-	private Integer creadoPor;
 	
-	@OneToMany(mappedBy = "pagoProveedor")
-	private Collection<Pago> pagosProv;
 	
 	public Integer getIdProveedor() {
 		return idProveedor;
@@ -45,24 +44,36 @@ public class Proveedor {
 	public void setIdProveedor(Integer idProveedor) {
 		this.idProveedor = idProveedor;
 	}
+	public Collection<Subcrontrato> getSubcontratosProveedor() {
+		return subcontratosProveedor;
+	}
+	public void setSubcontratosProveedor(
+			Collection<Subcrontrato> subcontratosProveedor) {
+		this.subcontratosProveedor = subcontratosProveedor;
+	}
 	public Empresa getProveedorEmpresa() {
 		return proveedorEmpresa;
 	}
 	public void setProveedorEmpresa(Empresa proveedorEmpresa) {
 		this.proveedorEmpresa = proveedorEmpresa;
 	}
-	public Collection<ProyectoDetalle> getProyectosDetalleProv() {
-		return proyectosDetalleProv;
+	public Collection<Pago> getPagosProv() {
+		return pagosProv;
 	}
-	public void setProyectosDetalleProv(
-			Collection<ProyectoDetalle> proyectosDetalleProv) {
-		this.proyectosDetalleProv = proyectosDetalleProv;
+	public void setPagosProv(Collection<Pago> pagosProv) {
+		this.pagosProv = pagosProv;
 	}
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public Integer getCreadoPor() {
+		return creadoPor;
+	}
+	public void setCreadoPor(Integer creadoPor) {
+		this.creadoPor = creadoPor;
 	}
 	public Timestamp getFechaCreacion() {
 		return fechaCreacion;
@@ -75,18 +86,5 @@ public class Proveedor {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-	public Integer getCreadoPor() {
-		return creadoPor;
-	}
-	public void setCreadoPor(Integer creadoPor) {
-		this.creadoPor = creadoPor;
-	}
-	public Collection<Pago> getPagosProv() {
-		return pagosProv;
-	}
-	public void setPagosProv(Collection<Pago> pagosProv) {
-		this.pagosProv = pagosProv;
-	}
-	
+	}	
 }

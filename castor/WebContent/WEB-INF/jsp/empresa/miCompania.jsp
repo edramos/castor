@@ -7,14 +7,6 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link href="assets/global/plugins/icheck/skins/all.css" rel="stylesheet"/>
 <!-- END PAGE LEVEL STYLES -->
-<!-- BEGIN THEME STYLES -->
-<!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
-<link href="assets/global/css/components-rounded.css" id="style_components" rel="stylesheet" type="text/css"/>
-<link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
-<link href="assets/admin/layout4/css/layout.css" rel="stylesheet" type="text/css"/>
-<link href="assets/admin/layout4/css/themes/light.css" rel="stylesheet" type="text/css" id="style_color"/>
-<link href="assets/admin/layout4/css/custom.css" rel="stylesheet" type="text/css"/>
-<!-- END THEME STYLES -->
 <style>
 #map-container img { 
 	max-width: none;

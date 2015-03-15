@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Castor | Crear Proyecto</title>
+<title>Castor | Crear Orden</title>
 <jsp:include page="../comps/headMandatory.jsp"/>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
@@ -19,6 +19,9 @@
 <style>
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th{
 	border-top: 0px solid #DDD;
+}
+.well {
+	padding: 0px;margin-bottom: 0px;
 }
 </style>
 </head>
@@ -39,7 +42,7 @@
 	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption"><i class="icon-share"></i>Crear Proyecto</div>
+				<div class="caption"><i class="icon-share"></i>Crear Orden de Trabajo</div>
 				<div class="actions">							
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>
@@ -53,7 +56,25 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtNombre" class="form-control" placeholder="Nombre Proyecto" name="nombre"/>
+										<input id="txtNombre" class="form-control" placeholder="Nombre Orden" name="nombre"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="col-md-12">
+										<select id="sltCliente" class="form-control" name="idCliente">
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="col-md-12">
+										<select id="sltTipo" class="form-control" name="tipoOT">
+											<option value="Obra">Obra Civil</option>
+											<option value="Estudio">Trabajos Varios</option>
+										</select>
 									</div>
 								</div>
 							</div>
@@ -70,47 +91,31 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<div class="col-md-12">
-										<select id="sltCliente" class="form-control" name="idCliente">
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<!-- <div class="form-group">
-									<div class="col-md-12">
-										<input id="txtOferta" class="form-control" placeholder="Oferta USD $/."/>
-									</div>
-								</div> -->
-							</div>
 						</div>
 						
 						<div class="row">
-							<div class="col-md-6">
+							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtDireccion" class="form-control" placeholder="Direccion" name="direccion"/>
+										<input id="txtDireccion" class="form-control" placeholder="Latitud" name="lat"/>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtDistrito" class="form-control" placeholder="Distrito" name="distrito"/>
+										<input id="txtDistrito" class="form-control" placeholder="Longitud" name="lng"/>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
 										<input id="txtCiudad" class="form-control" placeholder="Ciudad" name="ciudad"/>
 									</div>
 								</div>
 							</div>							
-
-							<div class="col-md-2">
+							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
 										<select id="sltDepartamento" class="form-control" name="departamento">
@@ -123,25 +128,35 @@
 							</div>
 						</div>
 						
-						<!-- Seccion subcontratos -->
 						
-						<h4 class="form-section">Subcontratos</h4>
+						
+						<h4 class="form-section">Informacion Financiera</h4>
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtOferta" class="form-control" placeholder="Oferta USD $/." name="oferta"/>
+										<input id="txtOferta" class="form-control" placeholder="Oferta" name="oferta"/>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="col-md-12">
+										<select id="sltDepartamento" class="form-control" name="tipoOferta">
+											<option>USD</option>
+											<option>S/.</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
 										<input id="txtEficiencia" class="form-control" placeholder="% Eficiencia" name="eficiencia"/>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
 										<input id="txtUtilidadBruta" class="form-control" placeholder="Utilidad Bruta" name="utilidadBruta"/>
@@ -151,6 +166,11 @@
 						</div>
 						
 						
+						
+						
+						<!-- Seccion subcontratos -->
+						
+						<h4 class="form-section">Subcontratos</h4>
 						<div class="row">
 							<div class="col-md-12">
 								<div class="table-container">
@@ -161,6 +181,7 @@
 												<th width="20%">Nombre</th>
 												<th width="20%">Tipo</th>
 												<th width="20%">Monto</th>
+												<th width="20%">Moneda</th>
 												<th width="10%">Acciones</th>
 											</tr>
 											<tr role="row" class="filter" id="fila_SC_0">
@@ -182,6 +203,18 @@
 													<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" id="txtMontoSC_0" class="form-control" placeholder="Monto USD$/." name="montoSC"/>
 												</td>
 												<td>
+													
+														<div class="form-group">
+															<div class="col-md-12">
+																<select id="sltDepartamento" class="form-control" name="tipoOferta">
+																	<option>USD</option>
+																	<option>S/.</option>
+																</select>
+															</div>
+														</div>
+													
+												</td>
+												<td>
 													<div class="margin-bottom-5">
 														<span class="btn btn-sm green filter-submit margin-bottom" onclick="agregarNuevaFilaSubcontratos();"><i class="fa fa-plus"></i></span>
 														<span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
@@ -191,29 +224,42 @@
 										</thead>
 										
 										<tbody id="vistaTablaSubcontratosProveedores">
-										
 										</tbody>
 										
 										
 										<tbody>
-											<tr>
-												<td></td>
-												<td></td>
-												<td>SubTotal</td>
-												<td><input id="txtSubTotal" class="form-control" placeholder="SubTotal" name="subTotal"/></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td></td>
-												<td>GG</td>
-												<td><input id="txtGastosGenerales" onchange="recalcularTotalesSubcontratos();" class="form-control" placeholder="Gastos Generales" name="gastosGenerales"/></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td></td>
-												<td>TOTAL:</td>
-												<td><input id="txtTotal" class="form-control" placeholder="Total" name="total"/></td>
-											</tr>
+										<tr>
+											<td></td><td></td>
+											<td>
+												<div class="well" style="text-align: right;">
+													<strong>SubTotal:</strong> 500,000.00<br/>
+													<strong>G.G.:</strong> 500,000.00<br/>
+													<strong>Total:</strong> 500,000.00
+												</div>
+											</td>
+											<td></td><td></td>
+										</tr>
+										<!-- <tr>
+											<td></td>
+											<td></td>
+											<td>SubTotal</td>
+											<td><input id="txtSubTotal" class="form-control" placeholder="SubTotal" name="subTotal"/></td>
+											<td></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td></td>
+											<td>GG</td>
+											<td><input id="txtGastosGenerales" onchange="recalcularTotalesSubcontratos();" class="form-control" placeholder="Gastos Generales" name="gastosGenerales"/></td>
+											<td></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td></td>
+											<td>TOTAL:</td>
+											<td><input id="txtTotal" class="form-control" placeholder="Total" name="total"/></td>
+											<td></td>
+										</tr> -->
 										</tbody>	
 										</table>
 									</div>

@@ -18,18 +18,14 @@ public class Empresa {
 	//References	
 	@OneToMany(mappedBy = "usuarioEmpresa")
 	private Collection<Usuario> usuariosEmp;
-	
 	@OneToMany(mappedBy = "oficinaEmpresa")
 	private Collection<Oficina> oficinasEmp;
-	
 	@OneToMany(mappedBy = "clienteEmpresa")
 	private Collection<Cliente> clientesEmp;
-	
 	@OneToMany(mappedBy = "proveedorEmpresa")
 	private Collection<Proveedor> proveedoresEmp;
-	
-	@OneToMany(mappedBy = "proyectoEmpresa")
-	private Collection<Proyecto> proyectosEmp;
+	@OneToMany(mappedBy = "ordenEmpresa")
+	private Collection<Orden> ordenesEmp;
 	
 	@Column(length = 90, nullable = true)
 	private String nombre;
@@ -44,6 +40,8 @@ public class Empresa {
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
 	private String estado;
+	
+	
 	
 	public Integer getIdEmpresa() {
 		return idEmpresa;
@@ -75,11 +73,11 @@ public class Empresa {
 	public void setProveedoresEmp(Collection<Proveedor> proveedoresEmp) {
 		this.proveedoresEmp = proveedoresEmp;
 	}
-	public Collection<Proyecto> getProyectosEmp() {
-		return proyectosEmp;
+	public Collection<Orden> getOrdenesEmp() {
+		return ordenesEmp;
 	}
-	public void setProyectosEmp(Collection<Proyecto> proyectosEmp) {
-		this.proyectosEmp = proyectosEmp;
+	public void setOrdenesEmp(Collection<Orden> ordenesEmp) {
+		this.ordenesEmp = ordenesEmp;
 	}
 	public String getNombre() {
 		return nombre;
@@ -117,6 +115,4 @@ public class Empresa {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
-	
 }
