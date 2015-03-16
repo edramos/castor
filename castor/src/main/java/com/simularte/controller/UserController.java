@@ -118,6 +118,12 @@ public class UserController {
 	public String toCrearOrden(){
 		return "empresa/crearOrden";
 	}
+	@RequestMapping("toBuscarOrden")
+	public String toBuscarOrden(){
+		return "empresa/buscarOrden";
+	}
+	
+	
 	
 	
 }

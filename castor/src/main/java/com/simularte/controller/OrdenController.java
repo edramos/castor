@@ -21,14 +21,15 @@ public class OrdenController {
 	
 	@RequestMapping(value = "crearOrden", method = RequestMethod.POST)
 	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean, @RequestParam("subcontratos") String[] subCont, HttpServletRequest req) {		
+		String path = "";
 		int idCliente = ordenBean.getIdCliente();
 		
 		if(ordenserv.crearOrden(ordenBean, idCliente, subCont, req)){
-			System.out.println("Grabe!");
+			path = "empresa/orden";
 		}else{
 			System.out.println("NO Grabe!");
 		}
-		return "redirect:toCrearOrden";
+		return path;
 	}
 	
 }
