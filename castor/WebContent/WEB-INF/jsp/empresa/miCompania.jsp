@@ -140,6 +140,23 @@ jQuery(document).ready(function() {
 		case "btnModificarOficina":
 			$('#frmModificarOficina').submit();
 			break;
+		//EMPLEADO
+		case "btnIrCrearEmpleado":
+			$('#empleadoInit').hide();
+			$('#empleadoCrear').show();
+			break;
+		case "btnCancelarEmpleado":
+			$('#empleadoCrear').hide();
+			$('#empleadoModificar').hide();
+			$('#empleadoInit').show();
+			break;
+		case "btnCrearEmpleado":
+			$('#frmCrearEmpleado').submit();
+			break;
+		case "btnModificarEmpleado":
+			$('#frmModificarEmpleado').submit();
+			break;	
+			
 		//CLIENTE
 		case "btnIrCrearCliente":
 			$('#clienteInit').hide();
@@ -179,6 +196,7 @@ jQuery(document).ready(function() {
 	listarClientes();
 	listarProveedores();
 	listarOficinas();
+	listarEmpleados();
 	
 	$('a[href="#tab_1_1_2"]').on('shown.bs.tab', function(e){
 		if(flag == 0){
@@ -286,6 +304,69 @@ $(document).ready(function(){
 			modificarOficina();
 		}
 	});
+	
+	
+	//EMPLEADO
+	$("#frmCrearEmpleado").validate({
+		rules: {
+			primerNombre: {
+				required: true,
+			}, 
+			segundoNombre: {
+				required: true,
+			}, 
+			apellidoPaterno: {
+				required: true,
+			}, 
+			apellidoMaterno: {
+				required: true,
+			}, 
+			rol: {
+				required: true,
+			}
+		},
+		messages: {
+			primerNombre: "*",
+			segundoNombre: "*",
+			apellidoPaterno: "*",
+			apellidoMaterno: "*",
+			rol: "*"
+		},
+		submitHandler: function(form){
+			crearEmpleado();
+		}
+	});
+	
+	$("#frmModificarEmpleado").validate({
+		rules: {
+			primerNombre: {
+				required: true,
+			}, 
+			segundoNombre: {
+				required: true,
+			}, 
+			apellidoPaterno: {
+				required: true,
+			}, 
+			apellidoMaterno: {
+				required: true,
+			}, 
+			rol: {
+				required: true,
+			}                                   
+		},
+		messages: {
+			primerNombre: "*",
+			segundoNombre: "*",
+			apellidoPaterno: "*",
+			apellidoMaterno: "*",
+			rol: "*"
+		},
+		submitHandler: function(form){
+			modificarEmpleado();
+		}
+	});
+	
 });	
 </script>
 </body>

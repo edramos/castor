@@ -1,71 +1,57 @@
-package com.simularte.model;
+package com.simularte.bean;
 
 import java.sql.Timestamp;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+public class EmpleadoBean {
 
-@Entity
-public class Perfil {
-
-	@Id @GeneratedValue @Column(name = "idperfil")
+	private Integer idUsuario;
+	private Integer idEmpresa;
 	private Integer idPerfil;
+	private String email;
 	
-	//References	
-	@OneToOne(cascade = CascadeType.ALL) 
-	@JoinColumn(name = "idusuario", nullable = false)
-	private Usuario perfilUsuario;
-	
-	@Column(name = "primernombre", length = 90, nullable = true)
+	//PERFIL
 	private String primerNombre;
-	@Column(name = "segundonombre", length = 90, nullable = true)
 	private String segundoNombre;
-	@Column(name = "apellidopaterno", length = 90, nullable = true)
 	private String apellidoPaterno;
-	@Column(name = "apellidomaterno", length = 90, nullable = true)
 	private String apellidoMaterno;
-	@Column(length = 255, nullable = true)
-	private String direccion;
-	@Column(length = 60, nullable = true)
-	private String distrito;
-	@Column(length = 60, nullable = true)
-	private String ciudad;
-	@Column(length = 60, nullable = true)
-	private String departamento;
-	@Column(name = "telefonocasa", length = 30, nullable = true)
-	private String telefonoCasa;
-	@Column(name = "telefonooficina", length = 30, nullable = true)
-	private String telefonoOficina;
-	@Column(name = "celularprimario", length = 30, nullable = true)
-	private String celularPrimario;
-	@Column(name = "celularsecundario", length = 30, nullable = true)
-	private String celularSecundario;
-	@Column(length = 30, nullable = false)
-	private String rol;
-	@Column(length = 30, nullable = true)
-	private String tipo;
 	
-	@Column(name = "fechacreacion", nullable = false)
+	private String direccion;
+	private String distrito;
+	private String ciudad;
+	private String departamento;
+	private String telefonoCasa;
+	private String telefonoOficina;
+	private String celularPrimario;
+	private String celularSecundario;
+	
+	private String rol;
+	private String tipo;
 	private Timestamp fechaCreacion;
-	@Column(length = 30, nullable = false)
 	private String estado;
 	
+	public Integer getIdUsuario() {
+		return idUsuario;
+	}
+	public void setIdUsuario(Integer idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+	public Integer getIdEmpresa() {
+		return idEmpresa;
+	}
+	public void setIdEmpresa(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
 	public Integer getIdPerfil() {
 		return idPerfil;
 	}
 	public void setIdPerfil(Integer idPerfil) {
 		this.idPerfil = idPerfil;
 	}
-	public Usuario getPerfilUsuario() {
-		return perfilUsuario;
+	public String getEmail() {
+		return email;
 	}
-	public void setPerfilUsuario(Usuario perfilUsuario) {
-		this.perfilUsuario = perfilUsuario;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPrimerNombre() {
 		return primerNombre;
@@ -163,5 +149,4 @@ public class Perfil {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
 }
