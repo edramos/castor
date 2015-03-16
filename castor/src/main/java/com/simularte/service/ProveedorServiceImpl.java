@@ -48,8 +48,8 @@ public class ProveedorServiceImpl implements ProveedorService {
 	@Transactional
 	public boolean modificarProveedor(Proveedor proveedor, HttpServletRequest req) {
 		boolean result = false;
+		
 		try{
-			HttpSession session = req.getSession();
 			//Empresa
 			Proveedor proveedorX = em.find(Proveedor.class, proveedor.getIdProveedor());
 			Proveedor proveedorY = em.merge(proveedorX);
@@ -66,8 +66,8 @@ public class ProveedorServiceImpl implements ProveedorService {
 	@Transactional
 	public boolean eliminarProveedor(Integer idProveedor, HttpServletRequest req) {
 		boolean result = false;
+		
 		try{
-			HttpSession session = req.getSession();
 			//Empresa
 			Proveedor proveedorX = em.find(Proveedor.class, idProveedor);
 			Proveedor proveedorY = em.merge(proveedorX);

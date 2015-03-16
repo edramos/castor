@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.simularte.bean.OrdenBean;
-import com.simularte.model.Orden;
 import com.simularte.service.OrdenService;
 
 
@@ -20,16 +20,14 @@ public class OrdenController {
 	OrdenService ordenserv;
 	
 	@RequestMapping(value = "crearOrden", method = RequestMethod.POST)
-	public String crearOrden(@ModelAttribute("orden") OrdenBean orden, HttpServletRequest req) {
+	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean, @RequestParam("subcontratos") String[] subCont, HttpServletRequest req) {		
+		int idCliente = ordenBean.getIdCliente();
 		
-		
-		System.out.println(orden.getTipoOrden() + orden.getTipoTrabajo() + ", " + orden.getIdCliente() + "-" + orden.getOferta());
-		
-		/*if(ordenserv.crearOrden(orden, idCliente, req)){
-			
+		if(ordenserv.crearOrden(ordenBean, idCliente, subCont, req)){
+			System.out.println("Grabe!");
 		}else{
-			
-		}*/
+			System.out.println("NO Grabe!");
+		}
 		return "redirect:toCrearOrden";
 	}
 	

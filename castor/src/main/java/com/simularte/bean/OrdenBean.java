@@ -19,15 +19,16 @@ public class OrdenBean {
 	private BigDecimal oferta;
 	private String moneda;
 	
-	private float eficiencia;
+	private double eficiencia;
 	private BigDecimal utilidadBruta;
 	private BigDecimal subTotal;
 	private BigDecimal gastosGenerales;
 	private BigDecimal total;
 	
+		
 	private Integer creadoPor;
 	private Timestamp fechaCreacion;	
-	private String estado;
+	private String estado;		
 	
 	
 	
@@ -109,10 +110,10 @@ public class OrdenBean {
 	public void setMoneda(String moneda) {
 		this.moneda = moneda;
 	}
-	public float getEficiencia() {
+	public double getEficiencia() {
 		return eficiencia;
 	}
-	public void setEficiencia(float eficiencia) {
+	public void setEficiencia(double eficiencia) {
 		this.eficiencia = eficiencia;
 	}
 	public BigDecimal getUtilidadBruta() {

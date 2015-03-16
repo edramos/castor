@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Subcrontrato {
+public class Subcontrato {
 
 	@Id @GeneratedValue @Column(name = "idsubcontrato")
 	private Integer idSubcontrato;

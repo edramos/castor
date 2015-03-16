@@ -21,7 +21,7 @@ public class Proveedor {
 	@OneToMany(mappedBy = "pagoProveedor")
 	private Collection<Pago> pagosProv;
 	@OneToMany(mappedBy = "proveedorSubcontrato")
-	private Collection<Subcrontrato> subcontratosProveedor;
+	private Collection<Subcontrato> subcontratosProveedor;
 	@ManyToOne @JoinColumn(name = "idempresa", nullable = false)
 	private Empresa proveedorEmpresa;
 	
@@ -44,11 +44,11 @@ public class Proveedor {
 	public void setIdProveedor(Integer idProveedor) {
 		this.idProveedor = idProveedor;
 	}
-	public Collection<Subcrontrato> getSubcontratosProveedor() {
+	public Collection<Subcontrato> getSubcontratosProveedor() {
 		return subcontratosProveedor;
 	}
 	public void setSubcontratosProveedor(
-			Collection<Subcrontrato> subcontratosProveedor) {
+			Collection<Subcontrato> subcontratosProveedor) {
 		this.subcontratosProveedor = subcontratosProveedor;
 	}
 	public Empresa getProveedorEmpresa() {

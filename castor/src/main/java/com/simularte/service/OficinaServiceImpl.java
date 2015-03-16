@@ -61,8 +61,8 @@ public class OficinaServiceImpl implements OficinaService {
 	@Transactional
 	public boolean modificarOficina(OficinaBean oficinab, HttpServletRequest req) {
 		boolean result = false;
+		
 		try{
-			HttpSession session = req.getSession();
 			//Empresa
 			Oficina OficinaX = em.find(Oficina.class, oficinab.getIdOficina());
 			Oficina OficinaY = em.merge(OficinaX);
@@ -90,8 +90,8 @@ public class OficinaServiceImpl implements OficinaService {
 	@Transactional
 	public boolean eliminarOficina(Integer idOficina, HttpServletRequest req) {
 		boolean result = false;
+		
 		try{
-			HttpSession session = req.getSession();
 			//Empresa
 			Oficina OficinaX = em.find(Oficina.class, idOficina);
 			Oficina OficinaY = em.merge(OficinaX);

@@ -49,7 +49,7 @@
 			</div>
 			<div class="portlet-body form">
 			
-				<form:form id="frmCrearProyecto" class="form-horizontal" action="crearOrden" method="post" commandName="orden">
+				<form:form id="frmCrearOrden" class="form-horizontal" action="crearOrden" method="post" commandName="ordenBean">
 					<div class="form-body">
 						<h4 class="form-section">General</h4>
 						<div class="row">
@@ -72,8 +72,8 @@
 								<div class="form-group">
 									<div class="col-md-12">
 										<select id="sltTipo" class="form-control" name="tipoOrden">
-											<option value="Obra">Obra Civil</option>
-											<option value="Estudio">Trabajos Varios</option>
+											<option value="OC">Obra Civil</option>
+											<option value="TV">Trabajos Varios</option>
 										</select>
 									</div>
 								</div>
@@ -97,14 +97,14 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtDireccion" class="form-control" placeholder="Latitud" name="lat"/>
+										<input id="txtLat" class="form-control" placeholder="Latitud" name="lat"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtDistrito" class="form-control" placeholder="Longitud" name="lon"/>
+										<input id="txtLon" class="form-control" placeholder="Longitud" name="lon"/>
 									</div>
 								</div>
 							</div>
@@ -129,15 +129,16 @@
 						</div>
 						
 						
+						<!-- INFORMACION FINANCIERA -->
 						
 						<h4 class="form-section">Informacion Financiera</h4>
 						<div class="row">
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<select id="sltDepartamento" class="form-control" name="moneda">
-											<option value="dolar americano">USD</option>
-											<option value="nuevo sol">S/.</option>
+										<select id="sltClienteMoneda" class="form-control" name="moneda">
+											<option value="dolar americano">USD ($/.)</option>
+											<option value="nuevo sol">PEN (S/.)</option>
 										</select>
 									</div>
 								</div>
@@ -145,33 +146,31 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtOferta" class="form-control" placeholder="Oferta" name="oferta"/>
+										<input id="txtOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Oferta" name="oferta"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtEficiencia" class="form-control" placeholder="% Eficiencia" name="eficiencia"/>
+										<input id="txtEficiencia" class="form-control" style="text-align:right;" disabled="disabled" placeholder="Eficiencia %" name="eficiencia"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input id="txtUtilidadBruta" class="form-control" placeholder="Utilidad Bruta" name="utilidadBruta"/>
+										<input id="txtUtilidadBruta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Utilidad Bruta" name="utilidadBruta"/>
 									</div>
 								</div>
 							</div>
 						</div>
 						
 						
-						
-						
-						<!-- Seccion subcontratos -->
+						<!-- SUBCONTRATOS -->
 						
 						<h4 class="form-section">Subcontratos</h4>
-						<!-- <div class="row">
+						<div class="row">
 							<div class="col-md-12">
 								<div class="table-container">
 									<div class="table-scrollable">
@@ -180,8 +179,8 @@
 											<tr role="row" class="heading">
 												<th width="20%">Nombre</th>
 												<th width="20%">Tipo</th>
-												<th width="20%">Monto</th>
 												<th width="20%">Moneda</th>
+												<th width="20%">Monto</th>
 												<th width="10%">Acciones</th>
 											</tr>
 											<tr role="row" class="filter" id="fila_SC_0">
@@ -191,7 +190,7 @@
 													</select>
 												</td>
 												<td>
-													<select id="sltTipoSC_0" class="form-control" name="tipoSC">
+													<select id="sltTipoTrabajoSC_0" class="form-control" name="tipoTrabajoSC">
 														<option>Obra</option>
 														<option>Estudio</option>
 														<option>Adecuacion</option>
@@ -200,22 +199,23 @@
 													</select>
 												</td>
 												<td>
-													<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" id="txtMontoSC_0" class="form-control" placeholder="Monto USD$/." name="montoSC"/>
-												</td>
-												<td>
 													<div class="form-group">
 														<div class="col-md-12">
-															<select id="sltDepartamento" class="form-control" name="tipoOferta">
-																<option>USD</option>
-																<option>S/.</option>
+															<select id="sltMonedaSC_0" class="form-control" name="monedaSC">
+																<option value="dolar americano">USD ($/.)</option>
+																<option value="nuevo sol">PEN (S/.)</option>
 															</select>
 														</div>
 													</div>
 												</td>
 												<td>
+													<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" id="txtMontoSC_0" class="form-control" placeholder="Monto" name="montoSC"/>
+												</td>
+												
+												<td>
 													<div class="margin-bottom-5">
 														<span class="btn btn-sm green filter-submit margin-bottom" onclick="agregarNuevaFilaSubcontratos();"><i class="fa fa-plus"></i></span>
-														<span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
+														<!-- <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span> -->
 													</div>
 												</td>
 											</tr>
@@ -227,43 +227,43 @@
 										
 										<tbody>
 										<tr>
-											<td></td><td></td>
+											<td></td><td></td><td></td>
 											<td>
 												<div class="well" style="text-align: right;">
-													<strong>SubTotal:</strong> 500,000.00<br/>
-													<strong>G.G.:</strong> 500,000.00<br/>
-													<strong>Total:</strong> 500,000.00
+													Subtotal: <input size="12" id="txtSubTotal" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" disabled="disabled" placeholder="SubTotal" name="subTotal"/><br/>
+													G.G.: <input size="12" id="txtGastosGenerales" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" onchange="recalcularTotalesSubcontratos();" placeholder="Gastos Generales" name="gastosGenerales"/><br/>
+													<strong>Total: </strong><input size="12" id="txtTotal" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" disabled="disabled" placeholder="Total" name="total"/>
 												</div>
 											</td>
-											<td></td><td></td>
+											<td></td>
 										</tr>
-										<tr>
+										<!-- <tr>
 											<td></td>
 											<td></td>
 											<td>SubTotal</td>
-											<td><input id="txtSubTotal" class="form-control" placeholder="SubTotal" name="subTotal"/></td>
+											<td><input data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" id="txtSubTotal" disabled="disabled" class="form-control" placeholder="SubTotal" name="subTotal"/></td>
 											<td></td>
-										</tr>
-										<tr>
+										</tr> -->
+										<!-- <tr>
 											<td></td>
 											<td></td>
 											<td>GG</td>
 											<td><input id="txtGastosGenerales" onchange="recalcularTotalesSubcontratos();" class="form-control" placeholder="Gastos Generales" name="gastosGenerales"/></td>
 											<td></td>
-										</tr>
-										<tr>
+										</tr> -->
+										<!-- <tr>
 											<td></td>
 											<td></td>
 											<td>TOTAL:</td>
-											<td><input id="txtTotal" class="form-control" placeholder="Total" name="total"/></td>
+											<td><input data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" id="txtTotal" disabled="disabled" class="form-control" placeholder="Total" name="total"/></td>
 											<td></td>
-										</tr>
+										</tr> -->
 										</tbody>	
 										</table>
 									</div>
 								</div>
 							</div>
-						</div> -->
+						</div>
 						
 						
 						
@@ -436,6 +436,7 @@
 						
 						 <a id="btnGrabar" class="btn btn-default btn-sm eventBtn" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
 					</div>
+					<input id="hdnSubcontratos" type="hidden" name="subcontratos" value=""/>
 				</form:form>
 			
 			</div>
@@ -481,14 +482,14 @@ jQuery(document).ready(function() {
 	listarSelectorProveedores('sltProveedor_0');
 	listarSelectorProveedores('sltProveedorSC_0');
 	
-	$("#txtOferta").inputmask("decimal",{
+	$("#txtMontoSC_0").inputmask("decimal",{
 		radixPoint: ".", 
         groupSeparator: ",", 
         digits: 2,
         autoGroup: true,
     });
-	
-	
+    
+    $(":input").inputmask();
 });
 
 function listarSelectorClientes(nombreSelector){
@@ -526,14 +527,14 @@ function listarSelectorProveedores(nombreSelector){
 	 			var template = Handlebars.compile(source);
 	 			html += template(proveedor);	 			
  			});		
- 			$("#"+nombreSelector).html(html);	        
+ 			$("#" + nombreSelector).html(html);	        
  		},
  		complete: function() {	 			
  			
   		}
  	});
 }
-var idFila=0;
+var idFila = 0;
 
 function agregarNuevaFilaSubcontratos(){
 	idFila++;
@@ -544,7 +545,15 @@ function agregarNuevaFilaSubcontratos(){
 	var template = Handlebars.compile(source);
 	html += template(entidadFila);
 	$("#vistaTablaSubcontratosProveedores").append(html);
-	listarSelectorProveedores('sltProveedorSC_'+idFila);
+	
+	$("#txtMontoSC_" + idFila).inputmask("decimal",{
+		radixPoint: ".", 
+        groupSeparator: ",", 
+        digits: 2,
+        autoGroup: true,
+    });
+	
+	listarSelectorProveedores('sltProveedorSC_' + idFila);
 	recalcularTotalesSubcontratos();
 	
 	//
@@ -568,36 +577,50 @@ function recalcularTotalesSubcontratos(){
 	var total = 0;
 	
 	arregloMontoSC = document.getElementsByName('montoSC');
-		for (var x=0; x < arregloMontoSC.length; x++) {
-			if(arregloMontoSC[x].value==''){
-				
-			}else{
-				subtotal = parseFloat(arregloMontoSC[x].value) + subtotal;	
-			}
-	  	}
+	
+	for(var x = 0; x < arregloMontoSC.length; x++){
+		//alert("montos: " + arregloMontoSC[x].value);
+		if(arregloMontoSC[x].value == ''){
+			;
+		}else{
+			//subtotal = parseFloat(arregloMontoSC[x].value) + subtotal;
+			//alert('monto ' + x + ': ' + arregloMontoSC[x].value);
+			var currency = Number(arregloMontoSC[x].value.replace(/[^0-9\.]+/g,""));
+			//alert('currency: ' + currency);
+			subtotal += currency;
+			//alert("subtotal: " + subtotal);
+		}
+  	}
+	
 	
 	if($('#txtGastosGenerales').val()==''){
 		gastosg = 0;
-		$('#txtGastosGenerales').val(gastosg)
+		$('#txtGastosGenerales').val(gastosg);
 	}else{
-		gastosg = $('#txtGastosGenerales').val();
+		//gastosg = ;
+		var currencyGG = Number($('#txtGastosGenerales').val().replace(/[^0-9\.]+/g,""));
+		gastosg = currencyGG;
 	}
 	
-	total = subtotal + parseFloat(gastosg);
+	total = subtotal + gastosg;
 	$('#txtSubTotal').val(subtotal);
 	$('#txtTotal').val(total);
+	
+	$('#spnSubtotal').val(subtotal);
 	
 	//
 	var eficiencia = 0;
 	var oferta = 0; 
 	var utilidadBruta = 0;
+	
 	if($('#txtOferta').val()==''){
 		oferta = 0;
 	}else{
-		oferta = $('#txtOferta').val();
+		oferta = Number($('#txtOferta').val().replace(/[^0-9\.]+/g,""));
 	}
-	eficiencia = total / oferta;
-	$('#txtEficiencia').val((eficiencia*100).toFixed(2));
+	
+	eficiencia =  total / oferta;
+	$('#txtEficiencia').val((eficiencia*100).toFixed(1) + "%");
 	
 	utilidadBruta = oferta - total;
 	$('#txtUtilidadBruta').val(utilidadBruta);
@@ -631,9 +654,31 @@ function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
 	var montoParcial = (monto*(porcentaje/100));
 	$('#txtPagoParcial_pago3_'+idTempFila).val(montoParcial);
 }
-
+/*GRABAR ORDEN DE TRABAJO*/
 function grabarProyecto(){
-	$('#frmCrearProyecto').submit();
+	if($('#txtEficiencia').val() == ""){
+		$('#txtEficiencia').val(0);
+	}
+	
+	alert('idFila: ' + idFila);
+		
+	var subcontratos = [];
+	
+	for(x = 0; x <= idFila; x++){
+		//var subc = {idProveedorSC:$('#sltProveedorSC_' + x).val(), tipoTrabajoSC:$('#sltTipoTrabajoSC_' + x).val(), monedaSC:$('#sltMonedaSC_' + x).val(), montoSC:$('#txtMontoSC_' + x).val()};
+		subcontratos.push($('#sltProveedorSC_' + x).val());
+		subcontratos.push($('#sltTipoTrabajoSC_' + x).val());
+		subcontratos.push($('#sltMonedaSC_' + x).val());
+		//Cuando se pase a JSON la coma ya no sera un problema y se podra pasar el Objeto Subcontrato
+		var currencyMonto = Number($('#txtMontoSC_' + x).val().replace(/[^0-9\.]+/g,""));
+		subcontratos.push(currencyMonto);
+		
+		//subcontratos.push(subc);
+	}
+	//alert('subcontratos: ' + subcontratos[0].montoSC);	
+	$('#hdnSubcontratos').val(subcontratos);
+	//alert('hdnSubcontratos: ' + $('#hdnSubcontratos').val());
+	$('#frmCrearOrden').submit();
 }
 
 </script>
@@ -653,7 +698,7 @@ function grabarProyecto(){
 			</select>
 		</td>
 		<td>
-			<select id="sltTipoSC_{{idFila}}" class="form-control" name="tipoSC">
+			<select id="sltTipoTrabajoSC_{{idFila}}" class="form-control" name="tipoTrabajoSC">
 				<option>Obra</option>
 				<option>Estudio</option>
 				<option>Adecuacion</option>
@@ -662,7 +707,17 @@ function grabarProyecto(){
 			</select>
 		</td>
 		<td>
-			<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor({{idFila}});" id="txtMontoSC_{{idFila}}" class="form-control" placeholder="Monto USD$/." name="montoSC"/>
+			<div class="form-group">
+				<div class="col-md-12">
+					<select id="sltMonedaSC_{{idFila}}" class="form-control" name="monedaSC">
+						<option value="dolar americano">USD ($/.)</option>
+						<option value="nuevo sol">PEN (S/.)</option>
+					</select>
+				</div>
+			</div>
+		</td>
+		<td>
+			<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor({{idFila}});" id="txtMontoSC_{{idFila}}" class="form-control" placeholder="Monto" name="montoSC"/>
 		</td>
 		<td>
 			<div class="margin-bottom-5">
@@ -742,9 +797,5 @@ function grabarProyecto(){
 		 </td>
 	 </tr>
 </script>
-<script>
-        
-    </script>
-
 </body>
 </html>

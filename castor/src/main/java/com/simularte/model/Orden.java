@@ -24,7 +24,7 @@ public class Orden {
 	@OneToOne(cascade = CascadeType.ALL) @JoinColumn(name = "idcliente", nullable = false)
 	private Cliente ordenCliente;
 	@OneToMany(mappedBy = "ordenSubcontrato")
-	private Collection<Subcrontrato> subcontratos;
+	private Collection<Subcontrato> subcontratos;
 	@ManyToOne @JoinColumn(name = "idempresa", nullable = false)
 	private Empresa ordenEmpresa;
 	@OneToMany(mappedBy = "cobroOrden")
@@ -55,7 +55,7 @@ public class Orden {
 	private String moneda;
 	/*Se registraran cuando la Orden ya ese finalizada*/
 	@Column(nullable = true)
-	private float eficiencia;
+	private double eficiencia;
 	@Column(name = "utilidadbruta", nullable = true) 
 	private BigDecimal utilidadBruta;
 	@Column(name = "subtotal", nullable = true)
@@ -74,6 +74,12 @@ public class Orden {
 	
 	
 	
+	public double getEficiencia() {
+		return eficiencia;
+	}
+	public void setEficiencia(double eficiencia) {
+		this.eficiencia = eficiencia;
+	}
 	public Integer getIdOrden() {
 		return idOrden;
 	}
@@ -86,10 +92,10 @@ public class Orden {
 	public void setOrdenCliente(Cliente ordenCliente) {
 		this.ordenCliente = ordenCliente;
 	}
-	public Collection<Subcrontrato> getSubcontratos() {
+	public Collection<Subcontrato> getSubcontratos() {
 		return subcontratos;
 	}
-	public void setSubcontratos(Collection<Subcrontrato> subcontratos) {
+	public void setSubcontratos(Collection<Subcontrato> subcontratos) {
 		this.subcontratos = subcontratos;
 	}
 	public Empresa getOrdenEmpresa() {
@@ -169,12 +175,6 @@ public class Orden {
 	}
 	public void setMoneda(String moneda) {
 		this.moneda = moneda;
-	}
-	public float getEficiencia() {
-		return eficiencia;
-	}
-	public void setEficiencia(float eficiencia) {
-		this.eficiencia = eficiencia;
 	}
 	public BigDecimal getUtilidadBruta() {
 		return utilidadBruta;
