@@ -323,6 +323,10 @@ $(document).ready(function(){
 			}, 
 			rol: {
 				required: true,
+			}, 
+			email: {
+				required: true,
+				email: true
 			}
 		},
 		messages: {
@@ -330,7 +334,8 @@ $(document).ready(function(){
 			segundoNombre: "*",
 			apellidoPaterno: "*",
 			apellidoMaterno: "*",
-			rol: "*"
+			rol: "*",
+			email: "*"
 		},
 		submitHandler: function(form){
 			crearEmpleado();
@@ -353,6 +358,10 @@ $(document).ready(function(){
 			}, 
 			rol: {
 				required: true,
+			}, 
+			email: {
+				required: true,
+				email: true
 			}                                   
 		},
 		messages: {
@@ -360,7 +369,8 @@ $(document).ready(function(){
 			segundoNombre: "*",
 			apellidoPaterno: "*",
 			apellidoMaterno: "*",
-			rol: "*"
+			rol: "*",
+			email: "*"
 		},
 		submitHandler: function(form){
 			modificarEmpleado();
