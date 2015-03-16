@@ -1,3 +1,50 @@
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<script type="text/javascript">
+function extraerInformacionEmpresa(){
+	$.ajax({
+ 		url: 'ajaxExtraerInformacionEmpresa',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(empresa){
+ 			if(empresa.nombre!=null){
+ 				$('#spnNombreEmpr').text(empresa.nombre);	
+ 			}
+ 			if(empresa.ruc!=null){
+ 				$('#spnRucEmpr').text(empresa.ruc);
+ 			}
+ 			if(empresa.website!=null){
+ 				$('#spnWebEmpr').text(empresa.website);
+ 			}
+ 			if(empresa.facebook!=null){
+ 				$('#spnFacebookEmpr').text(empresa.facebook);
+ 			}
+ 					
+ 			//
+ 			$('#txtNombreEmpr').val(empresa.nombre);
+ 			$('#txtRucEmpr').val(empresa.ruc);
+ 			$('#txtWebEmpr').val(empresa.website);
+ 			$('#txtFacebookEmpr').val(empresa.facebook);
+ 		}
+ 	});	
+}
+
+
+function modificarEmpresa(){
+	$.ajax({
+ 		url: 'ajaxModificarEmpresa',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: $('#frmModificarEmpresa').serialize(),
+ 		success: function(resultado){
+ 			$('#informacionEdit').hide();
+			$('#informacionInit').show();
+ 			extraerInformacionEmpresa(); 			
+ 		}
+ 	});	
+}
+
+</script>
 <div id="informacionInit" class="portlet box blue-hoki">
 	<div class="portlet-title">
 		<div class="caption">Informacion</div>
@@ -12,23 +59,23 @@
 		<table class="table table-scrollable table-bordered">
 			<tr>
 				<td><span class="font-blue-hoki">Nombre Empresa</span></td>
-				<td>Simularte E.I.R.L.</td>
+				<td id="spnNombreEmpr"></td>
 			</tr>
 			<tr>
 				<td><span class="font-blue-hoki">RUC</span></td>
-				<td>20549619364</td>
+				<td id="spnRucEmpr"></td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<td><span class="font-blue-hoki">Rubro</span></td>
 				<td>Servicios Graficos</td>
-			</tr>
+			</tr> -->
 			<tr>
 				<td><span class="font-blue-hoki">Web</span></td>
-				<td>www.simularte.com</td>
+				<td id="spnWebEmpr"></td>
 			</tr>
 			<tr>
 				<td><span class="font-blue-hoki">Facebook</span></td>
-				<td>www.facebook.com/simularte</td>
+				<td id="spnFacebookEmpr"></td>
 			</tr>
 		</table>
 
@@ -48,16 +95,16 @@
 	<div class="portlet-body">
 		<div class="form-horizontal">
 			<div class="form-body">
-			
+			<form:form id="frmModificarEmpresa" commandName="empresa">
 				<div class="form-group">
 					<label class="control-label col-md-2">Nombre Empresa:</label>
-					<div class="col-md-8"><input class="form-control" type="text"></div>
+					<div class="col-md-8"><input id="txtNombreEmpr" class="form-control" type="text" name="nombre"></div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-md-2">RUC:</label>
-					<div class="col-md-8"><input class="form-control" type="text"></div>
+					<div class="col-md-8"><input id="txtRucEmpr" class="form-control" type="text" name="ruc"></div>
 				</div>
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label class="control-label col-md-2">Rubro:</label>
 					<div class="col-md-8" style="padding-left: 32px;">
 						<div class="skin skin-flat">	
@@ -72,15 +119,16 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 				<div class="form-group">
 					<label class="control-label col-md-2">Website:</label>
-					<div class="col-md-8"><input class="form-control" type="text"></div>
+					<div class="col-md-8"><input id="txtWebsiteEmpr" class="form-control" type="text" name="website"></div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-md-2">Facebook:</label>
-					<div class="col-md-8"><input class="form-control" type="text"></div>
+					<div class="col-md-8"><input id="txtFacebookEmpr" class="form-control" type="text" name="facebook"></div>
 				</div>
+				</form:form>
 			</div>
 		</div>
 	</div>

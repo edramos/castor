@@ -113,13 +113,14 @@ jQuery(document).ready(function() {
 		//INFORMACION
 		case "btnEditarInfo":
 			$('#informacionInit').hide();
-			$('#informacionEdit').show();
+			$('#informacionEdit').show();			
 			break;
 		case "btnCancelarInfo":
 			$('#informacionEdit').hide();
 			$('#informacionInit').show();
 			break;
 		case "btnGrabarInfo":
+			$('#frmModificarEmpresa').submit();
 			break;
 		//OFICINA
 		case "btnIrCrearOficina":
@@ -193,6 +194,7 @@ jQuery(document).ready(function() {
 		}
 		
 	});
+	extraerInformacionEmpresa(); 
 	listarClientes();
 	listarProveedores();
 	listarOficinas();
@@ -374,6 +376,33 @@ $(document).ready(function(){
 		},
 		submitHandler: function(form){
 			modificarEmpleado();
+		}
+	});
+	
+	
+	$("#frmModificarEmpresa").validate({
+		rules: {
+			nombre: {
+				required: true,
+			}, 
+			ruc: {
+				required: true,
+			}, 
+			website: {
+				required: true,
+			}, 
+			facebook: {
+				required: true,
+			}                                  
+		},
+		messages: {
+			nombre: "*",
+			ruc: "*",
+			website: "*",
+			facebook: "*"
+		},
+		submitHandler: function(form){
+			modificarEmpresa();
 		}
 	});
 	
