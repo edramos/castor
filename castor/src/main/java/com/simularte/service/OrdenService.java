@@ -9,5 +9,5 @@ import com.simularte.bean.OrdenBean;
 public interface OrdenService {
 	boolean crearOrden(OrdenBean ordenBean, int idCliente, String[] subCont, HttpServletRequest req);
 	//Por ahora es 1 solo campo para probar, luego esto sera por JSON(cadena busqueda,campo)
-	List<OrdenBean> buscarOrden(String busqueda, String campo, HttpServletRequest req);
+	List<OrdenBean> buscarOrden(OrdenBean ordenBean , HttpServletRequest req);
 }

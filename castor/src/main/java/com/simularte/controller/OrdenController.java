@@ -40,7 +40,7 @@ public class OrdenController {
 	public List<OrdenBean> ajaxBuscarOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean, HttpServletRequest req){
 		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
 		
-		ordenes = ordenserv.buscarOrden(ordenBean.getBusqueda(), ordenBean.getCampo(), req);
+		ordenes = ordenserv.buscarOrden(ordenBean, req);
 		
 		return ordenes;
 	}

@@ -135,28 +135,46 @@ public class OrdenServiceImpl implements OrdenService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<OrdenBean> buscarOrden(String busqueda, String campo, HttpServletRequest req){
+	public List<OrdenBean> buscarOrden(OrdenBean ordenBean, HttpServletRequest req){
 		List<OrdenBean> ordenBeans = new ArrayList<OrdenBean>();
 		String campos = "";
 		String from = "";
+		String join = "";
 		String condiciones = "";
 		
-		campos = "o.codigo, o.nombre ";
+		campos = "o.idOrden, o.codigo, o.nombre, cli.nombre, o.oferta ";
 		from = "FROM Orden o ";
-		condiciones = "WHERE o.codigo LIKE :codigo AND o.estado = 'enabled'";
+		join = "INNER JOIN o.ordenCliente cli ";
+		if(ordenBean.getCodigo() != null || ordenBean.getNombreCliente()!=null || ordenBean.getOferta()!=null){
+			condiciones = "WHERE ";
+		}
+		if(ordenBean.getCodigo()!=null){
+			condiciones = " o.codigo LIKE :codigo AND o.estado = 'enabled' ";
+		}
+		if(ordenBean.getNombreCliente()!=null){
+			condiciones += " cli.nombre LIKE :nombreCliente AND cli.estado = 'enabled' ";
+		}
+		if(ordenBean.getOferta()!=null){
+			condiciones += " o.oferta LIKE :oferta ";
+		}
 		
-		System.out.println("QUERY: SELECT DISTINCT " + campos + from + condiciones + "---" + busqueda);
-		Query q = em.createQuery("SELECT DISTINCT " + campos + from + condiciones);
-		q.setParameter("codigo", "%" + busqueda + "%");
+		
+		System.out.println("QUERY: SELECT DISTINCT " + campos + from + join + condiciones + "--- BASIC" );
+		Query q = em.createQuery("SELECT DISTINCT " + campos + from + join + condiciones);
+		q.setParameter("codigo", "%" + ordenBean.getCodigo() + "%");
+		q.setParameter("nombreCliente", "%" + ordenBean.getNombreCliente() + "%");
+		q.setParameter("oferta", "%" + ordenBean.getOferta() + "%");
 		
 		List<Object[]> rows = q.getResultList();
 		System.out.println("SIZE: " + rows.size());
 		for(int x = 0; x < rows.size(); x++){
 			Object[] ord = rows.get(x);
 			OrdenBean ordenB = new OrdenBean();
-			
-			ordenB.setCodigo(ord[0].toString());
-			ordenB.setNombre(ord[1].toString());
+			ordenB.setIdOrden((Integer)ord[0]);
+			ordenB.setCodigo(ord[2].toString());
+			ordenB.setNombre(ord[3].toString());
+			ordenB.setNombreCliente(ord[4].toString());
+			ordenB.setOferta(new BigDecimal(ord[5].toString()));
 			
 			ordenBeans.add(ordenB);
 		}

@@ -32,6 +32,8 @@ public class OrdenBean {
 	private Timestamp fechaCreacion;	
 	private String estado;		
 	
+	//CLIENTE
+	private String nombreCliente;
 	
 	
 	public String getCampo() {
@@ -171,5 +173,11 @@ public class OrdenBean {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}		
+	}	
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
 }
