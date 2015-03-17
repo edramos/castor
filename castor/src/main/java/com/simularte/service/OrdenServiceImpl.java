@@ -5,9 +5,11 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -131,4 +133,39 @@ public class OrdenServiceImpl implements OrdenService {
 		}
 		return result;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<OrdenBean> buscarOrden(String busqueda, String campo, HttpServletRequest req){
+		List<OrdenBean> ordenBeans = new ArrayList<OrdenBean>();
+		String campos = "";
+		String from = "";
+		String condiciones = "";
+		
+		campos = "o.codigo, o.nombre ";
+		from = "FROM Orden o ";
+		condiciones = "WHERE o.codigo LIKE :codigo AND o.estado = 'enabled'";
+		
+		System.out.println("QUERY: SELECT DISTINCT " + campos + from + condiciones + "---" + busqueda);
+		Query q = em.createQuery("SELECT DISTINCT " + campos + from + condiciones);
+		q.setParameter("codigo", "%" + busqueda + "%");
+		
+		List<Object[]> rows = q.getResultList();
+		System.out.println("SIZE: " + rows.size());
+		for(int x = 0; x < rows.size(); x++){
+			Object[] ord = rows.get(x);
+			OrdenBean ordenB = new OrdenBean();
+			
+			ordenB.setCodigo(ord[0].toString());
+			ordenB.setNombre(ord[1].toString());
+			
+			ordenBeans.add(ordenB);
+		}
+		
+		return ordenBeans;
+	}
+	
+	
+	
+	
+	
 }

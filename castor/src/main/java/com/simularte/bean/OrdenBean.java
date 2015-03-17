@@ -25,6 +25,8 @@ public class OrdenBean {
 	private BigDecimal gastosGenerales;
 	private BigDecimal total;
 	
+	private String busqueda;
+	private String campo;
 		
 	private Integer creadoPor;
 	private Timestamp fechaCreacion;	
@@ -32,6 +34,18 @@ public class OrdenBean {
 	
 	
 	
+	public String getCampo() {
+		return campo;
+	}
+	public void setCampo(String campo) {
+		this.campo = campo;
+	}
+	public String getBusqueda() {
+		return busqueda;
+	}
+	public void setBusqueda(String busqueda) {
+		this.busqueda = busqueda;
+	}
 	public Integer getIdOrden() {
 		return idOrden;
 	}
