@@ -48,14 +48,14 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtNombre" class="form-control" placeholder="Nombre" name="nombre"/>
+									<input id="txtNombreCliente" class="form-control" placeholder="Nombre Cliente" name="nombreCliente"/>
 								</div>	
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtMonto" class="form-control" placeholder="Monto" name="monto"/>
+									<input id="txtOferta" class="form-control" placeholder="Oferta" name="oferta"/>
 								</div>	
 							</div>
 						</div>
@@ -88,9 +88,8 @@
 				<tr>
 					<th>Codigo</th>
 					<th>Nombre</th>
-					<th>Platform(s)</th>
-					<th>Engine version</th>
-					<th>CSS grade</th>
+					<th>Cliente</th>
+					<th>Oferta</th>
 				</tr>
 				</thead>
 				
@@ -177,7 +176,7 @@ function removeTable(){
 }
 function createTable(){
 	$('#divPortletBody').append(
-			"<table class='table table-striped table-hover' id='sample_1'><thead><tr><th>Codigo</th><th>Nombre</th><th>Platform(s)</th><th>Engine version</th><th>CSS grade</th>"+
+			"<table class='table table-striped table-hover' id='sample_1'><thead><tr><th>Codigo</th><th>Nombre</th><th>Cliente</th><th>Oferta</th>"+
 			"</tr></thead><tbody id='viewOrdenesHandlerbars'></tbody></table>"	
 	);
 }
@@ -187,9 +186,8 @@ function createTable(){
 <tr>
 	<td>{{codigo}}</td>
 	<td>{{nombre}}</td>
-	<td>Win 95+</td>
-	<td>4</td>
-	<td>X</td>
+	<td>{{nombreCliente}}</td>
+	<td>{{oferta}}</td>
 </tr>
 </script>
 </body>
