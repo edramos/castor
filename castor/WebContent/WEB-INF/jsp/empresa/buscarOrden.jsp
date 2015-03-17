@@ -136,15 +136,15 @@ jQuery(document).ready(function() {
 	
 	
 	
-	
+	buscarOrden();
 });
 </script>
 <script>
 var flag = 0;
 
 function buscarOrden(){
-	if($('#txtCodigo').val() != ''){
-		$('#hdnBusqueda').val($('#txtCodigo').val());
+	//if($('#txtCodigo').val()!= '' && $('#txtNombreCliente').val()!= '' && $('#txtOferta').val()!= ''){
+		//$('#hdnBusqueda').val($('#txtCodigo').val());
 		var html = '';
 		
 		$.ajax({
@@ -168,7 +168,7 @@ function buscarOrden(){
 	 		}
 	 	});	
 		
-	}
+	//}
 }
 function removeTable(){
 	$('#sample_1').remove();

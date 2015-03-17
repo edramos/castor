@@ -142,28 +142,39 @@ public class OrdenServiceImpl implements OrdenService {
 		String join = "";
 		String condiciones = "";
 		
+		HttpSession session = req.getSession();
+		
 		campos = "o.idOrden, o.codigo, o.nombre, cli.nombre, o.oferta ";
 		from = "FROM Orden o ";
 		join = "INNER JOIN o.ordenCliente cli ";
-		if(ordenBean.getCodigo() != null || ordenBean.getNombreCliente()!=null || ordenBean.getOferta()!=null){
-			condiciones = "WHERE ";
+		join += "INNER JOIN o.ordenEmpresa empr ";
+		condiciones = "WHERE empr.idEmpresa = :idEmpresa ";
+
+		if(!ordenBean.getCodigo().equals("")){
+			condiciones += "AND o.codigo LIKE :codigo AND o.estado = 'enabled' ";
 		}
-		if(ordenBean.getCodigo()!=null){
-			condiciones = " o.codigo LIKE :codigo AND o.estado = 'enabled' ";
-		}
-		if(ordenBean.getNombreCliente()!=null){
-			condiciones += " cli.nombre LIKE :nombreCliente AND cli.estado = 'enabled' ";
+		if(!ordenBean.getNombreCliente().equals("")){
+			condiciones += "AND cli.nombre LIKE :nombreCliente AND cli.estado = 'enabled' ";
 		}
 		if(ordenBean.getOferta()!=null){
-			condiciones += " o.oferta LIKE :oferta ";
+			condiciones += "AND o.oferta = :oferta ";
 		}
 		
 		
 		System.out.println("QUERY: SELECT DISTINCT " + campos + from + join + condiciones + "--- BASIC" );
 		Query q = em.createQuery("SELECT DISTINCT " + campos + from + join + condiciones);
-		q.setParameter("codigo", "%" + ordenBean.getCodigo() + "%");
-		q.setParameter("nombreCliente", "%" + ordenBean.getNombreCliente() + "%");
-		q.setParameter("oferta", "%" + ordenBean.getOferta() + "%");
+
+		q.setParameter("idEmpresa", (Integer)session.getAttribute("idEmpresa"));
+		
+		if(!ordenBean.getCodigo().equals("")){
+			q.setParameter("codigo", "%" + ordenBean.getCodigo() + "%");
+		}
+		if(!ordenBean.getNombreCliente().equals("")){
+			q.setParameter("nombreCliente", "%" + ordenBean.getNombreCliente() + "%");
+		}
+		if(ordenBean.getOferta()!=null){
+			q.setParameter("oferta", ordenBean.getOferta());
+		}
 		
 		List<Object[]> rows = q.getResultList();
 		System.out.println("SIZE: " + rows.size());
@@ -171,10 +182,10 @@ public class OrdenServiceImpl implements OrdenService {
 			Object[] ord = rows.get(x);
 			OrdenBean ordenB = new OrdenBean();
 			ordenB.setIdOrden((Integer)ord[0]);
-			ordenB.setCodigo(ord[2].toString());
-			ordenB.setNombre(ord[3].toString());
-			ordenB.setNombreCliente(ord[4].toString());
-			ordenB.setOferta(new BigDecimal(ord[5].toString()));
+			ordenB.setCodigo(ord[1].toString());
+			ordenB.setNombre(ord[2].toString());
+			ordenB.setNombreCliente(ord[3].toString());			
+			ordenB.setOferta(new BigDecimal(ord[4].toString()));
 			
 			ordenBeans.add(ordenB);
 		}
