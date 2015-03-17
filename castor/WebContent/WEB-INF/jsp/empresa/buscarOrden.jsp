@@ -184,7 +184,7 @@ function createTable(){
 </script>
 <script id="templateOrden" type="text/x-handlebars-template">
 <tr>
-	<td>{{codigo}}</td>
+	<td><a href="ordenPag_{{idCliente}}">{{codigo}}<a/></td>
 	<td>{{nombre}}</td>
 	<td>{{nombreCliente}}</td>
 	<td>{{oferta}}</td>

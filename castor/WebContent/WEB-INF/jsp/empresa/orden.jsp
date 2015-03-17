@@ -32,54 +32,67 @@
 		<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption">Proyecto PRO-001</div>
+				<div class="caption">ORDEN OT-TV-00001</div>
 				<div id="dynamicActions" class="actions">
 					<a id="btnIrCrearCliente" class="label label-info"> Nuevo </a>	
 				</div>
 			</div>
 			
-			<div class="portlet-body form">
-				 <div class="form-horizontal">
-					<div class="form-body">
-						<h4>General</h4>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="control-label col-md-3">Nombre:</label>
-									<div class="col-md-9">
-										<p class="form-control-static">Nombre Proyecto</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="control-label col-md-3">Tipo:</label>
-									<div class="col-md-9">
-										<p class="form-control-static">Estructuras Metalicas</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="control-label col-md-3">Cliente:</label>
-									<div class="col-md-9">
-										<p class="form-control-static">Desarrollos Terrestres</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="control-label col-md-3">Direccion:</label>
-									<div class="col-md-9">
-										<p class="form-control-static">Av. Gregorio Escobedo, Jesus Maria, Lima, Lima.</p>
-									</div>
-								</div>
-							</div>
-						</div>
+			<div class="portlet-body">
+				<div class="tabbable tabs-left">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a aria-expanded="true" href="#tab_1_1_1" data-toggle="tab">
+							<span class="caption-subject font-blue-madison bold uppercase">General</span></a>
+						</li>
+						<li class="">
+							<a aria-expanded="false" href="#tab_1_1_2" data-toggle="tab">
+							<span class="caption-subject font-blue-madison bold uppercase">Financiera</span></a>
+						</li>
+						<li class="">
+							<a aria-expanded="false" href="#tab_1_1_3" data-toggle="tab">
+							<span class="caption-subject font-blue-madison bold uppercase">Subcontratos</span></a>
+						</li>
+						<li class="">
+							<a aria-expanded="false" href="#tab_1_1_4" data-toggle="tab">
+							<span class="caption-subject font-blue-madison bold uppercase">Cobros</span></a>
+						</li>
+						<li class="">
+							<a aria-expanded="false" href="#tab_1_1_5" data-toggle="tab">
+							<span class="caption-subject font-blue-madison bold uppercase">Pagos</span></a>
+						</li>
+					</ul>
+				</div>
+				
+				<!-- BEGIN TABS -->
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab_1_1_1">
+						<jsp:include page="orden/tabGeneral.jsp"/>
+					</div>
+					<div class="tab-pane" id="tab_1_1_2">
+						<jsp:include page="orden/tabFinanciera.jsp"/>
+					</div>
+					<div class="tab-pane" id="tab_1_1_3">
+						<jsp:include page="orden/tabSubcontratos.jsp"/>
+					</div>
+					<div class="tab-pane" id="tab_1_1_4">
+						<jsp:include page="orden/tabCobros.jsp"/>
+					</div>
+					<div class="tab-pane" id="tab_1_1_5">
+						<jsp:include page="orden/tabPagos.jsp"/>
 					</div>
 				</div>
+				<!-- END TABS -->
+				
+				
+				
+			
+			
+			
+			
+			
+			
+				 
 			</div>
 		</div>
 	</div>

@@ -44,4 +44,11 @@ public class OrdenController {
 		
 		return ordenes;
 	}
+	
+	@RequestMapping(value = "ordenPag", method = RequestMethod.POST)
+	public String ordenPag(){
+		String path = "";
+		
+		return path;
+	}
 }
