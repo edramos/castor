@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -34,7 +36,9 @@
 			<div class="portlet-title">
 				<div class="caption">ORDEN OT-TV-00001</div>
 				<div id="dynamicActions" class="actions">
-					<a id="btnIrCrearCliente" class="label label-info"> Nuevo </a>	
+					<a id="btnIrCrearCliente" class="label label-info"> Nuevo </a>						
+					<input id="txtIdOrden" value="<c:out value="${idOrden}"/>"  type="hidden" class="form-control"/>
+					<span id="spnIdOrden"><c:out value="${idOrden}"/></span>
 				</div>
 			</div>
 			
@@ -110,5 +114,53 @@
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <!-- END PAGE LEVEL SCRIPTS -->
+
+<script>
+
+$(document).ready(function(){
+    
+	var idOrden = $('txtIdOrden').val();
+	//var idOrden2 = $('spnIdOrden').text();
+	//alert(idOrden2);
+	extraerInformacionOrden(idOrden); 
+	listarSubcontratos(idOrden);
+	
+});
+
+function extraerInformacionOrden(idOrdenTemp){
+	$.ajax({
+ 		url: 'ajaxObtenerInformacionOrden-'+idOrdenTemp,
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(orden){
+ 			
+ 		}
+ 	});	
+}
+
+function listarSubcontratos(idOrdenTemp){
+	var html = '';
+    $.ajax({
+ 		url: 'ajaxListarSubcontratos-'+idOrdenTemp,
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(subcontratos){
+ 			/* $.each(subcontratos, function(i, subcontrato){
+	 			var source = $("#templateSubcontratos").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(subcontrato);
+	 			
+ 			});		
+ 			$("#viewSubcontratosHandlerbars").html(html); */	        
+ 		},
+ 		complete: function() {	 			
+ 			//removeNulls();
+  		}
+ 	});
+}
+
+</script>
 </body>
 </html>

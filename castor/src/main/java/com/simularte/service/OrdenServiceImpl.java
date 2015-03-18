@@ -194,6 +194,51 @@ public class OrdenServiceImpl implements OrdenService {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	public OrdenBean obtenerInformacionOrden(Integer idOrden, HttpServletRequest req){
+		Orden orden = new Orden();
+
+		HttpSession session = req.getSession();
+
+		Query q = em.createQuery("SELECT o FROM Orden o WHERE o.idOrden = :idOrden AND o.estado = 'enabled' ");
+
+		q.setParameter("idOrden", idOrden);
+		
+		orden = (Orden)q.getSingleResult();
+		
+		OrdenBean ordenB = new OrdenBean();		
+		
+		Cliente cli = orden.getOrdenCliente();
+		ordenB.setIdCliente(cli.getIdCliente());
+		ordenB.setNombreCliente(cli.getNombre());
+		
+		ordenB.setIdOrden(orden.getIdOrden());
+		ordenB.setCodigo(orden.getCodigo());
+		ordenB.setNombre(orden.getNombre());
+		ordenB.setTipoOrden(orden.getTipoOrden());
+		ordenB.setTipoTrabajo(orden.getTipoTrabajo());
+		ordenB.setLat(orden.getLat());
+		ordenB.setLon(orden.getLon());
+		ordenB.setCiudad(orden.getCiudad());
+		ordenB.setDepartamento(orden.getDepartamento());
+		ordenB.setOferta(orden.getOferta());
+		ordenB.setMoneda(orden.getMoneda());
+		
+		ordenB.setEficiencia(orden.getEficiencia());
+		ordenB.setUtilidadBruta(orden.getUtilidadBruta());
+		ordenB.setSubTotal(orden.getSubTotal());
+		ordenB.setGastosGenerales(orden.getGastosGenerales());
+		ordenB.setTotal(orden.getTotal());			
+					
+		ordenB.setCreadoPor(orden.getCreadoPor());
+		ordenB.setFechaCreacion(orden.getFechaCreacion());
+		ordenB.setEstado(orden.getEstado());
+		
+		
+		return ordenB;
+	}
+	
+	
 	
 	
 	
