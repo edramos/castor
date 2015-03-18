@@ -8,6 +8,7 @@ public class SubcontratoBean {
 	private Integer idSubcontrato;
 	private Integer idOrden;
 	private Integer idProveedor;
+	private String nombreProveedor;
 	
 	private BigDecimal monto;
 	private String moneda;
@@ -69,6 +70,12 @@ public class SubcontratoBean {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public String getNombreProveedor() {
+		return nombreProveedor;
+	}
+	public void setNombreProveedor(String nombreProveedor) {
+		this.nombreProveedor = nombreProveedor;
 	}
 	
 }

@@ -47,6 +47,7 @@ public class SubcontratoServiceImpl implements SubcontratoService {
 				cb.setIdSubcontrato(c.getIdSubcontrato());
 				cb.setIdOrden(c.getOrdenSubcontrato().getIdOrden());
 				cb.setIdProveedor(c.getProveedorSubcontrato().getIdProveedor());
+				cb.setNombreProveedor(c.getProveedorSubcontrato().getNombre());
 				cb.setMoneda(c.getMoneda());
 				cb.setMonto(c.getMonto());
 				cb.setTipoTrabajo(c.getTipoTrabajo());
