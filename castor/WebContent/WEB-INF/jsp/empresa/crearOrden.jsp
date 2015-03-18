@@ -492,6 +492,44 @@ jQuery(document).ready(function() {
     $(":input").inputmask();
 });
 
+$(document).ready(function(){
+	$("#frmCrearOrden").validate({
+		rules: {
+			nombre: {
+				required: true,
+			},   
+			idCliente: {
+				required: true,
+			},   
+			tipoOrden: {
+				required: true,
+			},   
+			tipoTrabajo: {
+				required: true,
+			},   
+			departamento: {
+				required: true,
+			}
+		},
+		messages: {
+			nombre: "*",
+			idCliente: "*",
+			tipoOrden: "*",
+			tipoTrabajo: "*",
+			departamento: "*"
+		},
+		submitHandler: function(form){
+			if($('#txtLat').val()==''){
+				$('#txtLat').val(0.0);
+			}
+			if($('#txtLon').val()==''){
+				$('#txtLon').val(0.0);
+			}
+			form.submit();
+		}
+	});
+});
+
 function listarSelectorClientes(nombreSelector){
 	var html = '';
     $.ajax({

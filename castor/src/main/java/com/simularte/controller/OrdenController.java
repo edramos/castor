@@ -32,8 +32,9 @@ public class OrdenController {
 		int idOrden = ordenserv.crearOrden(ordenBean, idCliente, subCont, req);
 		
 		if(idOrden != -1){
-			path = "empresa/orden";
-			model.addAttribute("idOrden", idOrden);
+			//path = "empresa/orden";
+			path = "redirect:ordenPag-"+idOrden;
+			//model.addAttribute("idOrden", idOrden);
 		}else{
 			System.out.println("NO Grabe!");
 		}
