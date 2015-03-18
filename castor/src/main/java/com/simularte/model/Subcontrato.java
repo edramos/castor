@@ -1,6 +1,7 @@
 package com.simularte.model;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -22,16 +23,18 @@ public class Subcontrato {
 	@ManyToOne @JoinColumn(name = "idproveedor", nullable = false)
 	private Proveedor proveedorSubcontrato;	
 	
-	
+	//Fields
 	@Column(nullable = false)
 	private BigDecimal monto;
 	@Column(length = 30, nullable = false)
 	private String moneda;
 	@Column(name = "tipotrabajo", length = 30, nullable = true)
 	private String tipoTrabajo;
+	@Column(name = "fechaterminoobra", nullable = true)
+	private Date fechaTerminoObra;
+	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
-	
 	@Column(name = "fechacreacion", nullable = false)
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
@@ -39,6 +42,12 @@ public class Subcontrato {
 	
 	
 	
+	public Date getFechaTerminoObra() {
+		return fechaTerminoObra;
+	}
+	public void setFechaTerminoObra(Date fechaTerminoObra) {
+		this.fechaTerminoObra = fechaTerminoObra;
+	}
 	public Integer getIdSubcontrato() {
 		return idSubcontrato;
 	}

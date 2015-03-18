@@ -1,6 +1,7 @@
 package com.simularte.model;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -29,10 +30,10 @@ public class Orden {
 	private Empresa ordenEmpresa;
 	@OneToMany(mappedBy = "cobroOrden")
 	private Collection<Cobro> cobrosOrd;
-	
 	@OneToMany(mappedBy = "pagoOrden")
 	private Collection<Pago> pagosOrd;
 	
+	//Fields
 	@Column(length = 30, nullable = false)
 	private String codigo;
 	@Column(length = 180, nullable = false)
@@ -53,6 +54,8 @@ public class Orden {
 	private BigDecimal oferta;
 	@Column(length = 30, nullable = false)
 	private String moneda;
+	@Column(name = "fechaentrega", nullable = true)
+	private Date fechaEntrega;
 	/*Se registraran cuando la Orden ya ese finalizada*/
 	@Column(nullable = true)
 	private double eficiencia;
@@ -74,6 +77,12 @@ public class Orden {
 	
 	
 	
+	public Date getFechaEntrega() {
+		return fechaEntrega;
+	}
+	public void setFechaEntrega(Date fechaEntrega) {
+		this.fechaEntrega = fechaEntrega;
+	}
 	public double getEficiencia() {
 		return eficiencia;
 	}
