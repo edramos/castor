@@ -70,6 +70,33 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="row">
+			<div class="col-md-3">
+				<div class="form-group">
+					<label class="control-label col-md-3">Entrega:</label>
+					<div class="col-md-9">
+						<p id="pFechaEntrega" class="form-control-static">12/03/2015</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group">
+					<label class="control-label col-md-3">Creacion:</label>
+					<div class="col-md-9">
+						<p id="pFechaCreacion" class="form-control-static">10/01/2015</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group">
+					<label class="control-label col-md-3">Creador:</label>
+					<div class="col-md-9">
+						<p id="pCreadoPor" class="form-control-static">Eduardo Ramos</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </form>
 </div>
