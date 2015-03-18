@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,8 +157,17 @@ public class OrdenServiceImpl implements OrdenService {
 		if(!ordenBean.getNombreCliente().equals("")){
 			condiciones += "AND cli.nombre LIKE :nombreCliente AND cli.estado = 'enabled' ";
 		}
-		if(ordenBean.getOferta()!=null){
-			condiciones += "AND o.oferta = :oferta ";
+		if(ordenBean.getOfertaMinima()!=null){
+			condiciones += "AND o.oferta > :ofertaMinima ";
+		}
+		if(ordenBean.getOfertaMaxima()!=null){
+			condiciones += "AND o.oferta < :ofertaMaxima ";
+		}
+		if(!ordenBean.getFechaCreacionMinima().equals("")){
+			condiciones += "AND o.fechaCreacion > :fechaCreacionMinima ";
+		}
+		if(!ordenBean.getFechaCreacionMaxima().equals("")){
+			condiciones += "AND o.fechaCreacion < :fechaCreacionMaxima ";
 		}
 		
 		
@@ -172,8 +182,31 @@ public class OrdenServiceImpl implements OrdenService {
 		if(!ordenBean.getNombreCliente().equals("")){
 			q.setParameter("nombreCliente", "%" + ordenBean.getNombreCliente() + "%");
 		}
-		if(ordenBean.getOferta()!=null){
-			q.setParameter("oferta", ordenBean.getOferta());
+		if(ordenBean.getOfertaMinima()!=null){
+			q.setParameter("ofertaMinima", ordenBean.getOfertaMinima());
+		}
+		if(ordenBean.getOfertaMaxima()!=null){
+			q.setParameter("ofertaMaxima", ordenBean.getOfertaMaxima());
+		}
+		if(!ordenBean.getFechaCreacionMinima().equals("")){
+			String[] dateSearchArray = ordenBean.getFechaCreacionMinima().split("/");
+			String dateSearch = dateSearchArray[2]+"-"+dateSearchArray[1]+"-"+dateSearchArray[0];
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+			try{
+				 q.setParameter("fechaCreacionMinima", formatoFecha.parse(dateSearch));		
+			}catch(Exception e){
+				 
+			}
+		}
+		if(!ordenBean.getFechaCreacionMaxima().equals("")){
+			String[] dateSearchArray = ordenBean.getFechaCreacionMaxima().split("/");
+			String dateSearch = dateSearchArray[2]+"-"+dateSearchArray[1]+"-"+dateSearchArray[0];
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+			try{
+				 q.setParameter("fechaCreacionMaxima", formatoFecha.parse(dateSearch));		
+			}catch(Exception e){
+				 
+			}
 		}
 		
 		List<Object[]> rows = q.getResultList();

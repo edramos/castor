@@ -35,6 +35,11 @@ public class OrdenBean {
 	//CLIENTE
 	private String nombreCliente;
 	
+	//FILTROS PARA BUSQUEDA BASICA
+	private String fechaCreacionMinima;
+	private String fechaCreacionMaxima;
+	private BigDecimal ofertaMinima;
+	private BigDecimal ofertaMaxima;
 	
 	public String getCampo() {
 		return campo;
@@ -179,5 +184,29 @@ public class OrdenBean {
 	}
 	public void setNombreCliente(String nombreCliente) {
 		this.nombreCliente = nombreCliente;
+	}
+	public String getFechaCreacionMinima() {
+		return fechaCreacionMinima;
+	}
+	public void setFechaCreacionMinima(String fechaCreacionMinima) {
+		this.fechaCreacionMinima = fechaCreacionMinima;
+	}
+	public String getFechaCreacionMaxima() {
+		return fechaCreacionMaxima;
+	}
+	public void setFechaCreacionMaxima(String fechaCreacionMaxima) {
+		this.fechaCreacionMaxima = fechaCreacionMaxima;
+	}
+	public BigDecimal getOfertaMinima() {
+		return ofertaMinima;
+	}
+	public void setOfertaMinima(BigDecimal ofertaMinima) {
+		this.ofertaMinima = ofertaMinima;
+	}
+	public BigDecimal getOfertaMaxima() {
+		return ofertaMaxima;
+	}
+	public void setOfertaMaxima(BigDecimal ofertaMaxima) {
+		this.ofertaMaxima = ofertaMaxima;
 	}
 }
