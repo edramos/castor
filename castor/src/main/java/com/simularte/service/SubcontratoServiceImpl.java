@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +32,6 @@ public class SubcontratoServiceImpl implements SubcontratoService {
 		List<SubcontratoBean> lcb = new ArrayList<SubcontratoBean>();
 		
 		try{
-			HttpSession session = req.getSession();
 			Query query = null;
 
 			String Squery = "";

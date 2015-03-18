@@ -31,8 +31,8 @@ public class OrdenServiceImpl implements OrdenService {
 	EntityManager em;
 	
 	@Transactional
-	public boolean crearOrden(OrdenBean ordenBean, int idCliente, String[] subCont, HttpServletRequest req) {
-		boolean result = false;
+	public int crearOrden(OrdenBean ordenBean, int idCliente, String[] subCont, HttpServletRequest req) {
+		int idOrden = -1;
 		
 		try{
 			HttpSession session = req.getSession();
@@ -68,7 +68,7 @@ public class OrdenServiceImpl implements OrdenService {
 			em.persist(orden);
 			
 			Orden ordenY = em.merge(orden);
-			ordenY.setCodigo("ORD-" + orden.getTipoOrden() + "-" + String.format("%05d", orden.getIdOrden()));
+			ordenY.setCodigo("OT-" + orden.getTipoOrden() + "-" + String.format("%05d", orden.getIdOrden()));
 			
 			//Convierte el array de String a un array de Subcontratos, con JSON esta parte ya seria automatica
 			ArrayList<Subcontrato> subContratos = new ArrayList<Subcontrato>();
@@ -127,11 +127,11 @@ public class OrdenServiceImpl implements OrdenService {
 				em.persist(subContratos.get(x));
 			}
 			
-			result = true;
+			idOrden = orden.getIdOrden();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return result;
+		return idOrden;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -193,15 +193,10 @@ public class OrdenServiceImpl implements OrdenService {
 		return ordenBeans;
 	}
 	
-	
-	@SuppressWarnings("unchecked")
 	public OrdenBean obtenerInformacionOrden(Integer idOrden, HttpServletRequest req){
 		Orden orden = new Orden();
 
-		HttpSession session = req.getSession();
-
 		Query q = em.createQuery("SELECT o FROM Orden o WHERE o.idOrden = :idOrden AND o.estado = 'enabled' ");
-
 		q.setParameter("idOrden", idOrden);
 		
 		orden = (Orden)q.getSingleResult();

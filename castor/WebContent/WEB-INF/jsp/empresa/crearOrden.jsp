@@ -659,8 +659,7 @@ function grabarProyecto(){
 	if($('#txtEficiencia').val() == ""){
 		$('#txtEficiencia').val(0);
 	}
-	
-	alert('idFila: ' + idFila);
+	//alert('idFila: ' + idFila);
 		
 	var subcontratos = [];
 	

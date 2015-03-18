@@ -26,12 +26,14 @@ public class OrdenController {
 	OrdenService ordenserv;
 	
 	@RequestMapping(value = "crearOrden", method = RequestMethod.POST)
-	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean, @RequestParam("subcontratos") String[] subCont, HttpServletRequest req) {		
+	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean, @RequestParam("subcontratos") String[] subCont, Model model, HttpServletRequest req) {		
 		String path = "";
 		int idCliente = ordenBean.getIdCliente();
+		int idOrden = ordenserv.crearOrden(ordenBean, idCliente, subCont, req);
 		
-		if(ordenserv.crearOrden(ordenBean, idCliente, subCont, req)){
+		if(idOrden != -1){
 			path = "empresa/orden";
+			model.addAttribute("idOrden", idOrden);
 		}else{
 			System.out.println("NO Grabe!");
 		}

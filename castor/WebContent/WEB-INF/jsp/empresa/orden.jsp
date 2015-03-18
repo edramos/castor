@@ -8,15 +8,6 @@
 <jsp:include page="../comps/headMandatory.jsp"/>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <!-- END PAGE LEVEL STYLES -->
-
-<!-- BEGIN THEME STYLES -->
-<!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
-<link href="assets/global/css/components-rounded.css" id="style_components" rel="stylesheet" type="text/css"/>
-<link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
-<link href="assets/admin/layout4/css/layout.css" rel="stylesheet" type="text/css"/>
-<link href="assets/admin/layout4/css/themes/light.css" rel="stylesheet" type="text/css" id="style_color"/>
-<link href="assets/admin/layout4/css/custom.css" rel="stylesheet" type="text/css"/>
-<!-- END THEME STYLES -->
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
@@ -34,15 +25,14 @@
 		<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption">ORDEN OT-TV-00001</div>
+				<div id="divCaption" class="caption">ORDEN OT-TV-00001</div>
 				<div id="dynamicActions" class="actions">
 					<a id="btnIrCrearCliente" class="label label-info"> Nuevo </a>						
 					<input id="txtIdOrden" value="<c:out value="${idOrden}"/>"  type="hidden" class="form-control"/>
-					<span id="spnIdOrden"><c:out value="${idOrden}"/></span>
 				</div>
 			</div>
 			
-			<div class="portlet-body">
+			<div class="portlet-body" style="min-height: 400px;">
 				<div class="tabbable tabs-left">
 					<ul class="nav nav-tabs">
 						<li class="active">
@@ -88,15 +78,6 @@
 				</div>
 				<!-- END TABS -->
 				
-				
-				
-			
-			
-			
-			
-			
-			
-				 
 			</div>
 		</div>
 	</div>
@@ -110,16 +91,24 @@
 <jsp:include page="../comps/footer.jsp"/>
 <jsp:include page="../comps/corePlugins.jsp"/>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+<script src="assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
+<script src="assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <!-- END PAGE LEVEL SCRIPTS -->
-
+<script>
+jQuery(document).ready(function() { 
+	Metronic.init(); // init metronic core components
+	Layout.init(); // init current layout
+	Demo.init(); // init demo features
+});
+</script>
 <script>
 
 $(document).ready(function(){
-    
-	var idOrden = $('txtIdOrden').val();
+	var idOrden = $('#txtIdOrden').val();
 	//var idOrden2 = $('spnIdOrden').text();
 	//alert(idOrden2);
 	extraerInformacionOrden(idOrden); 
@@ -134,7 +123,25 @@ function extraerInformacionOrden(idOrdenTemp){
  		dataType: 'json',
  		data: '',
  		success: function(orden){
+ 			$('#divCaption').text('ORDEN ' + orden.codigo);
+ 			$('#pNombre').text(orden.nombre);
+ 			$('#pNombreCliente').text(orden.nombreCliente);
+ 			if(orden.tipoOrden == 'OC'){
+ 				$('#pTipo').text('Obra Civil');	
+ 			}else{
+ 				$('#pTipo').text('Trabajos Varios');	
+ 			}
  			
+ 			$('#pTrabajo').text(orden.tipoTrabajo);
+ 			$('#pLat').text(orden.lat);
+ 			$('#pLon').text(orden.lon);
+ 			$('#pCiudad').text(orden.ciudad);
+ 			$('#pDepartamento').text(orden.departamento);
+ 			//Financiera
+ 			$('#pMoneda').text(orden.moneda);
+ 			$('#pOferta').text(orden.oferta);
+ 			$('#pEficiencia').text(orden.eficiencia);
+ 			$('#pUBruta').text(orden.utilidadBruta);
  		}
  	});	
 }
@@ -147,13 +154,13 @@ function listarSubcontratos(idOrdenTemp){
  		dataType: 'json',
  		data: '',
  		success: function(subcontratos){
- 			/* $.each(subcontratos, function(i, subcontrato){
+ 			$.each(subcontratos, function(i, subcontrato){
 	 			var source = $("#templateSubcontratos").html();
 	 			var template = Handlebars.compile(source);
 	 			html += template(subcontrato);
 	 			
  			});		
- 			$("#viewSubcontratosHandlerbars").html(html); */	        
+ 			$("#viewSubcontratosHandlerbars").html(html); 	        
  		},
  		complete: function() {	 			
  			//removeNulls();
