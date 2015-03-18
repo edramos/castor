@@ -59,18 +59,10 @@
 								<div class="col-md-12">
 									<input id="txtOferta" class="form-control" placeholder="Oferta" name="oferta"/>
 									
-									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-											<input type="text" class="form-control form-filter input-sm" name="fechaInicio" placeholder="Fecha Inicio">
-											<span class="input-group-btn">
-												<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-											</span>
-									</div>
+									
 								</div>	
 							</div>
 						</div>
-						
-						
-						
 						<div class="col-md-3">
 							<div class="col-md-12">
 							<a href="#" class="btn yellow" onclick="buscarOrden();">Buscar <i class="fa fa-search"></i></a>
@@ -78,6 +70,34 @@
 							</div>
 						</div>
 					</div>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+										<input id="txtFechaInicio" type="text" class="form-control form-filter input-sm" name="fechaInicio" placeholder="Fecha Inicio">
+										<span class="input-group-btn">
+											<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+										</span>
+									</div>	
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+										<input id="txtFechaFin" type="text" class="form-control form-filter input-sm" name="fechaFin" placeholder="Fecha Fin">
+										<span class="input-group-btn">
+											<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+										</span>
+									</div>	
+								</div>
+							</div>
+						</div>
+					</div>
+					
 				</div>
 			</form:form>
 			</div>
@@ -145,10 +165,7 @@ jQuery(document).ready(function() {
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
-	
-	
-	
-	
+	datePickerInit();	
 	buscarOrden();
 });
 </script>
@@ -193,7 +210,15 @@ function createTable(){
 			"</tr></thead><tbody id='viewOrdenesHandlerbars'></tbody></table>"	
 	);
 }
-
+function datePickerInit(){
+	$('.date-picker').datepicker({
+        rtl: Metronic.isRTL(),
+        autoclose: true
+    });
+    $('.date-picker .form-control').change(function() {
+    	$('#frmBuscarOrden').validate().element($(this)); 
+    })
+}
 </script>
 <script id="templateOrden" type="text/x-handlebars-template">
 <tr>

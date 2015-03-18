@@ -175,7 +175,7 @@ var FormValidation = function () {
         // for more info visit the official plugin documentation: 
         // http://docs.jquery.com/Plugins/Validation
 
-            var form3 = $('#form_sample_3');
+            /*var form3 = $('#form_sample_3');
             var error3 = $('.alert-danger', form3);
             var success3 = $('.alert-success', form3);
 
@@ -309,7 +309,7 @@ var FormValidation = function () {
             });
             $('.date-picker .form-control').change(function() {
                 form3.validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input 
-            })
+            })*/
     }
 
     var handleWysihtml5 = function() {
@@ -329,7 +329,7 @@ var FormValidation = function () {
         //main function to initiate the module
         init: function () {
 
-            handleWysihtml5();
+            //handleWysihtml5();
             handleValidation1();
             handleValidation2();
             handleValidation3();

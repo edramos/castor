@@ -12,7 +12,7 @@
 
 <script id="templateSubcontratos" type="text/x-handlebars-template">
 <tr>
-	<td><a href="#">{{nombreCliente}}</a></td>
+	<td><a href="#">{{nombreProveedor}}</a></td>
 	<td>{{tipoTrabajo}}</td>
 	<td>{{moneda}}</td>
 	<td>{{monto}}</td>
