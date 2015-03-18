@@ -5,8 +5,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Castor | Buscar Orden</title>
 <jsp:include page="../comps/headMandatory.jsp"/>
+
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css"/>
+<script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
@@ -56,9 +58,19 @@
 							<div class="form-group">
 								<div class="col-md-12">
 									<input id="txtOferta" class="form-control" placeholder="Oferta" name="oferta"/>
+									
+									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+											<input type="text" class="form-control form-filter input-sm" name="fechaInicio" placeholder="Fecha Inicio">
+											<span class="input-group-btn">
+												<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+											</span>
+									</div>
 								</div>	
 							</div>
 						</div>
+						
+						
+						
 						<div class="col-md-3">
 							<div class="col-md-12">
 							<a href="#" class="btn yellow" onclick="buscarOrden();">Buscar <i class="fa fa-search"></i></a>
