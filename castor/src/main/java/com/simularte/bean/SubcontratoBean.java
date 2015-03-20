@@ -13,10 +13,19 @@ public class SubcontratoBean {
 	private BigDecimal monto;
 	private String moneda;
 	private String tipoTrabajo;
+	private String fechaTerminoObra;
+	
 	private Integer creadoPor;
 	private Timestamp fechaCreacion;
 	private String estado;
 	
+	
+	public String getFechaTerminoObra() {
+		return fechaTerminoObra;
+	}
+	public void setFechaTerminoObra(String fechaTerminoObra) {
+		this.fechaTerminoObra = fechaTerminoObra;
+	}
 	public Integer getIdSubcontrato() {
 		return idSubcontrato;
 	}

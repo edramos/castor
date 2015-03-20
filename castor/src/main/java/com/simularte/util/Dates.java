@@ -15,6 +15,12 @@ public class Dates {
 		java.text.DateFormat df = new java.text.SimpleDateFormat(format);
 		java.util.Date utilDate;
 		java.sql.Date sqlDate = null;
+		
+		//in: dd/mm/yyyy
+		String[] fechas = date.split("/");
+		//out: yyyy-mm-dd
+		date = fechas[2] + "-" + fechas[1] + "-" + fechas[0];
+		
 		try {
 			utilDate = df.parse(date);
 			sqlDate = new java.sql.Date(utilDate.getTime());

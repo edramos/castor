@@ -76,11 +76,11 @@ public class OrdenServiceImpl implements OrdenService {
 			//Convierte el array de String a un array de Subcontratos, con JSON esta parte ya seria automatica
 			ArrayList<Subcontrato> subContratos = new ArrayList<Subcontrato>();
 			int resto;		
-			
+			System.out.println("subCont.length: " + subCont.length);
 			for(int x = 0; x < subCont.length; x++){
 				resto = x%5;
 				if(resto == 0){
-					System.out.println("resto: " + resto);
+					System.out.println("resto: " + resto + "creo Proveedor");
 					Subcontrato subc = new Subcontrato();
 					
 					Proveedor proveedor = em.find(Proveedor.class, Integer.parseInt(subCont[x]));
@@ -90,14 +90,16 @@ public class OrdenServiceImpl implements OrdenService {
 					
 					subContratos.add(subc);
 				}else{
-					System.out.println("resto: " + resto + "size: " + subContratos.size());
+					System.out.println("size Subcontratos: " + subContratos.size());
 					int index = subContratos.size()-1;
 					System.out.println("index: " + index);
 					switch(resto){
 					case 1:
+						System.out.println("resto " + resto + ", x: " + x + ", tipo trabajo: " + subCont[x]);
 						subContratos.get(index).setTipoTrabajo(subCont[x]);
 						break;
 					case 2:
+						System.out.println("resto " + resto + ", x: " + x + ", moneda: " + subCont[x]);
 						subContratos.get(index).setMoneda(subCont[x]);
 						break;
 					case 3:
@@ -115,10 +117,12 @@ public class OrdenServiceImpl implements OrdenService {
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}
-						System.out.println("Moneda: " + subContratos.get(index).getMonto());
+						System.out.println("resto " + resto + ", x: " + x + ", monto: " + subContratos.get(index).getMonto());
 						break;
 					case 4:
+						System.out.println("resto " + resto + ", x: " + x + ", termino: " + subCont[x]);
 						subContratos.get(index).setFechaTerminoObra(Dates.stringToDate(subCont[x], "yyyy-MM-dd"));
+						break;
 					}
 				}
 			}

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.simularte.bean.OrdenBean;
 import com.simularte.service.OrdenService;
 
-
 @Controller
 public class OrdenController {
 
@@ -28,9 +27,8 @@ public class OrdenController {
 	@RequestMapping(value = "crearOrden", method = RequestMethod.POST)
 	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean, @RequestParam("subcontratos") String[] subCont, Model model, HttpServletRequest req) {		
 		String path = "";
-		int idCliente = ordenBean.getIdCliente();
-		System.out.println(ordenBean.getFechaEntrega());
-		int idOrden = ordenserv.crearOrden(ordenBean, idCliente, subCont, req);
+		System.out.println("termino obra: " + subCont[4]);
+		int idOrden = ordenserv.crearOrden(ordenBean, ordenBean.getIdCliente(), subCont, req);
 		
 		if(idOrden != -1){
 			path = "redirect:ordenPag-" + idOrden;

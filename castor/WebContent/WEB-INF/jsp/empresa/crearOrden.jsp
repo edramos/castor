@@ -124,13 +124,12 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<div class="col-md-12">
-										<!-- <div class="input-group date date-picker margin-bottom-5"> -->
-											<input id="txtFechaEntrega" type="text" class="form-control form-filter" placeholder="Fecha Entrega"/>
-											<input id="hdnFechaEntrega" type="text" name="fechaEntrega"/>
+										<div id="txtFechaEntrega" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+											<input type="text" class="form-control form-filter" placeholder="Fecha Entrega" name="fechaEntrega"/>											
 											<span class="input-group-btn">
 											<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
 											</span>
-										<!-- </div> -->
+										</div>
 									</div>
 								</div>
 							</div>
@@ -175,92 +174,7 @@
 						</div>
 						
 						
-						<!-- SUBCONTRATOS -->
-						
-						<h4 class="form-section">Subcontratos</h4>
-						<div class="row">
-							<div class="col-md-12">
-								<div class="table-container">
-									<div class="table-scrollable">
-										<table class="table table-striped table-bordered table-hover dataTable no-footer">
-										<thead>
-											<tr role="row" class="heading">
-												<th width="20%">Nombre</th>
-												<th width="20%">Tipo</th>
-												<th width="10%">Moneda</th>
-												<th width="20%">Monto</th>
-												<th width="20%">Termino Obra</th>
-												<th width="10%">Acciones</th>
-											</tr>
-											<tr role="row" class="filter" id="fila_SC_0">
-												<td>
-													<select id="sltProveedorSC_0" class="form-control" name="idProveedorSC" onchange="cambiarSelectorProveedorPago(0);">
-														<option>Proveedores</option>
-													</select>
-												</td>
-												<td>
-													<select id="sltTipoTrabajoSC_0" class="form-control" name="tipoTrabajoSC">
-														<option>Obra</option>
-														<option>Estudio</option>
-														<option>Adecuacion</option>
-														<option>Proyecto</option>
-														<option>Estructura Metalica</option>
-													</select>
-												</td>
-												<td>
-													<div class="form-group">
-														<div class="col-md-12">
-															<select id="sltMonedaSC_0" class="form-control" name="monedaSC">
-																<option value="dolar americano">USD ($/.)</option>
-																<option value="nuevo sol">PEN (S/.)</option>
-															</select>
-														</div>
-													</div>
-												</td>
-												<td>
-													<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" id="txtMontoSC_0" class="form-control" placeholder="Monto" name="montoSC"/>
-												</td>
-												<td>
-													<div id="txtTerminoObraSC_0" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-														<input type="text" class="form-control form-filter" name="fechaTerminoObra" placeholder="Termino Obra">
-														<span class="input-group-btn">
-														<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
-														</span>
-													</div>
-												</td>
-												<td>
-													<div class="margin-bottom-5">
-														<span class="btn btn-sm green filter-submit margin-bottom" onclick="agregarNuevaFilaSubcontratos();"><i class="fa fa-plus"></i></span>
-														<!-- <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span> -->
-													</div>
-												</td>
-											</tr>
-										</thead>
-										
-										<tbody id="vistaTablaSubcontratosProveedores">
-										</tbody>
-										
-										
-										<tbody>
-										<tr>
-											<td></td><td></td><td></td>
-											<td>
-												<div class="well" style="text-align: right;">
-													Subtotal: <input size="12" id="txtSubTotal" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" disabled="disabled" placeholder="SubTotal" name="subTotal"/><br/>
-													G.G.: <input size="12" id="txtGastosGenerales" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" onchange="recalcularTotalesSubcontratos();" placeholder="Gastos Generales" name="gastosGenerales"/><br/>
-													<strong>Total: </strong><input size="12" id="txtTotal" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" disabled="disabled" placeholder="Total" name="total"/>
-												</div>
-											</td>
-											<td></td><td></td>
-										</tr>
-										</tbody>	
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						
+						<!-- COBRO CLIENTE -->
 						
 						<h4 class="form-section">Cobro Cliente</h4>
 						<!-- <div class="row">
@@ -333,16 +247,104 @@
 						</div> -->
 						
 						
+						<!-- SUBCONTRATOS -->
+						
+						<h4 class="form-section">Subcontratos</h4>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-container">
+									<div class="table-scrollable">
+										<table class="table table-striped table-bordered table-hover dataTable no-footer">
+										<thead>
+											<tr role="row" class="heading">
+												<th width="20%">Proveedor</th>
+												<th width="20%">Tipo</th>
+												<th width="10%">Moneda</th>
+												<th width="20%">Monto</th>
+												<th width="20%">Termino Obra</th>
+												<th width="10%">Acciones</th>
+											</tr>
+											<tr role="row" class="filter" id="fila_SC_0">
+												<td>
+													<select id="sltProveedorSC_0" class="form-control" name="idProveedorSC" onchange="cambiarSelectorProveedorPago(0);">
+														<option>Proveedores</option>
+													</select>
+												</td>
+												<td>
+													<select id="sltTipoTrabajoSC_0" class="form-control" name="tipoTrabajoSC">
+														<option>Obra</option>
+														<option>Estudio</option>
+														<option>Adecuacion</option>
+														<option>Proyecto</option>
+														<option>Estructura Metalica</option>
+													</select>
+												</td>
+												<td>
+													<div class="form-group">
+														<div class="col-md-12">
+															<select id="sltMonedaSC_0" class="form-control" name="monedaSC">
+																<option value="dolar americano">USD ($/.)</option>
+																<option value="nuevo sol">PEN (S/.)</option>
+															</select>
+														</div>
+													</div>
+												</td>
+												<td>
+													<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" id="txtMontoSC_0" class="form-control" placeholder="Monto" name="montoSC"/>
+												</td>
+												<td>
+													<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+														<input id="txtTerminoObraSC_0" type="text" class="form-control form-filter" name="fechaTerminoObra" placeholder="Termino Obra">
+														<span class="input-group-btn">
+														<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+														</span>
+													</div>
+												</td>
+												<td>
+													<div class="margin-bottom-5">
+														<span class="btn btn-sm green filter-submit margin-bottom" onclick="agregarNuevaFilaSubcontratos();"><i class="fa fa-plus"></i></span>
+														<!-- <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span> -->
+													</div>
+												</td>
+											</tr>
+										</thead>
+										
+										<tbody id="vistaTablaSubcontratosProveedores">
+										</tbody>
+										
+										
+										<tbody>
+										<tr>
+											<td></td><td></td><td></td>
+											<td>
+												<div class="well" style="text-align: right;">
+													Subtotal: <input size="12" id="txtSubTotal" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" disabled="disabled" placeholder="SubTotal" name="subTotal"/><br/>
+													G.G.: <input size="12" id="txtGastosGenerales" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" onchange="recalcularTotalesSubcontratos();" placeholder="Gastos Generales" name="gastosGenerales"/><br/>
+													<strong>Total: </strong><input size="12" id="txtTotal" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" disabled="disabled" placeholder="Total" name="total"/>
+												</div>
+											</td>
+											<td></td><td></td>
+										</tr>
+										</tbody>	
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
+						
+						<!-- PAGO PROVEEDORES -->
 						
 						<h4 class="form-section">Pago Proveedores</h4>
-						<!-- <div class="row">
+						<div class="row">
 							<div class="col-md-12">
 								<div class="table-container">
 									<div class="table-scrollable">
 										<table class="table table-striped table-bordered table-hover dataTable no-footer">
 										<thead>
 										<tr role="row" class="heading">
-											<th width="15%">Proveedor</th>
+											<th width="20%">Proveedor</th>
 											<th width="20%">Pago 1</th>
 											<th width="20%">Pago 2</th>
 											<th width="20%">Pago 3</th>
@@ -357,7 +359,7 @@
 											<td>
 												<table class="table" style="margin-bottom: 5px;">
 												<tr>
-													<td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago1(0)" id="txtPorcentaje_pago1_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+													<td width="35%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago1(0)" id="txtPorcentaje_pago1_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
 													<td style="padding: 1px;"><input id="txtPagoParcial_pago1_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
 												</tr>
 												<tr>
@@ -375,7 +377,7 @@
 											<td>
 												<table class="table" style="margin-bottom: 5px;">
 												<tr>
-													<td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago2(0)" id="txtPorcentaje_pago2_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+													<td width="35%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago2(0)" id="txtPorcentaje_pago2_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
 													<td style="padding: 1px;"><input id="txtPagoParcial_pago2_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
 												</tr>
 												<tr>
@@ -393,7 +395,7 @@
 											<td>
 												<table class="table" style="margin-bottom: 5px;">
 												<tr>
-													<td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago3(0)" id="txtPorcentaje_pago3_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+													<td width="35%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago3(0)" id="txtPorcentaje_pago3_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
 													<td style="padding: 1px;"><input id="txtPagoParcial_pago3_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
 												</tr>
 												<tr>
@@ -419,14 +421,13 @@
 										</thead>
 										
 										<tbody id="vistaTablaPagos">
-										
 										</tbody>
 										
 										</table>
 									</div>
 								</div>
 							</div>
-						</div> -->
+						</div>
 						
 						
 						 <a id="btnGrabar" class="btn btn-default btn-sm eventBtn" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
@@ -471,22 +472,8 @@ jQuery(document).ready(function() {
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
    	//FormValidation.init();
-	
-	
-   	
-    
-       $( "#txtFechaEntrega" ).datepicker('option','dateformat','yy/mm/dd');
-    
- 
-	
-   /* 	$('#txtFechaEntrega').datepicker({
-   		minDate: -20,
-   	  	maxDate: "+1M +10D",
-   		dateFormat: "dd/mm/yy",
-   		altField: "#hdnFechaEntrega",
-   	  	altFormat: "yy-mm-dd",
-   		autoclose:true
-   	}); */
+
+	datePickerInit();
 	
 	//Cargo Selector de Cliente
 	listarSelectorClientes('sltCliente');
@@ -541,9 +528,32 @@ $(document).ready(function(){
 	});
 });
 
+/*GRABAR ORDEN DE TRABAJO*/
+function grabarProyecto(){
+	if($('#txtEficiencia').val() == ""){
+		$('#txtEficiencia').val(0);
+	}
+	
+	var subcontratos = [];
+	
+	for(x = 0; x <= idFila; x++){
+		//var subc = {idProveedorSC:$('#sltProveedorSC_' + x).val(), tipoTrabajoSC:$('#sltTipoTrabajoSC_' + x).val(), monedaSC:$('#sltMonedaSC_' + x).val(), montoSC:$('#txtMontoSC_' + x).val()};
+		subcontratos.push($('#sltProveedorSC_' + x).val());
+		subcontratos.push($('#sltTipoTrabajoSC_' + x).val());
+		subcontratos.push($('#sltMonedaSC_' + x).val());
+		//Cuando se pase a JSON la coma ya no sera un problema y se podra pasar el Objeto Subcontrato
+		var currencyMonto = Number($('#txtMontoSC_' + x).val().replace(/[^0-9\.]+/g,""));
+		subcontratos.push(currencyMonto);
+		subcontratos.push($('#txtTerminoObraSC_' + x).val());
+		//subcontratos.push(subc);
+	}
+		
+	$('#hdnSubcontratos').val(subcontratos);
+	$('#frmCrearOrden').submit();
+}
+
 function datePickerInit(){
 	$('.date-picker').datepicker({
-		altFormat: "yyyy-MM-dd",
 		rtl: Metronic.isRTL(),
         autoclose: true
     });
@@ -566,7 +576,7 @@ function listarSelectorClientes(nombreSelector){
 	 			html += template(cliente);
 	 			
  			});		
- 			$("#"+nombreSelector).html(html);	        
+ 			$("#" + nombreSelector).html(html);	        
  		},
  		complete: function() {	 			
  			
@@ -617,8 +627,6 @@ function agregarNuevaFilaSubcontratos(){
 	
 	listarSelectorProveedores('sltProveedorSC_' + idFila);
 	recalcularTotalesSubcontratos();
-	
-	//
 	agregarNuevaFilaPagos(idFila);
 }
 
@@ -716,31 +724,7 @@ function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
 	var montoParcial = (monto*(porcentaje/100));
 	$('#txtPagoParcial_pago3_'+idTempFila).val(montoParcial);
 }
-/*GRABAR ORDEN DE TRABAJO*/
-function grabarProyecto(){
-	if($('#txtEficiencia').val() == ""){
-		$('#txtEficiencia').val(0);
-	}
-	alert($('#hdnFechaEntrega').val());
-		
-	var subcontratos = [];
-	
-	for(x = 0; x <= idFila; x++){
-		//var subc = {idProveedorSC:$('#sltProveedorSC_' + x).val(), tipoTrabajoSC:$('#sltTipoTrabajoSC_' + x).val(), monedaSC:$('#sltMonedaSC_' + x).val(), montoSC:$('#txtMontoSC_' + x).val()};
-		subcontratos.push($('#sltProveedorSC_' + x).val());
-		subcontratos.push($('#sltTipoTrabajoSC_' + x).val());
-		subcontratos.push($('#sltMonedaSC_' + x).val());
-		//Cuando se pase a JSON la coma ya no sera un problema y se podra pasar el Objeto Subcontrato
-		var currencyMonto = Number($('#txtMontoSC_' + x).val().replace(/[^0-9\.]+/g,""));
-		subcontratos.push(currencyMonto);
-		subcontratos.push($('#txtTerminoObraSC_' + x).val().replace(/\//g,"-"));
-		//subcontratos.push(subc);
-	}
-	//alert('subcontratos: ' + subcontratos[0].montoSC);	
-	$('#hdnSubcontratos').val(subcontratos);
-	//alert('hdnSubcontratos: ' + $('#hdnSubcontratos').val());
-	//$('#frmCrearOrden').submit();
-}
+
 
 </script>
 <script id="templateSelectorClientes" type="text/x-handlebars-template">
