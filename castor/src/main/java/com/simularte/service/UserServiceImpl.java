@@ -26,6 +26,8 @@ public class UserServiceImpl implements UserService{
 		try{
 			Empresa empresa = new Empresa();
 			
+			//Por ahora solo se cambiara internamente, valores: empresa, proveedor y cliente
+			empresa.setTipo("empresa");
 			empresa.setFechaCreacion(Dates.fechaCreacion());
 			empresa.setEstado("enabled");
 			
@@ -40,7 +42,6 @@ public class UserServiceImpl implements UserService{
 			Perfil perfil = new Perfil();
 			
 			perfil.setPerfilUsuario(usuario);
-			perfil.setTipo("empresa");
 			perfil.setRol("administrador");
 			perfil.setFechaCreacion(Dates.fechaCreacion());
 			perfil.setEstado("enabled");
@@ -74,8 +75,14 @@ public class UserServiceImpl implements UserService{
 				tqPerfil.setParameter("idusuario", usuarioSR.getIdUsuario());
 				
 				Perfil profileSR = tqPerfil.getSingleResult();
-				session.setAttribute("tipo", profileSR.getTipo());
 				session.setAttribute("rol", profileSR.getRol());
+				
+				TypedQuery<Empresa> tqEmpresa = em.createQuery("SELECT e FROM Empresa e WHERE e.idEmpresa =:idempresa", Empresa.class);
+				tqEmpresa.setParameter("idempresa", usuarioSR.getUsuarioEmpresa().getIdEmpresa());
+				
+				Empresa empresaSR = tqEmpresa.getSingleResult();
+				
+				session.setAttribute("tipo", empresaSR.getTipo());
 				
 				result = true;
 			}			

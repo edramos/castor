@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-@Entity
+@Entity	//En el futuro cambiara de nombre por Organizacion, tipo define que es
 public class Empresa {
 
 	@Id @GeneratedValue @Column(name = "idempresa")
@@ -27,8 +27,11 @@ public class Empresa {
 	@OneToMany(mappedBy = "ordenEmpresa")
 	private Collection<Orden> ordenesEmp;
 	
+	//Fields
 	@Column(length = 90, nullable = true)
 	private String nombre;
+	@Column(length = 30, nullable = true)
+	private String tipo;
 	@Column(length = 30, nullable = true)
 	private String ruc;
 	@Column(length = 270, nullable = true)
@@ -43,6 +46,12 @@ public class Empresa {
 	
 	
 	
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 	public Integer getIdEmpresa() {
 		return idEmpresa;
 	}

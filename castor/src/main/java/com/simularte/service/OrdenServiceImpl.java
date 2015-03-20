@@ -1,6 +1,7 @@
 package com.simularte.service;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -60,7 +61,8 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setUtilidadBruta(ordenBean.getUtilidadBruta());
 			orden.setSubTotal(ordenBean.getSubTotal());
 			orden.setGastosGenerales(ordenBean.getGastosGenerales());
-			orden.setTotal(ordenBean.getTotal());			
+			orden.setTotal(ordenBean.getTotal());	
+			orden.setFechaEntrega(Dates.stringToDate(ordenBean.getFechaEntrega(), "yyyy-MM-dd"));
 						
 			orden.setCreadoPor((Integer)session.getAttribute("idUser"));
 			orden.setFechaCreacion(Dates.fechaCreacion());
@@ -76,7 +78,7 @@ public class OrdenServiceImpl implements OrdenService {
 			int resto;		
 			
 			for(int x = 0; x < subCont.length; x++){
-				resto = x%4;
+				resto = x%5;
 				if(resto == 0){
 					System.out.println("resto: " + resto);
 					Subcontrato subc = new Subcontrato();
@@ -115,6 +117,8 @@ public class OrdenServiceImpl implements OrdenService {
 						}
 						System.out.println("Moneda: " + subContratos.get(index).getMonto());
 						break;
+					case 4:
+						subContratos.get(index).setFechaTerminoObra(Dates.stringToDate(subCont[x], "yyyy-MM-dd"));
 					}
 				}
 			}

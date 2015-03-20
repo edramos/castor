@@ -8,14 +8,6 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
 <!-- END PAGE LEVEL STYLES -->
-<!-- BEGIN THEME STYLES -->
-<!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
-<link href="assets/global/css/components-rounded.css" id="style_components" rel="stylesheet" type="text/css"/>
-<link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
-<link href="assets/admin/layout4/css/layout.css" rel="stylesheet" type="text/css"/>
-<link href="assets/admin/layout4/css/themes/light.css" rel="stylesheet" type="text/css" id="style_color"/>
-<link href="assets/admin/layout4/css/custom.css" rel="stylesheet" type="text/css"/>
-<!-- END THEME STYLES -->
 <style>
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th{
 	border-top: 0px solid #DDD;
@@ -128,6 +120,22 @@
 							</div>
 						</div>
 						
+						<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="col-md-12">
+										<!-- <div class="input-group date date-picker margin-bottom-5"> -->
+											<input id="txtFechaEntrega" type="text" class="form-control form-filter" placeholder="Fecha Entrega"/>
+											<input id="hdnFechaEntrega" type="text" name="fechaEntrega"/>
+											<span class="input-group-btn">
+											<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+											</span>
+										<!-- </div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+						
 						
 						<!-- INFORMACION FINANCIERA -->
 						
@@ -179,8 +187,9 @@
 											<tr role="row" class="heading">
 												<th width="20%">Nombre</th>
 												<th width="20%">Tipo</th>
-												<th width="20%">Moneda</th>
+												<th width="10%">Moneda</th>
 												<th width="20%">Monto</th>
+												<th width="20%">Termino Obra</th>
 												<th width="10%">Acciones</th>
 											</tr>
 											<tr role="row" class="filter" id="fila_SC_0">
@@ -211,7 +220,14 @@
 												<td>
 													<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" id="txtMontoSC_0" class="form-control" placeholder="Monto" name="montoSC"/>
 												</td>
-												
+												<td>
+													<div id="txtTerminoObraSC_0" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+														<input type="text" class="form-control form-filter" name="fechaTerminoObra" placeholder="Termino Obra">
+														<span class="input-group-btn">
+														<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+														</span>
+													</div>
+												</td>
 												<td>
 													<div class="margin-bottom-5">
 														<span class="btn btn-sm green filter-submit margin-bottom" onclick="agregarNuevaFilaSubcontratos();"><i class="fa fa-plus"></i></span>
@@ -235,29 +251,8 @@
 													<strong>Total: </strong><input size="12" id="txtTotal" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" disabled="disabled" placeholder="Total" name="total"/>
 												</div>
 											</td>
-											<td></td>
+											<td></td><td></td>
 										</tr>
-										<!-- <tr>
-											<td></td>
-											<td></td>
-											<td>SubTotal</td>
-											<td><input data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" id="txtSubTotal" disabled="disabled" class="form-control" placeholder="SubTotal" name="subTotal"/></td>
-											<td></td>
-										</tr> -->
-										<!-- <tr>
-											<td></td>
-											<td></td>
-											<td>GG</td>
-											<td><input id="txtGastosGenerales" onchange="recalcularTotalesSubcontratos();" class="form-control" placeholder="Gastos Generales" name="gastosGenerales"/></td>
-											<td></td>
-										</tr> -->
-										<!-- <tr>
-											<td></td>
-											<td></td>
-											<td>TOTAL:</td>
-											<td><input data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" id="txtTotal" disabled="disabled" class="form-control" placeholder="Total" name="total"/></td>
-											<td></td>
-										</tr> -->
 										</tbody>	
 										</table>
 									</div>
@@ -475,7 +470,23 @@ jQuery(document).ready(function() {
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
-   	FormValidation.init();
+   	//FormValidation.init();
+	
+	
+   	
+    
+       $( "#txtFechaEntrega" ).datepicker('option','dateformat','yy/mm/dd');
+    
+ 
+	
+   /* 	$('#txtFechaEntrega').datepicker({
+   		minDate: -20,
+   	  	maxDate: "+1M +10D",
+   		dateFormat: "dd/mm/yy",
+   		altField: "#hdnFechaEntrega",
+   	  	altFormat: "yy-mm-dd",
+   		autoclose:true
+   	}); */
 	
 	//Cargo Selector de Cliente
 	listarSelectorClientes('sltCliente');
@@ -529,6 +540,17 @@ $(document).ready(function(){
 		}
 	});
 });
+
+function datePickerInit(){
+	$('.date-picker').datepicker({
+		altFormat: "yyyy-MM-dd",
+		rtl: Metronic.isRTL(),
+        autoclose: true
+    });
+    $('.date-picker .form-control').change(function() {
+    	$('#frmCrearOrden').validate().element($(this)); 
+    })
+}
 
 function listarSelectorClientes(nombreSelector){
 	var html = '';
@@ -590,6 +612,8 @@ function agregarNuevaFilaSubcontratos(){
         digits: 2,
         autoGroup: true,
     });
+	
+	datePickerInit();
 	
 	listarSelectorProveedores('sltProveedorSC_' + idFila);
 	recalcularTotalesSubcontratos();
@@ -697,7 +721,7 @@ function grabarProyecto(){
 	if($('#txtEficiencia').val() == ""){
 		$('#txtEficiencia').val(0);
 	}
-	//alert('idFila: ' + idFila);
+	alert($('#hdnFechaEntrega').val());
 		
 	var subcontratos = [];
 	
@@ -709,13 +733,13 @@ function grabarProyecto(){
 		//Cuando se pase a JSON la coma ya no sera un problema y se podra pasar el Objeto Subcontrato
 		var currencyMonto = Number($('#txtMontoSC_' + x).val().replace(/[^0-9\.]+/g,""));
 		subcontratos.push(currencyMonto);
-		
+		subcontratos.push($('#txtTerminoObraSC_' + x).val().replace(/\//g,"-"));
 		//subcontratos.push(subc);
 	}
 	//alert('subcontratos: ' + subcontratos[0].montoSC);	
 	$('#hdnSubcontratos').val(subcontratos);
 	//alert('hdnSubcontratos: ' + $('#hdnSubcontratos').val());
-	$('#frmCrearOrden').submit();
+	//$('#frmCrearOrden').submit();
 }
 
 </script>
@@ -755,6 +779,14 @@ function grabarProyecto(){
 		</td>
 		<td>
 			<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor({{idFila}});" id="txtMontoSC_{{idFila}}" class="form-control" placeholder="Monto" name="montoSC"/>
+		</td>
+		<td>
+			<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+				<input id="txtTerminoObraSC_{{idFila}}" type="text" class="form-control form-filter" name="fechaTerminoObra" placeholder="Termino Obra">
+				<span class="input-group-btn">
+					<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+				</span>
+			</div>
 		</td>
 		<td>
 			<div class="margin-bottom-5">

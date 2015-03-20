@@ -29,12 +29,11 @@ public class OrdenController {
 	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean, @RequestParam("subcontratos") String[] subCont, Model model, HttpServletRequest req) {		
 		String path = "";
 		int idCliente = ordenBean.getIdCliente();
+		System.out.println(ordenBean.getFechaEntrega());
 		int idOrden = ordenserv.crearOrden(ordenBean, idCliente, subCont, req);
 		
 		if(idOrden != -1){
-			//path = "empresa/orden";
-			path = "redirect:ordenPag-"+idOrden;
-			//model.addAttribute("idOrden", idOrden);
+			path = "redirect:ordenPag-" + idOrden;
 		}else{
 			System.out.println("NO Grabe!");
 		}

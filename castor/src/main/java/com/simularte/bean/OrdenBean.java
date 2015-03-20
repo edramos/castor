@@ -24,6 +24,7 @@ public class OrdenBean {
 	private BigDecimal subTotal;
 	private BigDecimal gastosGenerales;
 	private BigDecimal total;
+	private String fechaEntrega;
 	
 	private String busqueda;
 	private String campo;
@@ -41,6 +42,14 @@ public class OrdenBean {
 	private BigDecimal ofertaMinima;
 	private BigDecimal ofertaMaxima;
 	
+	
+	
+	public String getFechaEntrega() {
+		return fechaEntrega;
+	}
+	public void setFechaEntrega(String fechaEntrega) {
+		this.fechaEntrega = fechaEntrega;
+	}
 	public String getCampo() {
 		return campo;
 	}

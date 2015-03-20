@@ -40,66 +40,10 @@
 			<div class="col-md-6">
 				<div class="portlet box blue-hoki">
 					<div class="portlet-title">
-						<div class="caption"><i class="icon-share"></i>Proyectos</div>
-						<div class="actions">
-							<a id="btnCrearProy" href="toCrearOrden" class="btn btn-default btn-sm eventBtn"><i class="fa fa-plus"></i> Crear OT </a>							
-							<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
-						</div>
-					</div>
-					<div class="portlet-body">
-						<div class="table-scrollable table-scrollable-borderless">
-							<table class="table table-hover table-light">
-							<thead>
-							<tr class="uppercase">
-								<th>N°</th>
-								<th colspan="2">Estado</th>
-								<th>Oferta</th>
-								<th>Plazas</th>
-								<th>RATE</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td><span class="bold theme-font-color">85</span></td>
-								<td class="fit"><i class="icon-paper-plane font-green-sharp"></i></td>
-								<td>Nuevo</td>
-								<td>S/. 2,500</td>
-								<td>750</td>
-								<td><span class="bold theme-font-color">70%</span></td>
-							</tr>
-							<tr>
-								<td><span class="bold theme-font-color">7</span></td>
-								<td class="fit"><i class="icon-plane font-green-sharp"></i></td>
-								<td>Esperando</td>
-								<td>S/. 4,500</td>
-								<td>450</td>
-								<td><span class="bold theme-font-color">10%</span></td>
-							</tr>
-							<tr>
-								<td><span class="bold theme-font-color">12</span></td>
-								<td class="fit"><i class="icon-rocket font-green-sharp"></i></td>
-								<td>En proceso</td>
-								<td>S/. 3,500</td>
-								<td>425</td>
-								<td><span class="bold theme-font-color">13%</span></td>
-							</tr>
-							<tr>
-								<td><span class="bold theme-font-color">18</span></td>
-								<td class="fit"><i class="icon-trophy font-green-sharp"></i></td>
-								<td>Finalizado</td>
-								<td>S/. 4,500</td>
-								<td>950</td>
-								<td><span class="bold theme-font-color">24%</span></td>
-							</tr>
-							</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div class="portlet box blue-hoki">
-					<div class="portlet-title">
 						<div class="caption"><i class="icon-basket"></i>Ordenes</div>
-						<div class="actions">							
+						<div class="actions">
+							<a id="btnBuscarOrden" href="toBuscarOrden" class="btn btn-default btn-sm eventBtn"><i class="fa fa-search"></i> Buscar </a>	
+							<a id="btnCrearProy" href="toCrearOrden" class="btn btn-default btn-sm eventBtn"><i class="fa fa-plus"></i> Crear </a>
 							<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title="">
 							</a>
 						</div>
