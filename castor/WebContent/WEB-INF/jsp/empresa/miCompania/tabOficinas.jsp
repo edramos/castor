@@ -381,9 +381,9 @@ function iniciarEditMapaGeocoderOficina(){
 <script id="templateOficinas" type="text/x-handlebars-template">
 	<tr>
 		<td>
-			<span id="spnNombreOfi_{{idOficina}}" class="font-blue-hoki">Nombre: {{nombre}}</span><br>
-			<span id="spnTelefonoOfi_{{idOficina}}" class="font-blue-hoki">Telefono: {{telefonoOficina}}</span><br>
-			<span id="spnDireccionCompletaOfi_{{idOficina}}" class="font-blue-hoki">Direccion: {{direccionCompleta}}</span>			
+			Nombre: <span id="spnNombreOfi_{{idOficina}}" class="font-blue-hoki">{{nombre}}</span><br>
+			Telefono: <span id="spnTelefonoOfi_{{idOficina}}" class="font-blue-hoki">{{telefonoOficina}}</span><br>
+			Direccion: <span id="spnDireccionCompletaOfi_{{idOficina}}" class="font-blue-hoki">{{direccionCompleta}}</span>			
 			<span style="display:none" id="spnLatitudOfi_{{idOficina}}" class="font-blue-hoki">{{latitud}}</span>
 			<span style="display:none" id="spnLongitudOfi_{{idOficina}}" class="font-blue-hoki">{{longitud}}</span>
 		</td>
