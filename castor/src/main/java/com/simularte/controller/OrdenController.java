@@ -25,10 +25,10 @@ public class OrdenController {
 	OrdenService ordenserv;
 	
 	@RequestMapping(value = "crearOrden", method = RequestMethod.POST)
-	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean, @RequestParam("subcontratos") String[] subCont, Model model, HttpServletRequest req) {		
+	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean, @RequestParam("subcontratos") String[] subCont, @RequestParam("pagoproveedores") String[] pagProv, Model model, HttpServletRequest req) {		
 		String path = "";
 		System.out.println("termino obra: " + subCont[4]);
-		int idOrden = ordenserv.crearOrden(ordenBean, ordenBean.getIdCliente(), subCont, req);
+		int idOrden = ordenserv.crearOrden(ordenBean, ordenBean.getIdCliente(), subCont, pagProv, req);
 		
 		if(idOrden != -1){
 			path = "redirect:ordenPag-" + idOrden;

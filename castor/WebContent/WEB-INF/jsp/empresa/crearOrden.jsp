@@ -299,6 +299,7 @@
 														<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
 														</span>
 													</div>
+													<input style="display:none" id="txtEstadoSC_0" class="form-control" placeholder="Estado" name="estadoSC" value="enabled"/>
 												</td>
 												<td>
 													<div class="margin-bottom-5">
@@ -352,9 +353,12 @@
 										</tr>
 										<tr role="row" class="filter" id="fila_pago_0">
 											<td>
-												<select id="sltProveedor_0" name="pago_idProveedor" class="form-control form-filter input-sm">
+												<span id="spnProveedor_0"></span>
+			 									<span id="spnMontoTotal_0"></span>
+												<select style="display:none" id="sltProveedor_0" name="pago_idProveedor" class="form-control form-filter input-sm">
 												</select>
-												<input id="montoTotal_0" type="text" class="form-control form-filter input-sm" name="pago_montoTotal" placeholder="Monto USD $/.">
+												<input style="display:none" id="montoTotal_0" type="text" class="form-control form-filter input-sm" name="pago_montoTotal" placeholder="Monto USD $/.">
+												<input style="display:none" id="txtEstado_0" class="form-control" placeholder="Estado" name="estado" value="enabled"/>
 											</td>
 											<td>
 												<table class="table" style="margin-bottom: 5px;">
@@ -365,7 +369,7 @@
 												<tr>
 													<td style="padding: 1px;" colspan="2">
 														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
+															<input id="txtFechaCobroProv_pago1_0" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
 															<span class="input-group-btn">
 															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 															</span>
@@ -383,7 +387,7 @@
 												<tr>
 													<td style="padding: 1px;" colspan="2">
 														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
+															<input id="txtFechaCobroProv_pago2_0" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
 															<span class="input-group-btn">
 															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 															</span>
@@ -401,7 +405,7 @@
 												<tr>
 													<td style="padding: 1px;" colspan="2">
 														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
+															<input id="txtFechaCobroProv_pago3_0" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
 															<span class="input-group-btn">
 															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 															</span>
@@ -433,6 +437,7 @@
 						 <a id="btnGrabar" class="btn btn-default btn-sm eventBtn" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
 					</div>
 					<input id="hdnSubcontratos" type="hidden" name="subcontratos" value=""/>
+					<input id="hdnPagoProveedores" type="hidden" name="pagoproveedores" value=""/>
 				</form:form>
 			
 			</div>
@@ -534,6 +539,7 @@ function grabarProyecto(){
 		$('#txtEficiencia').val(0);
 	}
 	
+	//SUBCONTRATOS
 	var subcontratos = [];
 	
 	for(x = 0; x <= idFila; x++){
@@ -545,10 +551,40 @@ function grabarProyecto(){
 		var currencyMonto = Number($('#txtMontoSC_' + x).val().replace(/[^0-9\.]+/g,""));
 		subcontratos.push(currencyMonto);
 		subcontratos.push($('#txtTerminoObraSC_' + x).val());
+		subcontratos.push($('#txtEstadoSC_' + x).val());
 		//subcontratos.push(subc);
 	}
 		
+	//PAGO PROVEEDORES
+	var pagoProveedores = [];
+	
+	for(x = 0; x <= idFila; x++){
+		
+		pagoProveedores.push($('#sltProveedor_' + x).val());
+		//Cuando se pase a JSON la coma ya no sera un problema y se podra pasar el Objeto Subcontrato
+		//Pago 1
+		var currencyMontoParcial_Pago1 = Number($('#txtPagoParcial_pago1_' + x).val().replace(/[^0-9\.]+/g,""));
+		pagoProveedores.push(currencyMontoParcial_Pago1);
+		pagoProveedores.push($('#txtFechaCobroProv_pago1_' + x).val());
+		//Pago 2
+		var currencyMontoParcial_Pago2 = Number($('#txtPagoParcial_pago2_' + x).val().replace(/[^0-9\.]+/g,""));
+		pagoProveedores.push(currencyMontoParcial_Pago2);
+		pagoProveedores.push($('#txtFechaCobroProv_pago2_' + x).val());
+		//Pago 3
+		var currencyMontoParcial_Pago3 = Number($('#txtPagoParcial_pago3_' + x).val().replace(/[^0-9\.]+/g,""));
+		pagoProveedores.push(currencyMontoParcial_Pago3);
+		pagoProveedores.push($('#txtFechaCobroProv_pago3_' + x).val());
+		
+		pagoProveedores.push($('#txtEstado_' + x).val());
+		
+		//subcontratos.push(subc);
+	}
+	
+	
 	$('#hdnSubcontratos').val(subcontratos);
+	
+	$('#hdnPagoProveedores').val(pagoProveedores);
+	
 	$('#frmCrearOrden').submit();
 }
 
@@ -570,6 +606,7 @@ function listarSelectorClientes(nombreSelector){
  		dataType: 'json',
  		data: '',
  		success: function(clientes){
+ 			html = '<option value="">Escoger Cliente</option>';
  			$.each(clientes, function(i, cliente){
 	 			var source = $("#templateSelectorClientes").html();
 	 			var template = Handlebars.compile(source);
@@ -592,6 +629,7 @@ function listarSelectorProveedores(nombreSelector){
  		dataType: 'json',
  		data: '',
  		success: function(proveedores){
+ 			html = '<option value="">Escoger Proveedor</option>';
  			$.each(proveedores, function(i, proveedor){
 	 			var source = $("#templateSelectorProveedores").html();
 	 			var template = Handlebars.compile(source);
@@ -623,7 +661,7 @@ function agregarNuevaFilaSubcontratos(){
         autoGroup: true,
     });
 	
-	datePickerInit();
+	//datePickerInit();
 	
 	listarSelectorProveedores('sltProveedorSC_' + idFila);
 	recalcularTotalesSubcontratos();
@@ -638,7 +676,9 @@ function agregarNuevaFilaPagos(idFilaTemp){
 	var template = Handlebars.compile(source);
 	html += template(entidadFila2);
 	$("#vistaTablaPagos").append(html);
-	listarSelectorProveedores('sltProveedor_'+idFilaTemp);	
+	listarSelectorProveedores('sltProveedor_'+idFilaTemp);
+	
+	datePickerInit()
 }
 
 function recalcularTotalesSubcontratos(){
@@ -698,33 +738,47 @@ function recalcularTotalesSubcontratos(){
 
 function cambiarSelectorProveedorPago(idTempFila){
 	$('#sltProveedor_'+idTempFila).val($('#sltProveedorSC_'+idTempFila).val());
+	$('#spnProveedor_'+idTempFila).text($('#sltProveedorSC_'+idTempFila+' option:selected').text());
 }
 
 function cambiarPagoProveedor(idTempFila){
-	$('#montoTotal_'+idTempFila).val($('#txtMontoSC_'+idTempFila).val());
+	//$('#montoTotal_'+idTempFila).val($('#txtMontoSC_'+idTempFila).val());
+	$('#montoTotal_'+idTempFila).val(Number($('#txtMontoSC_'+idTempFila).val().replace(/[^0-9\.]+/g,"")));
+	$('#spnMontoTotal_'+idTempFila).text($('#txtMontoSC_'+idTempFila).val());
 }
 
 
 function calcularMontoParcialxPorcentaje_Pago1(idTempFila){
-	var monto = $('#montoTotal_'+idTempFila).val();
+	//var monto = $('#montoTotal_'+idTempFila).val();
+	var monto = Number($('#montoTotal_'+idTempFila).val().replace(/[^0-9\.]+/g,""));
 	var porcentaje = $('#txtPorcentaje_pago1_'+idTempFila).val();
 	var montoParcial = (monto*(porcentaje/100));
 	$('#txtPagoParcial_pago1_'+idTempFila).val(montoParcial);
 		
 }
 function calcularMontoParcialxPorcentaje_Pago2(idTempFila){
-	var monto = $('#montoTotal_'+idTempFila).val();
+	//var monto = $('#montoTotal_'+idTempFila).val();
+	var monto = Number($('#montoTotal_'+idTempFila).val().replace(/[^0-9\.]+/g,""));
 	var porcentaje = $('#txtPorcentaje_pago2_'+idTempFila).val();
 	var montoParcial = (monto*(porcentaje/100));
 	$('#txtPagoParcial_pago2_'+idTempFila).val(montoParcial);
 }
 function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
-	var monto = $('#montoTotal_'+idTempFila).val();
+	//var monto = $('#montoTotal_'+idTempFila).val();
+	var monto = Number($('#montoTotal_'+idTempFila).val().replace(/[^0-9\.]+/g,""));
 	var porcentaje = $('#txtPorcentaje_pago3_'+idTempFila).val();
 	var montoParcial = (monto*(porcentaje/100));
 	$('#txtPagoParcial_pago3_'+idTempFila).val(montoParcial);
 }
 
+
+function borrarSubcontratoProveedor(idTempFila){
+	$('#fila_SC_'+idTempFila).hide();
+	$('#txtEstadoSC_'+idTempFila).val('disabled');
+	
+	$('#fila_pago_'+idTempFila).hide();
+	$('#txtEstado_'+idTempFila).val('disabled');
+}
 
 </script>
 <script id="templateSelectorClientes" type="text/x-handlebars-template">
@@ -771,11 +825,12 @@ function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
 					<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
 				</span>
 			</div>
+			<input style="display:none" id="txtEstadoSC_{{idFila}}" class="form-control" placeholder="Estado" name="estadoSC" value="enabled"/>
 		</td>
 		<td>
 			<div class="margin-bottom-5">
 				
-				<span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
+				<span class="btn btn-sm red filter-cancel" onclick="borrarSubcontratoProveedor({{idFila}})"><i class="fa fa-times"></i></span>
 			</div>
 		</td>
 	</tr>
@@ -784,9 +839,12 @@ function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
 <script id="templateProveedoresPago_tabla" type="text/x-handlebars-template">
 	<tr role="row" class="filter" id="fila_pago_{{idFila}}">
 		 <td>
-			 <select id="sltProveedor_{{idFila}}" name="pago_idProveedor" class="form-control form-filter input-sm">
+			 <span id="spnProveedor_{{idFila}}"></span>
+			 <span id="spnMontoTotal_{{idFila}}"></span>
+			 <select style="display:none" id="sltProveedor_{{idFila}}" name="pago_idProveedor" class="form-control form-filter input-sm">
 			 </select>
-			 <input id="montoTotal_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoTotal" placeholder="Monto USD $/.">
+			 <input style="display:none" id="montoTotal_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoTotal" placeholder="Monto USD $/.">
+			 <input style="display:none" id="txtEstado_{{idFila}}" class="form-control" placeholder="Estado" name="estado" value="enabled"/>
 		 </td>
 		 <td>
 			 <table class="table" style="margin-bottom: 5px;">
@@ -797,7 +855,7 @@ function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
 			 <tr>
 				 <td style="padding: 1px;" colspan="2">
 					 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-						 <input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
+						 <input id="txtFechaCobroProv_pago1_{{idFila}}"  type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
 						 <span class="input-group-btn">
 						 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 						 </span>
@@ -815,7 +873,7 @@ function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
 			 <tr>
 				 <td style="padding: 1px;" colspan="2">
 					 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-						 <input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
+						 <input id="txtFechaCobroProv_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
 						 <span class="input-group-btn">
 						 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 						 </span>
@@ -827,13 +885,13 @@ function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
 		 <td>
 			 <table class="table" style="margin-bottom: 5px;">
 			 <tr>
-				 <td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago3({{idFila}})" id="txtPorcentaje_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
-				 <td style="padding: 1px;"><input id="txtPagoParcial_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
+				 <td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago3({{idFila}})" id="txtPorcentaje_pago3_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
+				 <td style="padding: 1px;"><input id="txtPagoParcial_pago3_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
 			 </tr>
 			 <tr>
 				 <td style="padding: 1px;" colspan="2">
 					 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-						 <input type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
+						 <input id="txtFechaCobroProv_pago3_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
 						 <span class="input-group-btn">
 						 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 						 </span>
