@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Castor | Proyecto</title>
+<title>Castor | Orden</title>
 <jsp:include page="../comps/headMandatory.jsp"/>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <!-- END PAGE LEVEL STYLES -->
@@ -41,19 +41,19 @@
 						</li>
 						<li class="">
 							<a aria-expanded="false" href="#tab_1_1_2" data-toggle="tab">
-							<span class="caption-subject font-blue-madison bold uppercase">Financiera</span></a>
-						</li>
-						<li class="">
-							<a aria-expanded="false" href="#tab_1_1_3" data-toggle="tab">
 							<span class="caption-subject font-blue-madison bold uppercase">Subcontratos</span></a>
 						</li>
 						<li class="">
-							<a aria-expanded="false" href="#tab_1_1_4" data-toggle="tab">
+							<a aria-expanded="false" href="#tab_1_1_3" data-toggle="tab">
 							<span class="caption-subject font-blue-madison bold uppercase">Cobros</span></a>
 						</li>
 						<li class="">
-							<a aria-expanded="false" href="#tab_1_1_5" data-toggle="tab">
+							<a aria-expanded="false" href="#tab_1_1_4" data-toggle="tab">
 							<span class="caption-subject font-blue-madison bold uppercase">Pagos</span></a>
+						</li>
+						<li class="">
+							<a aria-expanded="false" href="#tab_1_1_5" data-toggle="tab">
+							<span class="caption-subject font-blue-madison bold uppercase">Archivos</span></a>
 						</li>
 					</ul>
 				</div>
@@ -64,13 +64,13 @@
 						<jsp:include page="orden/tabGeneral.jsp"/>
 					</div>
 					<div class="tab-pane" id="tab_1_1_2">
-						<jsp:include page="orden/tabFinanciera.jsp"/>
-					</div>
-					<div class="tab-pane" id="tab_1_1_3">
 						<jsp:include page="orden/tabSubcontratos.jsp"/>
 					</div>
-					<div class="tab-pane" id="tab_1_1_4">
+					<div class="tab-pane" id="tab_1_1_3">
 						<jsp:include page="orden/tabCobros.jsp"/>
+					</div>
+					<div class="tab-pane" id="tab_1_1_4">
+						<jsp:include page="orden/tabPagos.jsp"/>
 					</div>
 					<div class="tab-pane" id="tab_1_1_5">
 						<jsp:include page="orden/tabPagos.jsp"/>

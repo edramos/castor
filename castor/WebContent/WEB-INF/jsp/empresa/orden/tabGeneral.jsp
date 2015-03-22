@@ -1,102 +1,98 @@
-<div class="portlet-body form">	
-<form class="form-horizontal" role="form">
-	<div class="form-body">
-		<div class="row">
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Nombre:</label>
-					<div class="col-md-9">
-						<p id="pNombre" class="form-control-static"></p>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Cliente:</label>
-					<div class="col-md-9">
-						<p id="pNombreCliente" class="form-control-static"></p>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Tipo:</label>
-					<div class="col-md-9">
-						<p id="pTipo" class="form-control-static"></p>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Trabajo:</label>
-					<div class="col-md-9">
-						<p id="pTrabajo" class="form-control-static"></p>
-					</div>
-				</div>
-			</div>
-		</div>
+<div class="portlet-body">	
+	<div class="detailPane">
+		<div class="detailHeader"><div class="detailHeaderLeft"><span class="h2v1">General</span></div></div>
 		
-		<div class="row">
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Latitud:</label>
-					<div class="col-md-9">
-						<p id="pLat" class="form-control-static"></p>
-					</div>
+		<div class="summaryBody sectionBody">
+			<div class="summaryBodyLeft">
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Nombre</span><span id="pNombre" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Cliente</span><span id="pNombreCliente" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Tipo</span><span id="pTipo" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Trabajo</span><span id="pTrabajo" class="value"></span>
 				</div>
 			</div>
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Longitud:</label>
-					<div class="col-md-9">
-						<p id="pLon" class="form-control-static"></p>
-					</div>
+			<div class="summaryBodyMiddle">
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Latitud</span><span id="pLat" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Longitud</span><span id="pLon" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Ciudad</span><span id="pCiudad" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Departamento</span><span id="pDepartamento" class="value"></span>
 				</div>
 			</div>
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Ciudad:</label>
-					<div class="col-md-9">
-						<p id="pCiudad" class="form-control-static"></p>
-					</div>
+			<div class="summaryBodyRight">
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Entrega</span><span id="spnEntrega" class="value">Miercoles, 21 Jun 2015</span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Creacion</span><span id="spnCreacion" class="value">Viernes, 12 Mar 2015 10:10 PM</span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Creador</span><span id="spnCreador" class="value">Eduardo Ramos</span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel"></span><span id="#" class="value"></span>
 				</div>
 			</div>
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Dpto.:</label>
-					<div class="col-md-9">
-						<p id="pDepartamento" class="form-control-static"></p>
-					</div>
-				</div>
-			</div>
-		</div>
 		
-		<div class="row">
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Entrega:</label>
-					<div class="col-md-9">
-						<p id="pFechaEntrega" class="form-control-static">12/03/2015</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Creacion:</label>
-					<div class="col-md-9">
-						<p id="pFechaCreacion" class="form-control-static">10/01/2015</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="form-group">
-					<label class="control-label col-md-3">Creador:</label>
-					<div class="col-md-9">
-						<p id="pCreadoPor" class="form-control-static">Eduardo Ramos</p>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
-</form>
+
+
+	<div class="detailPane">
+		<div class="detailHeader"><div class="detailHeaderLeft"><span class="h2v1">Informacion Financiera</span></div></div>
+		
+		<div class="summaryBody sectionBody">
+			<div class="summaryBodyLeft">
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Oferta</span><span id="spnOferta" class="value">$500,000.00</span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Subcontratos</span><span id="spnOferta" class="value">$100,000.00</span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Gastos Generales</span><span id=# class="value">$20,000.00</span>
+				</div>
+			</div>
+			
+			<div class="summaryBodyMiddle">
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Utilidad Bruta</span><span id="#" class="value">$400,000.00</span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Utilidad Neta</span><span id="#" class="value">$380,000.00</span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel"></span><span id="#" class="value"></span>
+				</div>
+			</div>
+			
+			<div class="summaryBodyRight">
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Eficiencia</span><span id=# class="value">89.1%</span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel"></span><span id="#" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel"></span><span id="#" class="value"></span>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+	
+	
+
 </div>

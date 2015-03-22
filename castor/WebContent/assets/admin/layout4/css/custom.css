@@ -1,5 +1,145 @@
 /* here you can put your own css to customize and override the theme */
 
+.page-content-wrapper .page-content{
+	padding: 0px 0px 0px 20px;
+}
+
+.table .table-scrollable{
+	margin: 0px 0px 0px 0px;
+}
+
+label.error {
+    margin-left: 10px;
+    width: auto;
+    display: inline;
+    color: #F00;
+    font-weight: bold;
+}
+
+/*New Show General Info*/
+.summaryBody{
+    /*min-height: 100px;*/
+    overflow: hidden;
+    /*border-radius: 4px 4px 4px 4px;*/
+    /*box-shadow: 0px 2px 3px #C6C8C9;*/
+    /*background-image: linear-gradient(to bottom, #FAFBFC 0%, #E7EAF0 100%);*/
+}
+.sectionBody{
+    padding: 10px;
+}
+
+/*Columns Left-middle-Right*/
+.summaryBodyLeft{
+    float: left;
+    width: 32%;
+}
+.summaryBodyMiddle{
+    float: left;
+    margin-left: 10px;
+    width: 32%;
+}
+.summaryBodyRight{
+    float: left;
+    margin-left: 10px;
+    width: 32%;
+}
+
+
+/*Pane*/
+.detailPane {
+    margin-bottom: 10px;
+    clear: both;
+    overflow: hidden;
+}
+.results {
+	border-bottom: 1px solid #dddddd;
+	border-radius: 0px;
+}
+
+
+/*Header*/
+.detailHeader {
+    height: 30px;
+    background-color: #E1EBF1;
+    border: 1px solid #C3D3DD;
+    border-radius: 3px;
+    overflow: hidden;
+    line-height: 30px;
+}
+.detailHeaderLeft {
+    float: left;
+    margin-left: 10px;
+}
+.h2v1 {
+    text-transform: uppercase;
+    line-height: 30px;
+    font-size: 13px;
+    color: #5A6872;
+    display: inline-block;
+    font-weight: bold;
+}
+/*Pane Body*/
+.detailBody {
+    padding: 10px;
+    overflow: hidden;
+}
+
+/*Pane Columns*/
+.twoColumn .detailSection {
+	width: 48%;
+}
+.threeColumn .detailSection {
+	width: 32%;
+}
+
+/*Label-Value*/
+.spanLabel{
+	color: #788A96;
+	font-weight: bold;
+	font-size: 11px;
+	display: inline-block;
+	min-width: 100px;
+	vertical-align: top;
+	margin-right: 10px;
+	line-height: 30px;
+}
+.summaryBodyItem{
+	border-bottom: 1px solid #D3D8DE;
+	padding-left: 2px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.summaryBodyItem .value{
+    color: #000;
+    font-size: 13px;
+    line-height: 30px;
+}
+
+/*TABLE*/
+table.detailGridPane {
+    border: 1px solid #C3D3DD;
+    border-radius: 3px;
+    box-shadow: 0px 1px 1px #F5F5F5;
+    width: 100%;
+    clear: both;
+}
+table.detailGridPane thead {
+    line-height: 30px;
+    background-color: #EBF0F2;
+    text-align: left;
+    color: #788A96;
+    font-weight: bold;
+    font-size: 12px;
+}
+table.detailGridPane tbody {
+    line-height: 30px;
+    color: #000;
+    font-size: 13px;
+}
+
+
+
 /***
 Rounded Portlets
 ***/
@@ -17,19 +157,3 @@ Rounded Portlets
 	border-radius: 0px 0px 4px 4px !important;
 }
 */
-
-.page-content-wrapper .page-content{
-	padding: 0px 0px 0px 20px;
-}
-
-.table .table-scrollable{
-	margin: 0px 0px 0px 0px;
-}
-
-label.error {
-    margin-left: 10px;
-    width: auto;
-    display: inline;
-    color: #F00;
-    font-weight: bold;
-}

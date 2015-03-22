@@ -51,6 +51,6 @@ public class Dates {
 		String anio = formatoAnio.format(date);
 		String hora = formatoHora.format(date);
 		
-		return dia + " " + diaNumero + " de " + mes + " de " + anio + " " + hora;
+		return dia + ", " + diaNumero + " " + mes + " " + anio + " " + hora;
 	}
 }
