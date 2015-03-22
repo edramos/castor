@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<html>
 <head>
 <meta charset="utf-8"/>
 <title>Castor | Dashboard</title>
 <jsp:include page="../comps/headMandatory.jsp"/>
 <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
-<link href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
-<link href="assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
-<link href="assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css"/>
-<link href="assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css">
 <!-- END PAGE LEVEL PLUGIN STYLES -->
+
 <!-- BEGIN PAGE STYLES -->
 <link href="assets/admin/pages/css/tasks.css" rel="stylesheet" type="text/css"/>
 <!-- END PAGE STYLES -->
@@ -54,45 +52,22 @@
 							<thead>
 							<tr class="uppercase">
 								<th>N°</th>
-								<th colspan="2">Estado</th>
+								<th>Estado</th>
 								<th>Oferta</th>
-								<th>Plazas</th>
-								<th>RATE</th>
+								<th>Costos</th>
+								<th>Utilidad</th>
 							</tr>
 							</thead>
 							<tbody>
-							<tr>
-								<td><span class="bold theme-font-color">85</span></td>
-								<td class="fit"><i class="icon-paper-plane font-green-sharp"></i></td>
-								<td>Nuevo</td>
-								<td>S/. 2,500</td>
-								<td>750</td>
-								<td><span class="bold theme-font-color">70%</span></td>
+							<c:forEach items="${panelOrden}" var="panelOrdenFila" varStatus="loop"> 
+							<tr> 
+						  		<td><span class="bold theme-font-color">${panelOrdenFila.contador}</span></td>
+						  		<td>${panelOrdenFila.estado}</td>
+						  		<td>${panelOrdenFila.sumOferta}</td>
+						  		<td>${panelOrdenFila.sumMonto}</td>
+						  		<td><span class="bold theme-font-color">${panelOrdenFila.utilidad}</span></td>  
 							</tr>
-							<tr>
-								<td><span class="bold theme-font-color">7</span></td>
-								<td class="fit"><i class="icon-plane font-green-sharp"></i></td>
-								<td>Esperando</td>
-								<td>S/. 4,500</td>
-								<td>450</td>
-								<td><span class="bold theme-font-color">10%</span></td>
-							</tr>
-							<tr>
-								<td><span class="bold theme-font-color">12</span></td>
-								<td class="fit"><i class="icon-rocket font-green-sharp"></i></td>
-								<td>En proceso</td>
-								<td>S/. 3,500</td>
-								<td>425</td>
-								<td><span class="bold theme-font-color">13%</span></td>
-							</tr>
-							<tr>
-								<td><span class="bold theme-font-color">18</span></td>
-								<td class="fit"><i class="icon-trophy font-green-sharp"></i></td>
-								<td>Finalizado</td>
-								<td>S/. 4,500</td>
-								<td>950</td>
-								<td><span class="bold theme-font-color">24%</span></td>
-							</tr>
+							</c:forEach>
 							</tbody>
 							</table>
 						</div>
@@ -265,24 +240,23 @@
 <!-- END CONTAINER -->
 <jsp:include page="../comps/footer.jsp"/>
 <jsp:include page="../comps/corePlugins.jsp"/>
-
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<!-- IMPORTANT! fullcalendar depends on jquery-ui.min.js for drag & drop support -->
 <!-- END PAGE LEVEL PLUGINS -->
+
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
-<script src="assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
+<!-- <script src="assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
 <script src="assets/admin/pages/scripts/index3.js" type="text/javascript"></script>
-<script src="assets/admin/pages/scripts/tasks.js" type="text/javascript"></script>
+<script src="assets/admin/pages/scripts/tasks.js" type="text/javascript"></script> -->
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() {    
 	Metronic.init(); // init metronic core componets
     Layout.init(); // init layout
-    Demo.init(); // init demo features 
+    //Demo.init(); // init demo features 
     //Index.init(); // init index page
- 	Tasks.initDashboardWidget(); // init tash dashboard widget  
+ 	//Tasks.initDashboardWidget(); // init tash dashboard widget  
 });
 </script>
 <!-- END JAVASCRIPTS -->

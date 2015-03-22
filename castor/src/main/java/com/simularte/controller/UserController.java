@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.simularte.model.Usuario;
+import com.simularte.service.OrdenService;
 import com.simularte.service.UserService;
 
 @Controller
 public class UserController {
 
-	@Autowired UserService us;
+	@Autowired UserService us; @Autowired OrdenService os;
 	
 	@RequestMapping("toLogin")
 	public String toLogin(){
@@ -72,11 +73,12 @@ public class UserController {
 	
 	//GENERAL NAVIGATION
 	@RequestMapping("toDashboard")
-	public String toDashboard(HttpServletRequest req){
+	public String toDashboard(HttpServletRequest req, Model model){
 		String path = null;
 		
 		switch(req.getSession().getAttribute("tipo").toString()){
 		case "empresa":
+			model.addAttribute("panelOrden", os.buscarOrderPanel(req));
 			path = "empresa/dashboard";
 			break;
 		}

@@ -1,7 +1,6 @@
 package com.simularte.bean;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 public class OrdenBean {
 	private Integer idOrden;
@@ -30,7 +29,7 @@ public class OrdenBean {
 	private String campo;
 		
 	private Integer creadoPor;
-	private Timestamp fechaCreacion;	
+	private String fechaCreacion;	
 	private String estado;		
 	
 	//CLIENTE
@@ -42,8 +41,38 @@ public class OrdenBean {
 	private BigDecimal ofertaMinima;
 	private BigDecimal ofertaMaxima;
 	
+	//PANEL
+	private String contador;
+	private String sumOferta;
+	private String sumMonto;
+	private String utilidad;
 	
 	
+	
+	public String getSumOferta() {
+		return sumOferta;
+	}
+	public void setSumOferta(String sumOferta) {
+		this.sumOferta = sumOferta;
+	}
+	public String getSumMonto() {
+		return sumMonto;
+	}
+	public void setSumMonto(String sumMonto) {
+		this.sumMonto = sumMonto;
+	}
+	public String getUtilidad() {
+		return utilidad;
+	}
+	public void setUtilidad(String utilidad) {
+		this.utilidad = utilidad;
+	}
+	public String getContador() {
+		return contador;
+	}
+	public void setContador(String contador) {
+		this.contador = contador;
+	}
 	public String getFechaEntrega() {
 		return fechaEntrega;
 	}
@@ -176,10 +205,10 @@ public class OrdenBean {
 	public void setCreadoPor(Integer creadoPor) {
 		this.creadoPor = creadoPor;
 	}
-	public Timestamp getFechaCreacion() {
+	public String getFechaCreacion() {
 		return fechaCreacion;
 	}
-	public void setFechaCreacion(Timestamp fechaCreacion) {
+	public void setFechaCreacion(String fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
 	public String getEstado() {

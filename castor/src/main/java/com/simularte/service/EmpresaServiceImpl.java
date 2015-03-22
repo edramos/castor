@@ -42,7 +42,6 @@ public class EmpresaServiceImpl implements EmpresaService {
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public EmpresaBean extraerInformacionEmpresa(HttpServletRequest req) {
 		Empresa lc = new Empresa();

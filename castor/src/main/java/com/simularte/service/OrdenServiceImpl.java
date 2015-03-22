@@ -1,13 +1,14 @@
 package com.simularte.service;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -67,7 +68,7 @@ public class OrdenServiceImpl implements OrdenService {
 						
 			orden.setCreadoPor((Integer)session.getAttribute("idUser"));
 			orden.setFechaCreacion(Dates.fechaCreacion());
-			orden.setEstado("enabled");
+			orden.setEstado("sin inicio");
 			
 			em.persist(orden);
 			
@@ -286,10 +287,10 @@ public class OrdenServiceImpl implements OrdenService {
 		condiciones = "WHERE empr.idEmpresa = :idEmpresa ";
 
 		if(!ordenBean.getCodigo().equals("")){
-			condiciones += "AND o.codigo LIKE :codigo AND o.estado = 'enabled' ";
+			condiciones += "AND o.codigo LIKE :codigo AND o.estado != 'disable' ";
 		}
 		if(!ordenBean.getNombreCliente().equals("")){
-			condiciones += "AND cli.nombre LIKE :nombreCliente AND cli.estado = 'enabled' ";
+			condiciones += "AND cli.nombre LIKE :nombreCliente AND cli.estado != 'disable' ";
 		}
 		if(ordenBean.getOfertaMinima()!=null){
 			condiciones += "AND o.oferta > :ofertaMinima ";
@@ -360,10 +361,81 @@ public class OrdenServiceImpl implements OrdenService {
 		return ordenBeans;
 	}
 	
+	
+	public List<OrdenBean> buscarOrderPanel(HttpServletRequest req){
+		List<OrdenBean> ordenBeans = new ArrayList<OrdenBean>();
+		String estado = "";
+		
+		Query q01, q02;
+		
+		for(int estados = 0; estados < 5; estados++){
+			switch(estados){
+			case 0:
+				estado = "Sin inicio";break;
+			case 1:
+				estado = "Por iniciar";break;
+			case 2:
+				estado = "Proceso";break;
+			case 3:
+				estado = "Terminado";break;
+			case 4:
+				estado = "Aceptado";break;
+			}
+			q01 = em.createNativeQuery("SELECT COUNT(codigo)as contador, SUM(oferta) as sumOferta, moneda FROM orden WHERE estado = '" + estado + "'");
+			q02 = em.createNativeQuery("SELECT SUM(subcontrato.monto) as sumMonto FROM subcontrato INNER JOIN orden ON subcontrato.idorden  =  orden.idorden "
+					+ "WHERE orden.estado = '" + estado + "'");
+			
+			Object[] obj = (Object[])q01.getSingleResult();			
+			BigDecimal rsMonto = (BigDecimal)q02.getSingleResult();
+			
+			OrdenBean ordenBean = new OrdenBean();
+			
+			if(!obj[0].toString().equals("0")){
+				ordenBean.setContador(obj[0].toString());
+				ordenBean.setEstado(estado);				
+				//Solo funciona para dolar americano si tu sistema esta en EN, con moneda se pondra explicito el tipo de moneda
+				DecimalFormatSymbols symbols3 = new DecimalFormatSymbols();
+				symbols3.setGroupingSeparator(',');
+				symbols3.setDecimalSeparator('.');
+				String pattern3 = "#,##0.0#";
+				DecimalFormat decimalFormat3 = new DecimalFormat(pattern3, symbols3);
+				decimalFormat3.setParseBigDecimal(true);
+				
+				BigDecimal bdOferta = null, bdUtilidad = null;
+				try {
+					bdOferta = (BigDecimal) decimalFormat3.parse(obj[1].toString());
+					bdUtilidad = bdOferta.subtract(rsMonto);
+					
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				if(obj[2].toString().equals("dolar americano")){
+					ordenBean.setSumOferta(NumberFormat.getCurrencyInstance(Locale.US).format(bdOferta));
+					ordenBean.setSumMonto(NumberFormat.getCurrencyInstance(Locale.US).format(rsMonto));
+					ordenBean.setUtilidad(NumberFormat.getCurrencyInstance(Locale.US).format(bdUtilidad));
+				}else{
+					//La conversion de usd a pen es mas compleja cuando se combinan en un OT tipos de moneda
+				}
+			}else{
+				ordenBean.setContador(obj[0].toString());
+				ordenBean.setEstado(estado);
+				
+				ordenBean.setSumOferta("$0.00");
+				ordenBean.setSumMonto("$0.00");
+				ordenBean.setUtilidad("$0.00");
+			}
+			
+			ordenBeans.add(ordenBean);
+			
+		}
+
+		return ordenBeans;
+	}
+	
 	public OrdenBean obtenerInformacionOrden(Integer idOrden, HttpServletRequest req){
 		Orden orden = new Orden();
 
-		Query q = em.createQuery("SELECT o FROM Orden o WHERE o.idOrden = :idOrden AND o.estado = 'enabled' ");
+		Query q = em.createQuery("SELECT o FROM Orden o WHERE o.idOrden = :idOrden AND o.estado != 'disable' ");
 		q.setParameter("idOrden", idOrden);
 		
 		orden = (Orden)q.getSingleResult();
@@ -393,7 +465,8 @@ public class OrdenServiceImpl implements OrdenService {
 		ordenB.setTotal(orden.getTotal());			
 					
 		ordenB.setCreadoPor(orden.getCreadoPor());
-		ordenB.setFechaCreacion(orden.getFechaCreacion());
+		
+		ordenB.setFechaCreacion(Dates.fechaHoraEspaniol(orden.getFechaCreacion()));
 		ordenB.setEstado(orden.getEstado());
 		
 		

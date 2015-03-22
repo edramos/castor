@@ -25,7 +25,7 @@
 		<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div id="divCaption" class="caption">ORDEN OT-TV-00001</div>
+				<div class="caption"><span id="spnCodigo"></span><span id="spnFechaHora" class="caption-helper"></span></div>
 				<div id="dynamicActions" class="actions">
 					<a id="btnIrCrearCliente" class="label label-info"> Nuevo </a>						
 					<input id="txtIdOrden" value="<c:out value="${idOrden}"/>"  type="hidden" class="form-control"/>
@@ -118,12 +118,13 @@ $(document).ready(function(){
 
 function extraerInformacionOrden(idOrdenTemp){
 	$.ajax({
- 		url: 'ajaxObtenerInformacionOrden-'+idOrdenTemp,
+ 		url: 'ajaxObtenerInformacionOrden-' + idOrdenTemp,
  		type: 'post',
  		dataType: 'json',
  		data: '',
  		success: function(orden){
- 			$('#divCaption').text('ORDEN ' + orden.codigo);
+ 			$('#spnCodigo').text('ORDEN ' + orden.codigo);
+ 			$('#spnFechaHora').text('   ' + orden.fechaCreacion);
  			$('#pNombre').text(orden.nombre);
  			$('#pNombreCliente').text(orden.nombreCliente);
  			if(orden.tipoOrden == 'OC'){

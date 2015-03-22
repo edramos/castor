@@ -11,12 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.simularte.bean.ClienteBean;
 import com.simularte.bean.SubcontratoBean;
-import com.simularte.model.Cliente;
-import com.simularte.model.Empresa;
 import com.simularte.model.Subcontrato;
-import com.simularte.util.Dates;
 
 @Service
 public class SubcontratoServiceImpl implements SubcontratoService {
