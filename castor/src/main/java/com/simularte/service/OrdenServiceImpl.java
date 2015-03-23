@@ -27,6 +27,7 @@ import com.simularte.model.Pago;
 import com.simularte.model.Proveedor;
 import com.simularte.model.Subcontrato;
 import com.simularte.util.Dates;
+import com.simularte.util.Formatos;
 
 @Service
 public class OrdenServiceImpl implements OrdenService {
@@ -147,7 +148,7 @@ public class OrdenServiceImpl implements OrdenService {
 			
 			
 			//Convierte el array de String a un array de Subcontratos, con JSON esta parte ya seria automatica
-			ArrayList<Pago> pagosprov = new ArrayList<Pago>();
+			/*ArrayList<Pago> pagosprov = new ArrayList<Pago>();
 			int resto2;		
 			Pago pago_prov_1 = new Pago();
 			Pago pago_prov_2 = new Pago();
@@ -191,7 +192,7 @@ public class OrdenServiceImpl implements OrdenService {
 						
 						break;
 					case 2:
-						pago_prov_1.setFechaPago(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
+						pago_prov_1.setFechaPagoProgramada(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
 						break;
 					case 3:
 						DecimalFormatSymbols symbols2 = new DecimalFormatSymbols();
@@ -211,7 +212,7 @@ public class OrdenServiceImpl implements OrdenService {
 						
 						break;
 					case 4:
-						pago_prov_2.setFechaPago(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
+						pago_prov_2.setFechaPagoProgramada(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
 						break;
 					case 5:
 						DecimalFormatSymbols symbols3 = new DecimalFormatSymbols();
@@ -232,7 +233,7 @@ public class OrdenServiceImpl implements OrdenService {
 						
 						break;
 					case 6:
-						pago_prov_3.setFechaPago(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
+						pago_prov_3.setFechaPagoProgramada(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
 						break;
 					case 7:
 						System.out.println("resto " + resto2 + ", x: " + x + ", estado: " + pagProv[x].toString());
@@ -260,7 +261,7 @@ public class OrdenServiceImpl implements OrdenService {
 				//if(pagosprov.get(x).getEstado().equals("enabled")){
 					em.persist(pagosprov.get(x));
 				//}				
-			}
+			}*/
 			
 			
 			idOrden = orden.getIdOrden();
@@ -393,26 +394,11 @@ public class OrdenServiceImpl implements OrdenService {
 			if(!obj[0].toString().equals("0")){
 				ordenBean.setContador(obj[0].toString());
 				ordenBean.setEstado(estado);				
-				//Solo funciona para dolar americano si tu sistema esta en EN, con moneda se pondra explicito el tipo de moneda
-				DecimalFormatSymbols symbols3 = new DecimalFormatSymbols();
-				symbols3.setGroupingSeparator(',');
-				symbols3.setDecimalSeparator('.');
-				String pattern3 = "#,##0.0#";
-				DecimalFormat decimalFormat3 = new DecimalFormat(pattern3, symbols3);
-				decimalFormat3.setParseBigDecimal(true);
 				
-				BigDecimal bdOferta = null, bdUtilidad = null;
-				try {
-					bdOferta = (BigDecimal) decimalFormat3.parse(obj[1].toString());
-					bdUtilidad = bdOferta.subtract(rsMonto);
-					
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
 				if(obj[2].toString().equals("dolar americano")){
-					ordenBean.setSumOferta(NumberFormat.getCurrencyInstance(Locale.US).format(bdOferta));
+					ordenBean.setSumOferta(NumberFormat.getCurrencyInstance(Locale.US).format(Formatos.StringToBigDecimal(obj[1].toString())));
 					ordenBean.setSumMonto(NumberFormat.getCurrencyInstance(Locale.US).format(rsMonto));
-					ordenBean.setUtilidad(NumberFormat.getCurrencyInstance(Locale.US).format(bdUtilidad));
+					ordenBean.setUtilidad(NumberFormat.getCurrencyInstance(Locale.US).format(Formatos.StringToBigDecimal(obj[1].toString()).subtract(rsMonto)));
 				}else{
 					//La conversion de usd a pen es mas compleja cuando se combinan en un OT tipos de moneda
 				}
@@ -457,6 +443,7 @@ public class OrdenServiceImpl implements OrdenService {
 		ordenB.setDepartamento(orden.getDepartamento());
 		ordenB.setOferta(orden.getOferta());
 		ordenB.setMoneda(orden.getMoneda());
+		ordenB.setFechaEntrega(Dates.fechaHoraEspaniolD(orden.getFechaEntrega()));
 		
 		ordenB.setEficiencia(orden.getEficiencia());
 		ordenB.setUtilidadBruta(orden.getUtilidadBruta());
@@ -466,9 +453,14 @@ public class OrdenServiceImpl implements OrdenService {
 					
 		ordenB.setCreadoPor(orden.getCreadoPor());
 		
-		ordenB.setFechaCreacion(Dates.fechaHoraEspaniol(orden.getFechaCreacion()));
+		ordenB.setFechaCreacion(Dates.fechaHoraEspaniolTS(orden.getFechaCreacion()));
 		ordenB.setEstado(orden.getEstado());
 		
+		//Solo por ahora, cambiar a JOIN
+		Query q01 = em.createNativeQuery("SELECT primernombre, apellidopaterno FROM perfil WHERE idusuario = '"+ orden.getCreadoPor() +"' AND estado != 'disable' ");
+		
+		Object[] perfil = (Object[])q01.getSingleResult();
+		ordenB.setCreadoPorNombre(perfil[0].toString() + " " + perfil[1].toString());
 		
 		return ordenB;
 	}

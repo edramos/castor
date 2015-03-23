@@ -24,41 +24,39 @@ public class SubcontratoServiceImpl implements SubcontratoService {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<SubcontratoBean> listarSubcontratos(Integer idOrder, HttpServletRequest req) {
-		List<Subcontrato> lc = new ArrayList<Subcontrato>();
-		List<SubcontratoBean> lcb = new ArrayList<SubcontratoBean>();
+		List<SubcontratoBean> subcontratosBean = new ArrayList<SubcontratoBean>();
 		
 		try{
-			Query query = null;
+			Query query;
 
-			String Squery = "";
-			Squery = "SELECT s FROM Subcontrato s WHERE s.ordenSubcontrato.idOrden =:idOrden AND s.estado='enabled' ";
-			query = em.createQuery(Squery);
+			query = em.createQuery("SELECT s FROM Subcontrato s WHERE s.ordenSubcontrato.idOrden =:idOrden AND s.estado != 'disable'");
 			query.setParameter("idOrden", idOrder);
 
-			lc = query.getResultList();
-			for(int i =0; i < lc.size(); i++){
-				Subcontrato c = lc.get(i);
-				SubcontratoBean cb = new SubcontratoBean();
+			List<Subcontrato> subcontratos = query.getResultList();
+			for(int i = 0; i < subcontratos.size(); i++){
+				Subcontrato c = subcontratos.get(i);
+				SubcontratoBean subConB = new SubcontratoBean();
 				
-				cb.setIdSubcontrato(c.getIdSubcontrato());
-				cb.setIdOrden(c.getOrdenSubcontrato().getIdOrden());
-				cb.setIdProveedor(c.getProveedorSubcontrato().getIdProveedor());
-				cb.setNombreProveedor(c.getProveedorSubcontrato().getNombre());
-				cb.setMoneda(c.getMoneda());
-				cb.setMonto(c.getMonto());
-				cb.setTipoTrabajo(c.getTipoTrabajo());
-				cb.setFechaCreacion(c.getFechaCreacion());
-				cb.setCreadoPor(c.getCreadoPor());
-				cb.setEstado(c.getEstado());
+				subConB.setIdSubcontrato(c.getIdSubcontrato());
+				subConB.setIdOrden(c.getOrdenSubcontrato().getIdOrden());
+				subConB.setIdProveedor(c.getProveedorSubcontrato().getIdProveedor());
+				subConB.setNombreProveedor(c.getProveedorSubcontrato().getNombre());
+				subConB.setMoneda(c.getMoneda());
+				subConB.setMonto(c.getMonto());
+				//subConB.setMonto(NumberFormat.getCurrencyInstance(Locale.US).format(c.getMonto()));
+				subConB.setTipoTrabajo(c.getTipoTrabajo());
+				subConB.setFechaCreacion(c.getFechaCreacion());
+				subConB.setCreadoPor(c.getCreadoPor());
+				subConB.setEstado(c.getEstado());
 				
-				lcb.add(cb);
+				subcontratosBean.add(subConB);
 			}
 			
 		} catch(IllegalArgumentException e){
-			lcb = null;
+			subcontratosBean = null;
 		}
 		
-		return lcb;
+		return subcontratosBean;
 	}
 
 }

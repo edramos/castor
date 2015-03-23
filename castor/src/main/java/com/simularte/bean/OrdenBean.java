@@ -29,6 +29,7 @@ public class OrdenBean {
 	private String campo;
 		
 	private Integer creadoPor;
+	private String creadoPorNombre;
 	private String fechaCreacion;	
 	private String estado;		
 	
@@ -49,6 +50,12 @@ public class OrdenBean {
 	
 	
 	
+	public String getCreadoPorNombre() {
+		return creadoPorNombre;
+	}
+	public void setCreadoPorNombre(String creadoPorNombre) {
+		this.creadoPorNombre = creadoPorNombre;
+	}
 	public String getSumOferta() {
 		return sumOferta;
 	}

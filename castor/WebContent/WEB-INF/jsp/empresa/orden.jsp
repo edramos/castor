@@ -25,7 +25,7 @@
 		<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption"><span id="spnCodigo"></span><span id="spnFechaHora" class="caption-helper"></span></div>
+				<div class="caption"><span id="spnCodigo"></span><!-- <span id="spnFechaHora" class="caption-helper"></span> --></div>
 				<div id="dynamicActions" class="actions">
 					<a id="btnIrCrearCliente" class="label label-info"> Nuevo </a>						
 					<input id="txtIdOrden" value="<c:out value="${idOrden}"/>"  type="hidden" class="form-control"/>
@@ -97,6 +97,8 @@
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
+<!-- <script src="assets/global/plugins/jquery.formatCurrency-1.4.0/jquery.formatCurrency-1.4.0.js" type="text/javascript"></script> -->
+<script src="assets/global/plugins/jquery-formatcurrency-master/jquery.formatCurrency.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() { 
@@ -106,14 +108,18 @@ jQuery(document).ready(function() {
 });
 </script>
 <script>
+var oferta = 0;
+var gastosGen = 0;
+var utilBruta = 0;
+var utilNeta = 0;
+var eficiencia = 0;
 
 $(document).ready(function(){
 	var idOrden = $('#txtIdOrden').val();
-	//var idOrden2 = $('spnIdOrden').text();
-	//alert(idOrden2);
-	extraerInformacionOrden(idOrden); 
-	listarSubcontratos(idOrden);
 	
+	
+	extraerInformacionOrden(idOrden); 
+	listarSubcontratos(idOrden);	
 });
 
 function extraerInformacionOrden(idOrdenTemp){
@@ -124,51 +130,27 @@ function extraerInformacionOrden(idOrdenTemp){
  		data: '',
  		success: function(orden){
  			$('#spnCodigo').text('ORDEN ' + orden.codigo);
- 			$('#spnFechaHora').text('   ' + orden.fechaCreacion);
- 			$('#pNombre').text(orden.nombre);
- 			$('#pNombreCliente').text(orden.nombreCliente);
- 			if(orden.tipoOrden == 'OC'){
- 				$('#pTipo').text('Obra Civil');	
- 			}else{
- 				$('#pTipo').text('Trabajos Varios');	
- 			}
- 			
- 			$('#pTrabajo').text(orden.tipoTrabajo);
- 			$('#pLat').text(orden.lat);
- 			$('#pLon').text(orden.lon);
- 			$('#pCiudad').text(orden.ciudad);
- 			$('#pDepartamento').text(orden.departamento);
- 			//Financiera
- 			$('#pMoneda').text(orden.moneda);
- 			$('#pOferta').text(orden.oferta);
- 			$('#pEficiencia').text(orden.eficiencia);
- 			$('#pUBruta').text(orden.utilidadBruta);
+ 			//$('#spnFechaHora').text('   ' + orden.fechaCreacion);
+ 			initOrdenGeneral(orden);
  		}
  	});	
 }
 
 function listarSubcontratos(idOrdenTemp){
-	var html = '';
     $.ajax({
- 		url: 'ajaxListarSubcontratos-'+idOrdenTemp,
+ 		url: 'ajaxListarSubcontratos-' + idOrdenTemp,
  		type: 'post',
  		dataType: 'json',
  		data: '',
  		success: function(subcontratos){
- 			$.each(subcontratos, function(i, subcontrato){
-	 			var source = $("#templateSubcontratos").html();
-	 			var template = Handlebars.compile(source);
-	 			html += template(subcontrato);
-	 			
- 			});		
- 			$("#viewSubcontratosHandlerbars").html(html); 	        
+ 			initOrdenSubcontratos(subcontratos); 	        
  		},
  		complete: function() {	 			
  			//removeNulls();
   		}
  	});
 }
-
 </script>
+
 </body>
 </html>

@@ -20,6 +20,13 @@ public class SubcontratoBean {
 	private String estado;
 	
 	
+	
+	public BigDecimal getMonto() {
+		return monto;
+	}
+	public void setMonto(BigDecimal monto) {
+		this.monto = monto;
+	}
 	public String getFechaTerminoObra() {
 		return fechaTerminoObra;
 	}
@@ -43,12 +50,6 @@ public class SubcontratoBean {
 	}
 	public void setIdProveedor(Integer idProveedor) {
 		this.idProveedor = idProveedor;
-	}
-	public BigDecimal getMonto() {
-		return monto;
-	}
-	public void setMonto(BigDecimal monto) {
-		this.monto = monto;
 	}
 	public String getMoneda() {
 		return moneda;

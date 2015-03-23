@@ -1,5 +1,6 @@
 package com.simularte.util;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +34,7 @@ public class Dates {
 		return sqlDate;
 	}
 	
-	public static String fechaHoraEspaniol(Timestamp date){
+	public static String fechaHoraEspaniolTS(Timestamp date){
 		SimpleDateFormat formatoDiaNumero = new SimpleDateFormat("d", new Locale("es", "PE"));
 		SimpleDateFormat formatoDia = new SimpleDateFormat( "EEEE", new Locale("es", "PE"));
 		SimpleDateFormat formatoMes = new SimpleDateFormat( "MMM", new Locale("es", "PE"));
@@ -52,5 +53,21 @@ public class Dates {
 		String hora = formatoHora.format(date);
 		
 		return dia + ", " + diaNumero + " " + mes + " " + anio + " " + hora;
+	}
+	
+	public static String fechaHoraEspaniolD(Date date){
+		SimpleDateFormat formatoDiaNumero = new SimpleDateFormat("d", new Locale("es", "PE"));
+		SimpleDateFormat formatoDia = new SimpleDateFormat( "EEEE", new Locale("es", "PE"));
+		SimpleDateFormat formatoMes = new SimpleDateFormat( "MMM", new Locale("es", "PE"));
+		SimpleDateFormat formatoAnio = new SimpleDateFormat("yyyy", new Locale("es", "PE"));
+		
+		String diaNormal = formatoDia.format(date);
+		String dia = diaNormal.substring(0, 1).toUpperCase() + diaNormal.substring(1, diaNormal.length());
+		String diaNumero = formatoDiaNumero.format(date);
+		String mesNormal = formatoMes.format(date);
+		String mes = mesNormal.substring(0, 1).toUpperCase() + mesNormal.substring(1, mesNormal.length());
+		String anio = formatoAnio.format(date);
+		
+		return dia + ", " + diaNumero + " " + mes + " " + anio;
 	}
 }
