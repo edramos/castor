@@ -544,13 +544,26 @@ function grabarProyecto(){
 	
 	for(x = 0; x <= idFila; x++){
 		//var subc = {idProveedorSC:$('#sltProveedorSC_' + x).val(), tipoTrabajoSC:$('#sltTipoTrabajoSC_' + x).val(), monedaSC:$('#sltMonedaSC_' + x).val(), montoSC:$('#txtMontoSC_' + x).val()};
-		subcontratos.push($('#sltProveedorSC_' + x).val());
+		if($('#sltProveedorSC_' + x).val()== ""){
+			subcontratos.push("1");
+		}else{
+			subcontratos.push($('#sltProveedorSC_' + x).val());
+		}
 		subcontratos.push($('#sltTipoTrabajoSC_' + x).val());
 		subcontratos.push($('#sltMonedaSC_' + x).val());
 		//Cuando se pase a JSON la coma ya no sera un problema y se podra pasar el Objeto Subcontrato
 		var currencyMonto = Number($('#txtMontoSC_' + x).val().replace(/[^0-9\.]+/g,""));
 		subcontratos.push(currencyMonto);
-		subcontratos.push($('#txtTerminoObraSC_' + x).val());
+		
+		if($('#txtTerminoObraSC_' + x).val()== ""){
+			var d = new Date(); 
+			//var strDate = d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate();
+			var strDate = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
+			subcontratos.push(strDate);
+		}else{
+			subcontratos.push($('#txtTerminoObraSC_' + x).val());
+		}
+
 		subcontratos.push($('#txtEstadoSC_' + x).val());
 		//subcontratos.push(subc);
 	}
@@ -688,17 +701,21 @@ function recalcularTotalesSubcontratos(){
 	
 	arregloMontoSC = document.getElementsByName('montoSC');
 	
+	arregloEstadoSC = document.getElementsByName('estadoSC');
+	
 	for(var x = 0; x < arregloMontoSC.length; x++){
 		//alert("montos: " + arregloMontoSC[x].value);
 		if(arregloMontoSC[x].value == ''){
 			;
 		}else{
-			//subtotal = parseFloat(arregloMontoSC[x].value) + subtotal;
-			//alert('monto ' + x + ': ' + arregloMontoSC[x].value);
-			var currency = Number(arregloMontoSC[x].value.replace(/[^0-9\.]+/g,""));
-			//alert('currency: ' + currency);
-			subtotal += currency;
-			//alert("subtotal: " + subtotal);
+			if(arregloEstadoSC[x].value == 'enabled'){
+				//subtotal = parseFloat(arregloMontoSC[x].value) + subtotal;
+				//alert('monto ' + x + ': ' + arregloMontoSC[x].value);
+				var currency = Number(arregloMontoSC[x].value.replace(/[^0-9\.]+/g,""));
+				//alert('currency: ' + currency);
+				subtotal += currency;
+				//alert("subtotal: " + subtotal);
+			}			
 		}
   	}
 	
@@ -778,6 +795,8 @@ function borrarSubcontratoProveedor(idTempFila){
 	
 	$('#fila_pago_'+idTempFila).hide();
 	$('#txtEstado_'+idTempFila).val('disabled');
+	
+	recalcularTotalesSubcontratos();
 }
 
 </script>

@@ -86,6 +86,7 @@ public class OrdenServiceImpl implements OrdenService {
 					System.out.println("resto: " + resto + "creo Proveedor");
 					Subcontrato subc = new Subcontrato();
 					
+					
 					Proveedor proveedor = em.find(Proveedor.class, Integer.parseInt(subCont[x]));
 					
 					subc.setProveedorSubcontrato(proveedor);
