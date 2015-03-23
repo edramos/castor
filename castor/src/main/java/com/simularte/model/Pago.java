@@ -33,7 +33,7 @@ public class Pago {
 	@Column(name = "fechapagoreal", nullable = true)
 	private Date fechaPagoReal;
 	@Column(name = "tipopago", length = 30, nullable = true)
-	private Integer tipoPago;
+	private String tipoPago;
 	@Column(nullable = false)
 	private BigDecimal monto;
 	@Column(length = 30, nullable = true)
@@ -48,6 +48,12 @@ public class Pago {
 	
 	
 	
+	public String getTipoPago() {
+		return tipoPago;
+	}
+	public void setTipoPago(String tipoPago) {
+		this.tipoPago = tipoPago;
+	}
 	public Integer getIdPago() {
 		return idPago;
 	}
@@ -83,12 +89,6 @@ public class Pago {
 	}
 	public void setFechaPagoReal(Date fechaPagoReal) {
 		this.fechaPagoReal = fechaPagoReal;
-	}
-	public Integer getTipoPago() {
-		return tipoPago;
-	}
-	public void setTipoPago(Integer tipoPago) {
-		this.tipoPago = tipoPago;
 	}
 	public BigDecimal getMonto() {
 		return monto;
