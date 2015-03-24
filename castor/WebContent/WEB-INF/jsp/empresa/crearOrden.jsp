@@ -290,7 +290,7 @@
 													</div>
 												</td>
 												<td>
-													<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" id="txtMontoSC_0" class="form-control" placeholder="Monto" name="montoSC"/>
+													<input onkeyup="recalcularTotalesSubcontratos(); cambiarPagoProveedor(0);" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" id="txtMontoSC_0" class="form-control" placeholder="Monto" name="montoSC"/>
 												</td>
 												<td>
 													<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
@@ -380,7 +380,7 @@
 												<tr role="row" class="filter" id="fila_pago_0_0">
 													<td>
 														<input style="display:none" id="txtIdProveedor_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="0">
-														<input onchange="calcularMontoParcialxPorcentaje_Pago(0,0);" id="txtPorcentaje_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
+														<input onkeyup="calcularMontoParcialxPorcentaje_Pago(0,0);" id="txtPorcentaje_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
 													</td>
 													<td>
 														<input id="txtPagoParcial_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
@@ -679,12 +679,22 @@ function agregarNuevaFilaSubcontratos(){
 	html += template(entidadFila);
 	$("#vistaTablaSubcontratosProveedores").append(html);
 	
-	$("#txtMontoSC_" + idFila).inputmask("decimal",{
+	/* $("#txtMontoSC_" + idFila).inputmask("decimal",{
 		radixPoint: ".", 
         groupSeparator: ",", 
         digits: 2,
-        autoGroup: true,
-    });
+        autoGroup: true
+    }); */
+	
+	$("#txtMontoSC_" + idFila).inputmask("decimal",{
+		alias: 'numeric',
+		groupSeparator: ',',
+		autoGroup: true,
+		digits: 2,
+		digitsOptional: false,
+		prefix: '$ ',
+		placeholder: '0'
+	});
 	
 	listarSelectorProveedores('sltProveedorSC_' + idFila);
 	recalcularTotalesSubcontratos();
@@ -799,8 +809,17 @@ function calcularMontoParcialxPorcentaje_Pago(filaProv, filaPago){
 	var monto = Number($('#spnMontoTotal_'+filaProv).text().replace(/[^0-9\.]+/g,""));
 	var porcentaje = $('#txtPorcentaje_pago_'+filaProv+'_'+filaPago).val();
 	var montoParcial = (monto*(porcentaje/100));
-	$('#txtPagoParcial_pago_'+filaProv+'_'+filaPago).val(montoParcial);
-		
+	$('#txtPagoParcial_pago_'+filaProv+'_'+filaPago).inputmask("decimal",{
+		alias: 'numeric',
+		groupSeparator: ',',
+		autoGroup: true,
+		digits: 2,
+		digitsOptional: false,
+		prefix: '$ ',
+		placeholder: '0'
+	});
+	$('#txtPagoParcial_pago_'+filaProv+'_'+filaPago).val(montoParcial.toFixed(2));
+
 }
 
 function borrarSubcontratoProveedor(idTempFila){
@@ -858,7 +877,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 			</div>
 		</td>
 		<td>
-			<input onchange="recalcularTotalesSubcontratos(); cambiarPagoProveedor({{idFila}});" id="txtMontoSC_{{idFila}}" class="form-control" placeholder="Monto" name="montoSC"/>
+			<input onkeyup="recalcularTotalesSubcontratos(); cambiarPagoProveedor({{idFila}});" id="txtMontoSC_{{idFila}}" class="form-control" placeholder="Monto" name="montoSC"/>
 		</td>
 		<td>
 			<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
@@ -883,7 +902,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 <tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_{{idFilaPago}}">
  <td>
 	 <input style="display:none" id="txtIdProveedor_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}">
-	 <input onchange="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},{{idFilaPago}})" id="txtPorcentaje_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
+	 <input onkeyup="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},{{idFilaPago}})" id="txtPorcentaje_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
  </td>
  <td>
 	 <input id="txtPagoParcial_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
@@ -959,7 +978,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 		 <tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_0">
 			 <td>
 				<input style="display:none" id="txtIdProveedor_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}"> 
-				<input onchange="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},0);" id="txtPorcentaje_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
+				<input onkeyup="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},0);" id="txtPorcentaje_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
 			 </td>
 			 <td>
 				 <input id="txtPagoParcial_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
