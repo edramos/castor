@@ -9,6 +9,8 @@ public class CuentaBean {
 	private Integer idCuenta;
 	private Integer idOrden;
 	private Integer idSubcontrato;
+	private Integer idCliente; //Tipo : Cobro Cliente
+	private Integer idProveedor; //Tipo : Pagos Proveedor
 	private String tipo;
 	private Date fechaVencimiento;
 	private Date fechaPagoProgramada;
@@ -97,6 +99,18 @@ public class CuentaBean {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Integer getIdProveedor() {
+		return idProveedor;
+	}
+	public void setIdProveedor(Integer idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+	public Integer getIdCliente() {
+		return idCliente;
+	}
+	public void setIdCliente(Integer idCliente) {
+		this.idCliente = idCliente;
 	}
 	
 }

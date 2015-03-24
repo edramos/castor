@@ -50,9 +50,11 @@ public class CuentaServiceImpl implements CuentaService {
 				cuebean.setIdCuenta(c.getIdCuenta());
 				if(c.getCuentaOrden()!=null){
 					cuebean.setIdOrden(c.getCuentaOrden().getIdOrden());
+					cuebean.setIdCliente(c.getCuentaOrden().getOrdenCliente().getIdCliente());
 				}
 				if(c.getCuentaSubcontrato()!=null){
 					cuebean.setIdSubcontrato(c.getCuentaSubcontrato().getIdSubcontrato());
+					cuebean.setIdProveedor(c.getCuentaSubcontrato().getProveedorSubcontrato().getIdProveedor());
 				}				
 				cuebean.setTipo(c.getTipo());
 				cuebean.setFechaVencimiento(c.getFechaVencimiento());
