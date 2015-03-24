@@ -120,6 +120,7 @@ $(document).ready(function(){
 	
 	extraerInformacionOrden(idOrden); 
 	listarSubcontratos(idOrden);	
+	listarCuentasPagoProveedor(idOrden);
 });
 
 function extraerInformacionOrden(idOrdenTemp){
@@ -144,6 +145,20 @@ function listarSubcontratos(idOrdenTemp){
  		data: '',
  		success: function(subcontratos){
  			initOrdenSubcontratos(subcontratos); 	        
+ 		},
+ 		complete: function() {	 			
+ 			//removeNulls();
+  		}
+ 	});
+}
+function listarCuentasPagoProveedor(idOrdenTemp){
+    $.ajax({
+ 		url: 'ajaxListarCuentas-pago-' + idOrdenTemp,
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(cuentaspago){
+ 			 	        
  		},
  		complete: function() {	 			
  			//removeNulls();
