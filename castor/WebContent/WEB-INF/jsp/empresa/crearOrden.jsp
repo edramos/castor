@@ -342,92 +342,95 @@
 							<div class="col-md-12">
 								<div class="table-container">
 									<div class="table-scrollable">
+										
+										<!-- Tabla contenedora de Proveedor y Monto -->
 										<table class="table table-striped table-bordered table-hover dataTable no-footer">
-										<thead>
-										<tr role="row" class="heading">
-											<th width="20%">Proveedor</th>
-											<th width="20%">Pago 1</th>
-											<th width="20%">Pago 2</th>
-											<th width="20%">Pago 3</th>
-											<th width="10%">Acciones</th>
-										</tr>
-										<tr role="row" class="filter" id="fila_pago_0">
-											<td>
-												<span id="spnProveedor_0"></span>
-			 									<span id="spnMontoTotal_0"></span>
-												<select style="display:none" id="sltProveedor_0" name="pago_idProveedor" class="form-control form-filter input-sm">
-												</select>
-												<input style="display:none" id="montoTotal_0" type="text" class="form-control form-filter input-sm" name="pago_montoTotal" placeholder="Monto USD $/.">
-												<input style="display:none" id="txtEstado_0" class="form-control" placeholder="Estado" name="estado" value="enabled"/>
-											</td>
-											<td>
-												<table class="table" style="margin-bottom: 5px;">
-												<tr>
-													<td width="35%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago1(0)" id="txtPorcentaje_pago1_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
-													<td style="padding: 1px;"><input id="txtPagoParcial_pago1_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
+											<thead>
+												<tr role="row" class="heading">
+													<th width="20%">Proveedor</th>
+													<th width="20%">Monto</th>
 												</tr>
-												<tr>
-													<td style="padding: 1px;" colspan="2">
-														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input id="txtFechaCobroProv_pago1_0" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
-															<span class="input-group-btn">
-															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-															</span>
-														</div>
+											</thead>
+											<tbody>
+												<tr role="row" class="filter">
+													<td>
+														<span id="spnProveedor_0"></span>
 													</td>
+													<td>
+														<span id="spnMontoTotal_0"></span>												
+													</td>					
 												</tr>
-												</table>
-											</td>
-											<td>
-												<table class="table" style="margin-bottom: 5px;">
-												<tr>
-													<td width="35%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago2(0)" id="txtPorcentaje_pago2_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
-													<td style="padding: 1px;"><input id="txtPagoParcial_pago2_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
-												</tr>
-												<tr>
-													<td style="padding: 1px;" colspan="2">
-														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input id="txtFechaCobroProv_pago2_0" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
-															<span class="input-group-btn">
-															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-															</span>
-														</div>
-													</td>
-												</tr>
-												</table>
-											</td>
-											<td>
-												<table class="table" style="margin-bottom: 5px;">
-												<tr>
-													<td width="35%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago3(0)" id="txtPorcentaje_pago3_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
-													<td style="padding: 1px;"><input id="txtPagoParcial_pago3_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
-												</tr>
-												<tr>
-													<td style="padding: 1px;" colspan="2">
-														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input id="txtFechaCobroProv_pago3_0" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
-															<span class="input-group-btn">
-															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-															</span>
-														</div>
-													</td>
-												</tr>
-												</table>
-											</td>
-											<td>
-												<div class="margin-bottom-5">
-													<span class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></span>
-													<span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
-												</div>
-											</td>
-										</tr>
+											</tbody>										
+										</table>
 										
-										</thead>
 										
-										<tbody id="vistaTablaPagos">
-										</tbody>
+										<!-- Tabla contenedora de Pagos del Proveedor de la tabla anterior -->
+										<table class="table table-striped table-bordered table-hover dataTable no-footer">
+											<thead>
+												<tr role="row" class="heading">
+													<th width="10%">Porcentaje</th>
+													<th width="20%">Monto Parcial</th>
+													<th width="20%">Tipo Pago</th>
+													<th width="20%">Fecha Vencimiento</th>
+													<th width="20%">Fecha Pago Programada</th>
+													<th width="10%">Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr role="row" class="filter" id="fila_pago_0_0">
+													<td>
+														<input id="txtIdProveedor_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="0">
+														<input onchange="calcularMontoParcialxPorcentaje_Pago(0,0);" id="txtPorcentaje_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
+													</td>
+													<td>
+														<input id="txtPagoParcial_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
+													</td>
+													<td>
+														<select id="sltTipoPago_pago_0_0" class="form-control" name="pago_tipoPago">
+															<option value="efectivo">Efectivo</option>
+															<option value="deposito">Deposito</option>
+															<option value="cheque">Cheque</option>
+															<option value="transferencia">Transferencia</option>
+														</select>
+													</td>
+													<td>
+														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+															<input id="txtFechaVencimientoProv_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_fechaVencimiento" placeholder="Vencimiento">
+															<span class="input-group-btn">
+															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+															</span>
+														</div>
+													</td>
+													<td>
+														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+															<input id="txtFechaProgramadaProv_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_fechaProgramada" placeholder="Programada">
+															<span class="input-group-btn">
+															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+															</span>
+														</div>
+														<input id="txtEstado_pago_0_0" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
+													</td>
+													
+													<td>
+														<div class="margin-bottom-5">
+															<span onclick="agregarNuevaFilaPagos_Prov(0);" class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></span>
+															<!-- <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span> -->
+														</div>
+													</td>
+													
+												</tr>
+											</tbody>
+											
+											<tbody id="vistaTablaPagos_Filas_0">
+											
+											</tbody>
 										
 										</table>
+										
+										<div id="vistaTablaPagos">
+										</div>
+										
+										
 									</div>
 								</div>
 							</div>
@@ -543,55 +546,57 @@ function grabarProyecto(){
 	var subcontratos = [];
 	
 	for(x = 0; x <= idFila; x++){
-		//var subc = {idProveedorSC:$('#sltProveedorSC_' + x).val(), tipoTrabajoSC:$('#sltTipoTrabajoSC_' + x).val(), monedaSC:$('#sltMonedaSC_' + x).val(), montoSC:$('#txtMontoSC_' + x).val()};
-		if($('#sltProveedorSC_' + x).val()== ""){
-			subcontratos.push("1");
-		}else{
-			subcontratos.push($('#sltProveedorSC_' + x).val());
+		if($('#txtEstadoSC_' + x).val()== "enabled"){
+			//var subc = {idProveedorSC:$('#sltProveedorSC_' + x).val(), tipoTrabajoSC:$('#sltTipoTrabajoSC_' + x).val(), monedaSC:$('#sltMonedaSC_' + x).val(), montoSC:$('#txtMontoSC_' + x).val()};
+			if($('#sltProveedorSC_' + x).val()== ""){
+				subcontratos.push("1");
+			}else{
+				subcontratos.push($('#sltProveedorSC_' + x).val());
+			}
+			subcontratos.push($('#sltTipoTrabajoSC_' + x).val());
+			subcontratos.push($('#sltMonedaSC_' + x).val());
+			//Cuando se pase a JSON la coma ya no sera un problema y se podra pasar el Objeto Subcontrato
+			var currencyMonto = Number($('#txtMontoSC_' + x).val().replace(/[^0-9\.]+/g,""));
+			subcontratos.push(currencyMonto);
+			
+			if($('#txtTerminoObraSC_' + x).val()== ""){
+				var d = new Date(); 
+				//var strDate = d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate();
+				var strDate = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
+				subcontratos.push(strDate);
+			}else{
+				subcontratos.push($('#txtTerminoObraSC_' + x).val());
+			}
+	
+			subcontratos.push($('#txtEstadoSC_' + x).val());
+			//subcontratos.push(subc);
 		}
-		subcontratos.push($('#sltTipoTrabajoSC_' + x).val());
-		subcontratos.push($('#sltMonedaSC_' + x).val());
-		//Cuando se pase a JSON la coma ya no sera un problema y se podra pasar el Objeto Subcontrato
-		var currencyMonto = Number($('#txtMontoSC_' + x).val().replace(/[^0-9\.]+/g,""));
-		subcontratos.push(currencyMonto);
-		
-		if($('#txtTerminoObraSC_' + x).val()== ""){
-			var d = new Date(); 
-			//var strDate = d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate();
-			var strDate = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
-			subcontratos.push(strDate);
-		}else{
-			subcontratos.push($('#txtTerminoObraSC_' + x).val());
-		}
-
-		subcontratos.push($('#txtEstadoSC_' + x).val());
-		//subcontratos.push(subc);
 	}
 		
 	//PAGO PROVEEDORES
 	var pagoProveedores = [];
 	
-	for(x = 0; x <= idFila; x++){
-		
-		pagoProveedores.push($('#sltProveedor_' + x).val());
-		//Cuando se pase a JSON la coma ya no sera un problema y se podra pasar el Objeto Subcontrato
-		//Pago 1
-		var currencyMontoParcial_Pago1 = Number($('#txtPagoParcial_pago1_' + x).val().replace(/[^0-9\.]+/g,""));
-		pagoProveedores.push(currencyMontoParcial_Pago1);
-		pagoProveedores.push($('#txtFechaCobroProv_pago1_' + x).val());
-		//Pago 2
-		var currencyMontoParcial_Pago2 = Number($('#txtPagoParcial_pago2_' + x).val().replace(/[^0-9\.]+/g,""));
-		pagoProveedores.push(currencyMontoParcial_Pago2);
-		pagoProveedores.push($('#txtFechaCobroProv_pago2_' + x).val());
-		//Pago 3
-		var currencyMontoParcial_Pago3 = Number($('#txtPagoParcial_pago3_' + x).val().replace(/[^0-9\.]+/g,""));
-		pagoProveedores.push(currencyMontoParcial_Pago3);
-		pagoProveedores.push($('#txtFechaCobroProv_pago3_' + x).val());
-		
-		pagoProveedores.push($('#txtEstado_' + x).val());
-		
-		//subcontratos.push(subc);
-	}
+	arreglo_FilaSelector = document.getElementsByName('pago_filaProveedor');
+	arreglo_Porcentaje = document.getElementsByName('pago_porcentaje');
+	arreglo_MontoParcial = document.getElementsByName('pago_montoParcial');
+	arreglo_TipoPago = document.getElementsByName('pago_tipoPago');
+	arreglo_FechaVen = document.getElementsByName('pago_fechaVencimiento');
+	arreglo_FechaProg = document.getElementsByName('pago_fechaProgramada');
+	arreglo_Estado = document.getElementsByName('pago_estado');
+	
+	for(var x = 0; x <= idFila_Pagos; x++){		
+		if(arreglo_Estado[x].value == 'disabled'){
+			;
+		}
+		else{
+			pagoProveedores.push($('#sltProveedorSC_'+arreglo_FilaSelector[x].value).val());		
+			var montoParcial_Temp = Number(arreglo_MontoParcial[x].value.replace(/[^0-9\.]+/g,""));
+			pagoProveedores.push(montoParcial_Temp);
+			pagoProveedores.push(arreglo_TipoPago[x].value);
+			pagoProveedores.push(arreglo_FechaVen[x].value);
+			pagoProveedores.push(arreglo_FechaProg[x].value);
+		}		
+  	}
 	
 	
 	$('#hdnSubcontratos').val(subcontratos);
@@ -674,22 +679,39 @@ function agregarNuevaFilaSubcontratos(){
         autoGroup: true,
     });
 	
-	//datePickerInit();
-	
 	listarSelectorProveedores('sltProveedorSC_' + idFila);
 	recalcularTotalesSubcontratos();
-	agregarNuevaFilaPagos(idFila);
+	
+	agregarNuevaTablaPagos_Prov(idFila);
 }
 
-function agregarNuevaFilaPagos(idFilaTemp){
+var idFila_Pagos = 0;
+
+function agregarNuevaFilaPagos_Prov(idFilaProv){
+	idFila_Pagos++;
 	var entidadFila2 = new Object();
-	entidadFila2.idFila = idFilaTemp;
+	entidadFila2.idFilaPago = idFila_Pagos;
+	entidadFila2.idFilaProv = idFilaProv;
+	var html = '';
+	var source = $("#templateProveedoresPago_fila").html();
+	var template = Handlebars.compile(source);
+	html += template(entidadFila2);
+	$("#vistaTablaPagos_Filas_"+idFilaProv).append(html);
+	//listarSelectorProveedores('sltProveedor_'+idFila_Pagos);
+	
+	datePickerInit();
+}
+
+function agregarNuevaTablaPagos_Prov(idFilaProv){
+	idFila_Pagos++;
+	var entidadFila2 = new Object();
+	entidadFila2.idFilaProv = idFilaProv;
 	var html = '';
 	var source = $("#templateProveedoresPago_tabla").html();
 	var template = Handlebars.compile(source);
 	html += template(entidadFila2);
 	$("#vistaTablaPagos").append(html);
-	listarSelectorProveedores('sltProveedor_'+idFilaTemp);
+	//listarSelectorProveedores('sltProveedor_'+idFilaTemp);
 	
 	datePickerInit()
 }
@@ -754,49 +776,40 @@ function recalcularTotalesSubcontratos(){
 }
 
 function cambiarSelectorProveedorPago(idTempFila){
-	$('#sltProveedor_'+idTempFila).val($('#sltProveedorSC_'+idTempFila).val());
+	//$('#sltProveedor_'+idTempFila).val($('#sltProveedorSC_'+idTempFila).val());
 	$('#spnProveedor_'+idTempFila).text($('#sltProveedorSC_'+idTempFila+' option:selected').text());
 }
 
 function cambiarPagoProveedor(idTempFila){
 	//$('#montoTotal_'+idTempFila).val($('#txtMontoSC_'+idTempFila).val());
-	$('#montoTotal_'+idTempFila).val(Number($('#txtMontoSC_'+idTempFila).val().replace(/[^0-9\.]+/g,"")));
+	//$('#montoTotal_'+idTempFila).val(Number($('#txtMontoSC_'+idTempFila).val().replace(/[^0-9\.]+/g,"")));
 	$('#spnMontoTotal_'+idTempFila).text($('#txtMontoSC_'+idTempFila).val());
 }
 
-
-function calcularMontoParcialxPorcentaje_Pago1(idTempFila){
+//Metodo para calcular el Monto parcial a partir del porcentaje
+function calcularMontoParcialxPorcentaje_Pago(filaProv, filaPago){
 	//var monto = $('#montoTotal_'+idTempFila).val();
-	var monto = Number($('#montoTotal_'+idTempFila).val().replace(/[^0-9\.]+/g,""));
-	var porcentaje = $('#txtPorcentaje_pago1_'+idTempFila).val();
+	var monto = Number($('#spnMontoTotal_'+filaProv).text().replace(/[^0-9\.]+/g,""));
+	var porcentaje = $('#txtPorcentaje_pago_'+filaProv+'_'+filaPago).val();
 	var montoParcial = (monto*(porcentaje/100));
-	$('#txtPagoParcial_pago1_'+idTempFila).val(montoParcial);
+	$('#txtPagoParcial_pago_'+filaProv+'_'+filaPago).val(montoParcial);
 		
 }
-function calcularMontoParcialxPorcentaje_Pago2(idTempFila){
-	//var monto = $('#montoTotal_'+idTempFila).val();
-	var monto = Number($('#montoTotal_'+idTempFila).val().replace(/[^0-9\.]+/g,""));
-	var porcentaje = $('#txtPorcentaje_pago2_'+idTempFila).val();
-	var montoParcial = (monto*(porcentaje/100));
-	$('#txtPagoParcial_pago2_'+idTempFila).val(montoParcial);
-}
-function calcularMontoParcialxPorcentaje_Pago3(idTempFila){
-	//var monto = $('#montoTotal_'+idTempFila).val();
-	var monto = Number($('#montoTotal_'+idTempFila).val().replace(/[^0-9\.]+/g,""));
-	var porcentaje = $('#txtPorcentaje_pago3_'+idTempFila).val();
-	var montoParcial = (monto*(porcentaje/100));
-	$('#txtPagoParcial_pago3_'+idTempFila).val(montoParcial);
-}
-
 
 function borrarSubcontratoProveedor(idTempFila){
 	$('#fila_SC_'+idTempFila).hide();
 	$('#txtEstadoSC_'+idTempFila).val('disabled');
 	
-	$('#fila_pago_'+idTempFila).hide();
-	$('#txtEstado_'+idTempFila).val('disabled');
+	//$('#fila_pago_'+idTempFila).hide();
+	//$('#txtEstado_'+idTempFila).val('disabled');
 	
 	recalcularTotalesSubcontratos();
+}
+
+
+function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
+	//$('#fila_pago_'+idFilaProvTemp+'_'+idFilaTemp).hide();
+	$('#txtEstado_pago_'+idFilaProvTemp+'_'+idFilaTemp).val('disabled');
 }
 
 </script>
@@ -855,77 +868,136 @@ function borrarSubcontratoProveedor(idTempFila){
 	</tr>
 </script>
 
-<script id="templateProveedoresPago_tabla" type="text/x-handlebars-template">
-	<tr role="row" class="filter" id="fila_pago_{{idFila}}">
-		 <td>
-			 <span id="spnProveedor_{{idFila}}"></span>
-			 <span id="spnMontoTotal_{{idFila}}"></span>
-			 <select style="display:none" id="sltProveedor_{{idFila}}" name="pago_idProveedor" class="form-control form-filter input-sm">
-			 </select>
-			 <input style="display:none" id="montoTotal_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoTotal" placeholder="Monto USD $/.">
-			 <input style="display:none" id="txtEstado_{{idFila}}" class="form-control" placeholder="Estado" name="estado" value="enabled"/>
-		 </td>
-		 <td>
-			 <table class="table" style="margin-bottom: 5px;">
-			 <tr>
-				 <td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago1({{idFila}})" id="txtPorcentaje_pago1_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
-				 <td style="padding: 1px;"><input id="txtPagoParcial_pago1_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
-			 </tr>
-			 <tr>
-				 <td style="padding: 1px;" colspan="2">
-					 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-						 <input id="txtFechaCobroProv_pago1_{{idFila}}"  type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
-						 <span class="input-group-btn">
-						 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-						 </span>
-					 </div>
-				 </td>
-			 </tr>
-			 </table>
-		 </td>
-		 <td>
-			 <table class="table" style="margin-bottom: 5px;">
-			 <tr>
-				 <td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago2({{idFila}})" id="txtPorcentaje_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
-				 <td style="padding: 1px;"><input id="txtPagoParcial_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
-			 </tr>
-			 <tr>
-				 <td style="padding: 1px;" colspan="2">
-					 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-						 <input id="txtFechaCobroProv_pago2_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
-						 <span class="input-group-btn">
-						 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-						 </span>
-					 </div>
-				 </td>
-			 </tr>
-			 </table>
-		 </td>
-		 <td>
-			 <table class="table" style="margin-bottom: 5px;">
-			 <tr>
-				 <td width="25%" style="padding: 1px;"><input onchange="calcularMontoParcialxPorcentaje_Pago3({{idFila}})" id="txtPorcentaje_pago3_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%"></td>
-				 <td style="padding: 1px;"><input id="txtPagoParcial_pago3_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/."></td>
-			 </tr>
-			 <tr>
-				 <td style="padding: 1px;" colspan="2">
-					 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-						 <input id="txtFechaCobroProv_pago3_{{idFila}}" type="text" class="form-control form-filter input-sm" name="pago_fecha" placeholder="Cobrar">
-						 <span class="input-group-btn">
-						 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-						 </span>
-					 </div>
-				 </td>
-			 </tr>
-			 </table>
-		 </td>
-		 <td>
-			 <div class="margin-bottom-5">
-				 <span class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></span>
-				 <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
-			 </div>
-		 </td>
-	 </tr>
+
+<script id="templateProveedoresPago_fila" type="text/x-handlebars-template">
+<tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_{{idFilaPago}}">
+ <td>
+	 <input id="txtIdProveedor_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}">
+	 <input onchange="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},{{idFilaPago}})" id="txtPorcentaje_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
+ </td>
+ <td>
+	 <input id="txtPagoParcial_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
+ </td>
+<td>
+	<select id="sltTipoPago_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control" name="pago_tipoPago">
+		<option value="efectivo">Efectivo</option>
+		<option value="deposito">Deposito</option>
+		<option value="cheque">Cheque</option>
+		<option value="transferencia">Transferencia</option>
+	</select>
+</td>
+ <td>
+	 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+		 <input id="txtFechaVencimientoProv_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_fechaVencimiento" placeholder="Vencimiento">
+		 <span class="input-group-btn">
+		 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+		 </span>
+	 </div>
+ </td>
+ <td>
+	 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+		 <input id="txtFechaProgramadaProv_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_fechaProgramada" placeholder="Programada">
+		 <span class="input-group-btn">
+		 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+		 </span>
+	 </div>
+	<input id="txtEstado_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
+ </td>													
+ <td>
+	 <div class="margin-bottom-5">
+		 <span onclick="removerFilaPagos_Prov({{idFilaProv}},{{idFilaPago}});" class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span>
+	 </div>
+ </td>													
+</tr>
 </script>
+
+<script id="templateProveedoresPago_tabla" type="text/x-handlebars-template">
+<!-- Tabla contenedora de Proveedor y Monto -->
+ <table class="table table-striped table-bordered table-hover dataTable no-footer">
+	 <thead>
+		 <tr role="row" class="heading">
+			 <th width="20%">Proveedor</th>
+			 <th width="20%">Monto</th>
+		 </tr>
+	 </thead>
+	 <tbody>
+		 <tr role="row" class="filter">
+			 <td>
+				 <span id="spnProveedor_{{idFilaProv}}"></span>
+			 </td>
+			 <td>
+				 <span id="spnMontoTotal_{{idFilaProv}}"></span>												
+			 </td>					
+		 </tr>
+	 </tbody>										
+ </table>
+										
+										
+ <!-- Tabla contenedora de Pagos del Proveedor de la tabla anterior -->
+ <table class="table table-striped table-bordered table-hover dataTable no-footer">
+	 <thead>
+		 <tr role="row" class="heading">
+			 <th width="10%">Porcentaje</th>
+			 <th width="20%">Monto Parcial</th>
+			 <th width="20%">Tipo Pago</th>
+			 <th width="20%">Fecha Vencimiento</th>
+			 <th width="20%">Fecha Pago Programada</th>
+			 <th width="10%">Acciones</th>
+		 </tr>
+	 </thead>
+	 <tbody>
+		 <tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_0">
+			 <td>
+				<input id="txtIdProveedor_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}"> 
+				<input onchange="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},0);" id="txtPorcentaje_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
+			 </td>
+			 <td>
+				 <input id="txtPagoParcial_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
+			 </td>
+			 <td>
+				<select id="sltTipoPago_pago_{{idFilaProv}}_0" class="form-control" name="pago_tipoPago">
+					<option value="efectivo">Efectivo</option>
+					<option value="deposito">Deposito</option>
+					<option value="cheque">Cheque</option>
+					<option value="transferencia">Transferencia</option>
+				</select>
+			</td>
+			 <td>
+				 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+					 <input id="txtFechaVencimientoProv_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_fechaVencimiento" placeholder="Vencimiento">
+					 <span class="input-group-btn">
+					 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+					 </span>
+				 </div>
+			 </td>
+			 <td>
+				 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+					 <input id="txtFechaProgramadaProv_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_fechaProgramada" placeholder="Programada">
+					 <span class="input-group-btn">
+					 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+					 </span>
+				 </div>
+				 <input id="txtEstado_pago_{{idFilaProv}}_0" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
+			 </td>
+													
+			 <td>
+				 <div class="margin-bottom-5">
+					 <span onclick="agregarNuevaFilaPagos_Prov({{idFilaProv}});" class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></span>
+					 <!-- <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span> -->
+				 </div>
+			 </td>
+													
+		 </tr>
+	 </tbody>
+											
+	 <tbody id="vistaTablaPagos_Filas_{{idFilaProv}}">
+											
+	 </tbody>
+										
+ </table>
+
+
+</script>
+
 </body>
 </html>

@@ -12,20 +12,31 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Pago {
+public class Cuenta {
 
-	@Id @GeneratedValue @Column(name = "idpago")
-	private Integer idPago;
-	
-	//References
-	/*1 Proveedor puede recibir 1-n pagos para el mismo proyecto, esta tabla debe tener estas Keys:
-	 * idPago(PK), idOrden(FK), idProveedor(FK) el idProveedor se saca de ProyectoDetalle*/
-	@ManyToOne @JoinColumn(name = "idorden", nullable = false)
-	private Orden pagoOrden;
-	@ManyToOne @JoinColumn(name = "idproveedor", nullable = false)
-	private Proveedor pagoProveedor;
-	
-	//Fields
+	@Id
+	@GeneratedValue
+	@Column(name = "idcuenta")
+	private Integer idCuenta;
+
+	// References
+	/*
+	 * Se le puede crobar 1-n veces a 1 cliente, como el cliente es unico por
+	 * proyecto se le saca el idCliente a travez Orden-Proyecto, Keys:
+	 * idCobro(PK), idOrden(FK)
+	 */
+
+	@ManyToOne
+	@JoinColumn(name = "idorden", nullable = true)
+	private Orden cuentaOrden;
+
+	@ManyToOne
+	@JoinColumn(name = "idsubcontrato", nullable = true)
+	private Subcontrato cuentaSubcontrato;
+
+	// Fields
+	@Column(name = "tipo", length = 30, nullable = true)
+	private String tipo;
 	@Column(name = "fechavencimiento", nullable = false)
 	private Date fechaVencimiento;
 	@Column(name = "fechapagoprogramada", nullable = true)
@@ -38,7 +49,7 @@ public class Pago {
 	private BigDecimal monto;
 	@Column(length = 30, nullable = true)
 	private Integer pagador;
-	
+
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
 	@Column(name = "fechacreacion", nullable = false)
@@ -46,31 +57,29 @@ public class Pago {
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
-	
-	
-	public String getTipoPago() {
-		return tipoPago;
+	public Integer getIdCuenta() {
+		return idCuenta;
 	}
-	public void setTipoPago(String tipoPago) {
-		this.tipoPago = tipoPago;
+	public void setIdCuenta(Integer idCuenta) {
+		this.idCuenta = idCuenta;
 	}
-	public Integer getIdPago() {
-		return idPago;
+	public Orden getCuentaOrden() {
+		return cuentaOrden;
 	}
-	public void setIdPago(Integer idPago) {
-		this.idPago = idPago;
+	public void setCuentaOrden(Orden cuentaOrden) {
+		this.cuentaOrden = cuentaOrden;
 	}
-	public Orden getPagoOrden() {
-		return pagoOrden;
+	public Subcontrato getCuentaSubcontrato() {
+		return cuentaSubcontrato;
 	}
-	public void setPagoOrden(Orden pagoOrden) {
-		this.pagoOrden = pagoOrden;
+	public void setCuentaSubcontrato(Subcontrato cuentaSubcontrato) {
+		this.cuentaSubcontrato = cuentaSubcontrato;
 	}
-	public Proveedor getPagoProveedor() {
-		return pagoProveedor;
+	public String getTipo() {
+		return tipo;
 	}
-	public void setPagoProveedor(Proveedor pagoProveedor) {
-		this.pagoProveedor = pagoProveedor;
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 	public Date getFechaVencimiento() {
 		return fechaVencimiento;
@@ -89,6 +98,12 @@ public class Pago {
 	}
 	public void setFechaPagoReal(Date fechaPagoReal) {
 		this.fechaPagoReal = fechaPagoReal;
+	}
+	public String getTipoPago() {
+		return tipoPago;
+	}
+	public void setTipoPago(String tipoPago) {
+		this.tipoPago = tipoPago;
 	}
 	public BigDecimal getMonto() {
 		return monto;
@@ -120,4 +135,5 @@ public class Pago {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+
 }

@@ -3,6 +3,7 @@ package com.simularte.model;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Subcontrato {
@@ -40,6 +42,9 @@ public class Subcontrato {
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
+	
+	@OneToMany(mappedBy = "cuentaSubcontrato")
+	private Collection<Cuenta> cuentasSubcon;
 	
 	
 	public Date getFechaTerminoObra() {
@@ -101,5 +106,11 @@ public class Subcontrato {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Collection<Cuenta> getCuentasSubcon() {
+		return cuentasSubcon;
+	}
+	public void setCuentasSubcon(Collection<Cuenta> cuentasSubcon) {
+		this.cuentasSubcon = cuentasSubcon;
 	}
 }

@@ -28,10 +28,10 @@ public class Orden {
 	private Collection<Subcontrato> subcontratos;
 	@ManyToOne @JoinColumn(name = "idempresa", nullable = false)
 	private Empresa ordenEmpresa;
-	@OneToMany(mappedBy = "cobroOrden")
-	private Collection<Cobro> cobrosOrd;
-	@OneToMany(mappedBy = "pagoOrden")
-	private Collection<Pago> pagosOrd;
+		
+	
+	@OneToMany(mappedBy = "cuentaOrden")
+	private Collection<Cuenta> cuentasOrd;
 	
 	//Fields
 	@Column(length = 30, nullable = false)
@@ -112,18 +112,6 @@ public class Orden {
 	}
 	public void setOrdenEmpresa(Empresa ordenEmpresa) {
 		this.ordenEmpresa = ordenEmpresa;
-	}
-	public Collection<Cobro> getCobrosOrd() {
-		return cobrosOrd;
-	}
-	public void setCobrosOrd(Collection<Cobro> cobrosOrd) {
-		this.cobrosOrd = cobrosOrd;
-	}
-	public Collection<Pago> getPagosOrd() {
-		return pagosOrd;
-	}
-	public void setPagosOrd(Collection<Pago> pagosOrd) {
-		this.pagosOrd = pagosOrd;
 	}
 	public String getCodigo() {
 		return codigo;
@@ -226,5 +214,11 @@ public class Orden {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Collection<Cuenta> getCuentasOrd() {
+		return cuentasOrd;
+	}
+	public void setCuentasOrd(Collection<Cuenta> cuentasOrd) {
+		this.cuentasOrd = cuentasOrd;
 	}
 }

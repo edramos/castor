@@ -18,8 +18,6 @@ public class Proveedor {
 	private Integer idProveedor;
 	
 	//References
-	@OneToMany(mappedBy = "pagoProveedor")
-	private Collection<Pago> pagosProv;
 	@OneToMany(mappedBy = "proveedorSubcontrato")
 	private Collection<Subcontrato> subcontratosProveedor;
 	@ManyToOne @JoinColumn(name = "idempresa", nullable = false)
@@ -56,12 +54,6 @@ public class Proveedor {
 	}
 	public void setProveedorEmpresa(Empresa proveedorEmpresa) {
 		this.proveedorEmpresa = proveedorEmpresa;
-	}
-	public Collection<Pago> getPagosProv() {
-		return pagosProv;
-	}
-	public void setPagosProv(Collection<Pago> pagosProv) {
-		this.pagosProv = pagosProv;
 	}
 	public String getNombre() {
 		return nombre;
