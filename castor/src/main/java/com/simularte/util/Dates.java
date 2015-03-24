@@ -35,6 +35,8 @@ public class Dates {
 	}
 	
 	public static String fechaHoraEspaniolTS(Timestamp date){
+		if(date != null){
+		
 		SimpleDateFormat formatoDiaNumero = new SimpleDateFormat("d", new Locale("es", "PE"));
 		SimpleDateFormat formatoDia = new SimpleDateFormat( "EEEE", new Locale("es", "PE"));
 		SimpleDateFormat formatoMes = new SimpleDateFormat( "MMM", new Locale("es", "PE"));
@@ -53,9 +55,14 @@ public class Dates {
 		String hora = formatoHora.format(date);
 		
 		return dia + ", " + diaNumero + " " + mes + " " + anio + " " + hora;
+		
+		}else{
+			return "---";
+		}
 	}
 	
 	public static String fechaHoraEspaniolD(Date date){
+		if(date != null){
 		SimpleDateFormat formatoDiaNumero = new SimpleDateFormat("d", new Locale("es", "PE"));
 		SimpleDateFormat formatoDia = new SimpleDateFormat( "EEEE", new Locale("es", "PE"));
 		SimpleDateFormat formatoMes = new SimpleDateFormat( "MMM", new Locale("es", "PE"));
@@ -69,5 +76,9 @@ public class Dates {
 		String anio = formatoAnio.format(date);
 		
 		return dia + ", " + diaNumero + " " + mes + " " + anio;
+		
+		}else{
+			return "---";
+		}
 	}
 }

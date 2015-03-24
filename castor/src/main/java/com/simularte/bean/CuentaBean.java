@@ -13,9 +13,9 @@ public class CuentaBean {
 	private Integer idProveedor; //Tipo : Pagos Proveedor
 	private String nombreProveedor;
 	private String tipo;
-	private Date fechaVencimiento;
-	private Date fechaPagoProgramada;
-	private Date fechaPagoReal;
+	private String fechaVencimiento;
+	private String fechaPagoProgramada;
+	private String fechaPagoReal;
 	private String tipoPago;
 	private BigDecimal monto;
 	private Integer pagador;
@@ -23,6 +23,26 @@ public class CuentaBean {
 	private Timestamp fechaCreacion;
 	private String estado;
 	
+	
+	
+	public String getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+	public void setFechaVencimiento(String fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
+	public String getFechaPagoProgramada() {
+		return fechaPagoProgramada;
+	}
+	public void setFechaPagoProgramada(String fechaPagoProgramada) {
+		this.fechaPagoProgramada = fechaPagoProgramada;
+	}
+	public String getFechaPagoReal() {
+		return fechaPagoReal;
+	}
+	public void setFechaPagoReal(String fechaPagoReal) {
+		this.fechaPagoReal = fechaPagoReal;
+	}
 	public Integer getIdCuenta() {
 		return idCuenta;
 	}
@@ -46,24 +66,6 @@ public class CuentaBean {
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
-	}
-	public Date getFechaVencimiento() {
-		return fechaVencimiento;
-	}
-	public void setFechaVencimiento(Date fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
-	}
-	public Date getFechaPagoProgramada() {
-		return fechaPagoProgramada;
-	}
-	public void setFechaPagoProgramada(Date fechaPagoProgramada) {
-		this.fechaPagoProgramada = fechaPagoProgramada;
-	}
-	public Date getFechaPagoReal() {
-		return fechaPagoReal;
-	}
-	public void setFechaPagoReal(Date fechaPagoReal) {
-		this.fechaPagoReal = fechaPagoReal;
 	}
 	public String getTipoPago() {
 		return tipoPago;

@@ -1,6 +1,28 @@
-<div id="viewSubcontratosHandlerbars" class="portlet-body">
+<div id="viewSubcontratos" class="portlet-body">
+	<table class="detailGridPane">
+	<thead>
+	<tr style="border-bottom: 1px solid #D3D8DE;">
+		<th>Proveedor</th><th>Tipo Trabajo</th><th>Monto</th><th>Termino Obra</th><th>Estado</th><th>Supervisor</th>
+	</tr>
+	</thead>
+
+	<tbody id="viewSubcontratosHandlerbars">
+	</tbody>
+	</table>
 </div>
-	
+
+<div id="viewPagos" class="portlet-body" style="margin-top: 20px">
+	<table class="detailGridPane">
+	<thead>
+	<tr style="border-bottom: 1px solid #D3D8DE;">
+		<th>Proveedor</th><th>Monto</th><th>Tipo Pago</th><th>Vencimiento</th><th>Pago Programado</th><th>Pago Real</th><th>Pagador</th><th>Estado</th>
+	</tr>
+	</thead>
+
+	<tbody id="viewPagosHandleBars">
+	</tbody>
+	</table>
+</div>
 
 <script>
 /****SUBCONTRATOS****/
@@ -39,60 +61,26 @@ function initSubsCuentasPagar(cuentaspago){
 			
 	});
 
-	$('#viewPagosHandleBars_2').html(html);	
+	$('#viewPagosHandleBars').html(html);	
 }
 </script>
 
 <script id="templateSubcontratos" type="text/x-handlebars-template">
-<div class="detailPane results">
-	<div class="detailHeader"><div class="detailHeaderLeft"><span class="h2v1">{{nombreProveedor}}</span></div></div>
-	<div class="summaryBody sectionBody">
-	
-		<div class="summaryBodyLeft" style="width: 24%">
-			<div class="summaryBodyItem">
-				<span class="spanLabel">Tipo Trabajo</span><span class="value">{{tipoTrabajo}}</span>
-			</div>
-		</div>
-		<div class="summaryBodyMiddle" style="width: 24%">
-			<div class="summaryBodyItem">
-				<span class="spanLabel">Monto</span><span class="value">$ {{monto}}</span>
-			</div>
-		</div>
-			
-		<div class="summaryBodyMiddle" style="width: 24%">
-			<div class="summaryBodyItem">
-				<span class="spanLabel">Estado</span><span class="value">{{estado}}</span>
-			</div>
-		</div>
-		
-		<div class="summaryBodyRight" style="width: 24%">
-			<div class="summaryBodyItem">
-				<span class="spanLabel">Supervisor</span><span class="value">Eduardo Ramos</span>
-			</div>
-		</div>
-		
-
-		<table class="detailGridPane">
-		<thead>
-		<tr style="border-bottom: 1px solid #D3D8DE;">
-			<th>N°</th><th>Monto</th><th>Tipo Pago</th><th>Vencimiento</th><th>Pago Programado</th><th>Pago Real</th><th>Pagador</th><th>Estado</th>
-		</tr>
-		</thead>
-
-		<tbody id="viewPagosHandleBars_{{idProveedor}}">
-		</tbody>
-		</table>
-
-	</div>
-</div>
+<tr style="border-bottom: 1px solid #D3D8DE;">
+	<td>{{nombreProveedor}}</td>
+	<td>{{tipoTrabajo}}</td>
+	<td>$ {{monto}}</td>
+	<td>{{fechaTerminoObra}}</td>
+	<td>{{estado}}</td><td>Eduardo Ramos</td>
+</tr>
 </script>
 
 <script id="templatePagos" type="text/x-handlebars-template">
 <tr style="border-bottom: 1px solid #D3D8DE;">
-	<td>1</td>
-	<td>{{monto}}</td>
-	<td>{{tipo}}</td>
-	<td>{{fechaVencimiento}}</td><td>{{fechaPagoProgramada}}</td><td>{{FechaPagoReal}}</td><td>{{Pagador}}</td>
+	<td>{{nombreProveedor}}</td>
+	<td>$ {{monto}}</td>
+	<td>{{tipoPago}}</td>
+	<td>{{fechaVencimiento}}</td><td>{{fechaPagoProgramada}}</td><td>{{fechaPagoReal}}</td><td>{{Pagador}}</td>
 	<td><span class="label label-warning">{{estado}}</span></td>
 </tr>
 </script>

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.simularte.bean.CuentaBean;
 import com.simularte.model.Cuenta;
 import com.simularte.model.Proveedor;
+import com.simularte.util.Dates;
 
 @Service
 public class CuentaServiceImpl implements CuentaService {
@@ -60,9 +61,9 @@ public class CuentaServiceImpl implements CuentaService {
 					cuebean.setNombreProveedor(prov.getNombre());
 				}				
 				cuebean.setTipo(c.getTipo());
-				cuebean.setFechaVencimiento(c.getFechaVencimiento());
-				cuebean.setFechaPagoProgramada(c.getFechaPagoProgramada());
-				cuebean.setFechaPagoReal(c.getFechaPagoReal());
+				cuebean.setFechaVencimiento(Dates.fechaHoraEspaniolD(c.getFechaVencimiento()));
+				cuebean.setFechaPagoProgramada(Dates.fechaHoraEspaniolD(c.getFechaPagoProgramada()));
+				cuebean.setFechaPagoReal(Dates.fechaHoraEspaniolD(c.getFechaPagoReal()));
 				cuebean.setTipoPago(c.getTipoPago());
 				cuebean.setMonto(c.getMonto());
 				cuebean.setPagador(c.getPagador());
