@@ -117,7 +117,6 @@ var eficiencia = 0;
 $(document).ready(function(){
 	var idOrden = $('#txtIdOrden').val();
 	
-	
 	extraerInformacionOrden(idOrden); 
 	listarSubcontratos(idOrden);	
 	listarCuentasPagoProveedor(idOrden);
@@ -158,7 +157,7 @@ function listarCuentasPagoProveedor(idOrdenTemp){
  		dataType: 'json',
  		data: '',
  		success: function(cuentaspago){
- 			 	        
+ 			initSubsCuentasPagar(cuentaspago);	 	        
  		},
  		complete: function() {	 			
  			//removeNulls();

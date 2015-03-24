@@ -3,6 +3,7 @@
 	
 
 <script>
+/****SUBCONTRATOS****/
 function initOrdenSubcontratos(subcontratos){
 	var html = '';
 	var sumMontoSubcontratos = 0;
@@ -25,10 +26,23 @@ function initOrdenSubcontratos(subcontratos){
 	$('#spnEficiencia').text(eficiencia.toFixed(2) + '%');
 	
 	$('#viewSubcontratosHandlerbars').html(html);
-	
-	
+}
+
+/****CUENTAS PAGAR****/
+function initSubsCuentasPagar(cuentaspago){
+	var html = '';
+		
+	$.each(cuentaspago, function(i, pago){
+		var source = $("#templatePagos").html();
+		var template = Handlebars.compile(source);
+		html += template(pago);
+			
+	});
+
+	$('#viewPagosHandleBars_2').html(html);	
 }
 </script>
+
 <script id="templateSubcontratos" type="text/x-handlebars-template">
 <div class="detailPane results">
 	<div class="detailHeader"><div class="detailHeaderLeft"><span class="h2v1">{{nombreProveedor}}</span></div></div>
@@ -64,19 +78,21 @@ function initOrdenSubcontratos(subcontratos){
 			<th>N°</th><th>Monto</th><th>Tipo Pago</th><th>Vencimiento</th><th>Pago Programado</th><th>Pago Real</th><th>Pagador</th><th>Estado</th>
 		</tr>
 		</thead>
-		<tbody>
-		<tr style="border-bottom: 1px solid #D3D8DE;">
-			<td>1</td><td>$20,000.00</td><td>Efectivo</td><td>Vie, 31 Dic 2015</td><td>Vie, 21 Dic 2015</td><td>Vie, 21 Dic 2015</td><td>---</td>
-			<td><span class="label label-warning">Pendiente</span></td>
-		</tr>
-		<tr>
-			<td>2</td><td>$30,000.00</td><td>Deposito</td><td>Vie, 31 Dic 2015</td><td>Vie, 21 Dic 2015</td></td><td>Vie, 21 Dic 2015</td><td>Eduardo Ramos</td>
-			<td><span class="label label-success">Pagado</span></td>
-		</tr>
+
+		<tbody id="viewPagosHandleBars_{{idProveedor}}">
 		</tbody>
 		</table>
 
-
 	</div>
 </div>
+</script>
+
+<script id="templatePagos" type="text/x-handlebars-template">
+<tr style="border-bottom: 1px solid #D3D8DE;">
+	<td>1</td>
+	<td>{{monto}}</td>
+	<td>{{tipo}}</td>
+	<td>{{fechaVencimiento}}</td><td>{{fechaPagoProgramada}}</td><td>{{FechaPagoReal}}</td><td>{{Pagador}}</td>
+	<td><span class="label label-warning">{{estado}}</span></td>
+</tr>
 </script>
