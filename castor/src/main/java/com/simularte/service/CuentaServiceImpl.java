@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.simularte.bean.CuentaBean;
 import com.simularte.model.Cuenta;
+import com.simularte.model.Proveedor;
 
 @Service
 public class CuentaServiceImpl implements CuentaService {
@@ -54,7 +55,9 @@ public class CuentaServiceImpl implements CuentaService {
 				}
 				if(c.getCuentaSubcontrato()!=null){
 					cuebean.setIdSubcontrato(c.getCuentaSubcontrato().getIdSubcontrato());
-					cuebean.setIdProveedor(c.getCuentaSubcontrato().getProveedorSubcontrato().getIdProveedor());
+					Proveedor prov = c.getCuentaSubcontrato().getProveedorSubcontrato();
+					cuebean.setIdProveedor(prov.getIdProveedor());
+					cuebean.setNombreProveedor(prov.getNombre());
 				}				
 				cuebean.setTipo(c.getTipo());
 				cuebean.setFechaVencimiento(c.getFechaVencimiento());

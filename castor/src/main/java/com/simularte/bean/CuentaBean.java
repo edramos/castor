@@ -11,6 +11,7 @@ public class CuentaBean {
 	private Integer idSubcontrato;
 	private Integer idCliente; //Tipo : Cobro Cliente
 	private Integer idProveedor; //Tipo : Pagos Proveedor
+	private String nombreProveedor;
 	private String tipo;
 	private Date fechaVencimiento;
 	private Date fechaPagoProgramada;
@@ -111,6 +112,12 @@ public class CuentaBean {
 	}
 	public void setIdCliente(Integer idCliente) {
 		this.idCliente = idCliente;
+	}
+	public String getNombreProveedor() {
+		return nombreProveedor;
+	}
+	public void setNombreProveedor(String nombreProveedor) {
+		this.nombreProveedor = nombreProveedor;
 	}
 	
 }
