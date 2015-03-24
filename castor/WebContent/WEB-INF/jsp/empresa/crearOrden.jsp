@@ -344,7 +344,7 @@
 									<div class="table-scrollable">
 										
 										<!-- Tabla contenedora de Proveedor y Monto -->
-										<table class="table table-striped table-bordered table-hover dataTable no-footer">
+										<table id="tablaDatosPagoProv_0" class="table table-striped table-bordered table-hover dataTable no-footer">
 											<thead>
 												<tr role="row" class="heading">
 													<th width="20%">Proveedor</th>
@@ -365,7 +365,7 @@
 										
 										
 										<!-- Tabla contenedora de Pagos del Proveedor de la tabla anterior -->
-										<table class="table table-striped table-bordered table-hover dataTable no-footer">
+										<table id="tablaPagoProvDetalles_0" class="table table-striped table-bordered table-hover dataTable no-footer">
 											<thead>
 												<tr role="row" class="heading">
 													<th width="10%">Porcentaje</th>
@@ -502,19 +502,22 @@ $(document).ready(function(){
 	$("#frmCrearOrden").validate({
 		rules: {
 			nombre: {
-				required: true,
+				required: true
 			},   
 			idCliente: {
-				required: true,
+				required: true
 			},   
 			tipoOrden: {
-				required: true,
+				required: true
 			},   
 			tipoTrabajo: {
-				required: true,
+				required: true
 			},   
 			departamento: {
-				required: true,
+				required: true
+			},
+			fechaEntrega: {
+				required: true
 			}
 		},
 		messages: {
@@ -522,7 +525,8 @@ $(document).ready(function(){
 			idCliente: "*",
 			tipoOrden: "*",
 			tipoTrabajo: "*",
-			departamento: "*"
+			departamento: "*",
+			fechaEntrega: "*"
 		},
 		submitHandler: function(form){
 			if($('#txtLat').val()==''){
@@ -585,7 +589,10 @@ function grabarProyecto(){
 	arreglo_Estado = document.getElementsByName('pago_estado');
 	
 	for(var x = 0; x <= idFila_Pagos; x++){		
-		if(arreglo_Estado[x].value == 'disabled'){
+		if(arreglo_Estado[x] == undefined){
+			;
+		}
+		else if(arreglo_Estado[x].value == 'disabled'){
 			;
 		}
 		else{
@@ -803,12 +810,15 @@ function borrarSubcontratoProveedor(idTempFila){
 	//$('#fila_pago_'+idTempFila).hide();
 	//$('#txtEstado_'+idTempFila).val('disabled');
 	
+	$('#tablaDatosPagoProv_'+idTempFila).remove();
+	$('#tablaPagoProvDetalles_'+idTempFila).remove();
+	
 	recalcularTotalesSubcontratos();
 }
 
 
 function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
-	//$('#fila_pago_'+idFilaProvTemp+'_'+idFilaTemp).hide();
+	$('#fila_pago_'+idFilaProvTemp+'_'+idFilaTemp).hide();
 	$('#txtEstado_pago_'+idFilaProvTemp+'_'+idFilaTemp).val('disabled');
 }
 
@@ -913,7 +923,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 
 <script id="templateProveedoresPago_tabla" type="text/x-handlebars-template">
 <!-- Tabla contenedora de Proveedor y Monto -->
- <table class="table table-striped table-bordered table-hover dataTable no-footer">
+ <table id="tablaDatosPagoProv_{{idFilaProv}}" class="table table-striped table-bordered table-hover dataTable no-footer">
 	 <thead>
 		 <tr role="row" class="heading">
 			 <th width="20%">Proveedor</th>
@@ -934,7 +944,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 										
 										
  <!-- Tabla contenedora de Pagos del Proveedor de la tabla anterior -->
- <table class="table table-striped table-bordered table-hover dataTable no-footer">
+ <table id="tablaPagoProvDetalles_{{idFilaProv}}" class="table table-striped table-bordered table-hover dataTable no-footer">
 	 <thead>
 		 <tr role="row" class="heading">
 			 <th width="10%">Porcentaje</th>
