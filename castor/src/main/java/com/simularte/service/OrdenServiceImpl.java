@@ -143,26 +143,31 @@ public class OrdenServiceImpl implements OrdenService {
 			ArrayList<Cuenta> cuenta_prov = new ArrayList<Cuenta>();
 			int resto2;		
 			for(int x = 0; x < pagProv.length; x++){
-				Cuenta cu = new Cuenta();
 				resto2 = x%5;				
 				if(resto2 == 0){					
-					cu.setCuentaSubcontrato(subcontratosMap.get(pagProv[x]));
+					Cuenta cu = new Cuenta();
+					
+					Subcontrato sbcontrato = subcontratosMap.get(Integer.parseInt(pagProv[x]));
+					
+					cu.setCuentaSubcontrato(sbcontrato);
 					cu.setTipo("pago");
+					cuenta_prov.add(cu);
 				}else{
+					System.out.println("size cuentas: " + cuenta_prov.size());
+					int index = cuenta_prov.size()-1;
+					System.out.println("index: " + index);
 					switch(resto2){
 						case 1:
-							cu.setMonto(Formatos.StringToBigDecimal(pagProv[x]));						
+							cuenta_prov.get(index).setMonto(Formatos.StringToBigDecimal(pagProv[x]));						
 							break;
 						case 2:
-							cu.setTipoPago(pagProv[x]);						
+							cuenta_prov.get(index).setTipoPago(pagProv[x]);						
 							break;	
 						case 3:
-							cu.setFechaVencimiento(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
+							cuenta_prov.get(index).setFechaVencimiento(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
 							break;
 						case 4:
-							cu.setFechaPagoProgramada(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
-							cuenta_prov.add(cu);
-							cu = new Cuenta();
+							cuenta_prov.get(index).setFechaPagoProgramada(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
 							break;
 					}
 				}

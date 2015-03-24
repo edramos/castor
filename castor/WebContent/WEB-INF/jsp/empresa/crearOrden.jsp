@@ -379,7 +379,7 @@
 											<tbody>
 												<tr role="row" class="filter" id="fila_pago_0_0">
 													<td>
-														<input id="txtIdProveedor_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="0">
+														<input style="display:none" id="txtIdProveedor_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="0">
 														<input onchange="calcularMontoParcialxPorcentaje_Pago(0,0);" id="txtPorcentaje_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
 													</td>
 													<td>
@@ -408,7 +408,7 @@
 															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 															</span>
 														</div>
-														<input id="txtEstado_pago_0_0" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
+														<input style="display:none" id="txtEstado_pago_0_0" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
 													</td>
 													
 													<td>
@@ -872,7 +872,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 <script id="templateProveedoresPago_fila" type="text/x-handlebars-template">
 <tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_{{idFilaPago}}">
  <td>
-	 <input id="txtIdProveedor_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}">
+	 <input style="display:none" id="txtIdProveedor_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}">
 	 <input onchange="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},{{idFilaPago}})" id="txtPorcentaje_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
  </td>
  <td>
@@ -901,7 +901,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 		 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 		 </span>
 	 </div>
-	<input id="txtEstado_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
+	<input style="display:none" id="txtEstado_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
  </td>													
  <td>
 	 <div class="margin-bottom-5">
@@ -948,7 +948,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 	 <tbody>
 		 <tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_0">
 			 <td>
-				<input id="txtIdProveedor_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}"> 
+				<input style="display:none" id="txtIdProveedor_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}"> 
 				<input onchange="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},0);" id="txtPorcentaje_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
 			 </td>
 			 <td>
@@ -977,7 +977,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 					 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 					 </span>
 				 </div>
-				 <input id="txtEstado_pago_{{idFilaProv}}_0" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
+				 <input style="display:none" id="txtEstado_pago_{{idFilaProv}}_0" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
 			 </td>
 													
 			 <td>
