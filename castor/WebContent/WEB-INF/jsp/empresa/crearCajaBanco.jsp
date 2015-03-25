@@ -33,7 +33,34 @@
 			
 			<div class="portlet-body form">
 			<form:form id="frmCrearCajaBanco" class="form-horizontal" action="crearOrden" method="post" commandName="ordenBean">
-				<div class="form-body">
+				<div class="detailBody ">
+					
+					<div class="detailItem">
+						<span class="labelv1">Monto</span>
+						<span class="value"><input type="text" placeholder="Monto $."/></span>
+					</div>
+					<div class="detailItem">
+						<span class="labelv1">Monto</span>
+						<span class="value"><input type="text" placeholder="Monto $."/></span>
+					</div>
+					<div class="detailItem">
+						<span class="labelv1">Monto</span>
+						<span class="value"><input type="text" placeholder="Monto $."/></span>
+					</div>
+					
+				</div>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+				<!-- <div class="form-body">
 					
 					<div class="row">
 						<div class="col-md-3">
@@ -46,9 +73,9 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="col-md-12">
-									<select id="sltTipo" class="form-control" name="tipoTrabajo">
-										<option value="Obra">Ingreso</option>
-										<option value="Estudio">Egreso</option>
+									<select id="sltTipoTransaccion" class="form-control" name="tipoTrabajo">
+										<option value="Ingreso">Ingreso</option>
+										<option value="Egreso">Egreso</option>
 									</select>
 								</div>
 							</div>
@@ -56,12 +83,12 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="col-md-12">
-									<select id="sltTipo" class="form-control" name="tipoTrabajo">
-										<option value="Obra">Cobranzas Ventas/Servicio</option>
-										<option value="Estudio">Otras cobranzas</option>
-										<option value="Estudio">Transferencia cta.</option>
-										<option value="Estudio">Intereses ganados</option>
-										<option value="Estudio">Prestamos recibidos</option>
+									<select id="sltTransaccion" class="form-control" name="tipoTrabajo">
+										<option value="Cobranza Venta/Servicio">Cobranza Venta/Servicio</option>
+										<option value="Otra cobranza">Otra cobranza</option>
+										<option value="Transferencia cuenta">Transferencia cuenta</option>
+										<option value="Interese ganado">Interes ganado</option>
+										<option value="Prestamo recibido">Prestamo recibido</option>
 									</select>
 								</div>
 							</div>
@@ -69,7 +96,7 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtNombre" class="form-control" placeholder="RUC Cliente" name="nombre"/>
+									<input id="txtNombreCliente" class="form-control" placeholder="Cliente" name="nombre"/>
 								</div>
 							</div>
 						</div>
@@ -107,7 +134,7 @@
 						</div>
 					
 					
-				</div>
+				</div> -->
 			</form:form>
 			</div>
 		</div>
@@ -126,6 +153,55 @@
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+<script src="assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+<script>
+jQuery(document).ready(function() {   
+	Metronic.init(); // init metronic core components
+	Layout.init(); // init current layout
+});
+</script>
+<script>
+jQuery(function($) {
+	var locations = {
+	    'Ingreso': ['Cobranza Venta/Servicio', 'Otra cobranza', 'Transferencia cuenta', 'Interes ganado', 'Prestamo recibido'],
+		'Egreso': ['Pago Proveedor', 'Pago Planilla/Beneficios', 'Compra', 'Tributo', 'Transferencia', 'Reembolso Caja Chica', 'Gasto Financiero'],
+	}
+	
+	$('#sltTipoTransaccion').change(function(){
+        var country = $(this).val(), lcns = locations[country] || [];
+        var html = $.map(lcns, function(lcn){
+            return '<option value="' + lcn + '">' + lcn + '</option>'
+        }).join('');
+        
+        $('#sltTransaccion').html(html);
+    });
+	
+	$('#sltTransaccion').change(function(){
+		var value = ($('#sltTransaccion option:selected').text());
+		
+		switch(value){
+		//INGRESOS
+		case 'Cobranza Venta/Servicio':
+			$('#txtNombreCliente').show();
+			break;
+		case 'Otra cobranza':
+			$('#txtNombreCliente').show();
+			break;
+		case 'Transferencia cuenta':
+			$('#txtNombreCliente').hide();
+			break;
+		case 'Interes ganado':
+			$('#txtNombreCliente').hide();
+			break;
+		case 'Prestamo recibido':
+			$('#txtNombreCliente').hide();
+			break;
+		//EGRESOS
+		}
+	});
+});
+</script>
 </body>
 </html>

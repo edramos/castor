@@ -35,7 +35,7 @@
 				</ul>
 			</li>
 			<li>
-				<a href="javascript:;"><i class="icon-diamond"></i>
+				<a href="javascript:;"><i class="icon-notebook"></i>
 				<span class="title">Caja Banco</span>
 				<span class="arrow "></span>
 				</a>
@@ -89,4 +89,3 @@
 	</div>
 </div>
 <!-- END SIDEBAR -->
-	
