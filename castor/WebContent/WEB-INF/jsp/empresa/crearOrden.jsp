@@ -380,7 +380,7 @@
 												<tr role="row" class="filter" id="fila_pago_0_0">
 													<td>
 														<input style="display:none" id="txtIdProveedor_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="0">
-														<input onkeyup="calcularMontoParcialxPorcentaje_Pago(0,0);" id="txtPorcentaje_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
+														<input onkeyup="calcularMontoParcialxPorcentaje_Pago(0,0);" id="txtPorcentaje_pago_0_0" type="text" class="form-control form-filter input-sm pago_porcentaje_0" name="pago_porcentaje" placeholder="%">
 													</td>
 													<td>
 														<input id="txtPagoParcial_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
@@ -408,7 +408,7 @@
 															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 															</span>
 														</div>
-														<input style="display:none" id="txtEstado_pago_0_0" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
+														<input style="display:none" id="txtEstado_pago_0_0" class="form-control pago_estado_0" placeholder="Estado" name="pago_estado" value="enabled"/>
 													</td>
 													
 													<td>
@@ -679,13 +679,6 @@ function agregarNuevaFilaSubcontratos(){
 	html += template(entidadFila);
 	$("#vistaTablaSubcontratosProveedores").append(html);
 	
-	/* $("#txtMontoSC_" + idFila).inputmask("decimal",{
-		radixPoint: ".", 
-        groupSeparator: ",", 
-        digits: 2,
-        autoGroup: true
-    }); */
-	
 	$("#txtMontoSC_" + idFila).inputmask("decimal",{
 		alias: 'numeric',
 		groupSeparator: ',',
@@ -705,18 +698,55 @@ function agregarNuevaFilaSubcontratos(){
 var idFila_Pagos = 0;
 
 function agregarNuevaFilaPagos_Prov(idFilaProv){
-	idFila_Pagos++;
-	var entidadFila2 = new Object();
-	entidadFila2.idFilaPago = idFila_Pagos;
-	entidadFila2.idFilaProv = idFilaProv;
-	var html = '';
-	var source = $("#templateProveedoresPago_fila").html();
-	var template = Handlebars.compile(source);
-	html += template(entidadFila2);
-	$("#vistaTablaPagos_Filas_"+idFilaProv).append(html);
-	//listarSelectorProveedores('sltProveedor_'+idFila_Pagos);
+	var totalPorcentajeTemp = sumarPorcentajesTablaPagos_Prov(idFilaProv);
+	if(totalPorcentajeTemp < 100){
+		//
+		idFila_Pagos++;
+		var entidadFila2 = new Object();
+		entidadFila2.idFilaPago = idFila_Pagos;
+		entidadFila2.idFilaProv = idFilaProv;
+		var html = '';
+		var source = $("#templateProveedoresPago_fila").html();
+		var template = Handlebars.compile(source);
+		html += template(entidadFila2);
+		$("#vistaTablaPagos_Filas_"+idFilaProv).append(html);
+		//listarSelectorProveedores('sltProveedor_'+idFila_Pagos);
+		
+		datePickerInit();
+		
+		//Calculamos el nuevo porcentaje
+		$('#txtPorcentaje_pago_'+idFilaProv+'_'+idFila_Pagos).val(100-totalPorcentajeTemp);
+		calcularMontoParcialxPorcentaje_Pago(idFilaProv, idFila_Pagos);
+	}
+	else if(totalPorcentajeTemp > 100){
+		alert("Esta sobreparando el 100% en los Pagos");
+	}
+		
+} 
+
+function sumarPorcentajesTablaPagos_Prov(idFilaProv){
+	//Buscamos cuanto es el resto del porcentaje que nos falta
+	var totalPorcentaje = 0; 
+	var array_porcentaje_temp = new Array();
+	var array_estado_temp = new Array();
+	$(".pago_porcentaje_"+idFilaProv).each(
+		function(){
+			array_porcentaje_temp.push($(this).val());
+		}
+	)
+	$(".pago_estado_"+idFilaProv).each(
+		function(){
+			array_estado_temp.push($(this).val());
+		}
+	)
 	
-	datePickerInit();
+	for	(var i = 0; i < array_porcentaje_temp.length; i++) {
+		if(array_estado_temp[i]=='enabled'){
+			totalPorcentaje = totalPorcentaje + parseInt(array_porcentaje_temp[i]);	
+		}    	
+	} 
+	//alert(totalPorcentaje);
+	return totalPorcentaje;
 }
 
 function agregarNuevaTablaPagos_Prov(idFilaProv){
@@ -731,6 +761,9 @@ function agregarNuevaTablaPagos_Prov(idFilaProv){
 	//listarSelectorProveedores('sltProveedor_'+idFilaTemp);
 	
 	datePickerInit()
+	
+	//Agregamos porcentaje 100 al 1er pago
+	$('#txtPorcentaje_pago_'+idFilaProv+'_0').val('100');	
 }
 
 function recalcularTotalesSubcontratos(){
@@ -743,7 +776,6 @@ function recalcularTotalesSubcontratos(){
 	arregloEstadoSC = document.getElementsByName('estadoSC');
 	
 	for(var x = 0; x < arregloMontoSC.length; x++){
-		//alert("montos: " + arregloMontoSC[x].value);
 		if(arregloMontoSC[x].value == ''){
 			;
 		}else{
@@ -753,7 +785,6 @@ function recalcularTotalesSubcontratos(){
 				var currency = Number(arregloMontoSC[x].value.replace(/[^0-9\.]+/g,""));
 				//alert('currency: ' + currency);
 				subtotal += currency;
-				//alert("subtotal: " + subtotal);
 			}			
 		}
   	}
@@ -801,6 +832,11 @@ function cambiarPagoProveedor(idTempFila){
 	//$('#montoTotal_'+idTempFila).val($('#txtMontoSC_'+idTempFila).val());
 	//$('#montoTotal_'+idTempFila).val(Number($('#txtMontoSC_'+idTempFila).val().replace(/[^0-9\.]+/g,"")));
 	$('#spnMontoTotal_'+idTempFila).text($('#txtMontoSC_'+idTempFila).val());
+	calcularMontoParcialxPorcentaje_Pago(idTempFila, 0);
+	if(idTempFila==0){
+		$('#txtPorcentaje_pago_0_0').val('100');
+		calcularMontoParcialxPorcentaje_Pago(0,0);
+	}
 }
 
 //Metodo para calcular el Monto parcial a partir del porcentaje
@@ -820,6 +856,16 @@ function calcularMontoParcialxPorcentaje_Pago(filaProv, filaPago){
 	});
 	$('#txtPagoParcial_pago_'+filaProv+'_'+filaPago).val(montoParcial.toFixed(2));
 
+	
+	//
+	var totalPorcentajeTemp = sumarPorcentajesTablaPagos_Prov(filaProv);
+	
+	if(totalPorcentajeTemp > 100){
+		alert("Esta sobreparando el 100% en los Pagos");
+		$('#btnGrabar').attr('disabled', 'true');		
+	}else{
+		$('#btnGrabar').removeAttr("disabled");
+	}
 }
 
 function borrarSubcontratoProveedor(idTempFila){
@@ -902,7 +948,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 <tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_{{idFilaPago}}">
  <td>
 	 <input style="display:none" id="txtIdProveedor_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}">
-	 <input onkeyup="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},{{idFilaPago}})" id="txtPorcentaje_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
+	 <input onkeyup="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},{{idFilaPago}})" id="txtPorcentaje_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm pago_porcentaje_{{idFilaProv}}" name="pago_porcentaje" placeholder="%">
  </td>
  <td>
 	 <input id="txtPagoParcial_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
@@ -930,7 +976,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 		 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 		 </span>
 	 </div>
-	<input style="display:none" id="txtEstado_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
+	<input style="display:none" id="txtEstado_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control pago_estado_{{idFilaProv}}" placeholder="Estado" name="pago_estado" value="enabled"/>
  </td>													
  <td>
 	 <div class="margin-bottom-5">
@@ -978,7 +1024,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 		 <tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_0">
 			 <td>
 				<input style="display:none" id="txtIdProveedor_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}"> 
-				<input onkeyup="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},0);" id="txtPorcentaje_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_porcentaje" placeholder="%">
+				<input onkeyup="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},0);" id="txtPorcentaje_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm pago_porcentaje_{{idFilaProv}}" name="pago_porcentaje" placeholder="%">
 			 </td>
 			 <td>
 				 <input id="txtPagoParcial_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
@@ -1006,7 +1052,7 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 					 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 					 </span>
 				 </div>
-				 <input style="display:none" id="txtEstado_pago_{{idFilaProv}}_0" class="form-control" placeholder="Estado" name="pago_estado" value="enabled"/>
+				 <input style="display:none" id="txtEstado_pago_{{idFilaProv}}_0" class="form-control pago_estado_{{idFilaProv}}" placeholder="Estado" name="pago_estado" value="enabled"/>
 			 </td>
 													
 			 <td>
