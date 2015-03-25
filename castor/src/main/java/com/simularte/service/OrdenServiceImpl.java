@@ -52,8 +52,17 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setNombre(ordenBean.getNombre());
 			orden.setTipoOrden(ordenBean.getTipoOrden());
 			orden.setTipoTrabajo(ordenBean.getTipoTrabajo());
-			orden.setLat(ordenBean.getLat());
-			orden.setLon(ordenBean.getLon());
+			
+			//
+			String []arrayLat = ordenBean.getLat().split(" ");
+			String []arrayLon = ordenBean.getLon().split(" ");
+			
+			//orden.setLat(ordenBean.getLat());
+			//orden.setLon(ordenBean.getLon());
+			
+			orden.setLat(Double.parseDouble(arrayLat[0]));
+			orden.setLon(Double.parseDouble(arrayLon[0]));
+			
 			orden.setCiudad(ordenBean.getCiudad());
 			orden.setDepartamento(ordenBean.getDepartamento());
 			orden.setOferta(ordenBean.getOferta());
@@ -358,8 +367,8 @@ public class OrdenServiceImpl implements OrdenService {
 		ordenB.setNombre(orden.getNombre());
 		ordenB.setTipoOrden(orden.getTipoOrden());
 		ordenB.setTipoTrabajo(orden.getTipoTrabajo());
-		ordenB.setLat(orden.getLat());
-		ordenB.setLon(orden.getLon());
+		ordenB.setLat(""+orden.getLat());
+		ordenB.setLon(""+orden.getLon());
 		ordenB.setCiudad(orden.getCiudad());
 		ordenB.setDepartamento(orden.getDepartamento());
 		ordenB.setOferta(orden.getOferta());

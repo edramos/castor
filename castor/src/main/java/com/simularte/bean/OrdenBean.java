@@ -11,8 +11,8 @@ public class OrdenBean {
 	private String nombre;
 	private String tipoOrden;
 	private String tipoTrabajo;
-	private double lat;
-	private double lon;
+	private String lat;
+	private String lon;
 	private String ciudad;
 	private String departamento;
 	private BigDecimal oferta;
@@ -140,16 +140,16 @@ public class OrdenBean {
 	public void setTipoTrabajo(String tipoTrabajo) {
 		this.tipoTrabajo = tipoTrabajo;
 	}
-	public double getLat() {
+	public String getLat() {
 		return lat;
 	}
-	public void setLat(double lat) {
+	public void setLat(String lat) {
 		this.lat = lat;
 	}
-	public double getLon() {
+	public String getLon() {
 		return lon;
 	}
-	public void setLon(double lon) {
+	public void setLon(String lon) {
 		this.lon = lon;
 	}
 	public String getCiudad() {
