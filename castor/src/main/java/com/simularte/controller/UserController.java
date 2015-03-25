@@ -125,7 +125,10 @@ public class UserController {
 	public String toBuscarOrden(){
 		return "empresa/buscarOrden";
 	}
-	
+	@RequestMapping("toCrearCajaBanco")
+	public String toCrearCajaBanco(){
+		return "empresa/crearCajaBanco";
+	}
 	
 	
 	
