@@ -91,6 +91,14 @@ label.error {
 .threeColumn .detailSection {
 	width: 32%;
 }
+.fourColumn .detailSection {
+	width: 24%;
+}
+
+.detailSection {
+    float: left;
+    margin-right: 10px;
+}
 /*FORM*/
 .labelv1 {
     min-width: 80px;
@@ -157,7 +165,7 @@ table.detailGridPane tbody {
 }
 
 /*INPUT*/
-input[type="text"], input[type="password"], textarea {
+/* input[type="text"], input[type="password"], textarea {
     height: 30px;
     border-radius: 3px;
     border: 1px solid #C3D3DD;
@@ -167,7 +175,19 @@ input[type="text"], input[type="password"], textarea {
     color: #79868E;
     margin: 1px 0px;
     width: 150px;
+} */
+.myInputTextForm{
+	height: 30px;
+    border-radius: 3px;
+    border: 1px solid #C3D3DD;
+    padding-left: 10px;
+    padding-right: 10px;
+    /*box-shadow: 0px 0px 5px 2px #EAEAEA inset;*/
+    color: #79868E;
+    margin: 1px 0px;
+    width: 150px;
 }
+
 
 /***
 Rounded Portlets
