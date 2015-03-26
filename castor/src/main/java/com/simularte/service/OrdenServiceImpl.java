@@ -54,14 +54,15 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setTipoTrabajo(ordenBean.getTipoTrabajo());
 			
 			//
-			String []arrayLat = ordenBean.getLat().split(" ");
-			String []arrayLon = ordenBean.getLon().split(" ");
+			//String []arrayLat = ordenBean.getLat().split(" ");
+			//String []arrayLon = ordenBean.getLon().split(" ");
 			
-			//orden.setLat(ordenBean.getLat());
-			//orden.setLon(ordenBean.getLon());
+			orden.setLat(Double.parseDouble(ordenBean.getLat().replace("°", "")));
+			orden.setLon(Double.parseDouble(ordenBean.getLon().replace("°", "")));
 			
-			orden.setLat(Double.parseDouble(arrayLat[0]));
-			orden.setLon(Double.parseDouble(arrayLon[0]));
+			//orden.setLat(Double.parseDouble(arrayLat[0]));
+			//orden.setLon(Double.parseDouble(arrayLon[0]));
+			
 			
 			orden.setCiudad(ordenBean.getCiudad());
 			orden.setDepartamento(ordenBean.getDepartamento());

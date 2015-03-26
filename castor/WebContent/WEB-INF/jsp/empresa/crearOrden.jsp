@@ -816,11 +816,13 @@ function recalcularTotalesSubcontratos(){
 		oferta = Number($('#txtOferta').val().replace(/[^0-9\.]+/g,""));
 	}
 	
-	eficiencia =  total / oferta;
-	$('#txtEficiencia').val((eficiencia*100).toFixed(1) + "%");
-	
-	utilidadBruta = oferta - total;
-	$('#txtUtilidadBruta').val(utilidadBruta);
+	if(oferta!=0){
+		eficiencia =  total / oferta;
+		$('#txtEficiencia').val((eficiencia*100).toFixed(1) + "%");
+		
+		utilidadBruta = oferta - total;
+		$('#txtUtilidadBruta').val(utilidadBruta);
+	}
 }
 
 function cambiarSelectorProveedorPago(idTempFila){
