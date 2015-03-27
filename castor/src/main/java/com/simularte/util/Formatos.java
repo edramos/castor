@@ -3,7 +3,9 @@ package com.simularte.util;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Locale;
 
 public class Formatos {
 
@@ -23,5 +25,9 @@ public class Formatos {
 			e.printStackTrace();
 		}
 		return bd;
+	}
+	
+	public static String BigBecimalToString(BigDecimal monto){
+		return NumberFormat.getCurrencyInstance(Locale.US).format(monto);
 	}
 }

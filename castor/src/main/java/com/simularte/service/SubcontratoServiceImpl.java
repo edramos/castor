@@ -46,7 +46,7 @@ public class SubcontratoServiceImpl implements SubcontratoService {
 				subConB.setMonto(c.getMonto());
 				//subConB.setMonto(NumberFormat.getCurrencyInstance(Locale.US).format(c.getMonto()));
 				subConB.setTipoTrabajo(c.getTipoTrabajo());
-				subConB.setFechaTerminoObra(Dates.fechaHoraEspaniolD(c.getFechaTerminoObra()));
+				subConB.setFechaTerminoObra(Dates.fechaEspaniol(c.getFechaTerminoObra()));
 				subConB.setFechaCreacion(c.getFechaCreacion());
 				subConB.setCreadoPor(c.getCreadoPor());
 				subConB.setEstado(c.getEstado());

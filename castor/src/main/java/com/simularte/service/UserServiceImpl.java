@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
 			Perfil perfil = new Perfil();
 			
 			perfil.setPerfilUsuario(usuario);
-			perfil.setRol("administrador");
+			perfil.setRol("Administrador");
 			perfil.setFechaCreacion(Dates.fechaCreacion());
 			perfil.setEstado("enabled");
 			

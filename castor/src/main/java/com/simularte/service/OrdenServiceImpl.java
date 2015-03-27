@@ -52,18 +52,8 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setNombre(ordenBean.getNombre());
 			orden.setTipoOrden(ordenBean.getTipoOrden());
 			orden.setTipoTrabajo(ordenBean.getTipoTrabajo());
-			
-			//
-			//String []arrayLat = ordenBean.getLat().split(" ");
-			//String []arrayLon = ordenBean.getLon().split(" ");
-			
 			orden.setLat(Double.parseDouble(ordenBean.getLat().replace("°", "")));
 			orden.setLon(Double.parseDouble(ordenBean.getLon().replace("°", "")));
-			
-			//orden.setLat(Double.parseDouble(arrayLat[0]));
-			//orden.setLon(Double.parseDouble(arrayLon[0]));
-			
-			
 			orden.setCiudad(ordenBean.getCiudad());
 			orden.setDepartamento(ordenBean.getDepartamento());
 			orden.setOferta(ordenBean.getOferta());
@@ -374,7 +364,7 @@ public class OrdenServiceImpl implements OrdenService {
 		ordenB.setDepartamento(orden.getDepartamento());
 		ordenB.setOferta(orden.getOferta());
 		ordenB.setMoneda(orden.getMoneda());
-		ordenB.setFechaEntrega(Dates.fechaHoraEspaniolD(orden.getFechaEntrega()));
+		ordenB.setFechaEntrega(Dates.fechaEspaniol(orden.getFechaEntrega()));
 		
 		ordenB.setEficiencia(orden.getEficiencia());
 		ordenB.setUtilidadBruta(orden.getUtilidadBruta());
@@ -384,7 +374,7 @@ public class OrdenServiceImpl implements OrdenService {
 					
 		ordenB.setCreadoPor(orden.getCreadoPor());
 		
-		ordenB.setFechaCreacion(Dates.fechaHoraEspaniolTS(orden.getFechaCreacion()));
+		ordenB.setFechaCreacion(Dates.fechaHoraEspaniol(orden.getFechaCreacion()));
 		ordenB.setEstado(orden.getEstado());
 		
 		//Solo por ahora, cambiar a JOIN

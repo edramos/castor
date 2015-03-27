@@ -61,9 +61,9 @@ public class CuentaServiceImpl implements CuentaService {
 					cuebean.setNombreProveedor(prov.getNombre());
 				}				
 				cuebean.setTipo(c.getTipo());
-				cuebean.setFechaVencimiento(Dates.fechaHoraEspaniolD(c.getFechaVencimiento()));
-				cuebean.setFechaPagoProgramada(Dates.fechaHoraEspaniolD(c.getFechaPagoProgramada()));
-				cuebean.setFechaPagoReal(Dates.fechaHoraEspaniolD(c.getFechaPagoReal()));
+				cuebean.setFechaVencimiento(Dates.fechaEspaniol(c.getFechaVencimiento()));
+				cuebean.setFechaPagoProgramada(Dates.fechaEspaniol(c.getFechaPagoProgramada()));
+				cuebean.setFechaPagoReal(Dates.fechaEspaniol(c.getFechaPagoReal()));
 				cuebean.setTipoPago(c.getTipoPago());
 				cuebean.setMonto(c.getMonto());
 				cuebean.setPagador(c.getPagador());

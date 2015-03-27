@@ -34,7 +34,23 @@ public class Dates {
 		return sqlDate;
 	}
 	
-	public static String fechaHoraEspaniolTS(Timestamp date){
+	public static String fechaCorta(Date date){
+		if(date != null){
+			SimpleDateFormat formatoDiaNumero = new SimpleDateFormat("d", new Locale("es", "PE"));
+			SimpleDateFormat formatoMes = new SimpleDateFormat( "MM", new Locale("es", "PE"));
+			SimpleDateFormat formatoAnio = new SimpleDateFormat("yyyy", new Locale("es", "PE"));
+			
+			String dia2Digitos = formatoDiaNumero.format(date);
+			String mes2Digitos = formatoMes.format(date);
+			String anio4Digitos = formatoAnio.format(date);
+			
+			return dia2Digitos + "/" + mes2Digitos + "/" + anio4Digitos;
+		}else{
+			return "";
+		}
+	}
+	
+	public static String fechaHoraEspaniol(Timestamp date){
 		if(date != null){
 		
 		SimpleDateFormat formatoDiaNumero = new SimpleDateFormat("d", new Locale("es", "PE"));
@@ -61,7 +77,7 @@ public class Dates {
 		}
 	}
 	
-	public static String fechaHoraEspaniolD(Date date){
+	public static String fechaEspaniol(Date date){
 		if(date != null){
 		SimpleDateFormat formatoDiaNumero = new SimpleDateFormat("d", new Locale("es", "PE"));
 		SimpleDateFormat formatoDia = new SimpleDateFormat( "EEEE", new Locale("es", "PE"));
