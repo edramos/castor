@@ -15,6 +15,12 @@ public class Dates {
     	return ts;
 	}
 	
+	public static String stringToStringFechaCorta(String date){
+		String[] fechas = date.split("-");
+		
+		return fechas[2] + "/" + fechas[1] + "/" + fechas[0];
+	}
+	
 	public static java.sql.Date stringToDate(String date, String format){
 		java.text.DateFormat df = new java.text.SimpleDateFormat(format);
 		java.util.Date utilDate;

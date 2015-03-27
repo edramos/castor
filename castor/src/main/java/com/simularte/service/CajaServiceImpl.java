@@ -1,5 +1,6 @@
 package com.simularte.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,8 +67,9 @@ public class CajaServiceImpl implements CajaService{
 	public List<CajaBean> listarRegistrosCaja(HttpServletRequest req){
 		List<CajaBean> registros = new ArrayList<CajaBean>();
 		
-		Query q = em.createQuery("SELECT c.fechaOperacion, c.tipoOperacion, c.operacion, c.monto FROM Caja c WHERE idEmpresa = :idempresa");
-		q.setParameter("idempresa", (Integer)req.getSession().getAttribute("idEmpresa"));
+		double saldo = 0;
+		Query q = em.createNativeQuery("SELECT fechaOperacion, tipoOperacion, operacion, monto "
+				+ "FROM caja WHERE idEmpresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' ORDER BY fechaoperacion");
 		
 		try{
 			List<Object[]> rows = q.getResultList();
@@ -76,13 +78,21 @@ public class CajaServiceImpl implements CajaService{
 				Object[] caja = rows.get(x);
 				CajaBean cajaB = new CajaBean();
 				
-				cajaB.setFechaOperacion(caja[0].toString());
+				cajaB.setFechaOperacion(Dates.stringToStringFechaCorta(caja[0].toString()));
 				cajaB.setTipoOperacion(caja[1].toString());
 				if(caja[2].equals("Ingreso")){
 					cajaB.setIngreso(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(caja[3].toString())));
+					saldo += Formatos.StringToBigDecimal(caja[3].toString()).doubleValue();
+					
+					System.out.println("Ingreso Saldo" + saldo);
 				}else{
 					cajaB.setEgreso(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(caja[3].toString())));
+					saldo -= Formatos.StringToBigDecimal(caja[3].toString()).doubleValue();
+					System.out.println("Egreso Saldo" + saldo);
 				}
+				
+				cajaB.setSaldo(Formatos.BigBecimalToString(BigDecimal.valueOf(saldo)));
+				
 				registros.add(cajaB);
 			}
 		}catch(Exception e){

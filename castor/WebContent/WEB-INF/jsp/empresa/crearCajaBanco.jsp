@@ -268,27 +268,24 @@ function formDynamic(opcion){
 }
 
 function crearCajaBanco(){
+	var html = '';
 	$.ajax({
  		url: 'ajaxCrearCajaBanco',
  		type: 'post',
  		dataType: 'json',
  		data: $('#frmCrearCajaBanco').serialize(),
  		success: function(registros){
- 			/*$.each(registros, function(i, cliente){
+ 			$.each(registros, function(i, cliente){
 	 			var source = $("#templateClientes").html();
 	 			var template = Handlebars.compile(source);
 	 			html += template(registro);
- 			});*/		
- 			//$("#viewCajaBancoHandlerbars").html(html);
- 			$('#tblCajaBanco').dataTable({
- 				"data": registros,
- 				"columns": [
-		            { "title": "Fecha" },
-		            { "title": "Tipo" },
-		            { "title": "Ingreso" },
-		            { "title": "Egreso", "class": "center" }
-		        ]
- 			});
+ 			});	
+ 			
+ 			$("#viewResultadosHandlerbars").html(html);
+ 			
+ 			$('#sample_1').dataTable({
+ 			    "bSort": false
+ 			  }); 			
  		}
  	});	
 }
@@ -311,14 +308,16 @@ function listarCaja(){
  			removeTable();
  			createTable();
  			$.each(registros, function(i, registro){
- 				//alert(html);
 	 			var source = $("#templateCajaBanco").html();
 	 			var template = Handlebars.compile(source);
 	 			html += template(registro);
  			});
  			
  			$("#viewResultadosHandlerbars").html(html);
- 			TableAdvanced.init();
+ 			
+ 			$('#sample_1').dataTable({
+ 			    "bSort": false
+ 			  });
  		}
  	});	
 }
@@ -339,7 +338,7 @@ function createTable(){
 	<td>{{fechaOperacion}}</td>
 	<td>{{ingreso}}</td>
 	<td>{{egreso}}</td>
-	<td></td>
+	<td>{{saldo}}</td>
 </tr>
 </script>
 <!-- EGRESOS -->
