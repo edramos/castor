@@ -39,7 +39,7 @@
 			</div>
 			
 			<div class="portlet-body form">
-			<form:form id="frmCrearCajaBanco" class="form-horizontal" action="ajaxCrearCajaBanco" method="post" commandName="cajaBean">
+			<form:form id="frmCrearCajaBanco" class="form-horizontal" commandName="cajaBean">
 				
 				<div class="form-body">
 					
@@ -292,11 +292,24 @@ function crearCajaBanco(){
 $(document).on('click','.eventBtn', function(e){
 	switch(this.id){
 	case "btnCrearCajaBanco":
-		alert('voy a grabar');
-		$('#frmCrearCajaBanco').submit();
+		//alert('voy a grabar');
+		//$('#frmCrearCajaBanco').submit();
+		crearCajaBanco()
 		break;
 	}
 });
+
+function crearCajaBanco(){
+	$.ajax({
+ 		url: 'ajaxCrearCajaBanco',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: $('#frmCrearCajaBanco').serialize(),
+ 		success: function(resultado){
+ 			listarCaja();	
+ 		}
+ 	});	
+}
 
 function listarCaja(){
 	var html = '';
