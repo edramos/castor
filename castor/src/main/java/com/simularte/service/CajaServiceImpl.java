@@ -39,6 +39,7 @@ public class CajaServiceImpl implements CajaService{
 			caja.setOperacion(cajaBean.getOperacion());
 			caja.setTipoOperacion(cajaBean.getTipoOperacion());
 			caja.setCajaEmpresa(empresa);
+			caja.setIdCuentaBanco(cajaBean.getIdCuentaBanco());
 			
 			caja.setIdCliente(cajaBean.getIdCliente());
 			caja.setFactura(cajaBean.getFactura());

@@ -44,16 +44,27 @@
 				<div class="form-body">
 					
 					<div class="row">
-						<div class="col-md-3">
-							<div id="txtFechaOperacion" class="input-group date date-picker" data-date-format="dd/mm/yyyy">
-								<input type="text" class="form-control form-filter valid" placeholder="Fecha Operacion" name="fechaOperacion" aria-required="true" aria-invalid="false">											
+						<div class="col-md-2">
+							<div class="form-group">
+								<div class="col-md-12">
+									<select id="sltCuentaBanco" class="form-control" name="idCuentaBanco">
+										<option value="1">BCP Dolares</option>
+										<option value="2">BCP Soles</option>
+										<option value="3">BCR Soles</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+								<input  id="txtFechaOperacion" type="text" class="form-control form-filter valid" placeholder="Fecha Operacion" name="fechaOperacion" aria-required="true" aria-invalid="false">											
 								<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtNombre" class="form-control" placeholder="Monto $/." name="monto"/>
+									<input id="txtMonto" class="form-control" placeholder="Monto $/." name="monto"/>
 								</div>
 							</div>
 						</div>
@@ -123,11 +134,14 @@
 	</div>
 </div>
 
+		
+
+
 <div class="row">
 	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption">Caja Banco</div>
+				<div class="caption">Resultados</div>
 				<div class="actions">							
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>
@@ -146,7 +160,7 @@
 				
 				<tbody id="viewResultadosHandlerbars">
 				</tbody>
-				</table>		
+				</table>			
 			</div>
 		</div>
 	</div>
@@ -173,12 +187,14 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
+<script src="assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
 <script src="assets/admin/pages/scripts/table-advanced.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() {   
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
+	Demo.init();
 	
 	$('#txtFechaOperacion').datepicker({
 		format: 'dd/mm/yyyy',
@@ -294,7 +310,8 @@ $(document).on('click','.eventBtn', function(e){
 	case "btnCrearCajaBanco":
 		//alert('voy a grabar');
 		//$('#frmCrearCajaBanco').submit();
-		crearCajaBanco()
+		//crearCajaBanco()
+		borrarDatos();
 		break;
 	}
 });
@@ -306,7 +323,8 @@ function crearCajaBanco(){
  		dataType: 'json',
  		data: $('#frmCrearCajaBanco').serialize(),
  		success: function(resultado){
- 			listarCaja();	
+ 			listarCaja();
+ 			borrarDatos();
  		}
  	});	
 }
@@ -329,7 +347,8 @@ function listarCaja(){
  			$("#viewResultadosHandlerbars").html(html);
  			
  			$('#sample_1').dataTable({
- 			    "bSort": false
+ 			    "bSort": false,
+ 			   	
  			  });
  		}
  	});	
@@ -343,6 +362,10 @@ function createTable(){
 			"<table class='table table-striped table-hover' id='sample_1'><thead><tr><th>Tipo Operacion</th><th>Fecha</th><th>Ingreso</th><th>Egreso</th><th>Saldo</th>"+
 			"</tr></thead><tbody id='viewResultadosHandlerbars'></tbody></table>"	
 	);
+}
+function borrarDatos(){
+	$('.form-control').val('');
+	$('#sltCuentaBanco').find('option:first').attr('selected', 'selected');
 }
 </script>
 <script id="templateCajaBanco" type="text/x-handlebars-template">

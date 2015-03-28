@@ -32,6 +32,8 @@ public class Caja {
 	private Integer idOrden;
 	@Column(name = "idempleado", nullable = true)
 	private Integer idEmpleado;
+	@Column(name = "idcuentabanco", nullable = false)
+	private Integer idCuentaBanco;
 	
 	// Fields
 	@Column(name = "fechaoperacion", nullable = false)
@@ -70,6 +72,12 @@ public class Caja {
 	}
 	public void setCajaEmpresa(Empresa cajaEmpresa) {
 		this.cajaEmpresa = cajaEmpresa;
+	}
+	public Integer getIdCuentaBanco() {
+		return idCuentaBanco;
+	}
+	public void setIdCuentaBanco(Integer idCuentaBanco) {
+		this.idCuentaBanco = idCuentaBanco;
 	}
 	public String getCuentaBancoOrigen() {
 		return cuentaBancoOrigen;

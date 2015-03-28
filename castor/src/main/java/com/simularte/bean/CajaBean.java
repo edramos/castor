@@ -7,6 +7,7 @@ public class CajaBean {
 	private Integer idProveedor;
 	private Integer idOrden;
 	private Integer idEmpleado;
+	private Integer idCuentaBanco;
 	
 	private String cuentaBancoOrigen;
 	private String cuentaBancoDestino;
@@ -30,6 +31,12 @@ public class CajaBean {
 	
 	
 	
+	public Integer getIdCuentaBanco() {
+		return idCuentaBanco;
+	}
+	public void setIdCuentaBanco(Integer idCuentaBanco) {
+		this.idCuentaBanco = idCuentaBanco;
+	}
 	public String getIngreso() {
 		return Ingreso;
 	}
