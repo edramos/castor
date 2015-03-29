@@ -28,6 +28,8 @@ public class Empresa {
 	private Collection<Orden> ordenesEmp;
 	@OneToMany(mappedBy = "cajaEmpresa")
 	private Collection<Caja> cajaEmp;
+	@OneToMany(mappedBy = "libroEmpresa")
+	private Collection<Libro> libroEmp;
 	
 	//Fields
 	@Column(length = 90, nullable = true)
@@ -48,6 +50,12 @@ public class Empresa {
 	
 	
 	
+	public Collection<Libro> getLibroEmp() {
+		return libroEmp;
+	}
+	public void setLibroEmp(Collection<Libro> libroEmp) {
+		this.libroEmp = libroEmp;
+	}
 	public Collection<Caja> getCajaEmp() {
 		return cajaEmp;
 	}

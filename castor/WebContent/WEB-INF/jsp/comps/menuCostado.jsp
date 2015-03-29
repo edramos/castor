@@ -36,12 +36,12 @@
 			</li>
 			<li>
 				<a href="javascript:;"><i class="icon-notebook"></i>
-				<span class="title">Caja Banco</span>
+				<span class="title">Libros</span>
 				<span class="arrow "></span>
 				</a>
 				<ul class="sub-menu">
-					<li><a href="toCrearCajaBanco"><span class="badge badge-warning">new</span>Crear Caja Banco</a></li>
-					<li><a href="#">Buscar Caja Banco</a></li>
+					<li><a href="toCajaBanco">Caja Banco</a></li>
+					<li><a href="#">Caja Chica</a></li>
 				</ul>
 			</li>
 			<li>
