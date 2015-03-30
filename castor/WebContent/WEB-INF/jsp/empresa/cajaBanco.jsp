@@ -470,6 +470,9 @@ function mostrarDetalle(idRegistro){
 		<div class="summaryBodyItem">
 			<span class="spanLabel">Cod. Operacion</span><span id="spnNombreCliente" class="value">{{codigoOperacion}}</span>
 		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Cuenta Origen</span><span id="spnCreacion" class="value">{{cuentaBancoOrigen}}</span>
+		</div>
 	</div>
 	<div class="summaryBodyMiddle">
 		<div class="summaryBodyItem">
@@ -478,13 +481,19 @@ function mostrarDetalle(idRegistro){
 		<div class="summaryBodyItem">
 			<span class="spanLabel">Proveedor</span><span id="spnLon" class="value">{{idProveedor}}</span>
 		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Cuenta Destino</span><span id="spnCreacion" class="value">{{cuentaBancoDestino}}</span>
+		</div>
 	</div>
 	<div class="summaryBodyRight">
 		<div class="summaryBodyItem">
 			<span class="spanLabel">Orden Trabajo</span><span id="spnEntrega" class="value">{{idOrden}}</span>
 		</div>
 		<div class="summaryBodyItem">
-			<span class="spanLabel">Cuenta Destino</span><span id="spnCreacion" class="value">10-200</span>
+			<span class="spanLabel">Creado por</span><span id="spnCreacion" class="value">Eduardo Ramos</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Creacion</span><span id="spnCreacion" class="value">24/04/2015 8:15 PM</span>
 		</div>
 	</div>
 </div>
