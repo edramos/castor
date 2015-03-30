@@ -1,14 +1,16 @@
 package com.simularte.bean;
+/*Incluye DetalleLibro*/
+public class LibroBean {
 
-public class CajaBean {
-
-	private Integer idCaja;
+	private Integer idLibro;
+	private Integer idDetalleLibro;
 	private Integer idCliente;
 	private Integer idProveedor;
 	private Integer idOrden;
 	private Integer idEmpleado;
 	private Integer idCuentaBanco;
 	
+	private String nombre;
 	private String cuentaBancoOrigen;
 	private String cuentaBancoDestino;
 	private String fechaOperacion;
@@ -31,6 +33,24 @@ public class CajaBean {
 	
 	
 	
+	public Integer getIdDetalleLibro() {
+		return idDetalleLibro;
+	}
+	public void setIdDetalleLibro(Integer idDetalleLibro) {
+		this.idDetalleLibro = idDetalleLibro;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public Integer getIdLibro() {
+		return idLibro;
+	}
+	public void setIdLibro(Integer idLibro) {
+		this.idLibro = idLibro;
+	}
 	public Integer getIdCuentaBanco() {
 		return idCuentaBanco;
 	}
@@ -66,12 +86,6 @@ public class CajaBean {
 	}
 	public void setCuentaBancoDestino(String cuentaBancoDestino) {
 		this.cuentaBancoDestino = cuentaBancoDestino;
-	}
-	public Integer getIdCaja() {
-		return idCaja;
-	}
-	public void setIdCaja(Integer idCaja) {
-		this.idCaja = idCaja;
 	}
 	public Integer getIdCliente() {
 		return idCliente;

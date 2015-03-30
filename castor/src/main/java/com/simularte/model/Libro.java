@@ -26,16 +26,46 @@ public class Libro {
 	//Fields
 	@Column(length = 30, nullable = false)
 	private String tipo;
+	@Column(length = 60, nullable = false)
+	private String nombre;
+	@Column(length = 30, nullable = false)
+	private String moneda;
+	
+	@Column(name = "numerocuenta", length = 60, nullable = true)
+	private String numeroCuenta;
 	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
 	@Column(name = "fechacreacion", nullable = false)
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
-	private String estado;
+	private String estado;	
 	
 	
-	
+	public Collection<DetalleLibro> getDetalleLibrolib() {
+		return detalleLibrolib;
+	}
+	public void setDetalleLibrolib(Collection<DetalleLibro> detalleLibrolib) {
+		this.detalleLibrolib = detalleLibrolib;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String getMoneda() {
+		return moneda;
+	}
+	public void setMoneda(String moneda) {
+		this.moneda = moneda;
+	}
+	public String getNumeroCuenta() {
+		return numeroCuenta;
+	}
+	public void setNumeroCuenta(String numeroCuenta) {
+		this.numeroCuenta = numeroCuenta;
+	}
 	public Integer getIdLibro() {
 		return idLibro;
 	}

@@ -21,6 +21,16 @@ public class DetalleLibro {
 	@ManyToOne @JoinColumn(name = "idlibro", nullable = false)
 	private Libro detalleLibroLibro;
 	
+	//Non-Identifying Relationships
+	@Column(name = "idcliente", nullable = true)
+	private Integer idCliente;
+	@Column(name = "idproveedor", nullable = true)
+	private Integer idProveedor;
+	@Column(name = "idorden", nullable = true)
+	private Integer idOrden;
+	@Column(name = "idempleado", nullable = true)
+	private Integer idEmpleado;
+	
 	// Fields
 	@Column(name = "fechaoperacion", nullable = false)
 	private Date fechaOperacion;
@@ -33,6 +43,19 @@ public class DetalleLibro {
 	@Column(length = 280, nullable = false)
 	private String descripcion;
 	
+	@Column(name = "cuentabancoorigen", length = 30, nullable = true)
+	private String cuentaBancoOrigen;
+	@Column(name = "cuentabancodestino", length = 30, nullable = true)
+	private String cuentaBancoDestino;
+	@Column(length = 30, nullable = true)
+	private String factura;
+	/*Este campo deberia desaparecer porque creo que hace lo mismo que bancoOrigen*/
+	@Column(name = "cuentaorigen", length = 30, nullable = true)
+	private String cuentaOrigen;
+	/**/
+	@Column(name = "codigooperacion", length = 30, nullable = true)
+	private String codigoOperacion;
+	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
 	@Column(name = "fechacreacion", nullable = false)
@@ -42,6 +65,60 @@ public class DetalleLibro {
 	
 	
 	
+	public Integer getIdCliente() {
+		return idCliente;
+	}
+	public void setIdCliente(Integer idCliente) {
+		this.idCliente = idCliente;
+	}
+	public Integer getIdProveedor() {
+		return idProveedor;
+	}
+	public void setIdProveedor(Integer idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+	public Integer getIdOrden() {
+		return idOrden;
+	}
+	public void setIdOrden(Integer idOrden) {
+		this.idOrden = idOrden;
+	}
+	public Integer getIdEmpleado() {
+		return idEmpleado;
+	}
+	public void setIdEmpleado(Integer idEmpleado) {
+		this.idEmpleado = idEmpleado;
+	}
+	public String getCuentaBancoOrigen() {
+		return cuentaBancoOrigen;
+	}
+	public void setCuentaBancoOrigen(String cuentaBancoOrigen) {
+		this.cuentaBancoOrigen = cuentaBancoOrigen;
+	}
+	public String getCuentaBancoDestino() {
+		return cuentaBancoDestino;
+	}
+	public void setCuentaBancoDestino(String cuentaBancoDestino) {
+		this.cuentaBancoDestino = cuentaBancoDestino;
+	}
+	public String getFactura() {
+		return factura;
+	}
+	public void setFactura(String factura) {
+		this.factura = factura;
+	}
+	public String getCuentaOrigen() {
+		return cuentaOrigen;
+	}
+	public void setCuentaOrigen(String cuentaOrigen) {
+		this.cuentaOrigen = cuentaOrigen;
+	}
+	public String getCodigoOperacion() {
+		return codigoOperacion;
+	}
+	public void setCodigoOperacion(String codigoOperacion) {
+		this.codigoOperacion = codigoOperacion;
+	}
 	public Integer getIdDetalleLibro() {
 		return idDetalleLibro;
 	}

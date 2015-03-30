@@ -29,17 +29,34 @@
 <div class="row">
 	<div class="col-md-12">
 	
-		<form:form id="frmCrearCajaBanco" class="form-horizontal" commandName="cajaBean">
-		<div id="divCrearCajaBanco" class="portlet box blue-hoki" style="display: none;">
+		<div id="divInitCajaBanco" class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption"><i class="icon-share"></i>Caja Banco</div>
 				<div class="actions">
-					<select id="sltCuentaBanco" class="form-control-head" name="idCuentaBanco">
+					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
 						<option value="1">BCP Dolares</option>
 						<option value="2">BCP Soles</option>
 						<option value="3">BCR Soles</option>
 					</select>
-					<a id="btnToCrearCajaBanco" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-check"></i> Grabar </a>
+					<a id="btnToCrearDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-plus"></i> Nuevo </a>							
+					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+			</div>
+		</div>
+	
+		<form:form id="frmCrearDetalleLibro" class="form-horizontal" commandName="libroBean">
+		<div id="divCrearDetalleLibro" class="portlet box blue-hoki" style="display: none;">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-share"></i>Caja Banco</div>
+				<div class="actions">
+					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
+						<option value="1">BCP Dolares</option>
+						<option value="2">BCP Soles</option>
+						<option value="3">BCR Soles</option>
+					</select>
+					<a id="btnCrearDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-check"></i> Grabar </a>
 					<a id="btnCancelarCrearCajaBanco" class="btn red-sunglo btn-sm eventBtn"><i class="fa fa-close"></i> Cancelar </a>							
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>
@@ -57,7 +74,7 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtMonto" class="form-control" placeholder="Monto $/." name="monto"/>
+									<input id="txtMonto" class="form-control" placeholder="Monto" name="monto"/>
 								</div>
 							</div>
 						</div>
@@ -124,32 +141,7 @@
 		
 		</div>
 		</form:form>
-		
-		
-		<div id="divInitCajaBanco" class="portlet box blue-hoki">
-			<div class="portlet-title">
-				<div class="caption"><i class="icon-share"></i>Caja Banco</div>
-				<div class="actions">
-					<select id="sltCuentaBanco" class="form-control-head" name="idCuentaBanco">
-						<option value="1">BCP Dolares</option>
-						<option value="2">BCP Soles</option>
-						<option value="3">BCR Soles</option>
-					</select>
-					<a id="btnToCrearCajaBanco" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-plus"></i> Nuevo </a>							
-					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
-				</div>
-			</div>
-			<div class="portlet-body form">
-			</div>
-		</div>
-		
-		
-		
-		
-		
-		
-		
-				
+			
 	</div>
 </div>
 
@@ -164,59 +156,14 @@
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>
 			</div>
-			<div id="divPortletBody" class="portlet-body">
-				<table id="tblResultados" class="table table-striped table-hover">
-				<thead>
-				<tr>
-					<th>Fecha</th>
-					<th>Tipo Operacion</th>
-					<th>Ingreso</th>
-					<th>Egreso</th>
-					<th>Saldo</th>
-				</tr>
-				</thead>
-				
-				<tbody id="viewResultadosHandlerbars">
-				</tbody>
-				</table>					
+			<div id="divPortletBody" class="portlet-body">					
 			</div>
 			
 			
-			<div id="divPortletBody" class="portlet-body" >
-			
-				<div id="divRegistroDetalle" class="detailPane" style="display: none;">
-					<div class="summaryBody sectionBody">
-						<div class="summaryBodyLeft">
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Fecha</span><span id="spnNombre" class="value">24/12/2015</span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Factura</span><span id="spnNombreCliente" class="value">2105-875422</span>
-							</div>
-						</div>
-						<div class="summaryBodyMiddle">
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Operacion</span><span id="spnLat" class="value">Cobranza Venta/Servicio</span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Creador</span><span id="spnLon" class="value"></span>
-							</div>
-						</div>
-						<div class="summaryBodyRight">
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Monto</span><span id="spnEntrega" class="value">$150,000.00</span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Creacion</span><span id="spnCreacion" class="value"></span>
-							</div>
-						</div>
-					
-					</div>
+			<div id="divDetalleRegistro" class="portlet-body" ><hr>
+				<div id="divRegistroDetalle" class="detailPane">
 				</div>
-				
 			</div>
-			
-			
 			
 		</div>
 	</div>
@@ -332,79 +279,32 @@ $(function($){
 
 $(document).on('click','.eventBtn', function(e){
 	switch(this.id){
-	case "btnToCrearCajaBanco":
+	case "btnToCrearDetalleLibro":
 		$('#divInitCajaBanco').hide();
-		//$('#divRegistroDetalle').hide();
-		$('#divCrearCajaBanco').show();
+		$('#divCrearDetalleLibro').show();
 		break;
 	case "btnCancelarCrearCajaBanco":
-		$('#divCrearCajaBanco').hide();
+		$('#divCrearDetalleLibro').hide();
 		$('#divInitCajaBanco').show();
 		break;
-	case "btnCrearCajaBanco":
-		borrarDatos();
+	case "btnCrearDetalleLibro":
+		crearDetalleLibro();
 		break;
 	}
 });
 </script>
 <script>
-function formDynamic(opcion){
-	$('.dynamic').remove();
-	
-	var source = $(opcion).html();
-	var template = Handlebars.compile(source);
-	html = template();
-	
-	$('#divSecondRow').html(html);
-}
-
-function crearCajaBanco(){
-	var html = '';
-	$.ajax({
- 		url: 'ajaxCrearCajaBanco',
- 		type: 'post',
- 		dataType: 'json',
- 		data: $('#frmCrearCajaBanco').serialize(),
- 		success: function(registros){
- 			$.each(registros, function(i, cliente){
-	 			var source = $("#templateClientes").html();
-	 			var template = Handlebars.compile(source);
-	 			html += template(registro);
- 			});	
- 			
- 			$("#viewResultadosHandlerbars").html(html);
- 			
- 			$('#tblResultados').dataTable({
- 			    "bSort": false
- 			  }); 			
- 		}
- 	});	
-}
-
-function crearCajaBanco(){
-	$.ajax({
- 		url: 'ajaxCrearCajaBanco',
- 		type: 'post',
- 		dataType: 'json',
- 		data: $('#frmCrearCajaBanco').serialize(),
- 		success: function(resultado){
- 			listarCaja();
- 			borrarDatos();
- 		}
- 	});	
-}
-
 function listarCaja(){
 	var html = '';
 	$.ajax({
- 		url: 'listarCajaBanco',
+ 		url: 'listarDetalleLibro-' + $('#sltCuentaBanco').val(),
  		type: 'post',
  		dataType: 'json',
  		success: function(registros){
  			removeTable();
  			createTable();
  			$.each(registros, function(i, registro){
-	 			var source = $("#templateCajaBanco").html();
+	 			var source = $("#templateResultado").html();
 	 			var template = Handlebars.compile(source);
 	 			html += template(registro);
  			});
@@ -414,20 +314,40 @@ function listarCaja(){
  		}
  	});	
 }
-
+function crearDetalleLibro(){
+	$.ajax({
+ 		url: 'ajaxCrearRegistroLibro',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: $('#frmCrearDetalleLibro').serialize(),
+ 		success: function(resultado){
+ 			listarCaja();
+ 			borrarDatos();
+ 		}
+ 	});	
+}
 function removeTable(){
 	$('#tblResultados').remove();
 	$('#tblResultados_wrapper').remove();
 }
 function createTable(){
 	$('#divPortletBody').append(
-			"<table class='table table-striped table-hover' id='tblResultados'><thead><tr><th>Fecha</th><th>Tipo Operacion</th><th>Ingreso</th><th>Egreso</th><th>Saldo</th>"+
-			"</tr></thead><tbody id='viewResultadosHandlerbars'></tbody></table>"	
+		"<table class='table table-striped table-hover' id='tblResultados'><thead><tr><th style='width: 0px;display: none;'></th><th>Fecha</th><th style='width: 20%;'>Tipo Operacion</th><th>Descripcion</th>"+
+		"<th>Ingreso</th><th>Egreso</th><th>Saldo</th></tr></thead><tbody id='viewResultadosHandlerbars'></tbody></table>"	
 	);
 }
 function borrarDatos(){
 	$('.form-control').val('');
 	$('#sltCuentaBanco').find('option:first').attr('selected', 'selected');
+}
+function formDynamic(opcion){
+	$('.dynamic').remove();
+	
+	var source = $(opcion).html();
+	var template = Handlebars.compile(source);
+	html = template();
+	
+	$('#divSecondRow').html(html);
 }
 </script>
 <script>
@@ -514,16 +434,67 @@ function initTable(){
     	var aData = oTable.fnGetData(this);
     	
     	if (aData != null){
-    		alert('hi');
     		$('#divRegistroDetalle').show();
+    		mostrarDetalle(aData[0]);
     	}
     });
 }
+
+function mostrarDetalle(idRegistro){
+	var html = '';
+	$.ajax({
+ 		url: 'mostrarDetalleRegistro-' + idRegistro,
+ 		type: 'post',
+ 		dataType: 'json',
+ 		success: function(registros){
+ 			//removeTable();
+ 			//createTable();
+ 			$.each(registros, function(i, registro){
+	 			var source = $("#templateDetalleRegistro").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(registro);
+ 			});
+ 			
+ 			$("#divRegistroDetalle").html(html);
+ 			//initTable();
+ 		}
+ 	});	
+}
 </script>
-<script id="templateCajaBanco" type="text/x-handlebars-template">
+<script id="templateDetalleRegistro" type="text/x-handlebars-template">
+<div class="summaryBody sectionBody">
+	<div class="summaryBodyLeft">
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Factura</span><span id="spnNombre" class="value">{{factura}}</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Cod. Operacion</span><span id="spnNombreCliente" class="value">{{codigoOperacion}}</span>
+		</div>
+	</div>
+	<div class="summaryBodyMiddle">
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Cliente</span><span id="spnLat" class="value">{{idCliente}}</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Proveedor</span><span id="spnLon" class="value">{{idProveedor}}</span>
+		</div>
+	</div>
+	<div class="summaryBodyRight">
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Orden Trabajo</span><span id="spnEntrega" class="value">{{idOrden}}</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Cuenta Destino</span><span id="spnCreacion" class="value">10-200</span>
+		</div>
+	</div>
+</div>
+</script>
+<script id="templateResultado" type="text/x-handlebars-template">
 <tr>
+	<td style="width: 0px;display: none;">{{idDetalleLibro}}</td>
 	<td>{{fechaOperacion}}</td>
 	<td>{{tipoOperacion}}</td>
+	<td>{{descripcion}}</td>
 	<td>{{ingreso}}</td>
 	<td>{{egreso}}</td>
 	<td>{{saldo}}</td>
