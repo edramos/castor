@@ -106,7 +106,7 @@
 						<div class="col-md-3 dynamic">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtNombreCliente" class="form-control" placeholder="Cliente" name="idCliente"/>
+									<select id="sltCliente" class="form-control" name="idCliente"></select>
 								</div>
 							</div>
 						</div>
@@ -206,6 +206,7 @@ jQuery(document).ready(function() {
 		language: "es"
 	});
 	
+	listarSelectorClientes('sltCliente');
 	listarCaja();
 });
 </script>
@@ -230,6 +231,7 @@ $(function($){
         	formDynamic('#templateCobranzaVentaServicio');
         }else{
         	formDynamic('#templatePagoProveedor');
+        	listarSelectorProveedores('sltProveedor');
         }
     });
 	
@@ -241,10 +243,12 @@ $(function($){
 		//INGRESOS
 		case 'Cobranza Venta/Servicio':
 			formDynamic('#templateCobranzaVentaServicio');
+			listarSelectorClientes('sltCliente');
 			break;
 		case 'Otra cobranza':
 			formDynamic('#templateOtraCobranza');
-			break;templateTransferenciaCuenta
+			listarSelectorClientes('sltCliente');
+			break;
 		case 'Transferencia cuenta':
 			formDynamic('#templateTransferenciaCuentaIngreso');
 			break;
@@ -294,6 +298,49 @@ $(document).on('click','.eventBtn', function(e){
 });
 </script>
 <script>
+function listarSelectorClientes(nombreSelector){
+	var html = '';
+    $.ajax({
+ 		url: 'ajaxListarClientes',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(clientes){
+ 			html = '<option value="">Escoger Cliente</option>';
+ 			$.each(clientes, function(i, cliente){
+	 			var source = $("#templateSelectorClientes").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(cliente);
+	 			
+ 			});		
+ 			$("#" + nombreSelector).html(html);	        
+ 		},
+ 		complete: function() {	 			
+ 			
+  		}
+ 	});
+}
+function listarSelectorProveedores(nombreSelector){
+	var html = '';
+    $.ajax({
+ 		url: 'ajaxListarProveedores',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(proveedores){
+ 			html = '';
+ 			$.each(proveedores, function(i, proveedor){
+	 			var source = $("#templateSelectorProveedores").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(proveedor);	 			
+ 			});		
+ 			$("#" + nombreSelector).html(html);	        
+ 		},
+ 		complete: function() {	 			
+ 			
+  		}
+ 	});
+}
 function listarCaja(){
 	var html = '';
 	$.ajax({
@@ -461,6 +508,12 @@ function mostrarDetalle(idRegistro){
  	});	
 }
 </script>
+<script id="templateSelectorClientes" type="text/x-handlebars-template">
+	<option value="{{idCliente}}">{{nombre}}</option>
+</script>
+<script id="templateSelectorProveedores" type="text/x-handlebars-template">
+	<option value="{{idProveedor}}">{{nombre}}</option>
+</script>
 <script id="templateDetalleRegistro" type="text/x-handlebars-template">
 <div class="summaryBody sectionBody">
 	<div class="summaryBodyLeft">
@@ -564,7 +617,7 @@ function mostrarDetalle(idRegistro){
 <div class="col-md-3 dynamic">
 	<div class="form-group">
 		<div class="col-md-12">
-			<input id="txtProveedor" class="form-control" placeholder="Proveedor" name="idProveedor"/>
+			<select id="sltProveedor" class="form-control" name="idProveedor"></select>
 		</div>
 	</div>
 </div>
@@ -588,7 +641,7 @@ function mostrarDetalle(idRegistro){
 <div class="col-md-3 dynamic">
 	<div class="form-group">
 		<div class="col-md-12">
-			<input id="txtNombreCliente" class="form-control" placeholder="Cliente" name="idCliente"/>
+			<select id="sltCliente" class="form-control" name="idCliente"></select>
 		</div>
 	</div>
 </div>
@@ -611,7 +664,7 @@ function mostrarDetalle(idRegistro){
 <div class="col-md-3 dynamic">
 	<div class="form-group">
 		<div class="col-md-12">
-			<input id="txtNombreCliente" class="form-control" placeholder="Cliente" name="idCliente"/>
+			<select id="sltCliente" class="form-control" name="idCliente"></select>
 		</div>
 	</div>
 </div>
