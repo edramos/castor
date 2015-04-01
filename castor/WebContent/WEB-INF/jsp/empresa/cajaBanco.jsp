@@ -12,8 +12,16 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
 <!-- END PAGE LEVEL STYLES -->
-</head>
 
+</head>
+<style>
+.ui-autocomplete{
+	position:absolute;
+	top:0;
+	left:0;
+	cursor:default
+}
+</style>
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
 <jsp:include page="../comps/cabecera.jsp"/>
 <div class="clearfix"></div>
@@ -208,6 +216,8 @@ jQuery(document).ready(function() {
 	
 	listarSelectorClientes('sltCliente');
 	listarCaja();
+	
+	autoCompleteEmpleado("txtEmpleado","Sempleado");
 });
 </script>
 <script>
@@ -507,6 +517,51 @@ function mostrarDetalle(idRegistro){
  		}
  	});	
 }
+
+//-AUTOCOMPLETE-//
+function autoCompleteEmpleado(addressId, propertyId){
+   	$(escapeID(addressId)).autocomplete({
+   		minLength: 2,
+   		delay: 250,
+    	source: function(request, response){     
+    		$.ajax({
+    			type: 'GET',
+    	        cache: false,
+    	 		url: 'ajaxListarEmpleadosAutocomplete',
+    	 		contentType:'application/json',
+    	 		dataType: 'json',
+    	 		data: {selectEmpleado: request.term},
+    	 		success: function(data){	
+    	 			if(data==''){
+    	 				newB = true;    	 				
+    	 			}
+    	 			response(data);
+    	 		}		
+    	 	});	                						      			
+    	},
+		focus: function( event, ui ) {
+			$('.ui-menu-item').removeClass('hoverFocus');
+			$(escapeID('empleado_' + ui.item.idEmpleado)).addClass('hoverFocus');
+		    return false;
+		},
+		select: function(event, ui) {
+			$(escapeID(propertyId)).val(ui.item.idUsuario);
+			$(escapeID(addressId)).val(ui.item.primerNombre+" "+ui.item.apellidoPaterno);
+			return false;
+		}    	
+ 		}).data( "ui-autocomplete" )._renderItem = function( ul, item ) {        
+	    	var source = $("#templateSearchResultEmpleado").html();
+	    	var template = Handlebars.compile(source);
+	    	var html = template(item).trim();	    	
+	    	$(ul).on('click', '#empleado_' + item.idEmpleado, {item: item}, function(e) {
+    			$(escapeID(propertyId)).val(e.data.item.idUsuario);
+    			$(escapeID(addressId)).val(e.data.item.primerNombre+" "+e.data.item.apellidoPaterno);
+	            $(escapeID(addressId)).autocomplete("close");	
+	            newB=false;
+	        });	    	 
+	    	return $(html).appendTo(ul);
+   	};   	
+}
 </script>
 <script id="templateSelectorClientes" type="text/x-handlebars-template">
 	<option value="{{idCliente}}">{{nombre}}</option>
@@ -601,7 +656,11 @@ function mostrarDetalle(idRegistro){
 <div class="col-md-3 dynamic">
 	<div class="form-group">
 		<div class="col-md-12">
-			<input id="txtProveedor" class="form-control" placeholder="Empleado" name="idEmpleado"/>
+			<input id="txtEmpleado" class="form-control" placeholder="Empleado" name="idEmpleado"/>
+
+			<input type="text" id="Sempleado" name="idUsuario" /> 
+			<label class="error errorMsg" for="selectempleadosAut"></label>
+
 		</div>
 	</div>
 </div>
@@ -692,5 +751,17 @@ function mostrarDetalle(idRegistro){
 	</div>
 </div>
 </script>
+
+<script id="templateSearchResultEmpleado" type="text/x-handlebars-template">
+	<div class="detailCardPane ui-menu-item" id="empleado_{{idEmpleado}}" style="cursor: pointer;">
+		<div class="">
+			<div></div>												
+			<div class="detailCardItem">
+				<span class="value">{{primerNombre}} {{segundoNombre}} {{apellidoPaterno}} {{apellidoMaterno}}</span>
+			</div>
+		</div>
+	</div>									
+</script>
+
 </body>
 </html>

@@ -24,6 +24,6 @@
 <script src="assets/global/plugins/map.js" type="text/javascript"></script>
 
 
-
+<script src="assets/global/plugins/brilyint.js" type="text/javascript"></script>
 
 <!-- END CORE PLUGINS -->
