@@ -168,7 +168,8 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 			Query query = null;
 
 			String Squery = "";
-			Squery = "SELECT c FROM Perfil c WHERE c.perfilUsuario.usuarioEmpresa.idEmpresa =:idEmpresa AND c.estado='enabled' AND CONCAT(c.primerNombre, ' ', c.apellidoPaterno) LIKE '%"+nombreEmp+"%' ";
+			Squery = "SELECT c FROM Perfil c "
+					+ "WHERE c.perfilUsuario.usuarioEmpresa.idEmpresa =:idEmpresa AND c.estado='enabled' AND CONCAT(c.primerNombre, ' ', c.apellidoPaterno) LIKE '%" + nombreEmp + "%'";
 			query = em.createQuery(Squery);
 			query.setParameter("idEmpresa", (Integer)session.getAttribute("idEmpresa"));
 
@@ -177,19 +178,19 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 				Perfil c = lc.get(i);
 				EmpleadoBean cb = new EmpleadoBean();
 				
-				cb.setIdPerfil(c.getIdPerfil());
+				//cb.setIdPerfil(c.getIdPerfil());
 				cb.setIdUsuario(c.getPerfilUsuario().getIdUsuario());
-				cb.setPrimerNombre(c.getPrimerNombre());
-				cb.setSegundoNombre(c.getSegundoNombre());
-				cb.setApellidoPaterno(c.getApellidoPaterno());
-				cb.setApellidoMaterno(c.getApellidoMaterno());
+				cb.setPrimerNombre(c.getPrimerNombre() + " " + c.getApellidoPaterno());
+				//cb.setSegundoNombre(c.getSegundoNombre());
+				//cb.setApellidoPaterno(c.getApellidoPaterno());
+				/*cb.setApellidoMaterno(c.getApellidoMaterno());
 				cb.setEmail(c.getPerfilUsuario().getEmail());
 				cb.setCelularPrimario(c.getCelularPrimario());
 				cb.setTelefonoCasa(c.getTelefonoCasa());
 				cb.setRol(c.getRol());
 				
 				cb.setEstado(c.getEstado());
-				cb.setFechaCreacion(c.getFechaCreacion());
+				cb.setFechaCreacion(c.getFechaCreacion());*/
 				
 				
 				lcb.add(cb);

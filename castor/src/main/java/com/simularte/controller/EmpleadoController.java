@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simularte.bean.EmpleadoBean;
 import com.simularte.service.EmpleadoService;
-
 
 @Controller
 public class EmpleadoController {
@@ -59,8 +57,7 @@ public class EmpleadoController {
 		
 		return Empleados;
 	}
-	@RequestMapping(value = "ajaxListarEmpleados", method = RequestMethod.POST)
-	@ResponseBody
+	@RequestMapping(value = "ajaxListarEmpleados", method = RequestMethod.POST) @ResponseBody
 	public List<EmpleadoBean> ajaxListarEmpleados(HttpServletRequest req){
 		List<EmpleadoBean> Empleados = new ArrayList<EmpleadoBean>();
 		Empleados = empleadoservice.listarEmpleados(req);
@@ -68,10 +65,10 @@ public class EmpleadoController {
 	}
 	
 	
-	@RequestMapping(value = "ajaxListarEmpleadosAutocomplete", method = RequestMethod.GET)
-	@ResponseBody
+	@RequestMapping(value = "ajaxListarEmpleadosAutocomplete", method = RequestMethod.GET) @ResponseBody
 	public List<EmpleadoBean> ajaxListarEmpleadosAutocomplete(HttpServletRequest req){
-		String nombreEmp = (String)req.getParameter("selectEmpleado");
+		String nombreEmp = (String)req.getParameter("q");
+		System.out.println("nombreEmp: " + nombreEmp);
 		return empleadoservice.getEmpleadosAutocomplete(nombreEmp, req);
 	}
 }

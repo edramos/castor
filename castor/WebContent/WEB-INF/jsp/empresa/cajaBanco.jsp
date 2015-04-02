@@ -11,6 +11,7 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
+<link rel="stylesheet" type="text/css" href="assets/global/plugins/typeahead/typeahead.css">
 <!-- END PAGE LEVEL STYLES -->
 
 </head>
@@ -121,10 +122,13 @@
 						<div class="col-md-3 dynamic">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtFactura" class="form-control" placeholder="Factura" name="factura"/>
+									<input id="txtFactura" type="text" class="typeahead form-control" placeholder="Factura" name="factura"/>
 								</div>
 							</div>
 						</div>
+						
+						
+						
 						<div class="col-md-3 dynamic">
 							<div class="form-group">
 								<div class="col-md-12">
@@ -194,6 +198,7 @@
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+<script src="assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -216,11 +221,38 @@ jQuery(document).ready(function() {
 	
 	listarSelectorClientes('sltCliente');
 	listarCaja();
+	suggestEmpleado();
+		
+
 	
-	autoCompleteEmpleado("txtEmpleado","Sempleado");
 });
 </script>
 <script>
+function suggestEmpleado(){
+	var empleados = new Bloodhound({
+		datumTokenizer: function (datum) {return Bloodhound.tokenizers.whitespace(datum.value);},
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		remote: 'ajaxListarEmpleadosAutocomplete?q=%QUERY'
+	});
+	empleados.initialize();
+	
+	$('#txtFactura').typeahead({minLength: 2,}, {
+		displayKey: 'primerNombre',
+		source: empleados.ttAdapter(),
+		templates: {
+			suggestion: Handlebars.compile([
+				'{{primerNombre}}',
+			].join(''))
+		}
+	});
+		
+	$('#txtFactura').on('typeahead:selected', function (e, datum) {   
+		$('#hdnIdUsuario').remove();
+		$('#divSecondRow').append("<input id='hdnIdUsuario' type='hidden' name='idUsuario' value='" + datum['idUsuario'] + "'/>");
+	});
+}
+</script>
+<script> 
 $(function($){
 	var locations = {
 	    'Ingreso': ['Cobranza Venta/Servicio', 'Otra cobranza', 'Transferencia cuenta', 'Interes ganado'],
@@ -239,6 +271,8 @@ $(function($){
         
         if(value == 'Ingreso'){
         	formDynamic('#templateCobranzaVentaServicio');
+        	listarSelectorClientes('sltCliente');
+        	suggestEmpleado();
         }else{
         	formDynamic('#templatePagoProveedor');
         	listarSelectorProveedores('sltProveedor');
@@ -254,6 +288,7 @@ $(function($){
 		case 'Cobranza Venta/Servicio':
 			formDynamic('#templateCobranzaVentaServicio');
 			listarSelectorClientes('sltCliente');
+			suggestEmpleado();
 			break;
 		case 'Otra cobranza':
 			formDynamic('#templateOtraCobranza');
@@ -519,7 +554,7 @@ function mostrarDetalle(idRegistro){
 }
 
 //-AUTOCOMPLETE-//
-function autoCompleteEmpleado(addressId, propertyId){
+/* function autoCompleteEmpleado(addressId, propertyId){
    	$(escapeID(addressId)).autocomplete({
    		minLength: 2,
    		delay: 250,
@@ -561,7 +596,7 @@ function autoCompleteEmpleado(addressId, propertyId){
 	        });	    	 
 	    	return $(html).appendTo(ul);
    	};   	
-}
+} */
 </script>
 <script id="templateSelectorClientes" type="text/x-handlebars-template">
 	<option value="{{idCliente}}">{{nombre}}</option>
