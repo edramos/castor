@@ -54,11 +54,34 @@
 			<div class="portlet-body form">
 			</div>
 		</div>
+		
+		<div id="divRegistroDetalle" class="portlet box blue-hoki" style="display: none;">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-share"></i>Caja Banco - Detalle</div>
+				<div class="actions">
+					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
+						<option value="1">BCP Dolares</option>
+						<option value="2">BCP Soles</option>
+						<option value="3">BCR Soles</option>
+					</select>
+					<a id="btnEditarDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-pencil"></i> Editar </a>
+					<a id="btnCancelarDetalleLibro" class="btn red-sunglo btn-sm eventBtn"><i class="fa fa-close"></i> Cancelar </a>							
+					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<div class="form-body">
+					<div id="divMostarRegistroDetalle" class="detailPane">
+					</div>
+				</div>
+			</div>
+		</div>
+	
 	
 		<form:form id="frmCrearDetalleLibro" class="form-horizontal" commandName="libroBean">
 		<div id="divCrearDetalleLibro" class="portlet box blue-hoki" style="display: none;">
 			<div class="portlet-title">
-				<div class="caption"><i class="icon-share"></i>Caja Banco</div>
+				<div class="caption"><i class="icon-share"></i>Caja Banco - Nuevo</div>
 				<div class="actions">
 					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
 						<option value="1">BCP Dolares</option>
@@ -122,7 +145,7 @@
 						<div class="col-md-3 dynamic">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtFactura" type="text" class="typeahead form-control" placeholder="Factura" name="factura"/>
+									<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>
 								</div>
 							</div>
 						</div>
@@ -170,13 +193,6 @@
 			</div>
 			<div id="divPortletBody" class="portlet-body">					
 			</div>
-			
-			
-			<div id="divDetalleRegistro" class="portlet-body" ><hr>
-				<div id="divRegistroDetalle" class="detailPane">
-				</div>
-			</div>
-			
 		</div>
 	</div>
 </div>
@@ -222,9 +238,6 @@ jQuery(document).ready(function() {
 	listarSelectorClientes('sltCliente');
 	listarCaja();
 	suggestEmpleado();
-		
-
-	
 });
 </script>
 <script>
@@ -332,12 +345,17 @@ $(document).on('click','.eventBtn', function(e){
 		$('#divInitCajaBanco').hide();
 		$('#divCrearDetalleLibro').show();
 		break;
+	case "btnCrearDetalleLibro":
+		crearDetalleLibro();
+		break;
 	case "btnCancelarCrearCajaBanco":
 		$('#divCrearDetalleLibro').hide();
 		$('#divInitCajaBanco').show();
 		break;
-	case "btnCrearDetalleLibro":
-		crearDetalleLibro();
+	case "btnCancelarDetalleLibro":
+		$('#divRegistroDetalle').hide();
+		$('#divCrearDetalleLibro').hide();
+		$('#divInitCajaBanco').show();
 		break;
 	}
 });
@@ -351,7 +369,7 @@ function listarSelectorClientes(nombreSelector){
  		dataType: 'json',
  		data: '',
  		success: function(clientes){
- 			html = '<option value="">Escoger Cliente</option>';
+ 			html = '';
  			$.each(clientes, function(i, cliente){
 	 			var source = $("#templateSelectorClientes").html();
 	 			var template = Handlebars.compile(source);
@@ -526,8 +544,10 @@ function initTable(){
     	var aData = oTable.fnGetData(this);
     	
     	if (aData != null){
-    		$('#divRegistroDetalle').show();
+    		$('#divInitCajaBanco').hide();
+    		$('#divCrearDetalleLibro').hide();
     		mostrarDetalle(aData[0]);
+    		$('#divRegistroDetalle').show();
     	}
     });
 }
@@ -547,7 +567,7 @@ function mostrarDetalle(idRegistro){
 	 			html += template(registro);
  			});
  			
- 			$("#divRegistroDetalle").html(html);
+ 			$("#divMostarRegistroDetalle").html(html);
  			//initTable();
  		}
  	});	
@@ -619,10 +639,10 @@ function mostrarDetalle(idRegistro){
 	</div>
 	<div class="summaryBodyMiddle">
 		<div class="summaryBodyItem">
-			<span class="spanLabel">Cliente</span><span id="spnLat" class="value">{{idCliente}}</span>
+			<span class="spanLabel">Cliente</span><span id="spnLat" class="value">{{nombreCliente}}</span>
 		</div>
 		<div class="summaryBodyItem">
-			<span class="spanLabel">Proveedor</span><span id="spnLon" class="value">{{idProveedor}}</span>
+			<span class="spanLabel">Proveedor</span><span id="spnLon" class="value">{{nombreProveedor}}</span>
 		</div>
 		<div class="summaryBodyItem">
 			<span class="spanLabel">Cuenta Destino</span><span id="spnCreacion" class="value">{{cuentaBancoDestino}}</span>
@@ -636,9 +656,8 @@ function mostrarDetalle(idRegistro){
 			<span class="spanLabel">Creado por</span><span id="spnCreacion" class="value">Eduardo Ramos</span>
 		</div>
 		<div class="summaryBodyItem">
-			<span class="spanLabel">Creacion</span><span id="spnCreacion" class="value">24/04/2015 8:15 PM</span>
+			<span class="spanLabel">Creacion</span><span id="spnCreacion" class="value">{{fechaCreacion}}</span>
 		</div>
-	</div>
 </div>
 </script>
 <script id="templateResultado" type="text/x-handlebars-template">
@@ -692,10 +711,6 @@ function mostrarDetalle(idRegistro){
 	<div class="form-group">
 		<div class="col-md-12">
 			<input id="txtEmpleado" class="form-control" placeholder="Empleado" name="idEmpleado"/>
-
-			<input type="text" id="Sempleado" name="idUsuario" /> 
-			<label class="error errorMsg" for="selectempleadosAut"></label>
-
 		</div>
 	</div>
 </div>

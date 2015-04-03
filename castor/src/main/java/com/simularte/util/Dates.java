@@ -103,4 +103,18 @@ public class Dates {
 			return "---";
 		}
 	}
+	
+	public static Timestamp stringToTimeStamp(String fechaHora){
+		Timestamp ts = null;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+		
+		try{
+			java.util.Date parsedDate = dateFormat.parse(fechaHora);
+			ts = new java.sql.Timestamp(parsedDate.getTime());
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return ts;
+	}
 }

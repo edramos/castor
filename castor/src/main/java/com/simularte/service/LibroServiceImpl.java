@@ -1,6 +1,7 @@
 package com.simularte.service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.simularte.bean.DetalleLibroBean;
 import com.simularte.bean.LibroBean;
 import com.simularte.model.DetalleLibro;
 import com.simularte.model.Libro;
@@ -106,30 +108,53 @@ public class LibroServiceImpl implements LibroService{
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<DetalleLibro> mostrarDetalleLibro(Integer idDetalleLibro, HttpServletRequest req){
-		List<DetalleLibro> registro = new ArrayList<DetalleLibro>();
-		DetalleLibro detalleLibro = null;
-		Query q = em.createNativeQuery("SELECT idcliente, idproveedor, idorden, idempleado, cuentabancoorigen, cuentabancodestino, factura, codigooperacion"
+	public List<DetalleLibroBean> mostrarDetalleLibro(Integer idDetalleLibro, HttpServletRequest req){
+		List<DetalleLibroBean> registro = new ArrayList<DetalleLibroBean>();
+		DetalleLibroBean detalleLibroB = null;
+		//Despues todo se cambiara con querys dinamicos e INNER and LEFT OUTER JOINs
+		Query q = em.createNativeQuery("SELECT idcliente, idproveedor, idorden, idempleado, cuentabancoorigen, cuentabancodestino, factura, codigooperacion, fechaCreacion"
 				+ " FROM detallelibro"
 				+ " WHERE iddetallelibro = '" + idDetalleLibro + "'");
+		
 		
 		try{
 			List<Object[]> rows = q.getResultList();
 			
 			for(int x = 0; x < rows.size(); x++){
 				Object[] dlo = rows.get(x);
-				detalleLibro = new DetalleLibro();
+				detalleLibroB = new DetalleLibroBean();
 				
-				detalleLibro.setIdCliente((Integer)dlo[0]);
-				detalleLibro.setIdProveedor((Integer)dlo[1]);
-				detalleLibro.setIdOrden((Integer)dlo[2]);
-				detalleLibro.setIdEmpleado((Integer)dlo[3]);
-				detalleLibro.setCuentaBancoOrigen((dlo[4] == null) ? "" : dlo[4].toString());
-				detalleLibro.setCuentaBancoDestino((dlo[5] == null) ? "" : dlo[5].toString());
-				detalleLibro.setFactura((dlo[6] == null) ? "" : dlo[6].toString());
-				detalleLibro.setCodigoOperacion((dlo[7] == null) ? "" : dlo[7].toString());
+				if((Integer)dlo[0] != null){
+					Query q1 = em.createNativeQuery("SELECT nombre, idcliente FROM cliente WHERE idcliente = '" + (Integer)dlo[0] + "'");
+					
+					List<Object[]> clientes = q1.getResultList();
+					for(int y = 0; y < clientes.size(); y++){
+						Object[] cliente = clientes.get(y);
+						detalleLibroB.setNombreCliente(cliente[0].toString());
+					}
+				}
 				
-				registro.add(detalleLibro);
+				if((Integer)dlo[1] != null){
+					Query q1 = em.createNativeQuery("SELECT nombre, idproveedor FROM proveedor WHERE idproveedor = '" + (Integer)dlo[1] + "'");
+					
+					List<Object[]> objs = q1.getResultList();
+					for(int y = 0; y < objs.size(); y++){
+						Object[] cliente = objs.get(y);
+						detalleLibroB.setNombreProveedor(cliente[0].toString());
+					}
+				}
+				
+				detalleLibroB.setIdCliente((Integer)dlo[0]);
+				detalleLibroB.setIdProveedor((Integer)dlo[1]);
+				detalleLibroB.setIdOrden((Integer)dlo[2]);
+				detalleLibroB.setIdEmpleado((Integer)dlo[3]);
+				detalleLibroB.setCuentaBancoOrigen((dlo[4] == null) ? "" : dlo[4].toString());
+				detalleLibroB.setCuentaBancoDestino((dlo[5] == null) ? "" : dlo[5].toString());
+				detalleLibroB.setFactura((dlo[6] == null) ? "" : dlo[6].toString());
+				detalleLibroB.setCodigoOperacion((dlo[7] == null) ? "" : dlo[7].toString());
+				System.out.println(dlo[8].toString());
+				detalleLibroB.setFechaCreacion(Dates.fechaHoraEspaniol(Dates.stringToTimeStamp(dlo[8].toString())));
+				registro.add(detalleLibroB);
 			}			
 		}catch(Exception e){
 			e.printStackTrace();

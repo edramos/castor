@@ -7,6 +7,7 @@
 <title>Castor | Orden</title>
 <jsp:include page="../comps/headMandatory.jsp"/>
 <!-- BEGIN PAGE LEVEL STYLES -->
+<link href="assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css"/>
 <!-- END PAGE LEVEL STYLES -->
 </head>
 
@@ -73,7 +74,7 @@
 						<jsp:include page="orden/tabPagos.jsp"/>
 					</div>
 					<div class="tab-pane" id="tab_1_1_5">
-						<jsp:include page="orden/tabPagos.jsp"/>
+						<jsp:include page="orden/tabArchivos.jsp"/>
 					</div>
 				</div>
 				<!-- END TABS -->
@@ -99,6 +100,9 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <!-- <script src="assets/global/plugins/jquery.formatCurrency-1.4.0/jquery.formatCurrency-1.4.0.js" type="text/javascript"></script> -->
 <script src="assets/global/plugins/jquery-formatcurrency-master/jquery.formatCurrency.js" type="text/javascript"></script>
+<script src="assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script>
+<script type="text/javascript" src="assets/global/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+<script src="assets/global/plugins/plupload/js/plupload.full.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() { 

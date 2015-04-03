@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.simularte.bean.DetalleLibroBean;
 import com.simularte.bean.LibroBean;
-import com.simularte.model.DetalleLibro;
 import com.simularte.service.LibroService;
 
 @Controller
@@ -48,8 +48,8 @@ public class LibroController {
 	}
 	
 	@RequestMapping(value = "mostrarDetalleRegistro-{idDetalleLibro}", method = RequestMethod.POST) @ResponseBody
-	public List<DetalleLibro> mostrarDetalleRegistro(@PathVariable("idDetalleLibro") Integer idDetalleLibro, HttpServletRequest req){
-		List<DetalleLibro> registros = new ArrayList<DetalleLibro>();
+	public List<DetalleLibroBean> mostrarDetalleRegistro(@PathVariable("idDetalleLibro") Integer idDetalleLibro, HttpServletRequest req){
+		List<DetalleLibroBean> registros = new ArrayList<DetalleLibroBean>();
 		registros = cs.mostrarDetalleLibro(idDetalleLibro, req);
 	
 		return registros;
