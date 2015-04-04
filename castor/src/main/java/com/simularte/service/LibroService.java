@@ -9,7 +9,7 @@ import com.simularte.bean.LibroBean;
 
 public interface LibroService {
 
-	boolean crearDetalleLibro(LibroBean cajaBean, String tipoLibro, HttpServletRequest req);
-	List<LibroBean> listarDetalleLibro(Integer idLibro, HttpServletRequest req);
+	boolean crearDetalleLibro(DetalleLibroBean dlb, Integer idLibro, HttpServletRequest req);
+	List<DetalleLibroBean> listarDetalleLibro(Integer idLibro, HttpServletRequest req);
 	List<DetalleLibroBean> mostrarDetalleLibro(Integer idDetalleLibro, HttpServletRequest req);
 }

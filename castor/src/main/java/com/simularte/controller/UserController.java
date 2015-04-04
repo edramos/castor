@@ -133,7 +133,10 @@ public class UserController {
 	public String toCajaBanco(){
 		return "empresa/cajaBanco";
 	}
-	
+	@RequestMapping("toCajaChica")
+	public String toCajaChica(){
+		return "empresa/cajaChica";
+	}
 	
 	
 }

@@ -374,7 +374,7 @@ public class OrdenServiceImpl implements OrdenService {
 					
 		ordenB.setCreadoPor(orden.getCreadoPor());
 		
-		ordenB.setFechaCreacion(Dates.fechaHoraEspaniol(orden.getFechaCreacion()));
+		ordenB.setFechaCreacion(Dates.fechaHoraEspaniol(orden.getFechaCreacion(), "l"));
 		ordenB.setEstado(orden.getEstado());
 		
 		//Solo por ahora, cambiar a JOIN

@@ -78,7 +78,7 @@
 		</div>
 	
 	
-		<form:form id="frmCrearDetalleLibro" class="form-horizontal" commandName="libroBean">
+		<form:form id="frmCrearDetalleLibro" class="form-horizontal" commandName="libroDetalleBean">
 		<div id="divCrearDetalleLibro" class="portlet box blue-hoki" style="display: none;">
 			<div class="portlet-title">
 				<div class="caption"><i class="icon-share"></i>Caja Banco - Nuevo</div>
@@ -449,6 +449,8 @@ function createTable(){
 function borrarDatos(){
 	$('.form-control').val('');
 	$('#sltCuentaBanco').find('option:first').attr('selected', 'selected');
+	$('#sltTipoTransaccion').find('option:first').attr('selected', 'selected');
+	$('#sltTransaccion').find('option:first').attr('selected', 'selected');
 }
 function formDynamic(opcion){
 	$('.dynamic').remove();
@@ -572,51 +574,6 @@ function mostrarDetalle(idRegistro){
  		}
  	});	
 }
-
-//-AUTOCOMPLETE-//
-/* function autoCompleteEmpleado(addressId, propertyId){
-   	$(escapeID(addressId)).autocomplete({
-   		minLength: 2,
-   		delay: 250,
-    	source: function(request, response){     
-    		$.ajax({
-    			type: 'GET',
-    	        cache: false,
-    	 		url: 'ajaxListarEmpleadosAutocomplete',
-    	 		contentType:'application/json',
-    	 		dataType: 'json',
-    	 		data: {selectEmpleado: request.term},
-    	 		success: function(data){	
-    	 			if(data==''){
-    	 				newB = true;    	 				
-    	 			}
-    	 			response(data);
-    	 		}		
-    	 	});	                						      			
-    	},
-		focus: function( event, ui ) {
-			$('.ui-menu-item').removeClass('hoverFocus');
-			$(escapeID('empleado_' + ui.item.idEmpleado)).addClass('hoverFocus');
-		    return false;
-		},
-		select: function(event, ui) {
-			$(escapeID(propertyId)).val(ui.item.idUsuario);
-			$(escapeID(addressId)).val(ui.item.primerNombre+" "+ui.item.apellidoPaterno);
-			return false;
-		}    	
- 		}).data( "ui-autocomplete" )._renderItem = function( ul, item ) {        
-	    	var source = $("#templateSearchResultEmpleado").html();
-	    	var template = Handlebars.compile(source);
-	    	var html = template(item).trim();	    	
-	    	$(ul).on('click', '#empleado_' + item.idEmpleado, {item: item}, function(e) {
-    			$(escapeID(propertyId)).val(e.data.item.idUsuario);
-    			$(escapeID(addressId)).val(e.data.item.primerNombre+" "+e.data.item.apellidoPaterno);
-	            $(escapeID(addressId)).autocomplete("close");	
-	            newB=false;
-	        });	    	 
-	    	return $(html).appendTo(ul);
-   	};   	
-} */
 </script>
 <script id="templateSelectorClientes" type="text/x-handlebars-template">
 	<option value="{{idCliente}}">{{nombre}}</option>

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simularte.bean.DetalleLibroBean;
-import com.simularte.bean.LibroBean;
 import com.simularte.service.LibroService;
 
 @Controller
@@ -24,10 +23,10 @@ public class LibroController {
 	LibroService cs;
 	
 	@RequestMapping(value = "ajaxCrearRegistroLibro", method = RequestMethod.POST) @ResponseBody
-	public Boolean ajaxCrearRegistroLibro(@ModelAttribute("cajaBean")LibroBean libroBean, String tipoLibro, HttpServletRequest req){
+	public Boolean ajaxCrearRegistroLibro(@ModelAttribute("libroDetalleBean")DetalleLibroBean libroBean, Integer idLibro, HttpServletRequest req){
 		Boolean resultado = false;
 		
-		if(cs.crearDetalleLibro(libroBean, tipoLibro, req)){
+		if(cs.crearDetalleLibro(libroBean, idLibro, req)){
 			System.out.println("GRABO!!!");
 			resultado = true;
 		}else{
@@ -40,8 +39,8 @@ public class LibroController {
 	
 	
 	@RequestMapping(value = "listarDetalleLibro-{idLibro}", method = RequestMethod.POST) @ResponseBody
-	public List<LibroBean> listarDetalleLibro(@PathVariable("idLibro") Integer idLibro, HttpServletRequest req){
-		List<LibroBean> registros = new ArrayList<LibroBean>();
+	public List<DetalleLibroBean> listarDetalleLibro(@PathVariable("idLibro") Integer idLibro, HttpServletRequest req){
+		List<DetalleLibroBean> registros = new ArrayList<DetalleLibroBean>();
 		registros = cs.listarDetalleLibro(idLibro, req);
 	
 		return registros;

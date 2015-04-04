@@ -2,6 +2,7 @@ package com.simularte.bean;
 
 public class DetalleLibroBean {
 
+	private Integer idLibro;
 	private Integer idDetalleLibro;
 	private Integer idOrden;
 	private Integer idCliente;
@@ -26,9 +27,37 @@ public class DetalleLibroBean {
 	
 	private String fechaCreacion;
 	private String estado;
+	//Fancy
+	private String ingreso;
+	private String egreso;
+	private String saldo;
 	
 	
 	
+	public String getIngreso() {
+		return ingreso;
+	}
+	public void setIngreso(String ingreso) {
+		this.ingreso = ingreso;
+	}
+	public String getEgreso() {
+		return egreso;
+	}
+	public void setEgreso(String egreso) {
+		this.egreso = egreso;
+	}
+	public String getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(String saldo) {
+		this.saldo = saldo;
+	}
+	public Integer getIdLibro() {
+		return idLibro;
+	}
+	public void setIdLibro(Integer idLibro) {
+		this.idLibro = idLibro;
+	}
 	public Integer getIdDetalleLibro() {
 		return idDetalleLibro;
 	}
