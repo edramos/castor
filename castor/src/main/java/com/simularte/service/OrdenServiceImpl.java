@@ -35,7 +35,7 @@ public class OrdenServiceImpl implements OrdenService {
 	EntityManager em;
 	
 	@Transactional
-	public int crearOrden(OrdenBean ordenBean, int idCliente, String[] subCont, String[] pagProv, HttpServletRequest req) {
+	public int crearOrden(OrdenBean ordenBean, int idCliente, String[] cobrosCliente, String[] subCont, String[] pagProv, HttpServletRequest req) {
 		int idOrden = -1;
 		
 		try{
@@ -75,6 +75,58 @@ public class OrdenServiceImpl implements OrdenService {
 			Orden ordenY = em.merge(orden);
 			ordenY.setCodigo("OT-" + orden.getTipoOrden() + "-" + String.format("%05d", orden.getIdOrden()));
 			
+			for(int z = 0; z < cobrosCliente.length; z++){
+				System.out.println("z = " + z + ", " + cobrosCliente[z]);
+			}
+		
+			ArrayList<Cuenta> cobros = new ArrayList<Cuenta>();
+			int restoCobros;
+			for(int x = 0; x < cobrosCliente.length; x++){
+				//System.out.println("valor: " + cobrosCliente[x]);
+				restoCobros = x%5;
+				if(restoCobros == 0){
+					System.out.println("resto " + restoCobros + ", creo Cuenta y monto: " + cobrosCliente[x]);
+					Cuenta cu = new Cuenta();
+
+					cu.setTipo("cobro");
+					cu.setMonto(Formatos.StringToBigDecimal(cobrosCliente[x]));
+					cu.setCuentaOrden(orden);
+					
+					cobros.add(cu);
+				}else{
+					int index = cobros.size()-1;
+					
+					switch(restoCobros){
+					case 1:
+						System.out.println("resto " + restoCobros + ", x: " + x + ", tipoPago: " + cobrosCliente[x]);
+						cobros.get(index).setTipoPago(cobrosCliente[x]);
+						break;
+					case 2:
+						System.out.println("resto " + restoCobros + ", x: " + x + ", condicion: " + cobrosCliente[x]);
+						cobros.get(index).setEstadoTrabajo(cobrosCliente[x]);
+						break;
+					case 3:
+						System.out.println("resto " + restoCobros + ", x: " + x + ", avance: " + cobrosCliente[x]);
+						cobros.get(index).setAvance(Double.parseDouble(cobrosCliente[x]));
+						break;
+					case 4:
+						System.out.println("resto " + restoCobros + ", x: " + x + ", fecha Vencimiento: " + cobrosCliente[x]);
+						cobros.get(index).setFechaVencimiento(Dates.stringToDate(cobrosCliente[x], "yyyy-MM-dd"));
+						break;
+					}
+				}
+			}
+			
+			for(int x = 0; x < cobros.size(); x++){	
+				cobros.get(x).setCreadoPor((Integer)session.getAttribute("idUser"));
+				cobros.get(x).setFechaCreacion(Dates.fechaCreacion());
+				cobros.get(x).setEstado("enabled");
+				em.persist(cobros.get(x));				
+			}
+			
+			
+			
+			
 			//Convierte el array de String a un array de Subcontratos, con JSON esta parte ya seria automatica
 			ArrayList<Subcontrato> subContratos = new ArrayList<Subcontrato>();
 			int resto;		
@@ -84,7 +136,6 @@ public class OrdenServiceImpl implements OrdenService {
 				if(resto == 0){
 					System.out.println("resto: " + resto + "creo Proveedor");
 					Subcontrato subc = new Subcontrato();
-					
 					
 					Proveedor proveedor = em.find(Proveedor.class, Integer.parseInt(subCont[x]));
 					
@@ -141,7 +192,8 @@ public class OrdenServiceImpl implements OrdenService {
 			int resto2;		
 			for(int x = 0; x < pagProv.length; x++){
 				resto2 = x%5;				
-				if(resto2 == 0){					
+				if(resto2 == 0){
+					System.out.println("resto " + resto2 + ", creo Cuenta Proveedor e idProveedor: " + pagProv[x]);
 					Cuenta cu = new Cuenta();
 					
 					Subcontrato sbcontrato = subcontratosMap.get(Integer.parseInt(pagProv[x]));
@@ -155,15 +207,19 @@ public class OrdenServiceImpl implements OrdenService {
 					System.out.println("index: " + index);
 					switch(resto2){
 						case 1:
+							System.out.println("resto " + resto2 + ", x: " + x + ", monto: " + pagProv[x]);
 							cuenta_prov.get(index).setMonto(Formatos.StringToBigDecimal(pagProv[x]));						
 							break;
 						case 2:
+							System.out.println("resto " + resto2 + ", x: " + x + ", tipo pago: " + pagProv[x]);
 							cuenta_prov.get(index).setTipoPago(pagProv[x]);						
 							break;	
 						case 3:
+							System.out.println("resto " + resto2 + ", x: " + x + ", fecha ven: " + pagProv[x]);
 							cuenta_prov.get(index).setFechaVencimiento(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
 							break;
 						case 4:
+							System.out.println("resto " + resto2 + ", x: " + x + ", fecha pro: " + pagProv[x]);
 							cuenta_prov.get(index).setFechaPagoProgramada(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
 							break;
 					}
@@ -282,7 +338,6 @@ public class OrdenServiceImpl implements OrdenService {
 		
 		return ordenBeans;
 	}
-	
 	
 	public List<OrdenBean> buscarOrderPanel(HttpServletRequest req){
 		List<OrdenBean> ordenBeans = new ArrayList<OrdenBean>();

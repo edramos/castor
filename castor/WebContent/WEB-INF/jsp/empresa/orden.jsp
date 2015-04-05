@@ -124,6 +124,7 @@ $(document).ready(function(){
 	extraerInformacionOrden(idOrden); 
 	listarSubcontratos(idOrden);	
 	listarCuentasPagoProveedor(idOrden);
+	listarCuentasCobrar(idOrden);
 });
 
 function extraerInformacionOrden(idOrdenTemp){
@@ -139,7 +140,20 @@ function extraerInformacionOrden(idOrdenTemp){
  		}
  	});	
 }
-
+function listarCuentasCobrar(idOrdenTemp){
+	$.ajax({
+ 		url: 'ajaxListarCuentas-cobro-' + idOrdenTemp,
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(cuentascobrar){
+ 			initClienteCuentasCobrar(cuentascobrar);	 	        
+ 		},
+ 		complete: function() {	 			
+ 			//removeNulls();
+  		}
+ 	});
+}
 function listarSubcontratos(idOrdenTemp){
     $.ajax({
  		url: 'ajaxListarSubcontratos-' + idOrdenTemp,

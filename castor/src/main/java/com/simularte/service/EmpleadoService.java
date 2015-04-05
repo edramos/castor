@@ -3,7 +3,6 @@ package com.simularte.service;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import com.simularte.bean.EmpleadoBean;
 

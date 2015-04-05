@@ -67,7 +67,14 @@ public class CuentaServiceImpl implements CuentaService {
 				cuebean.setTipoPago(c.getTipoPago());
 				cuebean.setMonto(c.getMonto());
 				cuebean.setPagador(c.getPagador());
-				
+				cuebean.setEstadoTrabajo(c.getEstadoTrabajo());
+				if(c.getEstadoTrabajo() != null){
+					if(c.getEstadoTrabajo().equals("Proceso")){
+						cuebean.setAvance("(" + Double.toString(c.getAvance()) + "%)");
+					}else{
+						cuebean.setAvance("");
+					}
+				}
 				cuebean.setCreadoPor(c.getCreadoPor());
 				cuebean.setFechaCreacion(c.getFechaCreacion());
 				cuebean.setEstado(c.getEstado());

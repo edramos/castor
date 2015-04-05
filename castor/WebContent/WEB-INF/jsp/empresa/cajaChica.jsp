@@ -45,6 +45,27 @@
 			</div>
 		</div>
 		
+		<div id="divRegistroDetalle" class="portlet box blue-hoki" style="display: none;">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-share"></i>Caja Chica - Detalle</div>
+				<div class="actions">
+					<select id="sltCuentaCajaChica" class="form-control-head" name="idLibro">
+						<option value="2">Caja Chica Soles</option>
+						<option value="3">Caja Chica Dolares</option>
+					</select>
+					<a id="btnEditarDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-pencil"></i> Editar </a>
+					<a id="btnCancelarDetalleLibro" class="btn red-sunglo btn-sm eventBtn"><i class="fa fa-close"></i> Cancelar </a>							
+					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<div class="form-body">
+					<div id="divMostarRegistroDetalle" class="detailPane">
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		<form:form id="frmCrearDetalleLibro" class="form-horizontal" commandName="libroDetalleBean">
 		<div id="divCrearDetalleLibro" class="portlet box blue-hoki" style="display: none;">
 			<div class="portlet-title">
@@ -349,11 +370,67 @@ function initTable(){
     	if (aData != null){
     		$('#divInitCajaChica').hide();
     		$('#divCrearDetalleLibro').hide();
-    		//mostrarDetalle(aData[0]);
+    		mostrarDetalle(aData[0]);
     		$('#divRegistroDetalle').show();
     	}
     });
 }
+function mostrarDetalle(idRegistro){
+	var html = '';
+	$.ajax({
+ 		url: 'mostrarDetalleRegistro-' + idRegistro,
+ 		type: 'post',
+ 		dataType: 'json',
+ 		success: function(registros){
+ 			//removeTable();
+ 			//createTable();
+ 			$.each(registros, function(i, registro){
+	 			var source = $("#templateDetalleRegistro").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(registro);
+ 			});
+ 			
+ 			$("#divMostarRegistroDetalle").html(html);
+ 			//initTable();
+ 		}
+ 	});	
+}
+</script>
+<script id="templateDetalleRegistro" type="text/x-handlebars-template">
+<div class="summaryBody sectionBody">
+	<div class="summaryBodyLeft">
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Factura</span><span id="spnNombre" class="value">{{factura}}</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Cod. Operacion</span><span id="spnNombreCliente" class="value">{{codigoOperacion}}</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Cuenta Origen</span><span id="spnCreacion" class="value">{{cuentaBancoOrigen}}</span>
+		</div>
+	</div>
+	<div class="summaryBodyMiddle">
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Cliente</span><span id="spnLat" class="value">{{nombreCliente}}</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Proveedor</span><span id="spnLon" class="value">{{nombreProveedor}}</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Cuenta Destino</span><span id="spnCreacion" class="value">{{cuentaBancoDestino}}</span>
+		</div>
+	</div>
+	<div class="summaryBodyRight">
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Orden Trabajo</span><span id="spnEntrega" class="value">{{idOrden}}</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Creado por</span><span id="spnCreacion" class="value">Eduardo Ramos</span>
+		</div>
+		<div class="summaryBodyItem">
+			<span class="spanLabel">Creacion</span><span id="spnCreacion" class="value">{{fechaCreacion}}</span>
+		</div>
+</div>
 </script>
 <script id="templateResultado" type="text/x-handlebars-template">
 <tr>

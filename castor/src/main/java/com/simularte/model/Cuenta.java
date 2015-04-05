@@ -14,24 +14,13 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Cuenta {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "idcuenta")
+	@Id @GeneratedValue @Column(name = "idcuenta")
 	private Integer idCuenta;
 
 	// References
-	/*
-	 * Se le puede crobar 1-n veces a 1 cliente, como el cliente es unico por
-	 * proyecto se le saca el idCliente a travez Orden-Proyecto, Keys:
-	 * idCobro(PK), idOrden(FK)
-	 */
-
-	@ManyToOne
-	@JoinColumn(name = "idorden", nullable = true)
+	@ManyToOne @JoinColumn(name = "idorden", nullable = true)
 	private Orden cuentaOrden;
-
-	@ManyToOne
-	@JoinColumn(name = "idsubcontrato", nullable = true)
+	@ManyToOne @JoinColumn(name = "idsubcontrato", nullable = true)
 	private Subcontrato cuentaSubcontrato;
 
 	// Fields
@@ -49,6 +38,10 @@ public class Cuenta {
 	private BigDecimal monto;
 	@Column(length = 30, nullable = true)
 	private Integer pagador;
+	@Column(name = "estadotrabajo", length = 30, nullable = true)
+	private String estadoTrabajo;
+	@Column(nullable = true)
+	private double avance;
 
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
@@ -57,6 +50,20 @@ public class Cuenta {
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
+	
+	
+	public String getEstadoTrabajo() {
+		return estadoTrabajo;
+	}
+	public void setEstadoTrabajo(String estadoTrabajo) {
+		this.estadoTrabajo = estadoTrabajo;
+	}
+	public double getAvance() {
+		return avance;
+	}
+	public void setAvance(double avance) {
+		this.avance = avance;
+	}
 	public Integer getIdCuenta() {
 		return idCuenta;
 	}

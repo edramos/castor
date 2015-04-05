@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.simularte.bean.DetalleLibroBean;
-import com.simularte.bean.LibroBean;
 
 public interface LibroService {
 

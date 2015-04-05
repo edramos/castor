@@ -18,12 +18,27 @@ public class CuentaBean {
 	private String tipoPago;
 	private BigDecimal monto;
 	private Integer pagador;
+	private String estadoTrabajo;
+	private String avance;
+	
 	private Integer creadoPor;
 	private Timestamp fechaCreacion;
 	private String estado;
 	
 	
 	
+	public String getAvance() {
+		return avance;
+	}
+	public void setAvance(String avance) {
+		this.avance = avance;
+	}
+	public String getEstadoTrabajo() {
+		return estadoTrabajo;
+	}
+	public void setEstadoTrabajo(String estadoTrabajo) {
+		this.estadoTrabajo = estadoTrabajo;
+	}
 	public String getFechaVencimiento() {
 		return fechaVencimiento;
 	}
