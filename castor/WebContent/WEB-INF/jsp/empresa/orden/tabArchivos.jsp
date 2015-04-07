@@ -1,117 +1,144 @@
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <div class="portlet-body">
-<div class="tab-pane" id="tab_images">
-											<div class="alert alert-success margin-bottom-10">
-												<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-												<i class="fa fa-warning fa-lg"></i> Estado del avance 1: EN PROCESO (70%), termina el Mar 30 Abril 2015.
-											</div>
-											<div id="tab_images_uploader_container" class="text-align-reverse margin-bottom-10">
-												<a id="tab_images_uploader_pickfiles" href="javascript:;" class="btn yellow">
-												<i class="fa fa-plus"></i> Buscar Archivo </a>
-												<a id="tab_images_uploader_uploadfiles" href="javascript:;" class="btn green">
-												<i class="fa fa-share"></i> Subir Archivo </a>
-											</div>
-											<div class="row">
-												<div id="tab_images_uploader_filelist" class="col-md-6 col-sm-12">
-												</div>
-											</div>
-											<table class="table table-bordered table-hover">
-											<thead>
-											<tr role="row" class="heading">
-												<th width="8%">
-													 Imagen
-												</th>
-												<th width="33%">
-													 Descripcion
-												</th>
-												<th width="10%">
-													 Fecha
-												</th>
-												<th width="15%">
-													 Subido Por
-												</th>
-												<th width="15%">
-													 Revisado Por
-												</th>
-												
-											</tr>
-											</thead>
-											<tbody>
-											<tr>
-												<td>
-													<a href="assets/admin/pages/media/works/img1.jpg" class="fancybox-button" data-rel="fancybox-button">
-													<img class="img-responsive" src="assets/admin/pages/media/works/img1.jpg" alt="">
-													</a>
-												</td>
-												<td>
-													<input type="text" class="form-control" name="product[images][1][label]" value="Descripcion avance">
-												</td>
-												<td>
-													<input type="text" class="form-control" name="product[images][1][sort_order]" value="30/04/2015">
-												</td>
-												<td>
-													<label>
-													<input type="text" class="form-control" name="product[images][1][image_type]" value="Proveedor">
-													</label>
-												</td>
-												<td>
-													<label>
-													<input type="text" class="form-control" name="product[images][1][image_type]" value="Eduardo Ramos">
-													</label>
-												</td>
-												
-												
-											</tr>
-											<tr>
-												<td>
-													<a href="assets/admin/pages/media/works/img2.jpg" class="fancybox-button" data-rel="fancybox-button">
-													<img class="img-responsive" src="assets/admin/pages/media/works/img2.jpg" alt="">
-													</a>
-												</td>
-												<td>
-													<input type="text" class="form-control" name="product[images][2][label]" value="Descripcion avance">
-												</td>
-												<td>
-													<input type="text" class="form-control" name="product[images][2][sort_order]" value="30/04/2015">
-												</td>
-												<td>
-													<label>
-													<input type="text" class="form-control" name="product[images][1][image_type]" value="Proveedor">
-													</label>
-												</td>
-												<td>
-													<label>
-													<input type="text" class="form-control" name="product[images][1][image_type]" value="Eduardo Ramos">
-													</label>
-												</td>
-												
-												
-											</tr>
-											<tr>
-												<td>
-													<a href="assets/admin/pages/media/works/img3.jpg" class="fancybox-button" data-rel="fancybox-button">
-													<img class="img-responsive" src="assets/admin/pages/media/works/img3.jpg" alt="">
-													</a>
-												</td>
-												<td>
-													<input type="text" class="form-control" name="product[images][3][label]" value="Descripcion avance">
-												</td>
-												<td>
-													<input type="text" class="form-control" name="product[images][3][sort_order]" value="30/04/2015">
-												</td>
-												<td>
-													<label>
-													<input type="text" class="form-control" name="product[images][1][image_type]" value="Proveedor">
-													</label>
-												</td>
-												<td>
-													<label>
-													<input type="text" class="form-control" name="product[images][1][image_type]" value="Eduardo Ramos">
-													</label>
-												</td>
-												
-												
-											</tr>
-											</tbody>
-											</table>
-										</div>	
+<div class="row">
+	<div class="col-md-12">
+
+	<form:form id="frmArchivos" action="cargarArchivoAjax" method="post" commandName="arregloArchivos" enctype="multipart/form-data">
+		<span class="btn green fileinput-button"><i class="fa fa-plus"></i><span> Agregar Archivos... </span><input type="file" name="files" multiple/></span>
+		<button type="submit" class="btn blue start"><i class="fa fa-upload"></i><span> Subir</span></button>
+		<input type="hidden" name="idEntidad" value="26"/><input type="hidden" name="tipoEntidad" value="Orden"/>
+	</form:form>
+	
+	
+	
+		<%-- <form:form id="frmArchivos" action="cargarArchivoAjax" method="post" commandName="arregloArchivos" enctype="multipart/form-data">
+			<!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+			<div class="row fileupload-buttonbar">
+				<div class="col-lg-7">
+					<!-- The fileinput-button span is used to style the file input field as button -->
+					<span class="btn green fileinput-button"><i class="fa fa-plus"></i><span> Agregar Archivos... </span>
+						<input type="file" name="files[0]" multiple>
+					</span>
+					<button type="submit" class="btn blue start"><i class="fa fa-upload"></i><span> Subir</span></button>
+					<button type="reset" class="btn warning cancel"><i class="fa fa-ban"></i><span> Cancelar</span></button>
+					<button type="button" class="btn red delete"><i class="fa fa-trash"></i><span> Borrar</span></button>
+					<input type="checkbox" class="toggle">
+					<!-- The global file processing state -->
+					<span class="fileupload-process"></span>
+				</div>
+				<!-- The global progress information -->
+				<div class="col-lg-5 fileupload-progress fade">
+					<!-- The global progress bar -->
+					<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+						<div class="progress-bar progress-bar-success" style="width:0%;">
+						</div>
+					</div>
+					<!-- The extended global progress information -->
+					<div class="progress-extended">&nbsp;</div>
+				</div>
+			</div>
+			<!-- The table listing the files available for upload/download -->
+			<table role="presentation" class="table table-striped clearfix">
+			<tbody class="files">
+			</tbody>
+			</table>
+			<input type="hidden" name="idEntidad" value="26"/><input type="hidden" name="tipoEntidad" value="Orden"/>
+		</form:form> --%>
+	
+	</div>
 </div>
+</div>
+<!-- The blueimp Gallery widget -->
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+	<div class="slides">
+	</div>
+	<h3 class="title"></h3>
+	<a class="prev">
+	‹ </a>
+	<a class="next">
+	› </a>
+	<a class="close white">
+	</a>
+	<a class="play-pause">
+	</a>
+	<ol class="indicator">
+	</ol>
+</div>
+
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger label label-danger"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+            </div>
+        </td>
+        <td>
+            {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn blue start" disabled>
+                    <i class="fa fa-upload"></i>
+                    <span>Start NUEVO</span>
+                </button>
+            {% } %}
+            {% if (!i) { %}
+                <button class="btn red cancel">
+                    <i class="fa fa-ban"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+        {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-download fade">
+                <td>
+                    <span class="preview">
+                        {% if (file.thumbnailUrl) { %}
+                            <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                        {% } %}
+                    </span>
+                </td>
+                <td>
+                    <p class="name">
+                        {% if (file.url) { %}
+                            <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                        {% } else { %}
+                            <span>{%=file.name%}</span>
+                        {% } %}
+                    </p>
+                    {% if (file.error) { %}
+                        <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+                    {% } %}
+                </td>
+                <td>
+                    <span class="size">{%=o.formatFileSize(file.size)%}</span>
+                </td>
+                <td>
+                    {% if (file.deleteUrl) { %}
+                        <button class="btn red delete btn-sm" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                            <i class="fa fa-trash-o"></i>
+                            <span>Delete</span>
+                        </button>
+                        <input type="checkbox" name="delete" value="1" class="toggle">
+                    {% } else { %}
+                        <button class="btn yellow cancel btn-sm">
+                            <i class="fa fa-ban"></i>
+                            <span>Cancel</span>
+                        </button>
+                    {% } %}
+                </td>
+            </tr>
+        {% } %}
+</script>

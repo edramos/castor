@@ -1,6 +1,5 @@
 var FormFileUpload = function () {
-
-
+	
     return {
         //main function to initiate the module
         init: function () {
@@ -38,9 +37,10 @@ var FormFileUpload = function () {
                 });
             }
 
-            // Load & display existing files:
+            //Load & display existing files:
             $('#fileupload').addClass('fileupload-processing');
             $.ajax({
+            	type: 'post',
                 // Uncomment the following to send cross-domain cookies:
                 //xhrFields: {withCredentials: true},
                 url: $('#fileupload').attr("action"),

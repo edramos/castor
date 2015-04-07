@@ -1,6 +1,7 @@
 package com.simularte.model;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -16,14 +18,15 @@ public class Usuario {
 	@Id @GeneratedValue @Column(name = "idusuario")	
 	private Integer idUsuario;
 	
-	@ManyToOne
-	@JoinColumn(name = "idempresa", nullable = false)
-	private Empresa usuarioEmpresa;
-	
 	//References
+	@ManyToOne @JoinColumn(name = "idempresa", nullable = false)
+	private Empresa usuarioEmpresa;
 	@OneToOne(mappedBy = "perfilUsuario")
 	private Perfil usuarioPerfil;
+	@OneToMany(mappedBy = "archivoUsuario")
+	private Collection<Archivo> usuarioArchivo;
 	
+	//Fields
 	@Column(length = 60, nullable = false)
 	private String email;	
 	@Column(length = 60, nullable = false)
@@ -33,6 +36,14 @@ public class Usuario {
 	@Column(length = 30, nullable = false)
 	private String estado;
 	
+	
+	
+	public Collection<Archivo> getUsuarioArchivo() {
+		return usuarioArchivo;
+	}
+	public void setUsuarioArchivo(Collection<Archivo> usuarioArchivo) {
+		this.usuarioArchivo = usuarioArchivo;
+	}
 	public Integer getIdUsuario() {
 		return idUsuario;
 	}

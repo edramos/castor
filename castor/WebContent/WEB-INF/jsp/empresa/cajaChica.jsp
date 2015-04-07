@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Castor | Caja Chica</title>
 <jsp:include page="../comps/headMandatory.jsp"/>
 <!-- BEGIN PAGE LEVEL STYLES -->

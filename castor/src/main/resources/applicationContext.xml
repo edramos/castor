@@ -26,6 +26,10 @@
 	
 	<mvc:resources mapping="/assets/**" location="/assets/" />
 	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="-1"/><!-- -1 is unlimited, set limits in UI and controller -->
+	</bean>
+	
 	<tx:annotation-driven />
 
 </beans>
