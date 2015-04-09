@@ -1,7 +1,6 @@
 package com.simularte.service;
 
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +21,10 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.simularte.bean.ArchivoBean;
-import com.simularte.bean.OrdenBean;
-import com.simularte.bean.S3Bean;
 import com.simularte.model.Archivo;
 import com.simularte.model.Usuario;
 import com.simularte.util.Dates;
+import com.simularte.util.Formatos;
 
 @Service
 public class S3ServiceImpl implements S3Service{
@@ -42,20 +40,19 @@ public class S3ServiceImpl implements S3Service{
 		boolean result = false;
 		
 		try{
-			for(int i = 0; i < ab.getFiles().size(); i++){
-				//S3Bean s3b = 	ab. ().get(i);
+			for(int i = 0; i < ab.getFiles().size(); i++){				
 				
-				ObjectMetadata metadata = new ObjectMetadata(); 			//Prepara toda la informacion neceasria para que se pueda subir al S3
+				ObjectMetadata metadata = new ObjectMetadata(); 				//Prepara toda la informacion neceasria para que se pueda subir al S3
 				InputStream is = ab.getFiles().get(i).getInputStream();			//Puente de bytes
 				byte[] contentBytes= IOUtils.toByteArray(is);
 				Long contentLength = Long.valueOf(contentBytes.length);
-				metadata.setContentLength(contentLength);					//Cuanto pesa
+				metadata.setContentLength(contentLength);						//Cuanto pesa
 				metadata.setContentType(ab.getFiles().get(i).getContentType()); //Tipo del archivo
 				
 				//In the key (filename) we prefix the company type and id to seggregate attachment into folders
 				String key = "";
 				if(!(req.getSession().getAttribute("idEmpresa").toString()).equals("null")){
-					key = "Emp" + req.getSession().getAttribute("idEmpresa").toString();
+					key = "Emp" + req.getSession().getAttribute("idEmpresa").toString() + "/" + ab.getTipoEntidad() + ab.getIdEntidad();
 				}			
 				
 				key = key + "/" + ab.getFiles().get(i).getOriginalFilename(); 
@@ -73,9 +70,7 @@ public class S3ServiceImpl implements S3Service{
 					archivo.setArchivoUsuario(usuario);
 					
 					archivo.setNombre((ab.getFiles().get(i).getOriginalFilename()));
-					//archivo.setTipo(s3b.getTipo());
-					archivo.setTamanio(contentLength);
-					
+					archivo.setTamanio(contentLength);					
 					
 					String tempKey = key;
 					tempKey =  tempKey.replace("<", "%3C");
@@ -93,10 +88,8 @@ public class S3ServiceImpl implements S3Service{
 					archivo.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
 					archivo.setFechaCreacion(Dates.fechaCreacion());
 					archivo.setEstado("enabled");
-					System.out.println("voy a grabar objeto.url: " + archivo.getUrl());
+					
 					em.persist(archivo);
-					
-					
 					
 				}catch(IllegalArgumentException e){
 					e.printStackTrace();
@@ -116,8 +109,10 @@ public class S3ServiceImpl implements S3Service{
 	@SuppressWarnings("unchecked")
 	public List<ArchivoBean> cargarArchivos(int idEntidad, String tipoEntidad){
 		List<ArchivoBean> archivos = new ArrayList<ArchivoBean>();
+		System.out.println("idEntidad: " + idEntidad + " tipoEntidad: " + tipoEntidad);
+		Query q1 = em.createNativeQuery("SELECT nombre, url, tamanio, descripcion FROM archivo "
+				+ "WHERE identidad = '" + idEntidad + "' AND tipoentidad = '" + tipoEntidad + "'");
 		
-		Query q1 = em.createNativeQuery("SELECT nombre, url FROM archivo WHERE identidad = '" + idEntidad + "' AND tipoentidad = '" + tipoEntidad + "'");
 		
 		try{
 			List<Object[]> rows = q1.getResultList();
@@ -128,6 +123,8 @@ public class S3ServiceImpl implements S3Service{
 				
 				ab.setNombre(obj[0].toString());
 				ab.setUrl(obj[1].toString());
+				ab.setTamanio(Formatos.bytesToString(Long.parseLong(obj[2].toString())));
+				ab.setDescripcion(obj[3].toString());
 				
 				archivos.add(ab);
 			}

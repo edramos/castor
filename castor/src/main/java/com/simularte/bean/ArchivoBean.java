@@ -15,6 +15,7 @@ public class ArchivoBean {
 	private String descripcion;
 	private String nombre;
 	private String url;
+	private String tamanio;
 
 	
 
@@ -65,5 +66,11 @@ public class ArchivoBean {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String getTamanio() {
+		return tamanio;
+	}
+	public void setTamanio(String tamanio) {
+		this.tamanio = tamanio;
 	}
 }

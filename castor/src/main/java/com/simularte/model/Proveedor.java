@@ -23,12 +23,16 @@ public class Proveedor {
 	@ManyToOne @JoinColumn(name = "idempresa", nullable = false)
 	private Empresa proveedorEmpresa;
 	
-	
+	//Fields
+	@Column(length = 20, nullable = false)
+	private String ruc;
 	@Column(length = 180, nullable = true)
-	private String nombre;
+	private String nombre;	
+	@Column(length = 180, nullable = true)
+	private String direccion;
+	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
-	
 	@Column(name = "fechacreacion", nullable = false)
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
@@ -78,5 +82,17 @@ public class Proveedor {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public String getRuc() {
+		return ruc;
+	}
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
+	public String getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}	
 }

@@ -30,4 +30,12 @@ public class Formatos {
 	public static String BigBecimalToString(BigDecimal monto){
 		return NumberFormat.getCurrencyInstance(Locale.US).format(monto);
 	}
+	
+	public static String bytesToString(long bytes) {
+		int unit = 1024;
+	    if (bytes < unit) return bytes + " B";
+	    int exp = (int) (Math.log(bytes) / Math.log(unit));
+	    String pre = ("KMGTPE").charAt(exp-1) + "";
+	    return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+	}
 }

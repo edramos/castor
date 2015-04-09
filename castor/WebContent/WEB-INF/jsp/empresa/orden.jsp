@@ -99,7 +99,7 @@
 <script src="assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
 <script src="assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
 <script src="assets/admin/pages/scripts/form-fileupload.js"></script>
-<script src="assets/global/plugins/jquery.form.js" type="text/javascript"></script>
+<script src="assets/global/plugins/malsup/jquery.form.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -107,49 +107,14 @@
 <script src="assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script>
 <script src="assets/global/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
 <script src="assets/global/plugins/plupload/js/plupload.full.min.js" type="text/javascript"></script>
-<!-- BEGIN:File Upload Plugin JS files-->
-<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-<script src="assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
-<!-- The Templates plugin is included to render the upload/download listings -->
-<script src="assets/global/plugins/jquery-file-upload/js/vendor/tmpl.min.js"></script>
-<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="assets/global/plugins/jquery-file-upload/js/vendor/load-image.min.js"></script>
-<!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="assets/global/plugins/jquery-file-upload/js/vendor/canvas-to-blob.min.js"></script>
-<!-- blueimp Gallery script -->
-<script src="assets/global/plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js"></script>
-<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="assets/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script>
-<!-- The basic File Upload plugin -->
-<script src="assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
-<!-- The File Upload processing plugin -->
-<script src="assets/global/plugins/jquery-file-upload/js/jquery.fileupload-process.js"></script>
-<!-- The File Upload image preview & resize plugin -->
-<script src="assets/global/plugins/jquery-file-upload/js/jquery.fileupload-image.js"></script>
-<!-- The File Upload audio preview plugin -->
-<script src="assets/global/plugins/jquery-file-upload/js/jquery.fileupload-audio.js"></script>
-<!-- The File Upload video preview plugin -->
-<script src="assets/global/plugins/jquery-file-upload/js/jquery.fileupload-video.js"></script>
-<!-- The File Upload validation plugin -->
-<script src="assets/global/plugins/jquery-file-upload/js/jquery.fileupload-validate.js"></script>
-<!-- The File Upload user interface plugin -->
-<script src="assets/global/plugins/jquery-file-upload/js/jquery.fileupload-ui.js"></script>
-<!-- The main application script -->
-<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
-<!--[if (gte IE 8)&(lt IE 10)]>
-    <script src="assets/global/plugins/jquery-file-upload/js/cors/jquery.xdr-transport.js"></script>
-    <![endif]-->
-<!-- END:File Upload Plugin JS files-->
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() { 
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
+	$(".fancybox-button").fancybox(); 
 });
-</script>
-<script>
-
 </script>
 <script>
 var oferta = 0;
@@ -165,8 +130,49 @@ $(document).ready(function(){
 	listarSubcontratos(idOrden);	
 	listarCuentasPagoProveedor(idOrden);
 	listarCuentasCobrar(idOrden);
+	cargarArchivos(idOrden);
+	
+	$('#hdnIdEntidad').val(idOrden);
+	$('#hdnTipoEntidad').val('Orden');
+	
+	/* $('#frmArchivos').ajaxForm(function(){ 
+		cargarArchivos(idOrden);
+    }); */
+    var bar = $('.bar');
+    var percent = $('.percent');
+    var status = $('#status');
+    
+	$('#frmArchivos').ajaxForm({
+		beforeSend: function() {
+            status.empty();
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+            $('#divProgress').attr('class', 'progress progress-striped active');
+        },
+        uploadProgress: function(event, position, total, percentComplete) {
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        complete: function(xhr) {
+        	$('#divProgress').attr('class', 'progress progress-striped');
+            cargarArchivos(idOrden);
+        }
+	});
 });
 
+function cargarArchivos(idOrdenTemp){
+	$.ajax({
+		url: 'cargarArchivoAjax-' + idOrdenTemp + '-Orden',
+		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(archivos){ 			
+ 			initArchivos(archivos);
+ 		}
+	});
+}
 function extraerInformacionOrden(idOrdenTemp){
 	$.ajax({
  		url: 'ajaxObtenerInformacionOrden-' + idOrdenTemp,
