@@ -563,7 +563,7 @@ function grabarProyecto(){
 		}
 		else{*/	
 			var montoParcial_TempC = Number(arreglo_MontoParcialC[x].value.replace(/[^0-9\.]+/g,""));
-			alert('arreglo_TipoPagoC[x].value: ' + arreglo_TipoPagoC[x].value);
+			//alert('arreglo_TipoPagoC[x].value: ' + arreglo_TipoPagoC[x].value);
 			cobros.push(montoParcial_TempC);
 			cobros.push(arreglo_TipoPagoC[x].value);
 			cobros.push(arreglo_EstadoCobroC[x].value);

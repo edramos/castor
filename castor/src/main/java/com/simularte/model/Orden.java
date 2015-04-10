@@ -30,8 +30,6 @@ public class Orden {
 	private Empresa ordenEmpresa;
 	@OneToMany(mappedBy = "cuentaOrden")
 	private Collection<Cuenta> cuentasOrd;
-	@OneToMany(mappedBy = "facturaOrden")
-	private Collection<Factura> ordenFactura;
 	
 	//Fields
 	@Column(length = 30, nullable = false)
@@ -220,11 +218,5 @@ public class Orden {
 	}
 	public void setCuentasOrd(Collection<Cuenta> cuentasOrd) {
 		this.cuentasOrd = cuentasOrd;
-	}
-	public Collection<Factura> getOrdenFactura() {
-		return ordenFactura;
-	}
-	public void setOrdenFactura(Collection<Factura> ordenFactura) {
-		this.ordenFactura = ordenFactura;
 	}
 }

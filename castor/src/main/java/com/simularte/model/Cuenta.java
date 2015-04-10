@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Cuenta {
@@ -22,6 +23,8 @@ public class Cuenta {
 	private Orden cuentaOrden;
 	@ManyToOne @JoinColumn(name = "idsubcontrato", nullable = true)
 	private Subcontrato cuentaSubcontrato;
+	@OneToOne(mappedBy = "facturaCuenta")
+	private Factura cuentaFactura; 
 
 	// Fields
 	@Column(name = "tipo", length = 30, nullable = true)
@@ -52,18 +55,6 @@ public class Cuenta {
 	
 	
 	
-	public String getEstadoTrabajo() {
-		return estadoTrabajo;
-	}
-	public void setEstadoTrabajo(String estadoTrabajo) {
-		this.estadoTrabajo = estadoTrabajo;
-	}
-	public double getAvance() {
-		return avance;
-	}
-	public void setAvance(double avance) {
-		this.avance = avance;
-	}
 	public Integer getIdCuenta() {
 		return idCuenta;
 	}
@@ -81,6 +72,12 @@ public class Cuenta {
 	}
 	public void setCuentaSubcontrato(Subcontrato cuentaSubcontrato) {
 		this.cuentaSubcontrato = cuentaSubcontrato;
+	}
+	public Factura getCuentaFactura() {
+		return cuentaFactura;
+	}
+	public void setCuentaFactura(Factura cuentaFactura) {
+		this.cuentaFactura = cuentaFactura;
 	}
 	public String getTipo() {
 		return tipo;
@@ -124,6 +121,18 @@ public class Cuenta {
 	public void setPagador(Integer pagador) {
 		this.pagador = pagador;
 	}
+	public String getEstadoTrabajo() {
+		return estadoTrabajo;
+	}
+	public void setEstadoTrabajo(String estadoTrabajo) {
+		this.estadoTrabajo = estadoTrabajo;
+	}
+	public double getAvance() {
+		return avance;
+	}
+	public void setAvance(double avance) {
+		this.avance = avance;
+	}
 	public Integer getCreadoPor() {
 		return creadoPor;
 	}
@@ -142,5 +151,4 @@ public class Cuenta {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-
 }

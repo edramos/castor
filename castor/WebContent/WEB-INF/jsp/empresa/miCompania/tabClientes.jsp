@@ -7,7 +7,8 @@ function crearCliente(){
  		dataType: 'json',
  		data: $('#frmCrearCliente').serialize(),
  		success: function(resultado){
- 			$('#txtNombre').val('');
+ 			//$('#txtNombre').val('');
+ 			borrarDatos();
  			listarClientes(); 			
  		}
  	});	
@@ -18,7 +19,9 @@ function editarCliente(idCliente){
 	$('#clienteInit').hide();
 	$('#clienteModificar').show();
 	$('#txtIdClienteE').val(idCliente);
-	$('#txtNombreE').val($('#spnNombre_'+idCliente).text());
+	$('#txtNombreE').val($('#tdNombreCliente_'+idCliente).text());
+	$('#txtRucClienteE').val($('#tdRucCliente_'+idCliente).text());
+	$('#txtDireccionClienteE').val($('#tdDireccionCliente_'+idCliente).text());
 }
 function modificarCliente(){
 	$.ajax({
@@ -72,20 +75,9 @@ function listarClientes(){
   		}
  	});
 }
-
 </script>
 
-<script id="templateClientes" type="text/x-handlebars-template">
-	<tr>
-		<td>
-			<span id="spnNombre_{{idCliente}}" class="font-blue-hoki">{{nombre}}</span>
-		</td>
-		<td>
-			<a id="btnEditarCliente_{{idCliente}}" class="btn btn-default btn-sm eventBtn" onclick="editarCliente({{idCliente}});" ><i class="fa fa-pencil"></i> Editar </a>
-			<a id="btnBorrarCliente_{{idCliente}}" class="btn btn-default btn-sm eventBtn" onclick="eliminarCliente({{idCliente}});" ><i class="fa fa-trash"></i> Borrar </a>
-		</td>
-	</tr>
-</script>
+
 <div id="clienteInit" class="portlet box blue-hoki">
 	<div class="portlet-title">
 		<div class="caption">Clientes</div>
@@ -96,11 +88,17 @@ function listarClientes(){
 	</div>
 	
 	<div class="portlet-body">
-	
-		<table class="table table-scrollable table-hover">
-			<tbody id="viewClientesHandlerbars"></tbody>
-		</table>
-
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+			<thead>
+			<tr class="heading">
+				<th>RUC</th><th>Nombre</th><th>Direccion</th><th>Acciones</th>
+			</tr>
+			</thead>
+			<tbody id="viewClientesHandlerbars">
+			</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 
@@ -114,19 +112,26 @@ function listarClientes(){
 			<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 		</div>
 	</div>
-	<div class="portlet-body">
-		<div class="form-horizontal">
-			<div class="form-body">
-			
+	
+	<div class="portlet-body">	
+		<div class="form-body">
 			<form:form id="frmCrearCliente" commandName="cliente">
-				<div class="input-group col-md-6">
-					<input type="text" class="form-control" id="txtNombre" name="nombre" placeholder="Nombre Cliente">
+			<div class="row">
+				<div class="col-md-2">
+					<input type="text" class="form-control" id="txtRucCliente" name="ruc" placeholder="RUC">
 				</div>
-			</form:form>
-			
+				<div class="col-md-4">
+					<input type="text" class="form-control" id="txtNombreCliente" name="nombre" placeholder="Nombre">
+				</div>
+				<div class="col-md-6">
+					<input type="text" class="form-control" id="txtDireccionCliente" name="direccion" placeholder="Direccion">
+				</div>
 			</div>
+			</form:form>
 		</div>
 	</div>
+	
+	
 </div>
 
 <div id="clienteModificar" class="portlet box blue-hoki" style="display: none;">
@@ -139,17 +144,37 @@ function listarClientes(){
 		</div>
 	</div>
 	<div class="portlet-body">
-		<div class="form-horizontal">
-			<div class="form-body">
-			
+		<div class="form-body">
 			<form:form id="frmModificarCliente" commandName="cliente">
-				<div class="input-group col-md-6">
+			<div class="row">
+				<div class="col-md-2">
+					<input type="text" class="form-control" id="txtRucClienteE" name="ruc" placeholder="RUC">
+				</div>
+				<div class="col-md-4">
 					<input type="hidden" class="form-control" id="txtIdClienteE" name="idCliente">
 					<input type="text" class="form-control" id="txtNombreE" name="nombre" placeholder="Nombre Cliente">
 				</div>
-			</form:form>
-			
+				<div class="col-md-6">
+					<input type="text" class="form-control" id="txtDireccionClienteE" name="direccion" placeholder="Direccion">
+				</div>
 			</div>
+			</form:form>
 		</div>
 	</div>
 </div>
+<script>
+function borrarDatos(){
+	$('.form-control').val('');
+}
+</script>
+<script id="templateClientes" type="text/x-handlebars-template">
+<tr>
+	<td id="tdRucCliente_{{idCliente}}">{{ruc}}</td>	
+	<td id="tdNombreCliente_{{idCliente}}">{{nombre}}</td>
+	<td id="tdDireccionCliente_{{idCliente}}">{{direccion}}</td>
+	<td>
+		<a id="btnEditarCliente_{{idCliente}}" class="btn btn-default btn-sm eventBtn" onclick="editarCliente({{idCliente}});" ><i class="fa fa-pencil"></i> Editar </a>
+		<a id="btnBorrarCliente_{{idCliente}}" class="btn btn-default btn-sm eventBtn" onclick="eliminarCliente({{idCliente}});" ><i class="fa fa-trash"></i> Borrar </a>
+	</td>
+</tr>
+</script>

@@ -26,21 +26,20 @@ public class ProveedorServiceImpl implements ProveedorService {
 	@Transactional
 	public boolean crearProveedor(Proveedor cliente, HttpServletRequest req) {
 		boolean result = false;
+		
 		try{
-			HttpSession session = req.getSession();
-			//Empresa
-			Empresa empresa = em.find(Empresa.class, (Integer)session.getAttribute("idEmpresa"));
-			//empresa.setIdEmpresa((Integer)session.getAttribute("idEmpresa"));
-			//Proveedor
+			Empresa empresa = em.find(Empresa.class, (Integer)req.getSession().getAttribute("idEmpresa"));
+			
 			cliente.setProveedorEmpresa(empresa);
 			cliente.setFechaCreacion(Dates.fechaCreacion());
 			cliente.setEstado("enabled");
-			cliente.setCreadoPor((Integer)session.getAttribute("idUser"));
+			cliente.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
+			
 			em.persist(cliente);
+			
 			result = true;
 		}catch(Exception e){
 			e.printStackTrace();
-			result = false;
 		}
 		return result;
 	}
@@ -50,15 +49,16 @@ public class ProveedorServiceImpl implements ProveedorService {
 		boolean result = false;
 		
 		try{
-			//Empresa
 			Proveedor proveedorX = em.find(Proveedor.class, proveedor.getIdProveedor());
 			Proveedor proveedorY = em.merge(proveedorX);
-			//Proveedor
+			
 			proveedorY.setNombre(proveedor.getNombre());
+			proveedorY.setRuc(proveedor.getRuc());
+			proveedorY.setDireccion(proveedor.getDireccion());
+			
 			result = true;
 		}catch(Exception e){
 			e.printStackTrace();
-			result = false;
 		}
 		return result;
 	}
@@ -103,6 +103,9 @@ public class ProveedorServiceImpl implements ProveedorService {
 				cb.setIdProveedor(c.getIdProveedor());
 				cb.setIdEmpresa(c.getProveedorEmpresa().getIdEmpresa());
 				cb.setNombre(c.getNombre());
+				cb.setRuc(c.getRuc());
+				cb.setDireccion(c.getDireccion());
+				
 				cb.setFechaCreacion(c.getFechaCreacion());
 				cb.setEstado(c.getEstado());
 				cb.setCreadoPor(c.getCreadoPor());

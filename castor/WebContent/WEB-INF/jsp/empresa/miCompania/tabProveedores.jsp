@@ -1,67 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <script>
-/* $(document).ready(function(){
-	$("#frmCrearProveedor").validate({
-		rules: {
-			nombre: {
-				required: true,
-			}                                   
-		},
-		messages: {
-			nombre: "*"
-		},
-		submitHandler: function(form){
-			crearProveedor();
-		}
-	});
-	
-	$("#frmModificarProveedor").validate({
-		rules: {
-			nombre: {
-				required: true,
-			}                                   
-		},
-		messages: {
-			nombre: "*"
-		},
-		submitHandler: function(form){
-			modificarProveedor();
-		}
-	});
-});	 */
-/* $(document).ready(function(e) {
-	
-	$(document).on('click','.eventBtn', function(e){
-		switch(this.id){
-		//PROVEEDOR
-		case "btnIrCrearProveedor":
-			$('#proveedorInit').hide();
-			$('#proveedorCrear').show();
-			break;
-		case "btnCancelarProveedor":
-			$('#proveedorCrear').hide();
-			$('#proveedorModificar').hide();
-			$('#proveedorInit').show();
-			break;
-		case "btnCrearProveedor":
-			$('#frmCrearProveedor').submit();
-			//if($('#txtNombre').val() != ''){
-				//crearProveedor();				
-			//}
-			break;
-		case "btnModificarProveedor":
-			$('#frmCrearProveedor').submit();
-			//if($('#txtNombreProvE').val() != ''){
-				//modificarProveedor();				
-			//}
-			break;		
-		}
-		
-	});
-	
-	listarProveedores();
-}); */
-
 function crearProveedor(){
 	$.ajax({
  		url: 'ajaxCrearProveedor',
@@ -69,18 +7,19 @@ function crearProveedor(){
  		dataType: 'json',
  		data: $('#frmCrearProveedor').serialize(),
  		success: function(resultado){
- 			$('#txtNombreProv').val('');
+ 			//$('#txtNombreProv').val('');
+ 			borrarDatos();
  			listarProveedores(); 			
  		}
  	});	
 }
-
-//Open View Form Proveedor
 function editarProveedor(idProveedor){
 	$('#proveedorInit').hide();
 	$('#proveedorModificar').show();
 	$('#txtIdProveedorE').val(idProveedor);
-	$('#txtNombreProvE').val($('#spnNombreProv_'+idProveedor).text());
+	$('#txtRucProvE').val($('#tdRucProv_'+idProveedor).text());
+	$('#txtNombreProvE').val($('#tdNombreProv_'+idProveedor).text());
+	$('#txtDireccionProvE').val($('#tdDireccionProv_'+idProveedor).text());
 }
 function modificarProveedor(){
 	$.ajax({
@@ -94,7 +33,6 @@ function modificarProveedor(){
  		}
  	});	
 }
-
 function eliminarProveedor(idProveedor){
 	if(confirm("Esta seguro que desea eliminar este proveedor?")){
 		$.ajax({
@@ -109,7 +47,6 @@ function eliminarProveedor(idProveedor){
 	 	});
 	}		
 }
-
 function listarProveedores(){
 	$('#proveedorCrear').hide();
 	$('#proveedorModificar').hide();
@@ -137,17 +74,7 @@ function listarProveedores(){
 
 </script>
 
-<script id="templateProveedores" type="text/x-handlebars-template">
-	<tr>
-		<td>
-			<span id="spnNombreProv_{{idProveedor}}" class="font-blue-hoki">{{nombre}}</span>
-		</td>
-		<td>
-			<a id="btnEditarProveedor_{{idProveedor}}" class="btn btn-default btn-sm eventBtn" onclick="editarProveedor({{idProveedor}});" ><i class="fa fa-pencil"></i> Editar </a>
-			<a id="btnBorrarProveedor_{{idProveedor}}" class="btn btn-default btn-sm eventBtn" onclick="eliminarProveedor({{idProveedor}});" ><i class="fa fa-trash"></i> Borrar </a>
-		</td>
-	</tr>
-</script>
+
 <div id="proveedorInit" class="portlet box blue-hoki">
 	<div class="portlet-title">
 		<div class="caption">Proveedores</div>
@@ -156,13 +83,18 @@ function listarProveedores(){
 			<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 		</div>
 	</div>
-	
 	<div class="portlet-body">
-	
-		<table class="table table-scrollable table-hover">
-			<tbody id="viewProveedoresHandlerbars"></tbody>
-		</table>
-
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+			<thead>
+			<tr class="heading">
+				<th>RUC</th><th>Nombre</th><th>Direccion</th><th>Acciones</th>
+			</tr>
+			</thead>
+			<tbody id="viewProveedoresHandlerbars">
+			</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 
@@ -177,16 +109,20 @@ function listarProveedores(){
 		</div>
 	</div>
 	<div class="portlet-body">
-		<div class="form-horizontal">
-			<div class="form-body">
-			
+		<div class="form-body">
 			<form:form id="frmCrearProveedor" commandName="proveedor">
-				<div class="input-group col-md-6">
+			<div class="row">
+				<div class="col-md-2">
+					<input type="text" class="form-control" id="txtRucProv" name="ruc" placeholder="RUC">
+				</div>
+				<div class="col-md-4">
 					<input type="text" class="form-control" id="txtNombreProv" name="nombre" placeholder="Nombre Proveedor">
 				</div>
-			</form:form>
-			
+				<div class="col-md-6">
+					<input type="text" class="form-control" id="txtDireccionProv" name="direccion" placeholder="Direccion Provedor">
+				</div>
 			</div>
+			</form:form>
 		</div>
 	</div>
 </div>
@@ -201,17 +137,37 @@ function listarProveedores(){
 		</div>
 	</div>
 	<div class="portlet-body">
-		<div class="form-horizontal">
-			<div class="form-body">
-			
+		<div class="form-body">
 			<form:form id="frmModificarProveedor" commandName="proveedor">
-				<div class="input-group col-md-6">
+			<div class="row">
+				<div class="col-md-2">
+					<input type="text" class="form-control" id="txtRucProvE" name="ruc" placeholder="RUC">
+				</div>
+				<div class="col-md-4">
 					<input type="hidden" class="form-control" id="txtIdProveedorE" name="idProveedor">
 					<input type="text" class="form-control" id="txtNombreProvE" name="nombre" placeholder="Nombre Proveedor">
 				</div>
-			</form:form>
-			
+				<div class="col-md-6">
+					<input type="text" class="form-control" id="txtDireccionProvE" name="direccion" placeholder="Direccion Provedor">
+				</div>
 			</div>
+			</form:form>
 		</div>
 	</div>
 </div>
+<script>
+function borrarDatos(){
+	$('.form-control').val('');
+}
+</script>
+<script id="templateProveedores" type="text/x-handlebars-template">
+<tr>
+	<td id="tdRucProv_{{idProveedor}}">{{ruc}}</td>	
+	<td id="tdNombreProv_{{idProveedor}}">{{nombre}}</td>
+	<td id="tdDireccionProv_{{idProveedor}}">{{direccion}}</td>
+	<td>
+		<a id="btnEditarCliente_{{idProveedor}}" class="btn btn-default btn-sm eventBtn" onclick="editarProveedor({{idProveedor}});" ><i class="fa fa-pencil"></i> Editar </a>
+		<a id="btnBorrarCliente_{{idProveedor}}" class="btn btn-default btn-sm eventBtn" onclick="eliminarProveedor({{idProveedor}});" ><i class="fa fa-trash"></i> Borrar </a>
+	</td>
+</tr>
+</script>

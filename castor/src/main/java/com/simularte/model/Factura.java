@@ -3,16 +3,6 @@ package com.simularte.model;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-
-
-
-
-
-
-
-
-
-
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -30,25 +20,38 @@ public class Factura {
 	@Id @GeneratedValue @Column(name = "idfactura")
 	private Integer idFactura;	
 	
-	//References	
-	@OneToOne(cascade = CascadeType.ALL) @JoinColumn(name = "idOrden")
-	private Orden facturaOrden;
+	//References
+	@OneToOne(cascade = CascadeType.ALL)@JoinColumn(name = "idcuenta")
+	private Cuenta facturaCuenta;
 	@OneToMany(mappedBy = "detalleFacturaFactura")
 	private Collection<DetalleFactura> facturaDetalleFactura;
 	
 	//Fields
-	@Column(name = "fechaemision", nullable = false)
-	private Date fechaEmision;
-	@Column(name = "fechacancelacion", nullable = true)
-	private Date fechaCancelacion;
 	@Column(length = 30, nullable = false)	//Puede ser factura emitida o recibida
 	private String tipo;
-	@Column(nullable = false)
+	@Column(name = "cobrarfactura", nullable = false)
+	private BigDecimal cobrarFactura;
+	@Column(name = "subtotal", nullable = false)
 	private BigDecimal subTotal;
-	@Column(nullable = false)
-	private BigDecimal igv;
+	@Column(name = "conigv", nullable = false)
+	private BigDecimal conIgv;
 	@Column(nullable = false)
 	private BigDecimal total;
+	@Column(length = 30)
+	private String codigo;
+	@Column(name = "fechaemision")
+	private Date fechaEmision;
+	@Column(name = "fechacancelacion")
+	private Date fechaCancelacion;
+	//La Detraccion quizas se tenga que pasar a una Entidad propia
+	@Column(nullable = false)
+	private double detraccion;
+	@Column(name = "montodetraccion", nullable = false)
+	private BigDecimal montoDetraccion;
+	@Column(name = "estadodetraccion", length = 30, nullable = false)	
+	private String estadoDetraccion;
+	@Column(name = "fechacancelaciondetraccion")
+	private Date fechaCancelacionDetraccion;
 	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;	
@@ -64,6 +67,79 @@ public class Factura {
 	}
 	public void setIdFactura(Integer idFactura) {
 		this.idFactura = idFactura;
+	}
+	public Cuenta getFacturaCuenta() {
+		return facturaCuenta;
+	}
+	public void setFacturaCuenta(Cuenta facturaCuenta) {
+		this.facturaCuenta = facturaCuenta;
+	}
+	public Collection<DetalleFactura> getFacturaDetalleFactura() {
+		return facturaDetalleFactura;
+	}
+	public void setFacturaDetalleFactura(
+			Collection<DetalleFactura> facturaDetalleFactura) {
+		this.facturaDetalleFactura = facturaDetalleFactura;
+	}
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	public BigDecimal getSubTotal() {
+		return subTotal;
+	}
+	public void setSubTotal(BigDecimal subTotal) {
+		this.subTotal = subTotal;
+	}
+	public BigDecimal getTotal() {
+		return total;
+	}
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	public Date getFechaEmision() {
+		return fechaEmision;
+	}
+	public void setFechaEmision(Date fechaEmision) {
+		this.fechaEmision = fechaEmision;
+	}
+	public Date getFechaCancelacion() {
+		return fechaCancelacion;
+	}
+	public void setFechaCancelacion(Date fechaCancelacion) {
+		this.fechaCancelacion = fechaCancelacion;
+	}
+	public double getDetraccion() {
+		return detraccion;
+	}
+	public void setDetraccion(double detraccion) {
+		this.detraccion = detraccion;
+	}
+	public BigDecimal getMontoDetraccion() {
+		return montoDetraccion;
+	}
+	public void setMontoDetraccion(BigDecimal montoDetraccion) {
+		this.montoDetraccion = montoDetraccion;
+	}
+	public String getEstadoDetraccion() {
+		return estadoDetraccion;
+	}
+	public void setEstadoDetraccion(String estadoDetraccion) {
+		this.estadoDetraccion = estadoDetraccion;
+	}
+	public Date getFechaCancelacionDetraccion() {
+		return fechaCancelacionDetraccion;
+	}
+	public void setFechaCancelacionDetraccion(Date fechaCancelacionDetraccion) {
+		this.fechaCancelacionDetraccion = fechaCancelacionDetraccion;
 	}
 	public Integer getCreadoPor() {
 		return creadoPor;
@@ -83,53 +159,16 @@ public class Factura {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public Orden getFacturaOrden() {
-		return facturaOrden;
+	public BigDecimal getCobrarFactura() {
+		return cobrarFactura;
 	}
-	public void setFacturaOrden(Orden facturaOrden) {
-		this.facturaOrden = facturaOrden;
+	public void setCobrarFactura(BigDecimal cobrarFactura) {
+		this.cobrarFactura = cobrarFactura;
 	}
-	public Collection<DetalleFactura> getFacturaDetalleFactura() {
-		return facturaDetalleFactura;
+	public BigDecimal getConIgv() {
+		return conIgv;
 	}
-	public void setFacturaDetalleFactura(
-			Collection<DetalleFactura> facturaDetalleFactura) {
-		this.facturaDetalleFactura = facturaDetalleFactura;
-	}
-	public Date getFechaEmision() {
-		return fechaEmision;
-	}
-	public void setFechaEmision(Date fechaEmision) {
-		this.fechaEmision = fechaEmision;
-	}
-	public Date getFechaCancelacion() {
-		return fechaCancelacion;
-	}
-	public void setFechaCancelacion(Date fechaCancelacion) {
-		this.fechaCancelacion = fechaCancelacion;
-	}
-	public String getTipo() {
-		return tipo;
-	}
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-	public BigDecimal getSubTotal() {
-		return subTotal;
-	}
-	public void setSubTotal(BigDecimal subTotal) {
-		this.subTotal = subTotal;
-	}
-	public BigDecimal getIgv() {
-		return igv;
-	}
-	public void setIgv(BigDecimal igv) {
-		this.igv = igv;
-	}
-	public BigDecimal getTotal() {
-		return total;
-	}
-	public void setTotal(BigDecimal total) {
-		this.total = total;
+	public void setConIgv(BigDecimal conIgv) {
+		this.conIgv = conIgv;
 	}
 }

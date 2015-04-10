@@ -37,6 +37,7 @@ public class ClientController {
 	@RequestMapping(value = "ajaxModificarCliente", method = RequestMethod.POST)
 	@ResponseBody
 	public List<ClienteBean> ajaxModificarCliente(@ModelAttribute Cliente cliente, HttpServletRequest req){
+		//System.out.println("ruc: " + cliente.getRuc() + ", dire: " + cliente.getDireccion());
 		List<ClienteBean> clientes = new ArrayList<ClienteBean>();		
 		if(clienteservice.modificarCliente(cliente, req)){
 			clientes = clienteservice.listarClientes(req);

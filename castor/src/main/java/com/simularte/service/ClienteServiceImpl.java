@@ -26,21 +26,20 @@ public class ClienteServiceImpl implements ClienteService {
 	@Transactional
 	public boolean crearCliente(Cliente cliente, HttpServletRequest req) {
 		boolean result = false;
+		
 		try{
-			HttpSession session = req.getSession();
-			//Empresa
-			Empresa empresa = em.find(Empresa.class, (Integer)session.getAttribute("idEmpresa"));
-			//empresa.setIdEmpresa((Integer)session.getAttribute("idEmpresa"));
-			//Cliente
+			Empresa empresa = em.find(Empresa.class, (Integer)req.getSession().getAttribute("idEmpresa"));
+			
 			cliente.setClienteEmpresa(empresa);
 			cliente.setFechaCreacion(Dates.fechaCreacion());
 			cliente.setEstado("enabled");
-			cliente.setCreadoPor((Integer)session.getAttribute("idUser"));
+			cliente.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
+			
 			em.persist(cliente);
+			
 			result = true;
 		}catch(Exception e){
 			e.printStackTrace();
-			result = false;
 		}
 		return result;
 	}
@@ -48,17 +47,18 @@ public class ClienteServiceImpl implements ClienteService {
 	@Transactional
 	public boolean modificarCliente(Cliente cliente, HttpServletRequest req) {
 		boolean result = false;
+		
 		try{
-			//HttpSession session = req.getSession();
-			//Empresa
 			Cliente clienteX = em.find(Cliente.class, cliente.getIdCliente());
 			Cliente clienteY = em.merge(clienteX);
-			//Cliente
+			
+			clienteY.setRuc(cliente.getRuc());
 			clienteY.setNombre(cliente.getNombre());
+			clienteY.setDireccion(cliente.getDireccion());
+			
 			result = true;
 		}catch(Exception e){
 			e.printStackTrace();
-			result = false;
 		}
 		return result;
 	}
@@ -104,6 +104,9 @@ public class ClienteServiceImpl implements ClienteService {
 				cb.setIdCliente(c.getIdCliente());
 				cb.setIdEmpresa(c.getClienteEmpresa().getIdEmpresa());
 				cb.setNombre(c.getNombre());
+				cb.setRuc(c.getRuc());
+				cb.setDireccion(c.getDireccion());
+				
 				cb.setFechaCreacion(c.getFechaCreacion());
 				cb.setEstado(c.getEstado());
 				cb.setCreadoPor(c.getCreadoPor());

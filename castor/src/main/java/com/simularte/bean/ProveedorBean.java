@@ -7,10 +7,15 @@ public class ProveedorBean {
 	private Integer idProveedor;
 	private Integer idEmpresa;
 	private String nombre;
+	private String ruc;
+	private String direccion;
+	
 	private Timestamp fechaCreacion;
 	private String estado;
 	private Integer creadoPor;
 	private String nombreCreadoPor;
+	
+	
 	
 	public Integer getIdProveedor() {
 		return idProveedor;
@@ -53,6 +58,18 @@ public class ProveedorBean {
 	}
 	public void setNombreCreadoPor(String nombreCreadoPor) {
 		this.nombreCreadoPor = nombreCreadoPor;
+	}
+	public String getRuc() {
+		return ruc;
+	}
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
+	public String getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 	
 	

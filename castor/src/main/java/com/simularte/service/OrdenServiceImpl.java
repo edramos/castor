@@ -22,6 +22,7 @@ import com.simularte.bean.OrdenBean;
 import com.simularte.model.Cliente;
 import com.simularte.model.Cuenta;
 import com.simularte.model.Empresa;
+import com.simularte.model.Factura;
 import com.simularte.model.Orden;
 import com.simularte.model.Proveedor;
 import com.simularte.model.Subcontrato;
@@ -33,6 +34,8 @@ public class OrdenServiceImpl implements OrdenService {
 
 	@PersistenceContext 
 	EntityManager em;
+	
+	private static final BigDecimal IGV = new BigDecimal(0.18);
 	
 	@Transactional
 	public int crearOrden(OrdenBean ordenBean, int idCliente, String[] cobrosCliente, String[] subCont, String[] pagProv, HttpServletRequest req) {
@@ -74,10 +77,6 @@ public class OrdenServiceImpl implements OrdenService {
 			
 			Orden ordenY = em.merge(orden);
 			ordenY.setCodigo("OT-" + orden.getTipoOrden() + "-" + String.format("%05d", orden.getIdOrden()));
-			
-			for(int z = 0; z < cobrosCliente.length; z++){
-				System.out.println("z = " + z + ", " + cobrosCliente[z]);
-			}
 		
 			ArrayList<Cuenta> cobros = new ArrayList<Cuenta>();
 			int restoCobros;
@@ -121,7 +120,35 @@ public class OrdenServiceImpl implements OrdenService {
 				cobros.get(x).setCreadoPor((Integer)session.getAttribute("idUser"));
 				cobros.get(x).setFechaCreacion(Dates.fechaCreacion());
 				cobros.get(x).setEstado("enabled");
-				em.persist(cobros.get(x));				
+				em.persist(cobros.get(x));
+				
+				Factura factura = new Factura();
+				
+				factura.setFacturaCuenta(cobros.get(x));
+				factura.setSubTotal(cobros.get(x).getMonto().subtract(cobros.get(x).getMonto().multiply(IGV)));
+				factura.setConIgv(cobros.get(x).getMonto());
+				
+				if(orden.getTipoTrabajo().equals("Obra")){
+					factura.setDetraccion(4);
+				}else{
+					factura.setDetraccion(10);
+				}
+				
+				factura.setMontoDetraccion(factura.getConIgv().multiply(BigDecimal.valueOf(factura.getDetraccion() * 0.01)));
+				factura.setCobrarFactura(factura.getConIgv().subtract(factura.getMontoDetraccion()));
+				factura.setEstado("Creado");
+				factura.setEstadoDetraccion("Pendiente");
+				
+				factura.setTotal(factura.getConIgv());		//Por ahora porque son facturas emitidas por 1 solo concepto, cuando sean grupales se creara DetalleFactura
+				factura.setTipo("Emitida");
+				factura.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
+				factura.setFechaCreacion(Dates.fechaCreacion());
+				
+				em.persist(factura);
+				
+				Factura facturaY = em.merge(factura);
+				
+				facturaY.setCodigo(String.format("%05d", factura.getIdFactura()));
 			}
 			
 			

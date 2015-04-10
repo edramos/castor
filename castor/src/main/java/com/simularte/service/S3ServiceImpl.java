@@ -111,7 +111,7 @@ public class S3ServiceImpl implements S3Service{
 		List<ArchivoBean> archivos = new ArrayList<ArchivoBean>();
 		System.out.println("idEntidad: " + idEntidad + " tipoEntidad: " + tipoEntidad);
 		Query q1 = em.createNativeQuery("SELECT nombre, url, tamanio, descripcion FROM archivo "
-				+ "WHERE identidad = '" + idEntidad + "' AND tipoentidad = '" + tipoEntidad + "'");
+				+ "WHERE identidad = '" + idEntidad + "' AND tipoentidad = '" + tipoEntidad + "' AND estado = 'enabled'");
 		
 		
 		try{

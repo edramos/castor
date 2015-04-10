@@ -19,17 +19,17 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 			<tr class="heading">
-				<th>N° Factura</th><th>Monto</th><th> + IGV</th><th>Emision</th><th>Cancelacion</th><th>Cobro Factura</th><th>Estado Factura</th><th>Detraccion</th><th>%</th><th>Estado Detraccion</th>
+				<th>N° Factura</th><th>Monto</th><th> + IGV</th><th>Detraccion</th><th>%</th><th>Cobrar</th><th>Estado Factura</th><th>EstadoDetraccion</th>
 			</tr>
 			</thead>
 			<tbody id="viewDatosFactura">
-			<tr>
-				<td>0000001</td><td>$6,000.00</td><td>$7,080.00</td><td>04/04/2015</td><td>04/04/2015</td><td>$6,372.00</td><td>Cancelado</td><td>$708.00</td><td>10%</td><td>Pendiente</td>
-			</tr>
 			</tbody>
 		</table>
 	</div>
 </div>
+<script>
+
+</script>
 <script>
 function initClienteCuentasCobrar(cuentascobrar){
 	var html = '';
@@ -42,14 +42,37 @@ function initClienteCuentasCobrar(cuentascobrar){
 
 	$('#viewCobrosClienteHandlerbars').html(html);	
 }
+function initFacturasCobrar(facturasCobrar){
+	var html = '';
+	
+	$.each(facturasCobrar, function(i, factura){
+		var source = $("#templateFacturasCobrar").html();
+		var template = Handlebars.compile(source);
+		html += template(factura);
+	});
+
+	$('#viewDatosFactura').html(html);	
+}
+</script>
+<script id="templateFacturasCobrar" type="text/x-handlebars-template">
+<tr>
+	<td>{{codigo}}</td>
+	<td>{{subTotal}}</td>
+	<td>{{conIgv}}</td>
+	<td>{{montoDetraccion}}</td>
+	<td>{{detraccion}}</td>
+	<td>{{cobrarFactura}}</td>
+	<td>{{estado}}</td>
+	<td>{{estadoDetraccion}}</td>
+</tr>
 </script>
 <script id="templateCobrosCliente" type="text/x-handlebars-template">
 <tr style="border-bottom: 1px solid #D3D8DE;">
 	<td>{{fechaVencimiento}}</td>
-	<td>$ {{monto}}</td>
+	<td id="tdMonto_{{idCuenta}}">$ {{monto}}</td>
 	<td>{{tipoPago}}</td>
 	<td>{{estadoTrabajo}} {{avance}}</td>
 	<td>Pendiente</td>
-	<td><button type="button" class="btn yellow">Crear Factura</button></td>
+	<td><button id="btnCrearFactura_{{idCuenta}}" type="button" class="eventBtn btn yellow">Crear Factura</button></td>
 </tr>
 </script>

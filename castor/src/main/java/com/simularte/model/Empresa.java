@@ -26,8 +26,6 @@ public class Empresa {
 	private Collection<Proveedor> proveedoresEmp;
 	@OneToMany(mappedBy = "ordenEmpresa")
 	private Collection<Orden> ordenesEmp;
-	@OneToMany(mappedBy = "cajaEmpresa")
-	private Collection<Caja> cajaEmp;
 	@OneToMany(mappedBy = "libroEmpresa")
 	private Collection<Libro> libroEmp;
 	
@@ -55,12 +53,6 @@ public class Empresa {
 	}
 	public void setLibroEmp(Collection<Libro> libroEmp) {
 		this.libroEmp = libroEmp;
-	}
-	public Collection<Caja> getCajaEmp() {
-		return cajaEmp;
-	}
-	public void setCajaEmp(Collection<Caja> cajaEmp) {
-		this.cajaEmp = cajaEmp;
 	}
 	public String getTipo() {
 		return tipo;

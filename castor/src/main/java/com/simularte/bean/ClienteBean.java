@@ -7,10 +7,14 @@ public class ClienteBean {
 	private Integer idCliente;
 	private Integer idEmpresa;
 	private String nombre;
+	private String ruc;
+	private String direccion;
 	private Timestamp fechaCreacion;
 	private String estado;
 	private Integer creadoPor;
 	private String nombreCreadoPor;
+	
+	
 	
 	public Integer getIdCliente() {
 		return idCliente;
@@ -53,6 +57,18 @@ public class ClienteBean {
 	}
 	public void setNombreCreadoPor(String nombreCreadoPor) {
 		this.nombreCreadoPor = nombreCreadoPor;
+	}
+	public String getRuc() {
+		return ruc;
+	}
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
+	public String getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 	
 }
