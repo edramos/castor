@@ -18,8 +18,8 @@
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover">
 			<thead>
-			<tr class="heading">
-				<th>N° Factura</th><th>Monto</th><th> + IGV</th><th>Detraccion</th><th>%</th><th>Cobrar</th><th>Estado Factura</th><th>EstadoDetraccion</th>
+			<tr class="heading"  style="text-align:center;">
+				<th>N° Factura</th><th>Monto</th><th> + IGV</th><th width="10%">Detraccion</th><th>%</th><th>Cobrar</th><th>Estado Factura</th><th>EstadoDetraccion</th>
 			</tr>
 			</thead>
 			<tbody id="viewDatosFactura">
@@ -55,15 +55,15 @@ function initFacturasCobrar(facturasCobrar){
 }
 </script>
 <script id="templateFacturasCobrar" type="text/x-handlebars-template">
-<tr>
-	<td>{{codigo}}</td>
+<tr style="text-align:right;">
+	<td style="text-align:center;">{{codigo}}</td>
 	<td>{{subTotal}}</td>
 	<td>{{conIgv}}</td>
 	<td>{{montoDetraccion}}</td>
-	<td>{{detraccion}}</td>
+	<td>{{detraccion}}%</td>
 	<td>{{cobrarFactura}}</td>
-	<td>{{estado}}</td>
-	<td>{{estadoDetraccion}}</td>
+	<td style="text-align:center;">{{estado}}</td>
+	<td style="text-align:center;">{{estadoDetraccion}}</td>
 </tr>
 </script>
 <script id="templateCobrosCliente" type="text/x-handlebars-template">

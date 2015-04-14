@@ -16,6 +16,7 @@ import com.simularte.bean.FacturaBean;
 import com.simularte.model.Cuenta;
 import com.simularte.model.Factura;
 import com.simularte.util.Dates;
+import com.simularte.util.Formatos;
 
 @Service
 public class FacturaServiceImpl implements FacturaService{
@@ -67,16 +68,16 @@ public class FacturaServiceImpl implements FacturaService{
 				
 				FacturaBean fb = new FacturaBean();
 				fb.setIdFactura((Integer)obj[0]);
-				fb.setCobrarFactura(obj[1].toString());
+				fb.setCobrarFactura(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[1].toString()))));
 				fb.setCodigo(obj[2].toString());
-				fb.setConIgv(obj[3].toString());
+				fb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[3].toString()))));
 				fb.setDetraccion(obj[4].toString());
 				fb.setEstado(obj[5].toString());
 				fb.setFechaCreacion(obj[6].toString());
-				fb.setMontoDetraccion(obj[7].toString());
-				fb.setSubTotal(obj[8].toString());
+				fb.setMontoDetraccion(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[7].toString()))));
+				fb.setSubTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[8].toString()))));
 				fb.setTipo(obj[9].toString());
-				fb.setTotal(obj[10].toString());
+				fb.setTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[10].toString()))));
 				fb.setIdCuenta((Integer)obj[11]);
 				fb.setEstadoDetraccion(obj[12].toString());
 				
