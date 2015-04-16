@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.simularte.bean.SubcontratoBean;
 import com.simularte.model.Subcontrato;
 import com.simularte.util.Dates;
+import com.simularte.util.Formatos;
 
 @Service
 public class SubcontratoServiceImpl implements SubcontratoService {
@@ -43,11 +44,10 @@ public class SubcontratoServiceImpl implements SubcontratoService {
 				subConB.setIdProveedor(c.getProveedorSubcontrato().getIdProveedor());
 				subConB.setNombreProveedor(c.getProveedorSubcontrato().getNombre());
 				subConB.setMoneda(c.getMoneda());
-				subConB.setMonto(c.getMonto());
-				//subConB.setMonto(NumberFormat.getCurrencyInstance(Locale.US).format(c.getMonto()));
+				subConB.setMonto(Formatos.BigBecimalToString(c.getMonto()));
 				subConB.setTipoTrabajo(c.getTipoTrabajo());
-				subConB.setFechaTerminoObra(Dates.fechaEspaniol(c.getFechaTerminoObra()));
-				subConB.setFechaCreacion(c.getFechaCreacion());
+				subConB.setFechaTerminoObra(Dates.fechaCorta(c.getFechaTerminoObra()));
+				subConB.setFechaCreacion(Dates.fechaHoraEspaniol(c.getFechaCreacion(), ""));
 				subConB.setCreadoPor(c.getCreadoPor());
 				subConB.setEstado(c.getEstado());
 				

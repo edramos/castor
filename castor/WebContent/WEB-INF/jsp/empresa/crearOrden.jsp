@@ -201,10 +201,10 @@
 												</td>
 												<td>
 													<select id="sltTipoCobro_cobro_0_0" class="form-control" name="cobro_tipoPago">
-														<option value="efectivo">Efectivo</option>
-														<option value="deposito">Deposito</option>
-														<option value="cheque">Cheque</option>
-														<option value="transferencia">Transferencia</option>
+														<option value="Efectivo">Efectivo</option>
+														<option value="Deposito">Deposito</option>
+														<option value="Cheque">Cheque</option>
+														<option value="Transferencia">Transferencia</option>
 													</select>
 												</td>
 												<td>
@@ -384,10 +384,10 @@
 													</td>
 													<td>
 														<select id="sltTipoPago_pago_0_0" class="form-control" name="pago_tipoPago">
-															<option value="efectivo">Efectivo</option>
-															<option value="deposito">Deposito</option>
-															<option value="cheque">Cheque</option>
-															<option value="transferencia">Transferencia</option>
+															<option value="Efectivo">Efectivo</option>
+															<option value="Deposito">Deposito</option>
+															<option value="Cheque">Cheque</option>
+															<option value="Transferencia">Transferencia</option>
 														</select>
 													</td>
 													<td>
@@ -1063,10 +1063,10 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 	</td>
 	<td>
 		<select id="sltTipoCobro_cobro_0_{{idFilaCobro}}" class="form-control" name="cobro_tipoPago">
-			<option value="efectivo">Efectivo</option>
-			<option value="deposito">Deposito</option>
-			<option value="cheque">Cheque</option>
-			<option value="transferencia">Transferencia</option>
+			<option value="Efectivo">Efectivo</option>
+			<option value="Deposito">Deposito</option>
+			<option value="Cheque">Cheque</option>
+			<option value="Transferencia">Transferencia</option>
 		</select>
 	</td>
 	<td>
@@ -1108,10 +1108,10 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
  </td>
 <td>
 	<select id="sltTipoPago_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control" name="pago_tipoPago">
-		<option value="efectivo">Efectivo</option>
-		<option value="deposito">Deposito</option>
-		<option value="cheque">Cheque</option>
-		<option value="transferencia">Transferencia</option>
+		<option value="Efectivo">Efectivo</option>
+		<option value="Deposito">Deposito</option>
+		<option value="Cheque">Cheque</option>
+		<option value="Transferencia">Transferencia</option>
 	</select>
 </td>
  <td>
@@ -1184,10 +1184,10 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 			 </td>
 			 <td>
 				<select id="sltTipoPago_pago_{{idFilaProv}}_0" class="form-control" name="pago_tipoPago">
-					<option value="efectivo">Efectivo</option>
-					<option value="deposito">Deposito</option>
-					<option value="cheque">Cheque</option>
-					<option value="transferencia">Transferencia</option>
+					<option value="Efectivo">Efectivo</option>
+					<option value="Deposito">Deposito</option>
+					<option value="Cheque">Cheque</option>
+					<option value="Transferencia">Transferencia</option>
 				</select>
 			</td>
 			 <td>

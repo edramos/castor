@@ -1,11 +1,5 @@
 package com.simularte.bean;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
 public class S3Bean {
 	
 	private String name;

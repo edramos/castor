@@ -45,18 +45,14 @@
 						</li>
 						<li class="">
 							<a aria-expanded="false" href="#tab_1_1_2" data-toggle="tab">
-							<span class="caption-subject font-blue-madison bold uppercase">Subcontratos</span></a>
-						</li>
-						<li class="">
-							<a aria-expanded="false" href="#tab_1_1_3" data-toggle="tab">
 							<span class="caption-subject font-blue-madison bold uppercase">Cobros</span></a>
 						</li>
 						<li class="">
-							<a aria-expanded="false" href="#tab_1_1_4" data-toggle="tab">
+							<a aria-expanded="false" href="#tab_1_1_3" data-toggle="tab">
 							<span class="caption-subject font-blue-madison bold uppercase">Pagos</span></a>
 						</li>
 						<li class="">
-							<a aria-expanded="false" href="#tab_1_1_5" data-toggle="tab">
+							<a aria-expanded="false" href="#tab_1_1_4" data-toggle="tab">
 							<span class="caption-subject font-blue-madison bold uppercase">Archivos</span></a>
 						</li>
 					</ul>
@@ -68,15 +64,12 @@
 						<jsp:include page="orden/tabGeneral.jsp"/>
 					</div>
 					<div class="tab-pane" id="tab_1_1_2">
-						<jsp:include page="orden/tabSubcontratos.jsp"/>
-					</div>
-					<div class="tab-pane" id="tab_1_1_3">
 						<jsp:include page="orden/tabCobros.jsp"/>
 					</div>
-					<div class="tab-pane" id="tab_1_1_4">
-						<jsp:include page="orden/tabPagos.jsp"/>
+					<div class="tab-pane" id="tab_1_1_3">
+						<jsp:include page="orden/tabSubcontratos.jsp"/>
 					</div>
-					<div class="tab-pane" id="tab_1_1_5">
+					<div class="tab-pane" id="tab_1_1_4">
 						<jsp:include page="orden/tabArchivos.jsp"/>
 					</div>
 				</div>
@@ -117,34 +110,6 @@ jQuery(document).ready(function() {
 });
 </script>
 <script>
-/* $(document).on('click','.eventBtn', function(e){
-	var arr = [];
-	var str = this.id;
-	arr = str.split("_");
-	//alert('btn: ' + arr[1]);
-	
-	var monto = 0;
-	var mont = $('#tdMonto_' + arr[1]).text();
-	var montoA = [];
-	montoA = mont.split('$');
-	monto = montoA[1];
-	
-	var igv = monto*0.18;
-	var total = parseFloat(monto*0.18) + parseFloat(monto);
-	var detraccion = total - monto * 0.1;
-	//$('#viewDatosFactura').append('<tr><td>0000001</td><td>$'+ monto +'</td><td>$'+ parseFloat(total) +'</td><td>04/04/2015</td><td>04/04/2015</td><td>$'+ detraccion +'</td>Pendiente<td>Cancelado</td><td>$'+ monto*0.1 +'</td><td>10%</td><td>Pendiente</td></tr>');
-	$.ajax({
-		url: 'crearFacturaAjax-' + arr[1],
-		type: 'post',
- 		dataType: 'json',
- 		data: '',
- 		success: function(archivos){ 			
- 			initArchivos(archivos);
- 		}
-	});
-}); */
-</script>
-<script>
 var oferta = 0;
 var gastosGen = 0;
 var utilBruta = 0;
@@ -163,10 +128,7 @@ $(document).ready(function(){
 	
 	$('#hdnIdEntidad').val(idOrden);
 	$('#hdnTipoEntidad').val('Orden');
-	
-	/* $('#frmArchivos').ajaxForm(function(){ 
-		cargarArchivos(idOrden);
-    }); */
+
     var bar = $('.bar');
     var percent = $('.percent');
     var status = $('#status');

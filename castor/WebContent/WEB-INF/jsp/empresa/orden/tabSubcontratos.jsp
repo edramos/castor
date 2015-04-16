@@ -12,16 +12,19 @@
 </div>
 
 <div id="viewPagos" class="portlet-body" style="margin-top: 20px">
-	<table class="detailGridPane">
-	<thead>
-	<tr style="border-bottom: 1px solid #D3D8DE;">
-		<th>Proveedor</th><th>Monto</th><th>Tipo Pago</th><th>Vencimiento</th><th>Pago Programado</th><th>Pago Real</th><th>Pagador</th><th>Estado</th>
-	</tr>
-	</thead>
-
-	<tbody id="viewPagosHandleBars">
-	</tbody>
-	</table>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+		<thead>
+		<tr class="heading">
+			<th>Proveedor</th><th width="10%">Monto</th><th width="10%">IGV</th><th width="10%">Mon + IGV</th>
+			<th width="15%">Orden de Pago</th><th>Factura</th><th>Pagador</th><th>Estado</th>
+		</tr>
+		</thead>
+	
+		<tbody id="viewPagosHandleBars">
+		</tbody>
+		</table>
+	</div>
 </div>
 
 <script>
@@ -60,8 +63,12 @@ function initSubsCuentasPagar(cuentaspago){
 		html += template(pago);
 			
 	});
-
-	$('#viewPagosHandleBars').html(html);	
+	$('#viewPagosHandleBars').html(html);
+	$('#viewPagosHandleBars').append('<tr style="text-align:right;">'+
+		'<td style="text-align:left;"><b>TOTAL</b></td>'+
+		'<td>'+ cuentaspago[cuentaspago.length - 1].totalMonto +'</td><td>'+ cuentaspago[cuentaspago.length - 1].totalIgv +'</td><td>'+ cuentaspago[cuentaspago.length - 1].totalConIgv +'</td>'+
+		'<td></td><td></td><td></td><td></td>'+
+		'</tr>');
 }
 </script>
 
@@ -69,18 +76,21 @@ function initSubsCuentasPagar(cuentaspago){
 <tr style="border-bottom: 1px solid #D3D8DE;">
 	<td>{{nombreProveedor}}</td>
 	<td>{{tipoTrabajo}}</td>
-	<td>$ {{monto}}</td>
+	<td>{{monto}}</td>
 	<td>{{fechaTerminoObra}}</td>
 	<td>{{estado}}</td><td>Eduardo Ramos</td>
 </tr>
 </script>
 
 <script id="templatePagos" type="text/x-handlebars-template">
-<tr style="border-bottom: 1px solid #D3D8DE;">
-	<td>{{nombreProveedor}}</td>
-	<td>$ {{monto}}</td>
-	<td>{{tipoPago}}</td>
-	<td>{{fechaVencimiento}}</td><td>{{fechaPagoProgramada}}</td><td>{{fechaPagoReal}}</td><td>{{Pagador}}</td>
+<tr style="text-align:right;">
+	<td style="text-align:left;">{{nombreProveedor}}</td>
+	<td>{{monto}}</td>
+	<td>{{igv}}</td>
+	<td>{{conIgv}}</td>
+	<td style="text-align:center;">{{fechaPagoProgramada}}</td>
+	<td style="text-align:center;">Pendiente</td>
+	<td>{{Pagador}}</td>
 	<td><span class="label label-warning">{{estado}}</span></td>
 </tr>
 </script>

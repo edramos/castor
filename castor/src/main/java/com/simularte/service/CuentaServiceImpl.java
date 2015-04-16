@@ -1,5 +1,6 @@
 package com.simularte.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,18 +16,22 @@ import com.simularte.bean.CuentaBean;
 import com.simularte.model.Cuenta;
 import com.simularte.model.Proveedor;
 import com.simularte.util.Dates;
+import com.simularte.util.Formatos;
+import com.simularte.util.Valores;
 
 @Service
 public class CuentaServiceImpl implements CuentaService {
 
 	@PersistenceContext 
-	EntityManager em;
-	
+	EntityManager em;	
 
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<CuentaBean> listarCuentas(String tipo, Integer idOrder, HttpServletRequest req) {
 		List<CuentaBean> lcueBean = new ArrayList<CuentaBean>();
+		double totalConIgv = 0;
+		double totalMonto = 0;
+		double totalIgv = 0;
 		
 		try{
 			Query query;
@@ -42,44 +47,58 @@ public class CuentaServiceImpl implements CuentaService {
 			query = em.createQuery(Squery);
 			query.setParameter("idOrden", idOrder);
 			query.setParameter("tipo", tipo);
-			
 
 			List<Cuenta> Cuentas = query.getResultList();
+			
 			for(int i = 0; i < Cuentas.size(); i++){
 				Cuenta c = Cuentas.get(i);
-				CuentaBean cuebean = new CuentaBean();
+				CuentaBean cb = new CuentaBean();
 				
-				cuebean.setIdCuenta(c.getIdCuenta());
-				if(c.getCuentaOrden()!=null){
-					cuebean.setIdOrden(c.getCuentaOrden().getIdOrden());
-					cuebean.setIdCliente(c.getCuentaOrden().getOrdenCliente().getIdCliente());
+				cb.setIdCuenta(c.getIdCuenta());
+				if(c.getCuentaOrden() != null){
+					cb.setIdOrden(c.getCuentaOrden().getIdOrden());
+					cb.setIdCliente(c.getCuentaOrden().getOrdenCliente().getIdCliente());
 				}
-				if(c.getCuentaSubcontrato()!=null){
-					cuebean.setIdSubcontrato(c.getCuentaSubcontrato().getIdSubcontrato());
+				if(c.getCuentaSubcontrato() != null){
+					cb.setIdSubcontrato(c.getCuentaSubcontrato().getIdSubcontrato());
 					Proveedor prov = c.getCuentaSubcontrato().getProveedorSubcontrato();
-					cuebean.setIdProveedor(prov.getIdProveedor());
-					cuebean.setNombreProveedor(prov.getNombre());
+					cb.setIdProveedor(prov.getIdProveedor());
+					cb.setNombreProveedor(prov.getNombre());
 				}				
-				cuebean.setTipo(c.getTipo());
-				cuebean.setFechaVencimiento(Dates.fechaEspaniol(c.getFechaVencimiento()));
-				cuebean.setFechaPagoProgramada(Dates.fechaEspaniol(c.getFechaPagoProgramada()));
-				cuebean.setFechaPagoReal(Dates.fechaEspaniol(c.getFechaPagoReal()));
-				cuebean.setTipoPago(c.getTipoPago());
-				cuebean.setMonto(c.getMonto());
-				cuebean.setPagador(c.getPagador());
-				cuebean.setEstadoTrabajo(c.getEstadoTrabajo());
+				cb.setTipo(c.getTipo());
+				cb.setTipoPago(c.getTipoPago());
+				
+				cb.setFechaVencimiento(Dates.fechaCorta(c.getFechaVencimiento()));
+				cb.setFechaPagoProgramada(Dates.fechaCorta(c.getFechaPagoProgramada()));
+				cb.setFechaPagoReal(Dates.fechaCorta(c.getFechaPagoReal()));
+				
+				cb.setMonto(Formatos.BigBecimalToString(c.getMonto().subtract(c.getMonto().multiply(Valores.IGV))));
+				cb.setIgv(Formatos.BigBecimalToString(c.getMonto().multiply(Valores.IGV)));
+				cb.setConIgv(Formatos.BigBecimalToString(c.getMonto()));
+				
+				totalMonto += c.getMonto().subtract(c.getMonto().multiply(Valores.IGV)).doubleValue();
+				cb.setTotalMonto(Formatos.BigBecimalToString(BigDecimal.valueOf(totalMonto)));
+				
+				totalIgv += c.getMonto().multiply(Valores.IGV).doubleValue();
+				cb.setTotalIgv(Formatos.BigBecimalToString(BigDecimal.valueOf(totalIgv)));
+				
+				totalConIgv += c.getMonto().doubleValue();
+				cb.setTotalConIgv((Formatos.BigBecimalToString(BigDecimal.valueOf(totalConIgv))));
+				
+				cb.setPagador(c.getPagador());
+				cb.setEstadoTrabajo(c.getEstadoTrabajo());
 				if(c.getEstadoTrabajo() != null){
 					if(c.getEstadoTrabajo().equals("Proceso")){
-						cuebean.setAvance("(" + Double.toString(c.getAvance()) + "%)");
+						cb.setAvance("(" + Double.toString(c.getAvance()) + "%)");
 					}else{
-						cuebean.setAvance("");
+						cb.setAvance("");
 					}
 				}
-				cuebean.setCreadoPor(c.getCreadoPor());
-				cuebean.setFechaCreacion(c.getFechaCreacion());
-				cuebean.setEstado(c.getEstado());
+				cb.setCreadoPor(c.getCreadoPor());
+				cb.setFechaCreacion(Dates.fechaHoraEspaniol(c.getFechaCreacion(), ""));
+				cb.setEstado(c.getEstado());
 				
-				lcueBean.add(cuebean);
+				lcueBean.add(cb);
 			}
 			
 		} catch(IllegalArgumentException e){

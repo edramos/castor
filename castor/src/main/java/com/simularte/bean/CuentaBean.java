@@ -1,8 +1,5 @@
 package com.simularte.bean;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-
 public class CuentaBean {
 
 	private Integer idCuenta;
@@ -16,13 +13,20 @@ public class CuentaBean {
 	private String fechaPagoProgramada;
 	private String fechaPagoReal;
 	private String tipoPago;
-	private BigDecimal monto;
+	
+	private String monto;
+	private String igv;
+	private String conIgv;
+	private String totalMonto;
+	private String totalIgv;
+	private String totalConIgv;
+	
 	private Integer pagador;
 	private String estadoTrabajo;
 	private String avance;
 	
 	private Integer creadoPor;
-	private Timestamp fechaCreacion;
+	private String fechaCreacion;
 	private String estado;
 	
 	
@@ -87,12 +91,6 @@ public class CuentaBean {
 	public void setTipoPago(String tipoPago) {
 		this.tipoPago = tipoPago;
 	}
-	public BigDecimal getMonto() {
-		return monto;
-	}
-	public void setMonto(BigDecimal monto) {
-		this.monto = monto;
-	}
 	public Integer getPagador() {
 		return pagador;
 	}
@@ -104,12 +102,6 @@ public class CuentaBean {
 	}
 	public void setCreadoPor(Integer creadoPor) {
 		this.creadoPor = creadoPor;
-	}
-	public Timestamp getFechaCreacion() {
-		return fechaCreacion;
-	}
-	public void setFechaCreacion(Timestamp fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
 	}
 	public String getEstado() {
 		return estado;
@@ -135,5 +127,46 @@ public class CuentaBean {
 	public void setNombreProveedor(String nombreProveedor) {
 		this.nombreProveedor = nombreProveedor;
 	}
-	
+	public String getMonto() {
+		return monto;
+	}
+	public void setMonto(String monto) {
+		this.monto = monto;
+	}
+	public String getFechaCreacion() {
+		return fechaCreacion;
+	}
+	public void setFechaCreacion(String fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+	public String getIgv() {
+		return igv;
+	}
+	public void setIgv(String igv) {
+		this.igv = igv;
+	}
+	public String getConIgv() {
+		return conIgv;
+	}
+	public void setConIgv(String conIgv) {
+		this.conIgv = conIgv;
+	}
+	public String getTotalConIgv() {
+		return totalConIgv;
+	}
+	public void setTotalConIgv(String totalConIgv) {
+		this.totalConIgv = totalConIgv;
+	}
+	public String getTotalMonto() {
+		return totalMonto;
+	}
+	public void setTotalMonto(String totalMonto) {
+		this.totalMonto = totalMonto;
+	}
+	public String getTotalIgv() {
+		return totalIgv;
+	}
+	public void setTotalIgv(String totalIgv) {
+		this.totalIgv = totalIgv;
+	}
 }

@@ -8,9 +8,16 @@ public class FacturaBean {
 	private String tipo;
 	private String cobrarFactura;
 	private String subTotal;
+	private String igv;
 	private String conIgv;
 	private String total;
 	private String codigo;
+	
+	private String totalMonto;
+	private String totalIgv;
+	private String totalConIgv;
+	private String totalDetraccion;
+	private String totalCobrar;
 	
 	private String detraccion; 
 	private String montoDetraccion; 
@@ -127,5 +134,41 @@ public class FacturaBean {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public String getTotalMonto() {
+		return totalMonto;
+	}
+	public void setTotalMonto(String totalMonto) {
+		this.totalMonto = totalMonto;
+	}
+	public String getTotalIgv() {
+		return totalIgv;
+	}
+	public void setTotalIgv(String totalIgv) {
+		this.totalIgv = totalIgv;
+	}
+	public String getTotalConIgv() {
+		return totalConIgv;
+	}
+	public void setTotalConIgv(String totalConIgv) {
+		this.totalConIgv = totalConIgv;
+	}
+	public String getIgv() {
+		return igv;
+	}
+	public void setIgv(String igv) {
+		this.igv = igv;
+	}
+	public String getTotalDetraccion() {
+		return totalDetraccion;
+	}
+	public void setTotalDetraccion(String totalDetraccion) {
+		this.totalDetraccion = totalDetraccion;
+	}
+	public String getTotalCobrar() {
+		return totalCobrar;
+	}
+	public void setTotalCobrar(String totalCobrar) {
+		this.totalCobrar = totalCobrar;
 	}	
 }

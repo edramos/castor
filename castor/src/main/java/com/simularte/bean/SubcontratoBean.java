@@ -1,8 +1,5 @@
 package com.simularte.bean;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-
 public class SubcontratoBean {
 
 	private Integer idSubcontrato;
@@ -10,23 +7,17 @@ public class SubcontratoBean {
 	private Integer idProveedor;
 	private String nombreProveedor;
 	
-	private BigDecimal monto;
+	private String monto;
 	private String moneda;
 	private String tipoTrabajo;
 	private String fechaTerminoObra;
 	
 	private Integer creadoPor;
-	private Timestamp fechaCreacion;
+	private String fechaCreacion;
 	private String estado;
 	
 	
 	
-	public BigDecimal getMonto() {
-		return monto;
-	}
-	public void setMonto(BigDecimal monto) {
-		this.monto = monto;
-	}
 	public String getFechaTerminoObra() {
 		return fechaTerminoObra;
 	}
@@ -69,12 +60,6 @@ public class SubcontratoBean {
 	public void setCreadoPor(Integer creadoPor) {
 		this.creadoPor = creadoPor;
 	}
-	public Timestamp getFechaCreacion() {
-		return fechaCreacion;
-	}
-	public void setFechaCreacion(Timestamp fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
 	public String getEstado() {
 		return estado;
 	}
@@ -87,5 +72,16 @@ public class SubcontratoBean {
 	public void setNombreProveedor(String nombreProveedor) {
 		this.nombreProveedor = nombreProveedor;
 	}
-	
+	public String getMonto() {
+		return monto;
+	}
+	public void setMonto(String monto) {
+		this.monto = monto;
+	}
+	public void setFechaCreacion(String fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+	public String getFechaCreacion() {
+		return fechaCreacion;
+	}	
 }

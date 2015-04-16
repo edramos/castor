@@ -56,6 +56,11 @@ public class FacturaServiceImpl implements FacturaService{
 	@SuppressWarnings("unchecked")
 	public List<FacturaBean> cargarFactura(int idOrden, HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
+		double totalMonto = 0;
+		double totalIgv = 0;
+		double totalConIgv = 0;
+		double totalDetraccion = 0;
+		double totalCobrar = 0;
 		
 		Query q1 = em.createNativeQuery("SELECT f.idfactura, f.cobrarfactura, f.codigo, f.conigv, f.detraccion, f.estado, f.fechacreacion, f.montodetraccion, f.subtotal, f.tipo, f.total, f.idcuenta, f.estadodetraccion "
 				+ "FROM factura f INNER JOIN cuenta c ON f.idcuenta = c. idcuenta WHERE c.idorden = '" + idOrden + "'");
@@ -80,6 +85,20 @@ public class FacturaServiceImpl implements FacturaService{
 				fb.setTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[10].toString()))));
 				fb.setIdCuenta((Integer)obj[11]);
 				fb.setEstadoDetraccion(obj[12].toString());
+				fb.setIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[3].toString()).subtract(Formatos.StringToBigDecimal(obj[8].toString()))));
+				
+				totalMonto += Formatos.StringToBigDecimal(obj[8].toString()).doubleValue();
+				fb.setTotalMonto(Formatos.BigBecimalToString(BigDecimal.valueOf(totalMonto)));
+				totalIgv += Formatos.StringToBigDecimal(obj[3].toString()).subtract(Formatos.StringToBigDecimal(obj[8].toString())).doubleValue();
+				fb.setTotalIgv(Formatos.BigBecimalToString(BigDecimal.valueOf(totalIgv)));
+				totalConIgv += Formatos.StringToBigDecimal(obj[3].toString()).doubleValue();
+				fb.setTotalConIgv(Formatos.BigBecimalToString(BigDecimal.valueOf(totalConIgv)));
+				
+				totalDetraccion += Formatos.StringToBigDecimal(obj[7].toString()).doubleValue();
+				fb.setTotalDetraccion(Formatos.BigBecimalToString(BigDecimal.valueOf(totalDetraccion)));
+				
+				totalCobrar += Formatos.StringToBigDecimal(obj[1].toString()).doubleValue();
+				fb.setTotalCobrar(Formatos.BigBecimalToString(BigDecimal.valueOf(totalCobrar)));
 				
 				facturas.add(fb);
 			}

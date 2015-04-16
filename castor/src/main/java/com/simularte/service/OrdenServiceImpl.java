@@ -28,14 +28,13 @@ import com.simularte.model.Proveedor;
 import com.simularte.model.Subcontrato;
 import com.simularte.util.Dates;
 import com.simularte.util.Formatos;
+import com.simularte.util.Valores;
 
 @Service
 public class OrdenServiceImpl implements OrdenService {
 
 	@PersistenceContext 
 	EntityManager em;
-	
-	private static final BigDecimal IGV = new BigDecimal(0.18);
 	
 	@Transactional
 	public int crearOrden(OrdenBean ordenBean, int idCliente, String[] cobrosCliente, String[] subCont, String[] pagProv, HttpServletRequest req) {
@@ -125,7 +124,7 @@ public class OrdenServiceImpl implements OrdenService {
 				Factura factura = new Factura();
 				
 				factura.setFacturaCuenta(cobros.get(x));
-				factura.setSubTotal(cobros.get(x).getMonto().subtract(cobros.get(x).getMonto().multiply(IGV)));
+				factura.setSubTotal(cobros.get(x).getMonto().subtract(cobros.get(x).getMonto().multiply(Valores.IGV)));
 				factura.setConIgv(cobros.get(x).getMonto());
 				
 				if(orden.getTipoTrabajo().equals("Obra")){
