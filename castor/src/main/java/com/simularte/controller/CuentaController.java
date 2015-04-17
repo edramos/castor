@@ -29,6 +29,11 @@ public class CuentaController {
 		return cuentas;
 	}
 	
+	@RequestMapping(value = "ajaxListarCuentasFactura-{tipo}-{idOrden}", method = RequestMethod.POST)@ResponseBody
+	public List<CuentaBean> ajaxListarCuentasFactura(@PathVariable("tipo") String tipo, @PathVariable("idOrden") Integer idOrden, HttpServletRequest req){
+		return cuentaservice.listarCuentasFactura(idOrden, req);
+	}
+	
 	@RequestMapping(value = "ajaxDetalleCuenta-{idCuenta}", method = RequestMethod.POST)@ResponseBody
 	public CuentaBean ajaxDetalleCuenta(@PathVariable("idCuenta") int idCuenta, HttpServletRequest req){
 		return cuentaservice.listarDetalleCuenta(idCuenta, req);

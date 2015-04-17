@@ -17,6 +17,7 @@ import com.simularte.model.Cuenta;
 import com.simularte.model.Factura;
 import com.simularte.util.Dates;
 import com.simularte.util.Formatos;
+import com.simularte.util.Valores;
 
 @Service
 public class FacturaServiceImpl implements FacturaService{
@@ -25,10 +26,9 @@ public class FacturaServiceImpl implements FacturaService{
 	EntityManager em;
 	
 	@Transactional
-	public List<FacturaBean> grabarFactura(int idCuenta, String tipo, HttpServletRequest req){
-		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
+	public boolean emitirFactura(int idCuenta, String tipo, double detraccion, HttpServletRequest req){
+		boolean result = false;
 		
-		double igv = 0.18;
 		Cuenta cuenta = em.find(Cuenta.class, idCuenta);
 		Factura factura = new Factura();
 		
@@ -37,12 +37,19 @@ public class FacturaServiceImpl implements FacturaService{
 		}else{
 			factura.setTipo("Recibida");
 		}
-		factura.setFechaCancelacion(Dates.dateCreacion());			
+		factura.setFacturaCuenta(cuenta);			
 		factura.setFechaEmision(Dates.dateCreacion());
 		
-		factura.setSubTotal(cuenta.getMonto());
-		factura.setConIgv(cuenta.getMonto().multiply(BigDecimal.valueOf(igv)));
-		factura.setTotal(cuenta.getMonto().multiply(BigDecimal.valueOf(igv)));
+		
+		factura.setSubTotal(cuenta.getMonto().subtract(cuenta.getMonto().multiply(Valores.IGV)));
+		factura.setConIgv(cuenta.getMonto());
+		factura.setTotal(factura.getConIgv());		//Por ahora porque son facturas emitidas por 1 solo concepto, cuando sean grupales se creara DetalleFactura
+		
+		factura.setDetraccion(detraccion);
+		factura.setMontoDetraccion(factura.getConIgv().multiply(BigDecimal.valueOf(factura.getDetraccion() * 0.01)));
+		
+		factura.setCobrarFactura(factura.getConIgv().subtract(factura.getMontoDetraccion()));
+		factura.setEstadoDetraccion("Pendiente");
 		
 		factura.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
 		factura.setFechaCreacion(Dates.fechaCreacion());
@@ -50,11 +57,58 @@ public class FacturaServiceImpl implements FacturaService{
 		
 		em.persist(factura);
 		
+		Factura facturaY = em.merge(factura);
+		
+		facturaY.setCodigo(String.format("%05d", factura.getIdFactura()));
+		
+		Cuenta cuentaX = em.find(Cuenta.class, idCuenta);
+		Cuenta cuentaY = em.merge(cuentaX);
+		
+		cuentaY.setEstado("Facturado");
+		
+		
+		
+		result = true;
+		
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FacturaBean> cargarFacturas(HttpServletRequest req){
+		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
+		//Hacer que el orden de los f sea igual que el de cargarFacturaOrden
+		Query q1 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.subtotal, f.conigv, f.total, f.montodetraccion, f.cobrarfactura, f.estadodetraccion, f.estado, f.fechaemision, f.detraccion "
+				+ "FROM factura f "
+				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
+				+ "INNER JOIN orden o ON o.idorden = c.idorden "
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "'");
+		
+		List<Object[]> rows = q1.getResultList();
+		
+		for(int x = 0; x < rows.size(); x++){
+			Object[] obj = rows.get(x);
+			FacturaBean fb = new FacturaBean();
+			
+			fb.setIdFactura((Integer)obj[0]);
+			fb.setCodigo(obj[1].toString());
+			fb.setSubTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[2].toString())));
+			fb.setIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[3].toString()).subtract(Formatos.StringToBigDecimal(obj[2].toString()))));
+			fb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[3].toString()))));
+			fb.setDetraccion(obj[10].toString());
+			fb.setMontoDetraccion(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[5].toString()))));
+			fb.setEstadoDetraccion(obj[7].toString());
+			fb.setCobrarFactura(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[6].toString()))));
+			fb.setEstado(obj[8].toString());
+			fb.setFechaEmision(Dates.stringToStringFechaCorta(obj[9].toString()));
+			
+			facturas.add(fb);
+		}
+		
 		return facturas;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FacturaBean> cargarFactura(int idOrden, HttpServletRequest req){
+	public List<FacturaBean> cargarFacturaOrden(int idOrden, HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
 		double totalMonto = 0;
 		double totalIgv = 0;

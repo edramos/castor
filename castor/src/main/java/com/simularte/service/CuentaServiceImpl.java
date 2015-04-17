@@ -55,6 +55,27 @@ public class CuentaServiceImpl implements CuentaService {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<CuentaBean> listarCuentasFactura(int idOrder, HttpServletRequest req) {
+		List<CuentaBean> lcb = new ArrayList<CuentaBean>();
+		
+		Query q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND estado != 'Facturado'", Cuenta.class);
+		q01.setParameter("idOrden", idOrder);		
+		List<Cuenta> cuentas = q01.getResultList();
+		
+		for(int i = 0; i < cuentas.size(); i++){
+			Cuenta c = cuentas.get(i);
+			CuentaBean cb = new CuentaBean();
+			
+			cb.setIdCuenta(c.getIdCuenta());
+			cb.setMonto(Formatos.BigBecimalToString(c.getMonto()));
+			
+			lcb.add(cb);
+		}
+		
+		return lcb;
+	}
+	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<CuentaBean> listarCuentas(String tipo, Integer idOrder, HttpServletRequest req) {
 		List<CuentaBean> lcueBean = new ArrayList<CuentaBean>();

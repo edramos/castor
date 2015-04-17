@@ -21,17 +21,24 @@ public class FacturaController {
 	@Autowired
 	FacturaService fs;
 	
-	@RequestMapping(value = "crearFacturaAjax-{idCuenta}-{tipo}", method = RequestMethod.POST) @ResponseBody
-	public List<FacturaBean> crearFacturaAjax (@PathVariable("idCuenta")int idCuenta, @PathVariable("tipo")String tipo, HttpServletRequest req){
+	@RequestMapping(value = "crearFacturaAjax-{idCuenta}-{tipo}-{detraccion}", method = RequestMethod.POST) @ResponseBody
+	public List<FacturaBean> crearFacturaAjax (@PathVariable("idCuenta")int idCuenta, @PathVariable("tipo")String tipo,@PathVariable("detraccion")double detraccion, HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
 		
-		facturas = fs.grabarFactura(idCuenta, tipo, req);
+		if(fs.emitirFactura(idCuenta, tipo, detraccion, req)){
+			facturas = fs.cargarFacturas(req);
+		}
 		
 		return facturas;
 	}
 	
+	@RequestMapping(value = "cargarFacturasEmpresa", method = RequestMethod.POST) @ResponseBody
+	public List<FacturaBean> cargarFacturasEmpresa(HttpServletRequest req){
+		return fs.cargarFacturas(req);
+	}
+	
 	@RequestMapping(value = "cargarFactura-{idOrden}", method = RequestMethod.POST) @ResponseBody
 	public List<FacturaBean> cargarFactura(@PathVariable("idOrden")int idOrden, HttpServletRequest req){
-		return fs.cargarFactura(idOrden, req);
+		return fs.cargarFacturaOrden(idOrden, req);
 	}
 }

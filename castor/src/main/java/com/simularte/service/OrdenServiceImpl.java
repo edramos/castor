@@ -41,10 +41,10 @@ public class OrdenServiceImpl implements OrdenService {
 	public List<OrdenBean> buscarOrdenFactura(){
 		List<OrdenBean> resultados = new ArrayList<OrdenBean>();
 		
-		Query q = em.createQuery("SELECT o FROM Orden o WHERE estado != :estado");
-		q.setParameter("estado", "Terminado");
+		Query q01 = em.createQuery("SELECT o FROM Orden o WHERE estado != :estado");
+		q01.setParameter("estado", "Terminado");
 		
-		List<Orden> ordenes = q.getResultList();
+		List<Orden> ordenes = q01.getResultList();
 		
 		for(int x = 0; x < ordenes.size(); x++){
 			Orden orden = ordenes.get(x);

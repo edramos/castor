@@ -8,6 +8,7 @@ import com.simularte.bean.FacturaBean;
 
 public interface FacturaService {
 
-	List<FacturaBean> grabarFactura(int idCuenta, String tipo, HttpServletRequest req);
-	List<FacturaBean> cargarFactura(int idOrden, HttpServletRequest req);
+	boolean emitirFactura(int idCuenta, String tipo, double detraccion, HttpServletRequest req);
+	List<FacturaBean> cargarFacturas(HttpServletRequest req);
+	List<FacturaBean> cargarFacturaOrden(int idOrden, HttpServletRequest req);
 }
