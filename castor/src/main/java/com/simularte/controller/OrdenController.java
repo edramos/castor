@@ -46,6 +46,11 @@ public class OrdenController {
 		return ordenes;
 	}
 	
+	@RequestMapping(value = "ajaxBuscarOrdenFactura", method = RequestMethod.POST) @ResponseBody
+	public List<OrdenBean> ajaxBuscarOrdenFactura(HttpServletRequest req){
+		return ordenserv.buscarOrdenFactura();
+	}
+	
 	@RequestMapping("ordenPag-{idOrden}")
 	public String ordenPag(@PathVariable("idOrden") Integer idOrden, Model model, HttpServletRequest req){
 		String path = "empresa/orden";
@@ -55,8 +60,10 @@ public class OrdenController {
 	
 	@RequestMapping(value = "ajaxObtenerInformacionOrden-{idOrden}", method = RequestMethod.POST) @ResponseBody
 	public OrdenBean ajaxObtenerInformacionOrden(@PathVariable("idOrden") Integer idOrden, HttpServletRequest req){
+		System.out.println("idOrden: " + idOrden);
 		OrdenBean orden = new OrdenBean();		
 		orden = ordenserv.obtenerInformacionOrden(idOrden, req);
+		System.out.println(orden.getNombreCliente());
 		return orden;
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.simularte.bean.CuentaBean;
 import com.simularte.model.Cuenta;
+import com.simularte.model.Orden;
 import com.simularte.model.Proveedor;
 import com.simularte.util.Dates;
 import com.simularte.util.Formatos;
@@ -25,6 +26,34 @@ public class CuentaServiceImpl implements CuentaService {
 	@PersistenceContext 
 	EntityManager em;	
 
+	
+	public CuentaBean listarDetalleCuenta(int idCuenta, HttpServletRequest req){
+		CuentaBean  cb = new CuentaBean();
+		
+		Query q01 = em.createQuery("SELECT c FROM Cuenta c WHERE c.idCuenta = :idCuenta AND c.estado != 'disable'");
+		q01.setParameter("idCuenta", idCuenta);
+		
+		Cuenta cuenta = (Cuenta)q01.getSingleResult();
+		
+		cb.setMonto(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(Valores.IGV))));
+		cb.setIgv(Formatos.BigBecimalToString(cuenta.getMonto().multiply(Valores.IGV)));
+		cb.setConIgv(Formatos.BigBecimalToString(cuenta.getMonto()));
+		
+		Orden orden = em.find(Orden.class, cuenta.getCuentaOrden().getIdOrden());
+		
+		if(orden.getTipoTrabajo().equals("Estudio")){
+			cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1))) + "  (10%)");
+			cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1)))));
+		}else{
+			cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04))) + "  (4%)");
+			cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04)))));
+		}
+		
+		cb.setFechaVencimiento(Dates.fechaCorta(cuenta.getFechaVencimiento()));
+		
+		return cb;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<CuentaBean> listarCuentas(String tipo, Integer idOrder, HttpServletRequest req) {

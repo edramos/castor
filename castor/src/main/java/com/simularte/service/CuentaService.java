@@ -8,6 +8,7 @@ import com.simularte.bean.CuentaBean;
 
 public interface CuentaService {
 
-	public List<CuentaBean> listarCuentas(String tipo, Integer idOrden, HttpServletRequest req);
+	List<CuentaBean> listarCuentas(String tipo, Integer idOrden, HttpServletRequest req);
+	CuentaBean listarDetalleCuenta(int idCuenta, HttpServletRequest req);
 	
 }

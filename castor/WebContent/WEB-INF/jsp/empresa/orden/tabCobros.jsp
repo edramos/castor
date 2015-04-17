@@ -15,11 +15,13 @@
 </div>
 
 <div class="portlet-body">
-	<div class="table-responsive">
+	<div class="table-scrollable">
 		<table class="table table-bordered table-hover">
 			<thead>
 			<tr class="heading">
-				<th>N° Factura</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th width="10%">Detraccion</th><th>%</th><th>EstadoDetraccion</th><th>Cobrar</th><th>Estado Factura</th>
+				<th>N° Factura</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th>
+				<th width="10%">Detraccion</th><th>%</th><th width="15%">Estado Detra.</th><th>Cobrar</th>
+				<th>Estado Factura</th><th>Vence</th><th>Emitido</th><th>Cobrado</th><th>Acciones</th>
 			</tr>
 			</thead>
 			<tbody id="viewDatosFactura">
@@ -55,7 +57,7 @@ function initFacturasCobrar(facturasCobrar){
 	$('#viewDatosFactura').append('<tr style="text-align:right;">'+
 			'<td style="text-align:left;"><b>TOTAL</b></td>'+
 			'<td>'+ facturasCobrar[facturasCobrar.length - 1].totalMonto +'</td><td>'+ facturasCobrar[facturasCobrar.length - 1].totalIgv +'</td><td>'+ facturasCobrar[facturasCobrar.length - 1].totalConIgv +'</td>'+
-			'<td>'+ facturasCobrar[facturasCobrar.length - 1].totalDetraccion +'</td><td></td><td></td><td>'+ facturasCobrar[facturasCobrar.length - 1].totalCobrar +'</td>'+
+			'<td>'+ facturasCobrar[facturasCobrar.length - 1].totalDetraccion +'</td><td></td><td></td><td>'+ facturasCobrar[facturasCobrar.length - 1].totalCobrar +'</td><td></td>'+
 			'</tr>');
 }
 </script>
@@ -70,6 +72,10 @@ function initFacturasCobrar(facturasCobrar){
 	<td style="text-align:center;">{{estadoDetraccion}}</td>
 	<td>{{cobrarFactura}}</td>
 	<td style="text-align:center;">{{estado}}</td>
+	<td>06/04/2015</td>
+	<td>06/04/2015</td>
+	<td>06/04/2015</td>
+	<td><button id="btnCrearFactura_{{idCuenta}}" type="button" class="eventBtn btn yellow btn-xs">Emitir Factura</button></td>
 </tr>
 </script>
 <script id="templateCobrosCliente" type="text/x-handlebars-template">
@@ -79,6 +85,6 @@ function initFacturasCobrar(facturasCobrar){
 	<td>{{tipoPago}}</td>
 	<td>{{estadoTrabajo}} {{avance}}</td>
 	<td>Pendiente</td>
-	<td><button id="btnCrearFactura_{{idCuenta}}" type="button" class="eventBtn btn yellow">Crear Factura</button></td>
+	<td></td>
 </tr>
 </script>

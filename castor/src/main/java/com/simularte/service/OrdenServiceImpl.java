@@ -36,6 +36,29 @@ public class OrdenServiceImpl implements OrdenService {
 	@PersistenceContext 
 	EntityManager em;
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<OrdenBean> buscarOrdenFactura(){
+		List<OrdenBean> resultados = new ArrayList<OrdenBean>();
+		
+		Query q = em.createQuery("SELECT o FROM Orden o WHERE estado != :estado");
+		q.setParameter("estado", "Terminado");
+		
+		List<Orden> ordenes = q.getResultList();
+		
+		for(int x = 0; x < ordenes.size(); x++){
+			Orden orden = ordenes.get(x);
+			OrdenBean ob = new OrdenBean();
+			
+			ob.setIdOrden(orden.getIdOrden());
+			ob.setCodigo(orden.getCodigo());
+			
+			resultados.add(ob);
+		}
+		
+		return resultados;
+	}
+	
 	@Transactional
 	public int crearOrden(OrdenBean ordenBean, int idCliente, String[] cobrosCliente, String[] subCont, String[] pagProv, HttpServletRequest req) {
 		int idOrden = -1;

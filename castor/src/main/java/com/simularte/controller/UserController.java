@@ -137,6 +137,9 @@ public class UserController {
 	public String toCajaChica(){
 		return "empresa/cajaChica";
 	}
-	
+	@RequestMapping("toCrearFactura")
+	public String toCrearFactura(){
+		return "empresa/crearFactura";
+	}
 	
 }

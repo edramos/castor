@@ -22,12 +22,15 @@ public class CuentaController {
 	@Autowired
 	CuentaService cuentaservice;
 	
-	@RequestMapping(value = "ajaxListarCuentas-{tipo}-{idOrden}", method = RequestMethod.POST)
-	@ResponseBody
+	@RequestMapping(value = "ajaxListarCuentas-{tipo}-{idOrden}", method = RequestMethod.POST)@ResponseBody
 	public List<CuentaBean> ajaxListarCuentas(@PathVariable("tipo") String tipo, @PathVariable("idOrden") Integer idOrden, HttpServletRequest req){
 		List<CuentaBean> cuentas = new ArrayList<CuentaBean>();
 		cuentas = cuentaservice.listarCuentas(tipo, idOrden, req);
 		return cuentas;
 	}
 	
+	@RequestMapping(value = "ajaxDetalleCuenta-{idCuenta}", method = RequestMethod.POST)@ResponseBody
+	public CuentaBean ajaxDetalleCuenta(@PathVariable("idCuenta") int idCuenta, HttpServletRequest req){
+		return cuentaservice.listarDetalleCuenta(idCuenta, req);
+	}
 }

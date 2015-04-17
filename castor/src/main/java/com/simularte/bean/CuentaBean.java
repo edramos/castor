@@ -20,6 +20,8 @@ public class CuentaBean {
 	private String totalMonto;
 	private String totalIgv;
 	private String totalConIgv;
+	private String montoDetraccion;
+	private String cobrar;
 	
 	private Integer pagador;
 	private String estadoTrabajo;
@@ -168,5 +170,17 @@ public class CuentaBean {
 	}
 	public void setTotalIgv(String totalIgv) {
 		this.totalIgv = totalIgv;
+	}
+	public String getMontoDetraccion() {
+		return montoDetraccion;
+	}
+	public void setMontoDetraccion(String montoDetraccion) {
+		this.montoDetraccion = montoDetraccion;
+	}
+	public String getCobrar() {
+		return cobrar;
+	}
+	public void setCobrar(String cobrar) {
+		this.cobrar = cobrar;
 	}
 }
