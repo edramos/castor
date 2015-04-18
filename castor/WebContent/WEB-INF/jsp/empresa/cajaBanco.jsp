@@ -22,6 +22,9 @@
 	left:0;
 	cursor:default
 }
+.tt-hint, .tt-input {
+	color: #000000;
+}
 </style>
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
 <jsp:include page="../comps/cabecera.jsp"/>
@@ -103,14 +106,21 @@
 								<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtMonto" class="form-control" placeholder="Monto" name="monto"/>
+									<input id="txtMonto" class="form-control" placeholder="Monto + IGV" name="conIgv"/>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
+							<div class="form-group">
+								<div class="col-md-12">
+									<input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto"/>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-2">
 							<div class="form-group">
 								<div class="col-md-12">
 									<select id="sltTipoTransaccion" class="form-control" name="operacion">
@@ -134,32 +144,26 @@
 						</div>
 					</div>
 					
+					
 					<div id="divSecondRow" class="row">
 						<div class="col-md-3 dynamic">
-							<div class="form-group">
-								<div class="col-md-12">
-									<select id="sltCliente" class="form-control" name="idCliente"></select>
-								</div>
-							</div>
+							<select id="sltCliente" class="form-control" name="idCliente"></select>						
 						</div>
-						<div class="col-md-3 dynamic">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>
-								</div>
-							</div>
+						<div class="col-md-2 dynamic">		
+							<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>	
 						</div>
-						
-						
-						
-						<div class="col-md-3 dynamic">
+						<div class="col-md-2 dynamic">
+							<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>	
+						</div>
+						<div class="col-md-2 dynamic">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>
+									<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion"/>
 								</div>
 							</div>
 						</div>
 					</div>
+					
 					
 					<div class="row">
 						<div class="col-md-12">
@@ -237,31 +241,34 @@ jQuery(document).ready(function() {
 	
 	listarSelectorClientes('sltCliente');
 	listarCaja();
-	suggestEmpleado();
+	suggestFactura();
 });
 </script>
 <script>
-function suggestEmpleado(){
+function suggestFactura(){
 	var empleados = new Bloodhound({
 		datumTokenizer: function (datum) {return Bloodhound.tokenizers.whitespace(datum.value);},
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		remote: 'ajaxListarEmpleadosAutocomplete?q=%QUERY'
+		remote: 'ajaxListarFacturaSuggest?q=%QUERY'
 	});
 	empleados.initialize();
 	
-	$('#txtFactura').typeahead({minLength: 2,}, {
-		displayKey: 'primerNombre',
+	$('#txtFactura').typeahead({minLength: 1,}, {
+		displayKey: 'codigo',
 		source: empleados.ttAdapter(),
 		templates: {
 			suggestion: Handlebars.compile([
-				'{{primerNombre}}',
+				'{{codigo}} - {{conIgv}}',
 			].join(''))
 		}
 	});
 		
 	$('#txtFactura').on('typeahead:selected', function (e, datum) {   
 		$('#hdnIdUsuario').remove();
-		$('#divSecondRow').append("<input id='hdnIdUsuario' type='hidden' name='idUsuario' value='" + datum['idUsuario'] + "'/>");
+		$('#divSecondRow').append("<input id='hdnIdUsuario' type='hidden' name='idFactura' value='" + datum['idFactura'] + "'/>");
+		$('#txtMonto').val(datum['conIgv']);
+		$('#txtCobrarFactura').val(datum['cobrarFactura']);
+		$('#txtDetraccion').val(datum['montoDetraccion']);
 	});
 }
 </script>
@@ -285,7 +292,7 @@ $(function($){
         if(value == 'Ingreso'){
         	formDynamic('#templateCobranzaVentaServicio');
         	listarSelectorClientes('sltCliente');
-        	suggestEmpleado();
+        	suggestFactura();
         }else{
         	formDynamic('#templatePagoProveedor');
         	listarSelectorProveedores('sltProveedor');
@@ -301,7 +308,7 @@ $(function($){
 		case 'Cobranza Venta/Servicio':
 			formDynamic('#templateCobranzaVentaServicio');
 			listarSelectorClientes('sltCliente');
-			suggestEmpleado();
+			suggestFactura();
 			break;
 		case 'Otra cobranza':
 			formDynamic('#templateOtraCobranza');

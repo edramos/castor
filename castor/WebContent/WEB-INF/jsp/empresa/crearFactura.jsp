@@ -87,12 +87,9 @@
 			<div class="portlet-title">
 				<div id="divTitle" class="caption"><i class="icon-share"></i>Factura Detalle</div>
 				<div class="tools">
-					<a title="" data-original-title="" href="javascript:;" class="collapse">
-					</a>
-					<a title="" data-original-title="" href="#portlet-config" data-toggle="modal" class="config">
-					</a>
-					<a title="" data-original-title="" href="javascript:;" class="fullscreen">
-					</a>
+					<a title="" data-original-title="" href="javascript:;" class="collapse"></a>
+					<a title="" data-original-title="" href="#portlet-config" data-toggle="modal" class="config"></a>
+					<a title="" data-original-title="" href="javascript:;" class="fullscreen"></a>
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -433,7 +430,6 @@ function listarCuentasPorCobrar(idOrden){
  		success: function(cuentascobrar){
  			$.each(cuentascobrar, function(i, cuenta){
  				$('#sltCuentaPorCobrar').append('<option value="' + cuenta.idCuenta + '">' + cuenta.monto + '</option>');
- 				//$('#divTitle').text('Factura ('+ cuenta.estado +')');
  			});	 	        
  		}
  	});
