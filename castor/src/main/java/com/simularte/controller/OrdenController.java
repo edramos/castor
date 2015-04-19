@@ -24,6 +24,7 @@ public class OrdenController {
 	@Autowired
 	OrdenService ordenserv;
 	
+	
 	@RequestMapping(value = "crearOrden", method = RequestMethod.POST)
 	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean,@RequestParam("cobroscliente") String[] cobrosCliente, @RequestParam("subcontratos") String[] subCont, @RequestParam("pagoproveedores") String[] pagProv, Model model, HttpServletRequest req) {		
 		String path = "";
@@ -65,5 +66,10 @@ public class OrdenController {
 		orden = ordenserv.obtenerInformacionOrden(idOrden, req);
 		System.out.println(orden.getNombreCliente());
 		return orden;
+	}
+	
+	@RequestMapping(value = "ajaxBuscarOrdenCaja-{idFactura}", method = RequestMethod.POST) @ResponseBody
+	public List<OrdenBean> ajaxBuscarOrdenCaja(@PathVariable("idFactura")int idFactura, HttpServletRequest req){
+		return ordenserv.buscarOrdenCaja(idFactura, req);
 	}
 }

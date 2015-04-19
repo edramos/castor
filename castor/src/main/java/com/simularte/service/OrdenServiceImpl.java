@@ -36,6 +36,29 @@ public class OrdenServiceImpl implements OrdenService {
 	@PersistenceContext 
 	EntityManager em;
 	
+	@SuppressWarnings("unchecked")
+	public List<OrdenBean> buscarOrdenCaja(int idFactura, HttpServletRequest req){
+		List<OrdenBean> resultados = new ArrayList<OrdenBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT o.idorden, o.codigo, f.idfactura FROM factura f "
+				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
+				+ "INNER JOIN orden o ON o.idorden = c.idorden "
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.idfactura = '" + idFactura + "'");
+		
+		List<Object[]> rows = q01.getResultList();
+		
+		for(int x = 0; x < rows.size(); x++){
+			Object[] obj = rows.get(x);
+			OrdenBean ob = new OrdenBean();
+			
+			ob.setIdOrden((Integer)obj[0]);
+			ob.setCodigo(obj[1].toString());
+			
+			resultados.add(ob);
+		}
+		
+		return resultados;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<OrdenBean> buscarOrdenFactura(){

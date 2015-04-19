@@ -79,7 +79,7 @@
 				</div>
 			</div>
 		</div>
-	
+
 	
 		<form:form id="frmCrearDetalleLibro" class="form-horizontal" commandName="libroDetalleBean">
 		<div id="divCrearDetalleLibro" class="portlet box blue-hoki" style="display: none;">
@@ -98,41 +98,23 @@
 			</div>
 			<div class="portlet-body form">
 				<div class="form-body">
-					
+
 					<div class="row">
-						<div class="col-md-3">
-							<div id="txtFechaOperacion" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-								<input type="text" class="form-control form-filter valid" placeholder="Fecha Operacion" name="fechaOperacion" aria-required="true" aria-invalid="false">												
-								<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span>
-							</div>
-						</div>
-						<div class="col-md-2">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtMonto" class="form-control" placeholder="Monto + IGV" name="conIgv"/>
+						<div class="col-md-12">
+							<div id="divFirstRow" class="form-group">
+								<div class="col-md-3">
+									<div id="txtFechaOperacion" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+										<input type="text" class="form-control form-filter valid" placeholder="Fecha Operacion" name="fechaOperacion" aria-required="true" aria-invalid="false">												
+										<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span>
+									</div>
 								</div>
-							</div>
-						</div>
-						<div class="col-md-2">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto"/>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2">
-							<div class="form-group">
-								<div class="col-md-12">
+								<div class="col-md-2">
 									<select id="sltTipoTransaccion" class="form-control" name="operacion">
 										<option value="Ingreso">Ingreso</option>
 										<option value="Egreso">Egreso</option>
 									</select>
 								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
+								<div class="col-md-3">
 									<select id="sltTransaccion" class="form-control" name="tipoOperacion">
 										<option value="Cobranza Venta/Servicio">Cobranza Venta/Servicio</option>
 										<option value="Otra cobranza">Otra cobranza</option>
@@ -140,26 +122,12 @@
 										<option value="Interese ganado">Interes ganado</option>
 									</select>
 								</div>
-							</div>
-						</div>
-					</div>
-					
-					
-					<div id="divSecondRow" class="row">
-						<div class="col-md-3 dynamic">
-							<select id="sltCliente" class="form-control" name="idCliente"></select>						
-						</div>
-						<div class="col-md-2 dynamic">		
-							<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>	
-						</div>
-						<div class="col-md-2 dynamic">
-							<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>	
-						</div>
-						<div class="col-md-2 dynamic">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion"/>
+								<div class="col-md-2 dynamic">
+									<input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/>
 								</div>
+								<div class="col-md-2 dynamic">
+									<input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto"/>
+								</div>								
 							</div>
 						</div>
 					</div>
@@ -167,9 +135,29 @@
 					
 					<div class="row">
 						<div class="col-md-12">
+							<div id="divSecondRow" class="form-group">
+								<div class="col-md-3 dynamic">	
+									<select id="sltCliente" class="form-control" name="idCliente"></select>
+								</div>
+								<div class="col-md-2 dynamic">		
+									<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>	
+								</div>
+								<div class="col-md-3 dynamic">
+									<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="codigoOrden"/>
+									<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>	
+								</div>
+								<div class="col-md-2 dynamic">
+									<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion"/>	
+								</div>
+							</div>
+						</div>
+					</div>	
+					
+					<div class="row">
+						<div class="col-md-12">
 							<div class="form-group">
 								<div class="col-md-12">
-									<input id="txtOrdenTrabajo" class="form-control" placeholder="Descripcion..." name="descripcion"/>
+									<input id="txtDescripcion" class="form-control" placeholder="Descripcion..." name="descripcion"/>
 								</div>
 							</div>
 						</div>
@@ -264,12 +252,29 @@ function suggestFactura(){
 	});
 		
 	$('#txtFactura').on('typeahead:selected', function (e, datum) {   
-		$('#hdnIdUsuario').remove();
-		$('#divSecondRow').append("<input id='hdnIdUsuario' type='hidden' name='idFactura' value='" + datum['idFactura'] + "'/>");
+		$('#hdnIdFactura').remove();
+		$('#divSecondRow').append("<input id='hdnIdFactura' type='hidden' name='idFactura' value='" + datum['idFactura'] + "'/>");
 		$('#txtMonto').val(datum['conIgv']);
 		$('#txtCobrarFactura').val(datum['cobrarFactura']);
 		$('#txtDetraccion').val(datum['montoDetraccion']);
+		
+		mostrarOrden(datum['idFactura']);
 	});
+}
+function mostrarOrden(idFactura){
+	$.ajax({
+ 		url: 'ajaxBuscarOrdenCaja-' + idFactura,
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(ordenes){
+ 			html = '';
+ 			$.each(ordenes, function(i, orden){
+	 			$('#txtOrdenTrabajo').val(orden.codigo); 
+	 			$('#hdnOrdenTrabajo').val(orden.idOrden);
+ 			});		      
+ 		}
+ 	});
 }
 </script>
 <script> 
@@ -287,7 +292,6 @@ $(function($){
         
         $('#sltTransaccion').html(html);
         var value = $('#sltTipoTransaccion option:selected').text();
-        //var html = '';
         
         if(value == 'Ingreso'){
         	formDynamic('#templateCobranzaVentaServicio');
@@ -432,6 +436,9 @@ function listarCaja(){
  	});	
 }
 function crearDetalleLibro(){
+	if($('#sltTransaccion').val() == "Cobranza Venta/Servicio"){
+		$('#txtCobrarFactura').val(Number($('#txtCobrarFactura').val().replace(/[^0-9\.]+/g,"")));
+	}
 	$.ajax({
  		url: 'ajaxCrearRegistroLibro',
  		type: 'post',
@@ -459,14 +466,24 @@ function borrarDatos(){
 	$('#sltTipoTransaccion').find('option:first').attr('selected', 'selected');
 	$('#sltTransaccion').find('option:first').attr('selected', 'selected');
 }
+</script>
+<script>
 function formDynamic(opcion){
 	$('.dynamic').remove();
+	
+	if(opcion == '#templateCobranzaVentaServicio'){
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/></div>'+
+			'<div class="col-md-2 dynamic"><input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto"/></div>');
+	}else{
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="monto"/></div>');
+	}
 	
 	var source = $(opcion).html();
 	var template = Handlebars.compile(source);
 	html = template();
-	
 	$('#divSecondRow').html(html);
+	
+	
 }
 </script>
 <script>
@@ -638,11 +655,7 @@ function mostrarDetalle(idRegistro){
 <!-- EGRESOS -->
 <script id="templateCodigoOperacion" type="text/x-handlebars-template">
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtCodigoOperacion" class="form-control" placeholder="Codigo Operacion" name="codigoOperacion"/>
-		</div>
-	</div>
+	<input id="txtCodigoOperacion" class="form-control" placeholder="Codigo Operacion" name="codigoOperacion"/>
 </div>
 </script>
 <script id="templateTransferenciaCuentaEgreso" type="text/x-handlebars-template">
@@ -705,67 +718,43 @@ function mostrarDetalle(idRegistro){
 	<div class="form-group">
 		<div class="col-md-12">
 			<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>
+			<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>
 		</div>
 	</div>
 </div>
 </script>
 <!-- INGRESOS -->
 <script id="templateCobranzaVentaServicio" type="text/x-handlebars-template">
-<div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<select id="sltCliente" class="form-control" name="idCliente"></select>
-		</div>
-	</div>
+<div class="col-md-3 dynamic">	
+	<select id="sltCliente" class="form-control" name="idCliente"></select>
+</div>
+<div class="col-md-2 dynamic">		
+	<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>	
 </div>
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtFactura" class="form-control" placeholder="Factura" name="factura"/>
-		</div>
-	</div>
+	<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>
+	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>	
 </div>
-<div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>
-		</div>
-	</div>
+<div class="col-md-2 dynamic">
+	<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion"/>	
 </div>
 </script>
 <script id="templateOtraCobranza" type="text/x-handlebars-template">
-<div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<select id="sltCliente" class="form-control" name="idCliente"></select>
-		</div>
-	</div>
+<div class="col-md-3 dynamic">	
+	<select id="sltCliente" class="form-control" name="idCliente"></select>
 </div>
-<div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtFactura" class="form-control" placeholder="Factura" name="factura"/>
-		</div>
-	</div>
+<div class="col-md-2 dynamic">		
+	<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>	
 </div>
 </script>
 <script id="templateTransferenciaCuentaIngreso" type="text/x-handlebars-template">
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtCuentaDestino" class="form-control" placeholder="Cuenta Origen" name="cuentaBancoOrigen"/>
-		</div>
-	</div>
+	<input id="txtCuentaDestino" class="form-control" placeholder="Cuenta Origen" name="cuentaBancoOrigen"/>
 </div>
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtCodigoOperacion" class="form-control" placeholder="Codigo Operacion" name="codigoOperacion"/>
-		</div>
-	</div>
+	<input id="txtCodigoOperacion" class="form-control" placeholder="Codigo Operacion" name="codigoOperacion"/>
 </div>
 </script>
-
 <script id="templateSearchResultEmpleado" type="text/x-handlebars-template">
 	<div class="detailCardPane ui-menu-item" id="empleado_{{idEmpleado}}" style="cursor: pointer;">
 		<div class="">

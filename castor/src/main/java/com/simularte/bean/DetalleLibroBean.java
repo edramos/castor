@@ -9,6 +9,7 @@ public class DetalleLibroBean {
 	private Integer idProveedor;
 	private Integer idEmpleado;
 	private Integer creadoPor;
+	private int idFactura;
 	
 	private String nombreCliente;
 	private String nombreProveedor;
@@ -183,5 +184,11 @@ public class DetalleLibroBean {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public int getIdFactura() {
+		return idFactura;
+	}
+	public void setIdFactura(int idFactura) {
+		this.idFactura = idFactura;
 	}
 }

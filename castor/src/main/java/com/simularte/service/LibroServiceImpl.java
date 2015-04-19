@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.simularte.bean.DetalleLibroBean;
 import com.simularte.model.Cliente;
 import com.simularte.model.DetalleLibro;
+import com.simularte.model.Factura;
 import com.simularte.model.Libro;
 import com.simularte.model.Proveedor;
 import com.simularte.util.Dates;
@@ -56,8 +57,15 @@ public class LibroServiceImpl implements LibroService{
 			detalleLibro.setFechaCreacion(Dates.fechaCreacion());
 			detalleLibro.setEstado("enabled");
 		
-		
 			em.persist(detalleLibro);
+			
+			if(dlb.getTipoOperacion().equals("Cobranza Venta/Servicio")){
+				Factura facturaX = em.find(Factura.class, dlb.getIdFactura());
+				Factura facturaY = em.merge(facturaX);
+				
+				facturaY.setEstado("Cancelado");
+			}
+			
 			result = true;
 		}catch(Exception e){
 			e.printStackTrace();
