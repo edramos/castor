@@ -77,7 +77,8 @@ public class FacturaServiceImpl implements FacturaService{
 	public List<FacturaBean> cargarFacturas(HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
 		//Hacer que el orden de los f sea igual que el de cargarFacturaOrden
-		Query q1 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.subtotal, f.conigv, f.total, f.montodetraccion, f.cobrarfactura, f.estadodetraccion, f.estado, f.fechaemision, f.detraccion "
+		Query q1 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.subtotal, f.conigv, f.total, f.montodetraccion, f.cobrarfactura, f.estadodetraccion, f.estado, f.fechaemision, "
+				+ "f.detraccion, f.fechacancelacion, f.fechacancelaciondetraccion "
 				+ "FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden "
@@ -116,7 +117,8 @@ public class FacturaServiceImpl implements FacturaService{
 		double totalDetraccion = 0;
 		double totalCobrar = 0;
 		
-		Query q1 = em.createNativeQuery("SELECT f.idfactura, f.cobrarfactura, f.codigo, f.conigv, f.detraccion, f.estado, f.fechacreacion, f.montodetraccion, f.subtotal, f.tipo, f.total, f.idcuenta, f.estadodetraccion "
+		Query q1 = em.createNativeQuery("SELECT f.idfactura, f.cobrarfactura, f.codigo, f.conigv, f.detraccion, f.estado, f.fechacreacion, f.montodetraccion, f.subtotal, f.tipo, "
+				+ "f.total, f.idcuenta, f.estadodetraccion, f.fechaemision, f.fechacancelacion, f.fechacancelaciondetraccion "
 				+ "FROM factura f INNER JOIN cuenta c ON f.idcuenta = c. idcuenta WHERE c.idorden = '" + idOrden + "'");
 		
 		try{
@@ -130,9 +132,8 @@ public class FacturaServiceImpl implements FacturaService{
 				fb.setCobrarFactura(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[1].toString()))));
 				fb.setCodigo(obj[2].toString());
 				fb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[3].toString()))));
-				fb.setDetraccion(obj[4].toString());
+				fb.setDetraccion(Integer.toString(Double.valueOf(obj[4].toString()).intValue()));
 				fb.setEstado(obj[5].toString());
-				fb.setFechaCreacion(obj[6].toString());
 				fb.setMontoDetraccion(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[7].toString()))));
 				fb.setSubTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[8].toString()))));
 				fb.setTipo(obj[9].toString());
@@ -153,6 +154,12 @@ public class FacturaServiceImpl implements FacturaService{
 				
 				totalCobrar += Formatos.StringToBigDecimal(obj[1].toString()).doubleValue();
 				fb.setTotalCobrar(Formatos.BigBecimalToString(BigDecimal.valueOf(totalCobrar)));
+				
+				fb.setFechaCreacion(obj[6].toString());
+				fb.setFechaEmision(Dates.stringToStringFechaCorta(obj[13].toString()));
+				//Se podria mejorar esto desde el model con ColumnDefinition para que en vez de null por defecto sea string vacio ""
+				if(obj[14] != null)fb.setFechaCancelacion(Dates.stringToStringFechaCorta(obj[14].toString())); else fb.setFechaCancelacion("---");
+				if(obj[15] != null)fb.setFechaCancelacionDetraccion(Dates.stringToStringFechaCorta(obj[15].toString())); else fb.setFechaCancelacionDetraccion("---");
 				
 				facturas.add(fb);
 			}

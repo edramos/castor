@@ -1,5 +1,7 @@
 package com.simularte.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.simularte.bean.CuentaBean;
 import com.simularte.model.Usuario;
 import com.simularte.service.OrdenService;
 import com.simularte.service.UserService;
@@ -17,7 +21,8 @@ import com.simularte.service.UserService;
 @Controller
 public class UserController {
 
-	@Autowired UserService us; @Autowired OrdenService os;
+	@Autowired UserService us; 
+	@Autowired OrdenService os;
 	
 	@RequestMapping("toLogin")
 	public String toLogin(){
@@ -141,5 +146,8 @@ public class UserController {
 	public String toCrearFactura(){
 		return "empresa/crearFactura";
 	}
-	
+	@RequestMapping(value = "getChartDashboard", method = RequestMethod.GET) @ResponseBody
+	public List<CuentaBean> getChartDashboard(HttpServletRequest req){
+		return us.getCuentas(req);
+	}
 }

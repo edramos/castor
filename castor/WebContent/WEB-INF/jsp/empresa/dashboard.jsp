@@ -38,6 +38,22 @@
 			<div class="col-md-6">
 				<div class="portlet box blue-hoki">
 					<div class="portlet-title">
+						<div class="caption"><i class="icon-bar-chart"></i>Diagrama</div>
+						<div class="tools">
+							<a title="" data-original-title="" href="javascript:;" class="collapse"></a>
+							<a title="" data-original-title="" href="javascript:;" class="reload"></a>
+							<a title="" data-original-title="" href="javascript:;" class="fullscreen"></a>	
+						</div>
+					</div>
+					<div class="portlet-body">
+						<div id="divChart" class="chart" style="height: 250px;"></div>
+					</div>
+				</div>
+				
+				
+				
+				<div class="portlet box blue-hoki">
+					<div class="portlet-title">
 						<div class="caption"><i class="icon-basket"></i>Ordenes</div>
 						<div class="actions">
 							<a id="btnBuscarOrden" href="toBuscarOrden" class="btn btn-default btn-sm eventBtn"><i class="fa fa-search"></i> Buscar </a>	
@@ -73,7 +89,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="portlet box blue-hoki">
+				<!-- <div class="portlet box blue-hoki">
 					<div class="portlet-title">
 						<div class="caption"><i class="icon-speedometer"></i>Facturas</div>
 						<div class="actions">							
@@ -130,7 +146,7 @@
 							</table>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			
 			
@@ -241,23 +257,118 @@
 <jsp:include page="../comps/footer.jsp"/>
 <jsp:include page="../comps/corePlugins.jsp"/>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
+<script src="assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
-<!-- <script src="assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
-<script src="assets/admin/pages/scripts/index3.js" type="text/javascript"></script>
-<script src="assets/admin/pages/scripts/tasks.js" type="text/javascript"></script> -->
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() {    
 	Metronic.init(); // init metronic core componets
-    Layout.init(); // init layout
-    //Demo.init(); // init demo features 
-    //Index.init(); // init index page
- 	//Tasks.initDashboardWidget(); // init tash dashboard widget  
+    Layout.init(); // init layout  
+    
+    AmCharts.ready(function(){
+    	var chart = new AmCharts.AmSerialChart();
+    	var chartData = AmCharts.loadJSON('getChartDashboard');
+    	chart.dataProvider = chartData;
+    	chart.categoryField = "fechaOperacion";
+    	chart.dataDateFormat = "YYYY-MM-DD";
+    	
+    	var graph = new AmCharts.AmGraph();
+    	graph.valueField = "montoCobrar";
+    	graph.type = "line";
+    	graph.fillAlphas = 0; // or delete this line, as 0 is default
+    	graph.bullet = "round";
+    	chart.addGraph(graph);
+    	
+    	
+    	var graph1 = new AmCharts.AmGraph();
+   	  	graph1.valueField = "montoPagar";
+   	  	graph1.bullet = "round";
+   	  	graph1.bulletBorderColor = "#FFFFFF";
+   	  	graph1.bulletBorderThickness = 2;
+   	  	graph1.lineThickness = 2;
+   	  	graph1.lineAlpha = 0.5;
+   	  	chart.addGraph(graph1);
+    	
+   	 	chart.categoryAxis.parseDates = false;
+    	
+    	chart.write('divChart');
+    });
+    
+    AmCharts.loadJSON = function(url) {
+    	if(window.XMLHttpRequest){
+  		  	// IE7+, Firefox, Chrome, Opera, Safari
+  			var request = new XMLHttpRequest();
+  	  }else{
+  	    	// code for IE6, IE5
+  	    	var request = new ActiveXObject('Microsoft.XMLHTTP');
+  	  }
+  	  request.open('GET', url, false);
+  	  request.send();
+
+  	  // parse adn return the output
+  	  return eval(request.responseText);
+  	};
 });
+</script>
+<script>
+var chartData = [{
+	"country": "USA",
+	"visits": 4252
+}, {
+	"country": "China",
+	"visits": 1882
+}, {
+	"country": "Japan",
+	"visits": 1809
+}, {
+	"country": "Germany",
+	"visits": 1322
+}, {
+	"country": "UK",
+	"visits": 1122
+}, {
+	"country": "France",
+	"visits": 1114
+}, {
+	"country": "India",
+	"visits": 984
+}, {
+	"country": "Spain",
+	"visits": 711
+}, {
+	"country": "Netherlands",
+	"visits": 665
+}, {
+	"country": "Russia",
+	"visits": 580
+}, {
+	"country": "South Korea",
+	"visits": 443
+}, {
+	"country": "Canada",
+	"visits": 441
+}, {
+	"country": "Brazil",
+	"visits": 395
+}, {
+	"country": "Italy",
+	"visits": 386
+}, {
+	"country": "Australia",
+	"visits": 384
+}, {
+	"country": "Taiwan",
+	"visits": 338
+}, {
+	"country": "Poland",
+	"visits": 328
+}];
+
 </script>
 <!-- END JAVASCRIPTS -->
 </body>

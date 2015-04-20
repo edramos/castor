@@ -22,9 +22,12 @@ public class Dates {
 	}
 	
 	public static String stringToStringFechaCorta(String date){
-		String[] fechas = date.split("-");
-		
-		return fechas[2] + "/" + fechas[1] + "/" + fechas[0];
+		if(!date.equals("")){
+			String[] fechas = date.split("-");		
+			return fechas[2] + "/" + fechas[1] + "/" + fechas[0];
+		}else{
+			return "";
+		}
 	}
 	
 	public static java.sql.Date stringToDate(String date, String format){

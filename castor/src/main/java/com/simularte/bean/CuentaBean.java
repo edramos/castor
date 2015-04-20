@@ -31,6 +31,12 @@ public class CuentaBean {
 	private String fechaCreacion;
 	private String estado;
 	
+	//Chart
+	private String fechaOperacion;
+	private String fechaVencePagar;
+	private String montoCobrar;
+	private String montoPagar;
+	
 	
 	
 	public String getAvance() {
@@ -182,5 +188,29 @@ public class CuentaBean {
 	}
 	public void setCobrar(String cobrar) {
 		this.cobrar = cobrar;
+	}
+	public String getFechaVencePagar() {
+		return fechaVencePagar;
+	}
+	public void setFechaVencePagar(String fechaVencePagar) {
+		this.fechaVencePagar = fechaVencePagar;
+	}
+	public String getMontoCobrar() {
+		return montoCobrar;
+	}
+	public void setMontoCobrar(String montoCobrar) {
+		this.montoCobrar = montoCobrar;
+	}
+	public String getMontoPagar() {
+		return montoPagar;
+	}
+	public void setMontoPagar(String montoPagar) {
+		this.montoPagar = montoPagar;
+	}
+	public String getFechaOperacion() {
+		return fechaOperacion;
+	}
+	public void setFechaOperacion(String fechaOperacion) {
+		this.fechaOperacion = fechaOperacion;
 	}
 }

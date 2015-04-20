@@ -64,12 +64,14 @@ public class LibroServiceImpl implements LibroService{
 				Factura facturaY = em.merge(facturaX);
 				
 				facturaY.setEstado("Cancelado");
+				facturaY.setFechaCancelacion(Dates.dateCreacion());
 			}
 			if(dlb.getTipoOperacion().equals("Detraccion")){
 				Factura facturaX = em.find(Factura.class, dlb.getIdFactura());
 				Factura facturaY = em.merge(facturaX);
 				
 				facturaY.setEstadoDetraccion("Cancelado");
+				facturaY.setFechaCancelacionDetraccion(Dates.dateCreacion());
 			}
 			
 			result = true;

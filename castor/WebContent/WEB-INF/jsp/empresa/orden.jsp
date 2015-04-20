@@ -160,7 +160,9 @@ function listarFacturasCobrar(idOrdenTemp){
  		dataType: 'json',
  		data: '',
  		success: function(facturasCobrar){ 			
- 			initFacturasCobrar(facturasCobrar);
+ 			if(facturasCobrar.length != 0){
+ 				initFacturasCobrar(facturasCobrar);
+ 			}
  		}
 	});
 }
@@ -195,6 +197,7 @@ function listarCuentasCobrar(idOrdenTemp){
  		dataType: 'json',
  		data: '',
  		success: function(cuentascobrar){
+ 			//alert(cuentascobrar.length);
  			initClienteCuentasCobrar(cuentascobrar);	 	        
  		},
  		complete: function() {	 			

@@ -1,7 +1,11 @@
 package com.simularte.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.simularte.bean.CuentaBean;
 import com.simularte.model.Empresa;
 import com.simularte.model.Perfil;
 import com.simularte.model.Usuario;
@@ -17,7 +22,43 @@ import com.simularte.util.Dates;
 @Service
 public class UserServiceImpl implements UserService{
 
-	@PersistenceContext EntityManager em;
+	@PersistenceContext 
+	EntityManager em;
+	
+	@SuppressWarnings("unchecked")
+	public List<CuentaBean> getCuentas(HttpServletRequest req){
+		List<CuentaBean> cuentas = new ArrayList<CuentaBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT c.idcuenta, c.fechavencimiento, c.monto, c.tipo "
+				+ "FROM cuenta c "
+				+ "INNER JOIN orden o ON c.idorden = o.idorden "
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' ORDER BY c.fechavencimiento ASC");
+		
+		List<Object[]> rows01 = q01.getResultList();
+		
+		//Double sumCobrar = 0.0;
+		//Double sumPagar = 0.0;
+		
+		for(int x = 0; x < rows01.size(); x++){
+			Object[] obj = rows01.get(x);
+			CuentaBean cb = new CuentaBean();
+			
+			cb.setFechaOperacion(obj[1].toString());
+			
+			if(obj[3].toString().equals("cobro")){
+				cb.setMontoCobrar(obj[2].toString());
+				cb.setMontoPagar("");
+			}else{
+				cb.setMontoPagar(obj[2].toString());
+				//cb.setMontoCobrar(cuentas.get(x - 1).getMontoCobrar());
+				cb.setMontoCobrar("");
+			}
+			
+			cuentas.add(cb);
+		}
+		
+		return cuentas;
+	}
 	
 	@Transactional
 	public boolean crearCuenta(Usuario usuario){

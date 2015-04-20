@@ -19,9 +19,8 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 			<tr class="heading">
-				<th>N° Factura</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th>
-				<th width="10%">Detraccion</th><th>%</th><th width="15%">Estado Detra.</th><th>Cobrar</th>
-				<th>Estado Factura</th><th>Vence</th><th>Emitido</th><th>Cobrado</th><th>Acciones</th>
+				<th>N°</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th><th>Cobrar</th><th>Estado D.</th>
+				<th>Estado F.</th><th>Emitido</th><th>Pago D.</th><th>Pago F.</th>
 			</tr>
 			</thead>
 			<tbody id="viewDatosFactura">
@@ -54,10 +53,10 @@ function initFacturasCobrar(facturasCobrar){
 	});
 
 	$('#viewDatosFactura').html(html);
-	$('#viewDatosFactura').append('<tr style="text-align:right;">'+
-			'<td style="text-align:left;"><b>TOTAL</b></td>'+
+	$('#viewDatosFactura').append('<tr style="text-align:right;font-weight: bold;">'+
+			'<td style="text-align:left;font-weight:bold;">TOTAL</td>'+
 			'<td>'+ facturasCobrar[facturasCobrar.length - 1].totalMonto +'</td><td>'+ facturasCobrar[facturasCobrar.length - 1].totalIgv +'</td><td>'+ facturasCobrar[facturasCobrar.length - 1].totalConIgv +'</td>'+
-			'<td>'+ facturasCobrar[facturasCobrar.length - 1].totalDetraccion +'</td><td></td><td></td><td>'+ facturasCobrar[facturasCobrar.length - 1].totalCobrar +'</td><td></td>'+
+			'<td>'+ facturasCobrar[facturasCobrar.length - 1].totalDetraccion +'</td><td>'+ facturasCobrar[facturasCobrar.length - 1].totalCobrar +'</td><td></td><td></td><td></td><td></td><td></td>'+
 			'</tr>');
 }
 </script>
@@ -67,15 +66,13 @@ function initFacturasCobrar(facturasCobrar){
 	<td>{{subTotal}}</td>
 	<td>{{igv}}</td>
 	<td>{{conIgv}}</td>
-	<td>{{montoDetraccion}}</td>
-	<td>{{detraccion}}%</td>
-	<td style="text-align:center;">{{estadoDetraccion}}</td>
+	<td>{{montoDetraccion}} ({{detraccion}}%)</td>
 	<td>{{cobrarFactura}}</td>
+	<td style="text-align:center;">{{estadoDetraccion}}</td>
 	<td style="text-align:center;">{{estado}}</td>
-	<td>06/04/2015</td>
-	<td>06/04/2015</td>
-	<td>06/04/2015</td>
-	<td><button id="btnCrearFactura_{{idCuenta}}" type="button" class="eventBtn btn yellow btn-xs">Emitir Factura</button></td>
+	<td style="text-align:center;">{{fechaEmision}}</td>
+	<td style="text-align:center;">{{fechaCancelacionDetraccion}}</td>
+	<td style="text-align:center;">{{fechaCancelacion}}</td>
 </tr>
 </script>
 <script id="templateCobrosCliente" type="text/x-handlebars-template">

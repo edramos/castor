@@ -22,13 +22,11 @@ import com.simularte.bean.OrdenBean;
 import com.simularte.model.Cliente;
 import com.simularte.model.Cuenta;
 import com.simularte.model.Empresa;
-import com.simularte.model.Factura;
 import com.simularte.model.Orden;
 import com.simularte.model.Proveedor;
 import com.simularte.model.Subcontrato;
 import com.simularte.util.Dates;
 import com.simularte.util.Formatos;
-import com.simularte.util.Valores;
 
 @Service
 public class OrdenServiceImpl implements OrdenService {
@@ -161,13 +159,15 @@ public class OrdenServiceImpl implements OrdenService {
 				}
 			}
 			
+			
 			for(int x = 0; x < cobros.size(); x++){	
 				cobros.get(x).setCreadoPor((Integer)session.getAttribute("idUser"));
 				cobros.get(x).setFechaCreacion(Dates.fechaCreacion());
 				cobros.get(x).setEstado("enabled");
 				em.persist(cobros.get(x));
 				
-				Factura factura = new Factura();
+				//GENERAR LAS FACTURAS (PROBABLEMENTE YA NO SE USE ASI)
+				/*Factura factura = new Factura();
 				
 				factura.setFacturaCuenta(cobros.get(x));
 				factura.setSubTotal(cobros.get(x).getMonto().subtract(cobros.get(x).getMonto().multiply(Valores.IGV)));
@@ -193,7 +193,7 @@ public class OrdenServiceImpl implements OrdenService {
 				
 				Factura facturaY = em.merge(factura);
 				
-				facturaY.setCodigo(String.format("%05d", factura.getIdFactura()));
+				facturaY.setCodigo(String.format("%05d", factura.getIdFactura()));*/
 			}
 			
 			
@@ -302,6 +302,7 @@ public class OrdenServiceImpl implements OrdenService {
 						
 			//El Array de Subcontratos se graba, con JSON esto ya seria directo aqui
 			for(int x = 0; x < cuenta_prov.size(); x++){	
+				cuenta_prov.get(x).setCuentaOrden(orden);
 				cuenta_prov.get(x).setCreadoPor((Integer)session.getAttribute("idUser"));
 				cuenta_prov.get(x).setFechaCreacion(Dates.fechaCreacion());
 				cuenta_prov.get(x).setEstado("enabled");

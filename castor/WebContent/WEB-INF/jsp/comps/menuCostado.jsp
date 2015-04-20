@@ -30,7 +30,7 @@
 				<span class="arrow "></span>
 				</a>
 				<ul class="sub-menu">
-					<li><a href="toCrearFactura"><span class="badge badge-warning">new</span>Crear Factura</a></li>
+					<li><a href="toCrearFactura"><span class="badge badge-warning">new</span>Emitir Factura</a></li>
 					<li><a href="#">Buscar Factura</a></li>
 				</ul>
 			</li>
