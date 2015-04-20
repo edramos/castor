@@ -190,4 +190,29 @@ public class FacturaServiceImpl implements FacturaService{
 		
 		return facturas;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FacturaBean> getFacturasDetraccionSuggested(String codigoFactura, HttpServletRequest req){
+		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.montodetraccion FROM factura f "
+				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
+				+ "INNER JOIN orden o ON o.idorden = c.idorden "
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estadodetraccion = 'Pendiente'");
+		
+		List<Object[]> rows = q01.getResultList();
+		
+		for(int x = 0; x < rows.size(); x++){
+			Object[] obj = rows.get(x);
+			FacturaBean fb = new FacturaBean();
+			
+			fb.setIdFactura((Integer)obj[0]);
+			fb.setCodigo(obj[1].toString());
+			fb.setMontoDetraccion(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[2].toString())));
+			
+			facturas.add(fb);
+		}
+		
+		return facturas;
+	}
 }

@@ -48,7 +48,7 @@
 					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
 						<option value="1">BCP Dolares</option>
 						<option value="2">BCP Soles</option>
-						<option value="3">BCR Soles</option>
+						<option value="3">Banco Nacion</option>
 					</select>
 					<a id="btnToCrearDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-plus"></i> Nuevo </a>							
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
@@ -65,7 +65,7 @@
 					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
 						<option value="1">BCP Dolares</option>
 						<option value="2">BCP Soles</option>
-						<option value="3">BCR Soles</option>
+						<option value="3">Banco Nacion</option>
 					</select>
 					<a id="btnEditarDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-pencil"></i> Editar </a>
 					<a id="btnCancelarDetalleLibro" class="btn red-sunglo btn-sm eventBtn"><i class="fa fa-close"></i> Cancelar </a>							
@@ -89,7 +89,7 @@
 					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
 						<option value="1">BCP Dolares</option>
 						<option value="2">BCP Soles</option>
-						<option value="3">BCR Soles</option>
+						<option value="3">Banco Nacion</option>
 					</select>
 					<a id="btnCrearDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-check"></i> Grabar </a>
 					<a id="btnCancelarCrearCajaBanco" class="btn red-sunglo btn-sm eventBtn"><i class="fa fa-close"></i> Cancelar </a>							
@@ -117,6 +117,7 @@
 								<div class="col-md-3">
 									<select id="sltTransaccion" class="form-control" name="tipoOperacion">
 										<option value="Cobranza Venta/Servicio">Cobranza Venta/Servicio</option>
+										<option value="Detraccion">Detraccion</option>
 										<option value="Otra cobranza">Otra cobranza</option>
 										<option value="Transferencia cuenta">Transferencia cuenta</option>
 										<option value="Interese ganado">Interes ganado</option>
@@ -230,20 +231,24 @@ jQuery(document).ready(function() {
 	listarSelectorClientes('sltCliente');
 	listarCaja();
 	suggestFactura();
+	
+	$('#sltCuentaBanco').change(function(){
+		listarCaja();
+	});
 });
 </script>
 <script>
 function suggestFactura(){
-	var empleados = new Bloodhound({
+	var facturas = new Bloodhound({
 		datumTokenizer: function (datum) {return Bloodhound.tokenizers.whitespace(datum.value);},
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
 		remote: 'ajaxListarFacturaSuggest?q=%QUERY'
 	});
-	empleados.initialize();
+	facturas.initialize();
 	
 	$('#txtFactura').typeahead({minLength: 1,}, {
 		displayKey: 'codigo',
-		source: empleados.ttAdapter(),
+		source: facturas.ttAdapter(),
 		templates: {
 			suggestion: Handlebars.compile([
 				'{{codigo}} - {{conIgv}}',
@@ -258,6 +263,32 @@ function suggestFactura(){
 		$('#txtCobrarFactura').val(datum['cobrarFactura']);
 		$('#txtDetraccion').val(datum['montoDetraccion']);
 		
+		mostrarOrden(datum['idFactura']);
+	});
+}
+function suggestFacturaDetraccion(){
+	var facturas = new Bloodhound({
+		datumTokenizer: function (datum) {return Bloodhound.tokenizers.whitespace(datum.value);},
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		remote: 'ajaxListarFacturaDetraccionSuggest?q=%QUERY'
+	});
+	facturas.initialize();
+	
+	$('#txtFactura').typeahead({minLength: 1,}, {
+		displayKey: 'codigo',
+		source: facturas.ttAdapter(),
+		templates: {
+			suggestion: Handlebars.compile([
+				'{{codigo}} - {{montoDetraccion}}',
+			].join(''))
+		}
+	});
+		
+	$('#txtFactura').on('typeahead:selected', function (e, datum) {   
+		$('#hdnIdFactura').remove();
+		$('#divSecondRow').append("<input id='hdnIdFactura' type='hidden' name='idFactura' value='" + datum['idFactura'] + "'/>");
+		$('#txtMonto').val(datum['montoDetraccion']);
+			
 		mostrarOrden(datum['idFactura']);
 	});
 }
@@ -280,7 +311,7 @@ function mostrarOrden(idFactura){
 <script> 
 $(function($){
 	var locations = {
-	    'Ingreso': ['Cobranza Venta/Servicio', 'Otra cobranza', 'Transferencia cuenta', 'Interes ganado'],
+	    'Ingreso': ['Cobranza Venta/Servicio', 'Detraccion', 'Otra cobranza', 'Transferencia cuenta', 'Interes ganado'],
 		'Egreso': ['Pago Proveedor', 'Pago Planilla/Beneficios', 'Compra', 'Tributo', 'Transferencia cta.', 'Reembolso Caja Chica', 'Gasto Financiero'],
 	}
 	
@@ -314,9 +345,15 @@ $(function($){
 			listarSelectorClientes('sltCliente');
 			suggestFactura();
 			break;
+		case 'Detraccion':
+			formDynamic('#templateDetraccion');
+			listarSelectorClientes('sltCliente');
+			suggestFacturaDetraccion();
+			break;
 		case 'Otra cobranza':
 			formDynamic('#templateOtraCobranza');
 			listarSelectorClientes('sltCliente');
+			suggestFactura();
 			break;
 		case 'Transferencia cuenta':
 			formDynamic('#templateTransferenciaCuentaIngreso');
@@ -438,6 +475,9 @@ function listarCaja(){
 function crearDetalleLibro(){
 	if($('#sltTransaccion').val() == "Cobranza Venta/Servicio"){
 		$('#txtCobrarFactura').val(Number($('#txtCobrarFactura').val().replace(/[^0-9\.]+/g,"")));
+	}
+	if($('#sltTransaccion').val() == "Detraccion"){
+		$('#txtMonto').val(Number($('#txtMonto').val().replace(/[^0-9\.]+/g,"")));
 	}
 	$.ajax({
  		url: 'ajaxCrearRegistroLibro',
@@ -745,6 +785,18 @@ function mostrarDetalle(idRegistro){
 </div>
 <div class="col-md-2 dynamic">		
 	<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>	
+</div>
+</script>
+<script id="templateDetraccion" type="text/x-handlebars-template">
+<div class="col-md-3 dynamic">	
+	<select id="sltCliente" class="form-control" name="idCliente"></select>
+</div>
+<div class="col-md-2 dynamic">		
+	<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>	
+</div>
+<div class="col-md-3 dynamic">
+	<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo"/>
+	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>	
 </div>
 </script>
 <script id="templateTransferenciaCuentaIngreso" type="text/x-handlebars-template">

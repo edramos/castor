@@ -213,14 +213,21 @@ jQuery(document).ready(function() {
 	<td>{{conIgv}}</td>
 	<td>{{montoDetraccion}} ({{detraccion}}%)</td>
 	<td>{{cobrarFactura}}</td>
-	<td>{{estadoDetraccion}}</td>
-	<td>{{estado}}</td>
+	<td>{{#ifDet estadoDetraccion Cancelado}}<span class="label label-success">{{estadoDetraccion}}</span>{{else}}{{estadoDetraccion}}{{/ifDet}}</td>
+	<td>{{#ifFactura estado Cancelado}}<span class="label label-success">{{estado}}</span>{{else}}{{estado}}{{/ifFactura}}</td>
 	<td>{{fechaEmision}}</td>
 </tr>
 </script>
 <script>
 function listarFacturas(){
 	var html = '';
+	Handlebars.registerHelper('ifFactura', function(estado, v2, options){
+		  if(estado === 'Cancelado'){return options.fn(this);}return options.inverse(this);
+	});
+	Handlebars.registerHelper('ifDet', function(estadoDetraccion, v2, options){
+		  if(estadoDetraccion === 'Cancelado'){return options.fn(this);}return options.inverse(this);
+	});
+	
 	$.ajax({
  		url: 'cargarFacturasEmpresa',
  		type: 'post',
