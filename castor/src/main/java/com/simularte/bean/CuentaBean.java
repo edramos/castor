@@ -28,6 +28,7 @@ public class CuentaBean {
 	private String avance;
 	
 	private Integer creadoPor;
+	private String nombreCreador;
 	private String fechaCreacion;
 	private String estado;
 	
@@ -212,5 +213,11 @@ public class CuentaBean {
 	}
 	public void setFechaOperacion(String fechaOperacion) {
 		this.fechaOperacion = fechaOperacion;
+	}
+	public String getNombreCreador() {
+		return nombreCreador;
+	}
+	public void setNombreCreador(String nombreCreador) {
+		this.nombreCreador = nombreCreador;
 	}
 }

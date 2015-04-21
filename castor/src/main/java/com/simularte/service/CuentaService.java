@@ -10,5 +10,5 @@ public interface CuentaService {
 
 	List<CuentaBean> listarCuentas(String tipo, Integer idOrden, HttpServletRequest req);
 	CuentaBean listarDetalleCuenta(int idCuenta, HttpServletRequest req);
-	List<CuentaBean> listarCuentasFactura(int idOrder, HttpServletRequest req);
+	List<CuentaBean> listarCuentasFactura(int idOrder, String tipo, HttpServletRequest req);
 }

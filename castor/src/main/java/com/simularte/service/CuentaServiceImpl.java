@@ -41,6 +41,12 @@ public class CuentaServiceImpl implements CuentaService {
 		
 		Orden orden = em.find(Orden.class, cuenta.getCuentaOrden().getIdOrden());
 		
+		Query q02 = em.createNativeQuery("SELECT p.primernombre, p.apellidopaterno FROM perfil p "
+				+ "INNER JOIN usuario u ON p.idusuario = u.idusuario WHERE u.idusuario = '" + cuenta.getCreadoPor() + "'");
+		
+		Object[] us = (Object[])q02.getSingleResult();
+		cb.setNombreCreador(us[0].toString() + " " + us[1].toString());
+		
 		if(orden.getTipoTrabajo().equals("Estudio")){
 			cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1))) + "  (10%)");
 			cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1)))));
@@ -50,16 +56,19 @@ public class CuentaServiceImpl implements CuentaService {
 		}
 		
 		cb.setFechaVencimiento(Dates.fechaCorta(cuenta.getFechaVencimiento()));
+		cb.setFechaCreacion(Dates.fechaHoraEspaniol(cuenta.getFechaCreacion(), ""));
 		
 		return cb;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<CuentaBean> listarCuentasFactura(int idOrder, HttpServletRequest req) {
+	public List<CuentaBean> listarCuentasFactura(int idOrder, String tipo, HttpServletRequest req) {
 		List<CuentaBean> lcb = new ArrayList<CuentaBean>();
 		
-		Query q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND estado != 'Facturado'", Cuenta.class);
+		Query q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND tipo = :tipo AND estado != 'Facturado'", Cuenta.class);
 		q01.setParameter("idOrden", idOrder);		
+		q01.setParameter("tipo", tipo);
+		
 		List<Cuenta> cuentas = q01.getResultList();
 		
 		for(int i = 0; i < cuentas.size(); i++){
@@ -68,7 +77,8 @@ public class CuentaServiceImpl implements CuentaService {
 			
 			cb.setIdCuenta(c.getIdCuenta());
 			cb.setMonto(Formatos.BigBecimalToString(c.getMonto()));
-			
+			cb.setFechaVencimiento(Dates.fechaCorta(c.getFechaVencimiento()));
+			System.out.println(cb.getFechaVencimiento());
 			lcb.add(cb);
 		}
 		

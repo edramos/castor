@@ -51,7 +51,7 @@ public class Dates {
 	
 	public static String fechaCorta(Date date){
 		if(date != null){
-			SimpleDateFormat formatoDiaNumero = new SimpleDateFormat("d", new Locale("es", "PE"));
+			SimpleDateFormat formatoDiaNumero = new SimpleDateFormat("dd", new Locale("es", "PE"));
 			SimpleDateFormat formatoMes = new SimpleDateFormat( "MM", new Locale("es", "PE"));
 			SimpleDateFormat formatoAnio = new SimpleDateFormat("yyyy", new Locale("es", "PE"));
 			

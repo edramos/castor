@@ -30,7 +30,7 @@
 	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption"><i class="icon-share"></i>Crear Factura</div>
+				<div class="caption"><i class="icon-share"></i>Emitir Factura</div>
 				<div class="actions">							
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>
@@ -44,8 +44,8 @@
 							<div class="form-group">
 								<div class="col-md-12">
 									<select id="sltTipoIngreso" class="form-control" name="operacion">
-										<option value="OT">Orden de Trabajo</option>
 										<option value="Otros">Otros</option>
+										<option value="OT">Orden de Trabajo</option>
 									</select>
 								</div>
 							</div>
@@ -63,7 +63,7 @@
 							<div class="form-group">
 								<div id="divSltCPC" class="col-md-12">
 									<select id="sltCuentaPorCobrar" class="form-control" name="idCuenta">
-										<option value="">Seleccione Cuenta</option>
+										<option value="">Seleccione Cuenta Cobrar</option>
 									</select>
 								</div>
 							</div>
@@ -131,10 +131,10 @@
 								<span class="spanLabel">Vence</span><span id="spnVence" class="value"></span>
 							</div>
 							<div class="summaryBodyItem">
-								<span class="spanLabel">Creador</span><span id="spnCreador" class="value"></span>
+								<span class="spanLabel">Creador (Cuenta)</span><span id="spnNombreCreadorCuenta" class="value"></span>
 							</div>
 							<div class="summaryBodyItem">
-								<span class="spanLabel"></span><span id="#" class="value"></span>
+								<span class="spanLabel">Creacion (Cuenta)</span><span id="spnFechaCrecionCuenta" class="value"></span>
 							</div>
 						</div>
 					
@@ -369,7 +369,7 @@ $('#sltTipoIngreso').change(function(){
 		listarOT();
 		$('#sltOT').on('change', function(){
 			$('#sltCuentaPorCobrar').remove();
-			$('#divSltCPC').append('<select id="sltCuentaPorCobrar" class="form-control" name="operacion"><option value="">Seleccione Cuenta</option></select>');
+			$('#divSltCPC').append('<select id="sltCuentaPorCobrar" class="form-control" name="operacion"><option value="">Seleccione Cuenta Cobrar</option></select>');
 			var idOrden = $('#sltOT option:selected').val();
 			
 			listarDetalleFactura(idOrden);
@@ -382,38 +382,59 @@ $('#sltTipoIngreso').change(function(){
 	}
 });
 function listarDetalleCuenta(idCuenta){
-	$.ajax({
- 		url: 'ajaxDetalleCuenta-' + idCuenta,
- 		type: 'post',
- 		dataType: 'json',
- 		data: '',
- 		success: function(cuenta){
- 			$('#spnMonto').text(cuenta.monto);
- 			$('#spnIgv').text(cuenta.igv);
- 			$('#spnConIgv').text(cuenta.conIgv);
- 			$('#spnDetraccion').text(cuenta.montoDetraccion);
- 			$('#spnCobrar').text(cuenta.cobrar);
- 			$('#spnVence').text(cuenta.fechaVencimiento);
- 		}
- 	});
+	if(idCuenta != ""){
+		$.ajax({
+	 		url: 'ajaxDetalleCuenta-' + idCuenta,
+	 		type: 'post',
+	 		dataType: 'json',
+	 		data: '',
+	 		success: function(cuenta){
+	 			$('#spnMonto').text(cuenta.monto);
+	 			$('#spnIgv').text(cuenta.igv);
+	 			$('#spnConIgv').text(cuenta.conIgv);
+	 			$('#spnDetraccion').text(cuenta.montoDetraccion);
+	 			$('#spnCobrar').text(cuenta.cobrar);
+	 			$('#spnVence').text(cuenta.fechaVencimiento);
+	 			$('#spnNombreCreadorCuenta').text(cuenta.nombreCreador);
+	 			$('#spnFechaCrecionCuenta').text(cuenta.fechaCreacion);
+	 		}
+	 	});
+	}
 }
 function listarDetalleFactura(idOrden){
-	$.ajax({
- 		url: 'ajaxObtenerInformacionOrden-' + idOrden,
- 		type: 'post',
- 		dataType: 'json',
- 		data: '',
- 		success: function(orden){
- 			$('#spnNombreCliente').text(orden.nombreCliente);
- 			$('#spnNombre').text(orden.nombre);
- 			if(orden.tipoOrden == 'OC'){
- 				$('#spnTipo').text('Obra Civil');	
- 			}else{
- 				$('#spnTipo').text('Trabajos Varios');	
- 			}
- 			$('#spnTrabajo').text(orden.tipoTrabajo);
- 		}
- 	});
+	if(idOrden != ""){
+		$.ajax({
+	 		url: 'ajaxObtenerInformacionOrden-' + idOrden,
+	 		type: 'post',
+	 		dataType: 'json',
+	 		data: '',
+	 		success: function(orden){
+	 			$('#spnNombreCliente').text(orden.nombreCliente);
+	 			$('#spnNombre').text(orden.nombre);
+	 			if(orden.tipoOrden == 'OC'){
+	 				$('#spnTipo').text('Obra Civil');	
+	 			}else{
+	 				$('#spnTipo').text('Trabajos Varios');	
+	 			}
+	 			$('#spnTrabajo').text(orden.tipoTrabajo);
+	 		}
+	 	});
+	}
+}
+function listarCuentasPorCobrar(idOrden){
+	if(idOrden != ""){
+		$.ajax({
+	 		url: 'ajaxListarCuentasFactura-cobro-' + idOrden,
+	 		type: 'post',
+	 		dataType: 'json',
+	 		data: '',
+	 		success: function(cuentascobrar){
+	 			$.each(cuentascobrar, function(i, cuenta){
+	 				$('#sltCuentaPorCobrar').append('<option value="' + cuenta.idCuenta + '">' + cuenta.monto + '&nbsp;&nbsp(' + cuenta.fechaVencimiento + ')</option>');
+	 			});	 	        
+	 		}
+	 	});
+	}
 }
 function listarOT(){
 	$.ajax({
@@ -428,19 +449,7 @@ function listarOT(){
  		}
  	});
 }
-function listarCuentasPorCobrar(idOrden){
-	$.ajax({
- 		url: 'ajaxListarCuentasFactura-cobro-' + idOrden,
- 		type: 'post',
- 		dataType: 'json',
- 		data: '',
- 		success: function(cuentascobrar){
- 			$.each(cuentascobrar, function(i, cuenta){
- 				$('#sltCuentaPorCobrar').append('<option value="' + cuenta.idCuenta + '">' + cuenta.monto + '</option>');
- 			});	 	        
- 		}
- 	});
-}
+
 </script>
 </body>
 </html>
