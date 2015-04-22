@@ -19,7 +19,7 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 			<tr class="heading">
-				<th>N°</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th><th>Cobrar</th><th>Estado D.</th>
+				<th>N° F.</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th><th>Cobrar</th><th>Estado D.</th>
 				<th>Estado F.</th><th>Emitido</th><th>Pago D.</th><th>Pago F.</th>
 			</tr>
 			</thead>
@@ -45,6 +45,12 @@ function initClienteCuentasCobrar(cuentascobrar){
 }
 function initFacturasCobrar(facturasCobrar){
 	var html = '';
+	Handlebars.registerHelper('ifFactura', function(estado, v2, options){
+		  if(estado === 'Cancelado'){return options.fn(this);}return options.inverse(this);
+	});
+	Handlebars.registerHelper('ifDet', function(estadoDetraccion, v2, options){
+		  if(estadoDetraccion === 'Cancelado'){return options.fn(this);}return options.inverse(this);
+	});
 	
 	$.each(facturasCobrar, function(i, factura){
 		var source = $("#templateFacturasCobrar").html();
@@ -68,8 +74,8 @@ function initFacturasCobrar(facturasCobrar){
 	<td>{{conIgv}}</td>
 	<td>{{montoDetraccion}} ({{detraccion}}%)</td>
 	<td>{{cobrarFactura}}</td>
-	<td style="text-align:center;">{{estadoDetraccion}}</td>
-	<td style="text-align:center;">{{estado}}</td>
+	<td style="text-align:center;">{{#ifDet estadoDetraccion Cancelado}}<span class="label label-success">{{estadoDetraccion}}</span>{{else}}{{estadoDetraccion}}{{/ifDet}}</td>
+	<td style="text-align:center;">{{#ifFactura estado Cancelado}}<span class="label label-success">{{estado}}</span>{{else}}{{estado}}{{/ifFactura}}</td>
 	<td style="text-align:center;">{{fechaEmision}}</td>
 	<td style="text-align:center;">{{fechaCancelacionDetraccion}}</td>
 	<td style="text-align:center;">{{fechaCancelacion}}</td>

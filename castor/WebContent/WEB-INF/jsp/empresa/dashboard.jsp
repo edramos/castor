@@ -45,8 +45,8 @@
 							<a title="" data-original-title="" href="javascript:;" class="fullscreen"></a>	
 						</div>
 					</div>
-					<div class="portlet-body">
-						<div id="divChart" class="chart" style="height: 250px;"></div>
+					<div class="portlet-body form">
+						<div id="divChart" class="chart" style="height: 300px;"></div>
 					</div>
 				</div>
 				
@@ -270,7 +270,7 @@ jQuery(document).ready(function() {
 	Metronic.init(); // init metronic core componets
     Layout.init(); // init layout  
     
-    AmCharts.ready(function(){
+    /* AmCharts.ready(function(){
     	var chart = new AmCharts.AmSerialChart();
     	var chartData = AmCharts.loadJSON('getChartDashboard');
     	chart.dataProvider = chartData;
@@ -293,82 +293,77 @@ jQuery(document).ready(function() {
    	  	graph1.lineThickness = 2;
    	  	graph1.lineAlpha = 0.5;
    	  	chart.addGraph(graph1);
+   	  	
+   	  	var graph2 = new AmCharts.AmGraph();
+   	 	graph2.valueField = "saldo";
+   		graph2.bullet = "round";
+   		graph2.bulletBorderColor = "#FFFFFF";
+   		graph2.bulletBorderThickness = 2;
+   		graph2.lineThickness = 2;
+   		graph2.lineAlpha = 0.5;
+   	  	chart.addGraph(graph2);
     	
    	 	chart.categoryAxis.parseDates = false;
     	
     	chart.write('divChart');
     });
+    */
     
-    AmCharts.loadJSON = function(url) {
-    	if(window.XMLHttpRequest){
-  		  	// IE7+, Firefox, Chrome, Opera, Safari
-  			var request = new XMLHttpRequest();
-  	  }else{
-  	    	// code for IE6, IE5
-  	    	var request = new ActiveXObject('Microsoft.XMLHTTP');
-  	  }
-  	  request.open('GET', url, false);
-  	  request.send();
-
-  	  // parse adn return the output
-  	  return eval(request.responseText);
-  	};
 });
 </script>
-<script>
-var chartData = [{
-	"country": "USA",
-	"visits": 4252
-}, {
-	"country": "China",
-	"visits": 1882
-}, {
-	"country": "Japan",
-	"visits": 1809
-}, {
-	"country": "Germany",
-	"visits": 1322
-}, {
-	"country": "UK",
-	"visits": 1122
-}, {
-	"country": "France",
-	"visits": 1114
-}, {
-	"country": "India",
-	"visits": 984
-}, {
-	"country": "Spain",
-	"visits": 711
-}, {
-	"country": "Netherlands",
-	"visits": 665
-}, {
-	"country": "Russia",
-	"visits": 580
-}, {
-	"country": "South Korea",
-	"visits": 443
-}, {
-	"country": "Canada",
-	"visits": 441
-}, {
-	"country": "Brazil",
-	"visits": 395
-}, {
-	"country": "Italy",
-	"visits": 386
-}, {
-	"country": "Australia",
-	"visits": 384
-}, {
-	"country": "Taiwan",
-	"visits": 338
-}, {
-	"country": "Poland",
-	"visits": 328
-}];
+<script type="text/javascript">
+AmCharts.loadJSON = function(url) {
+	if(window.XMLHttpRequest){
+		  	// IE7+, Firefox, Chrome, Opera, Safari
+			var request = new XMLHttpRequest();
+	  }else{
+	    	// code for IE6, IE5
+	    	var request = new ActiveXObject('Microsoft.XMLHTTP');
+	  }
+	  request.open('GET', url, false);
+	  request.send();
 
+	  // parse adn return the output
+	  return eval(request.responseText);
+	};
+	AmCharts.makeChart("divChart",
+		{
+			"type": "serial",
+			"pathToImages": "http://cdn.amcharts.com/lib/3/images/",
+			"categoryField": "fechaOperacion",
+			"dataDateFormat": "YYYY-MM-DD",
+			"categoryAxis": {
+				"parseDates": true
+			},
+			"chartCursor": {},
+			"chartScrollbar": {},
+			"trendLines": [],
+			"graphs": [
+				{
+					"bullet": "round",
+					"id": "AmGraph-1",
+					"title": "Ctas x Cobrar",
+					"valueField": "montoCobrar"
+				},
+				{
+					"bullet": "square",
+					"id": "AmGraph-2",
+					"title": "Ctas x Pagar",
+					"valueField": "montoPagar"
+				},
+				{
+					"bullet": "square",
+					"id": "AmGraph-3",
+					"title": "Saldo",
+					"valueField": "saldo"
+				}
+			],
+			"guides": [],
+			"allLabels": [],
+			"balloon": {},
+			"dataProvider": AmCharts.loadJSON('getChartDashboard')
+		}
+	);
 </script>
 <!-- END JAVASCRIPTS -->
 </body>

@@ -37,6 +37,7 @@ public class CuentaBean {
 	private String fechaVencePagar;
 	private String montoCobrar;
 	private String montoPagar;
+	private String saldo;
 	
 	
 	
@@ -219,5 +220,11 @@ public class CuentaBean {
 	}
 	public void setNombreCreador(String nombreCreador) {
 		this.nombreCreador = nombreCreador;
+	}
+	public String getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(String saldo) {
+		this.saldo = saldo;
 	}
 }

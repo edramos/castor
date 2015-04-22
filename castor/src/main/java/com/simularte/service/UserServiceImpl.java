@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService{
 		
 		//Double sumCobrar = 0.0;
 		//Double sumPagar = 0.0;
+		Double saldo = 0.0;
 		
 		for(int x = 0; x < rows01.size(); x++){
 			Object[] obj = rows01.get(x);
@@ -48,11 +49,18 @@ public class UserServiceImpl implements UserService{
 			if(obj[3].toString().equals("cobro")){
 				cb.setMontoCobrar(obj[2].toString());
 				cb.setMontoPagar("");
+				
+				saldo += Double.valueOf(obj[2].toString());
+				
 			}else{
 				cb.setMontoPagar(obj[2].toString());
 				//cb.setMontoCobrar(cuentas.get(x - 1).getMontoCobrar());
 				cb.setMontoCobrar("");
+				
+				saldo -= Double.valueOf(obj[2].toString());
 			}
+			
+			cb.setSaldo(saldo.toString());
 			
 			cuentas.add(cb);
 		}
