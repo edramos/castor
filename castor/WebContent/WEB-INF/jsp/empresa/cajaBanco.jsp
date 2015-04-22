@@ -13,7 +13,6 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/typeahead/typeahead.css">
 <!-- END PAGE LEVEL STYLES -->
-
 </head>
 <style>
 .ui-autocomplete{
@@ -741,26 +740,17 @@ function mostrarDetalle(idRegistro){
 </script>
 <script id="templatePagoProveedor" type="text/x-handlebars-template">
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<select id="sltProveedor" class="form-control" name="idProveedor"></select>
-		</div>
-	</div>
+	<select id="sltProveedor" class="form-control" name="idProveedor"></select>
+</div>
+<div class="col-md-2 dynamic">
+	<input id="txtFactura" class="form-control" placeholder="Factura" name="factura"/>
 </div>
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtFactura" class="form-control" placeholder="Factura" name="factura"/>
-		</div>
-	</div>
+	<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>
+	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>
 </div>
-<div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>
-			<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>
-		</div>
-	</div>
+<div class="col-md-2 dynamic">
+	<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion"/>	
 </div>
 </script>
 <!-- INGRESOS -->
