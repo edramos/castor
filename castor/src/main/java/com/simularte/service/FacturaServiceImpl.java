@@ -26,16 +26,19 @@ public class FacturaServiceImpl implements FacturaService{
 	EntityManager em;
 	
 	@Transactional
-	public boolean emitirFactura(int idCuenta, String tipo, double detraccion, HttpServletRequest req){
+	public boolean crearFactura(int idCuenta, String tipo, double detraccion, String codigo, HttpServletRequest req){
 		boolean result = false;
 		
 		Cuenta cuenta = em.find(Cuenta.class, idCuenta);
 		Factura factura = new Factura();
 		
-		if(tipo.equals("cobro")){
-			factura.setTipo("Emitida");
+		if(tipo.equals("cobrar")){
+			factura.setTipo("Emitida");		//Emitida o por Cobrar?
+			factura.setEstado("Emitido");
 		}else{
-			factura.setTipo("Recibida");
+			factura.setCodigo(codigo);
+			factura.setTipo("Recibida");	//Recibida o por Pagar?
+			factura.setEstado("Recibido");
 		}
 		factura.setFacturaCuenta(cuenta);			
 		factura.setFechaEmision(Dates.dateCreacion());
@@ -53,20 +56,28 @@ public class FacturaServiceImpl implements FacturaService{
 		
 		factura.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
 		factura.setFechaCreacion(Dates.fechaCreacion());
-		factura.setEstado("Emitido");
 		
+		int idFactura = -1;
+		if(tipo.equals("cobrar")){
+			//Factura facturaY = em.merge(factura);
+			//facturaY.setCodigo(String.format("%05d", factura.getIdFactura()));
+			Query q01 = em.createNativeQuery("SELECT f.idfactura FROM factura f WHERE f.tipo = 'Emitida' ORDER BY f.idfactura DESC LIMIT 1");
+			idFactura = (Integer)q01.getSingleResult();
+			idFactura++;
+			
+		}
+				
 		em.persist(factura);
 		
-		Factura facturaY = em.merge(factura);
-		
-		facturaY.setCodigo(String.format("%05d", factura.getIdFactura()));
+		if(tipo.equals("cobrar")){
+			Factura facturaY = em.merge(factura);
+			facturaY.setCodigo(String.format("%05d", idFactura));
+		}
 		
 		Cuenta cuentaX = em.find(Cuenta.class, idCuenta);
 		Cuenta cuentaY = em.merge(cuentaX);
 		
 		cuentaY.setEstado("Facturado");
-		
-		
 		
 		result = true;
 		

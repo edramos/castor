@@ -48,9 +48,9 @@ hr {
 					<div class="row">
 						
 						<div class="col-md-2">
-							<select id="sltTipoFactura" class="form-control" name="operacion">
-								<option value="Emitir">Emitir</option>
-								<option value="Registrar">Registrar</option>
+							<select id="sltTipoFactura" class="form-control" name="tipo">
+								<option value="cobrar">Emitir</option>
+								<option value="pagar">Registrar</option>
 							</select>							
 						</div>
 						<div id="divSltOT" class="col-md-3">
@@ -174,15 +174,33 @@ jQuery(document).ready(function() {
 	listarFacturas();
 	
 	 $("#btnEmitirFactura").click(function(){
-		 var idCuenta = $('#divSltCuentas option:selected').val();
+		//Despues se podria cambiar la logica para que se use el bean en cambio de las variables en el controller
+		//Porque el codigo de factura podria ser F01-100 y ese guion malogra el ajax con variables
+		 var idCuenta = $('#sltCuentas option:selected').val();
 		 if(idCuenta != ''){
 			var detraArr = $('#spnDetraccion').text().split("  ");
 			var det = detraArr[1].slice(0,-2);
 			var detraccion = det.slice(1);
-         	emitirFactura(idCuenta, detraccion);
+			var tipo = $('#sltTipoFactura option:selected').val();
+			var codigo = $('#txtCodigoFactura').val();	
+			
+         	emitirFactura(idCuenta, tipo, detraccion, codigo);
 		 }
     });
 });
+
+function emitirFactura(idCuenta, tipo, detraccion, codigo){
+	$.ajax({
+ 		url: 'crearFacturaAjax-' + idCuenta + '-' + tipo + '-' + detraccion + '-' + codigo,
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: $('#frmCrearFactura').serialize(),
+ 		success: function(facturas){
+ 			borrarDatos();
+ 			listarFacturas();
+ 		}
+ 	});
+}
 </script>
 <script id="templateResultado" type="text/x-handlebars-template">
 <tr>
@@ -326,25 +344,12 @@ function initTable(){
     });
 }
 </script>
-<script>
-function emitirFactura(idCuenta, detraccion){
-	$.ajax({
- 		url: 'crearFacturaAjax-' + idCuenta + '-cobro-' + detraccion,
- 		type: 'post',
- 		dataType: 'json',
- 		data: $('#frmCrearFactura').serialize(),
- 		success: function(facturas){
- 			borrarDatos();
- 			listarFacturas();
- 		}
- 	});
-}
-</script>
+
 <script>
 $('#sltTipoFactura').change(function(){
 	var value = $('#sltTipoFactura option:selected').val();
 	
-	if(value == "Emitir"){
+	if(value == "cobrar"){
 		$('#txtCodigoFactura').prop('disabled', true);
 		
 		$('#sltOT').remove();
@@ -444,8 +449,7 @@ function listarCuentas(idOrden, tipo){
 	 			$.each(cuentascobrar, function(i, cuenta){
 	 				$('#sltCuentas').append('<option value="' + cuenta.idCuenta + '">' + cuenta.monto + '&nbsp;&nbsp(' + cuenta.fechaVencimiento + ')</option>');
 	 			});	 	        
-	 		},
-	 		async: false
+	 		}
 	 	});
 	}
 }

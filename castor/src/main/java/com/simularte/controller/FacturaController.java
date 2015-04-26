@@ -21,11 +21,12 @@ public class FacturaController {
 	@Autowired
 	FacturaService fs;
 	
-	@RequestMapping(value = "crearFacturaAjax-{idCuenta}-{tipo}-{detraccion}", method = RequestMethod.POST) @ResponseBody
-	public List<FacturaBean> crearFacturaAjax (@PathVariable("idCuenta")int idCuenta, @PathVariable("tipo")String tipo,@PathVariable("detraccion")double detraccion, HttpServletRequest req){
+	@RequestMapping(value = "crearFacturaAjax-{idCuenta}-{tipo}-{detraccion}-{codigo}", method = RequestMethod.POST) @ResponseBody
+	public List<FacturaBean> crearFacturaAjax (@PathVariable("idCuenta")int idCuenta, @PathVariable("tipo")String tipo, 
+			@PathVariable("detraccion")double detraccion, @PathVariable("codigo")String codigo, HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
 		
-		if(fs.emitirFactura(idCuenta, tipo, detraccion, req)){
+		if(fs.crearFactura(idCuenta, tipo, detraccion, codigo, req)){
 			facturas = fs.cargarFacturas(req);
 		}
 		

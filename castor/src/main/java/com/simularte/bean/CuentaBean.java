@@ -35,6 +35,9 @@ public class CuentaBean {
 	//Subcontrato
 	private String scTipoTrabajo;
 	
+	//Factura 
+	private String codigo;
+	
 	//Chart
 	private String fechaOperacion;
 	private String fechaVencePagar;
@@ -235,5 +238,11 @@ public class CuentaBean {
 	}
 	public void setScTipoTrabajo(String scTipoTrabajo) {
 		this.scTipoTrabajo = scTipoTrabajo;
+	}
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 }
