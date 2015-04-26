@@ -179,7 +179,7 @@ function cargarArchivos(idOrdenTemp){
 }
 function extraerInformacionOrden(idOrdenTemp){
 	$.ajax({
- 		url: 'ajaxObtenerInformacionOrden-' + idOrdenTemp,
+ 		url: 'ajaxObtenerInformacionOrden-cobrar-' + idOrdenTemp,
  		type: 'post',
  		dataType: 'json',
  		data: '',
@@ -221,7 +221,7 @@ function listarSubcontratos(idOrdenTemp){
 }
 function listarCuentasPagoProveedor(idOrdenTemp){
     $.ajax({
- 		url: 'ajaxListarCuentas-pago-' + idOrdenTemp,
+ 		url: 'ajaxListarCuentas-pagar-' + idOrdenTemp,
  		type: 'post',
  		dataType: 'json',
  		data: '',

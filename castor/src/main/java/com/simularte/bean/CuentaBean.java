@@ -32,6 +32,9 @@ public class CuentaBean {
 	private String fechaCreacion;
 	private String estado;
 	
+	//Subcontrato
+	private String scTipoTrabajo;
+	
 	//Chart
 	private String fechaOperacion;
 	private String fechaVencePagar;
@@ -226,5 +229,11 @@ public class CuentaBean {
 	}
 	public void setSaldo(String saldo) {
 		this.saldo = saldo;
+	}
+	public String getScTipoTrabajo() {
+		return scTipoTrabajo;
+	}
+	public void setScTipoTrabajo(String scTipoTrabajo) {
+		this.scTipoTrabajo = scTipoTrabajo;
 	}
 }

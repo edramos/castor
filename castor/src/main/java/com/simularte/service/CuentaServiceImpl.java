@@ -27,7 +27,7 @@ public class CuentaServiceImpl implements CuentaService {
 	EntityManager em;	
 
 	
-	public CuentaBean listarDetalleCuenta(int idCuenta, HttpServletRequest req){
+	public CuentaBean listarDetalleCuenta(String tipo, int idCuenta, HttpServletRequest req){
 		CuentaBean  cb = new CuentaBean();
 		
 		Query q01 = em.createQuery("SELECT c FROM Cuenta c WHERE c.idCuenta = :idCuenta AND c.estado != 'disable'");
@@ -39,6 +39,19 @@ public class CuentaServiceImpl implements CuentaService {
 		cb.setIgv(Formatos.BigBecimalToString(cuenta.getMonto().multiply(Valores.IGV)));
 		cb.setConIgv(Formatos.BigBecimalToString(cuenta.getMonto()));
 		
+		if(tipo.equals("pagar")){
+			cb.setIdSubcontrato(cuenta.getCuentaSubcontrato().getIdSubcontrato());
+			
+			Query q03 = em.createNativeQuery("SELECT sc.idsubcontrato, sc.tipotrabajo, p.nombre FROM subcontrato sc "
+					+ "INNER JOIN proveedor p "
+					+ " ON sc.idproveedor = p.idproveedor WHERE sc.idsubcontrato = '" + cuenta.getCuentaSubcontrato().getIdSubcontrato() + "'");
+			
+			Object obj[] = (Object[])q03.getSingleResult();
+			
+			cb.setScTipoTrabajo(obj[1].toString());
+			cb.setNombreProveedor(obj[2].toString());
+		}
+		
 		Orden orden = em.find(Orden.class, cuenta.getCuentaOrden().getIdOrden());
 		
 		Query q02 = em.createNativeQuery("SELECT p.primernombre, p.apellidopaterno FROM perfil p "
@@ -47,14 +60,23 @@ public class CuentaServiceImpl implements CuentaService {
 		Object[] us = (Object[])q02.getSingleResult();
 		cb.setNombreCreador(us[0].toString() + " " + us[1].toString());
 		
-		if(orden.getTipoTrabajo().equals("Estudio")){
-			cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1))) + "  (10%)");
-			cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1)))));
+		if(tipo.equals("cobrar")){
+			if(orden.getTipoTrabajo().equals("Estudio")){
+				cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1))) + "  (10%)");
+				cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1)))));
+			}else{
+				cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04))) + "  (4%)");
+				cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04)))));
+			}
 		}else{
-			cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04))) + "  (4%)");
-			cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04)))));
+			if(cb.getScTipoTrabajo().equals("Estudio")){
+				cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1))) + "  (10%)");
+				cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1)))));
+			}else{
+				cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04))) + "  (4%)");
+				cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04)))));
+			}
 		}
-		
 		cb.setFechaVencimiento(Dates.fechaCorta(cuenta.getFechaVencimiento()));
 		cb.setFechaCreacion(Dates.fechaHoraEspaniol(cuenta.getFechaCreacion(), ""));
 		
@@ -62,11 +84,11 @@ public class CuentaServiceImpl implements CuentaService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<CuentaBean> listarCuentasFactura(int idOrder, String tipo, HttpServletRequest req) {
+	public List<CuentaBean> listarCuentasFactura(int idOrden, String tipo, HttpServletRequest req) {
 		List<CuentaBean> lcb = new ArrayList<CuentaBean>();
-		
+		System.out.println("Listar Cuentas: " + idOrden + ", tipo: " + tipo);
 		Query q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND tipo = :tipo AND estado != 'Facturado'", Cuenta.class);
-		q01.setParameter("idOrden", idOrder);		
+		q01.setParameter("idOrden", idOrden);		
 		q01.setParameter("tipo", tipo);
 		
 		List<Cuenta> cuentas = q01.getResultList();

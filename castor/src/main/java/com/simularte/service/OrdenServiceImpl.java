@@ -59,11 +59,12 @@ public class OrdenServiceImpl implements OrdenService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<OrdenBean> buscarOrdenFactura(){
+	public List<OrdenBean> buscarOrdenFactura(HttpServletRequest req){
 		List<OrdenBean> resultados = new ArrayList<OrdenBean>();
 		
-		Query q01 = em.createQuery("SELECT o FROM Orden o WHERE estado != :estado");
-		q01.setParameter("estado", "Terminado");
+		Query q01 = em.createQuery("SELECT o FROM Orden o WHERE estado != :estado AND idempresa = :idEmpresa");
+		q01.setParameter("estado", "Aceptado");
+		q01.setParameter("idEmpresa", (Integer)req.getSession().getAttribute("idEmpresa"));
 		
 		List<Orden> ordenes = q01.getResultList();
 		
@@ -130,7 +131,7 @@ public class OrdenServiceImpl implements OrdenService {
 					System.out.println("resto " + restoCobros + ", creo Cuenta y monto: " + cobrosCliente[x]);
 					Cuenta cu = new Cuenta();
 
-					cu.setTipo("cobro");
+					cu.setTipo("cobrar");
 					cu.setMonto(Formatos.StringToBigDecimal(cobrosCliente[x]));
 					cu.setCuentaOrden(orden);
 					
@@ -271,7 +272,7 @@ public class OrdenServiceImpl implements OrdenService {
 					Subcontrato sbcontrato = subcontratosMap.get(Integer.parseInt(pagProv[x]));
 					
 					cu.setCuentaSubcontrato(sbcontrato);
-					cu.setTipo("pago");
+					cu.setTipo("pagar");
 					cuenta_prov.add(cu);
 				}else{
 					System.out.println("size cuentas: " + cuenta_prov.size());
@@ -467,7 +468,7 @@ public class OrdenServiceImpl implements OrdenService {
 		return ordenBeans;
 	}
 	
-	public OrdenBean obtenerInformacionOrden(Integer idOrden, HttpServletRequest req){
+	public OrdenBean obtenerInformacionOrden(int idOrden, String tipo, HttpServletRequest req){
 		Orden orden = new Orden();
 
 		Query q = em.createQuery("SELECT o FROM Orden o WHERE o.idOrden = :idOrden AND o.estado != 'disable' ");
@@ -513,9 +514,5 @@ public class OrdenServiceImpl implements OrdenService {
 		
 		return ordenB;
 	}
-	
-	
-	
-	
 	
 }

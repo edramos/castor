@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService{
 			
 			cb.setFechaOperacion(obj[1].toString());
 			
-			if(obj[3].toString().equals("cobro")){
+			if(obj[3].toString().equals("cobrar")){
 				cb.setMontoCobrar(obj[2].toString());
 				cb.setMontoPagar("");
 				

@@ -11,6 +11,11 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
 <!-- END PAGE LEVEL STYLES -->
+<style>
+hr {
+	margin: 20px 0px 0px 0px;	
+}
+</style>
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
@@ -30,9 +35,11 @@
 	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption"><i class="icon-share"></i>Emitir Factura</div>
-				<div class="actions">							
-					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
+				<div class="caption"><i class="icon-share"></i>Crear Factura</div>
+				<div class="tools">
+					<a title="" data-original-title="" href="javascript:;" class="collapse"></a>
+					<a title="" data-original-title="" href="#portlet-config" data-toggle="modal" class="config"></a>
+					<a title="" data-original-title="" href="javascript:;" class="fullscreen"></a>
 				</div>
 			</div>
 			<div class="portlet-body form">
@@ -40,111 +47,84 @@
 				
 					<div class="row">
 						
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<select id="sltTipoIngreso" class="form-control" name="operacion">
-										<option value="Otros">Otros</option>
-										<option value="OT">Orden de Trabajo</option>
-									</select>
+						<div class="col-md-2">
+							<select id="sltTipoFactura" class="form-control" name="operacion">
+								<option value="Emitir">Emitir</option>
+								<option value="Registrar">Registrar</option>
+							</select>							
+						</div>
+						<div id="divSltOT" class="col-md-3">
+							<select id="sltOT" class="form-control" name="idOrden">
+								<option value="">Seleccione OT</option>
+							</select>
+						</div>
+						<div id="divSltCuentas" class="col-md-3">
+							<select id="sltCuentas" class="form-control" name="idCuenta">
+								<option value="">Seleccione Cuenta Cobrar</option>
+							</select>	
+						</div>
+						<div  class="col-md-2">
+							<input id="txtCodigoFactura" class="form-control" placeholder="Cod. Factura" name="codigo" disabled="disabled"/>
+						</div>
+						<div class="col-md-2">
+							<button id="btnEmitirFactura" type="button" class="eventBtn btn yellow">Crear Factura</button>	
+						</div>
+						
+					</div>
+					
+					<hr/>
+					
+					<div class="detailPane">
+						<div class="summaryBody sectionBody">
+							<div class="summaryBodyLeft">
+								<div id="divClienteProveedor" class="summaryBodyItem">
+									<span class="spanLabel">Cliente</span><span id="spnNombreCliente" class="value"></span>
+								</div>
+								<div class="summaryBodyItem">
+									<span class="spanLabel">Nombre</span><span id="spnNombre" class="value"></span>
+								</div>
+								<div class="summaryBodyItem">
+									<span class="spanLabel">Tipo OT</span><span id="spnTipo" class="value"></span>
+								</div>
+								<div id="divTrabajo" class="summaryBodyItem">
+									<span class="spanLabel">Trabajo</span><span id="spnTrabajoCliente" class="value"></span>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div id="divSltOT" class="col-md-12">
-									<select id="sltOT" class="form-control" name="idOrden">
-										<option value="">Seleccione OT</option>
-									</select>
+							<div class="summaryBodyMiddle">
+								<div class="summaryBodyItem">
+									<span class="spanLabel">Monto</span><span id="spnMonto" class="value"></span>
+								</div>
+								<div class="summaryBodyItem">
+									<span class="spanLabel">IGV</span><span id="spnIgv" class="value"></span>
+								</div>
+								<div class="summaryBodyItem">
+									<span class="spanLabel">Monto + IGV</span><span id="spnConIgv" class="value"></span>
+								</div>
+								<div class="summaryBodyItem">
+									<span class="spanLabel">Detraccion</span><span id="spnDetraccion" class="value"></span>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div id="divSltCPC" class="col-md-12">
-									<select id="sltCuentaPorCobrar" class="form-control" name="idCuenta">
-										<option value="">Seleccione Cuenta Cobrar</option>
-									</select>
+							<div class="summaryBodyRight">
+								<div id="divAccionCuenta" class="summaryBodyItem">
+									<span class="spanLabel">Cobrar</span><span id="spnCobrar" class="value"></span>
+								</div>
+								<div class="summaryBodyItem">
+									<span class="spanLabel">Vence</span><span id="spnVence" class="value"></span>
+								</div>
+								<div class="summaryBodyItem">
+									<span class="spanLabel">Creador (Cuenta)</span><span id="spnNombreCreadorCuenta" class="value"></span>
+								</div>
+								<div class="summaryBodyItem">
+									<span class="spanLabel">Creacion (Cuenta)</span><span id="spnFechaCrecionCuenta" class="value"></span>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<button id="btnEmitirFactura" type="button" class="eventBtn btn yellow">Emitir Factura</button>
-							</div>
+						
 						</div>
 					</div>
 				
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-12">
-		<div class="portlet box blue-hoki">
-			<div class="portlet-title">
-				<div id="divTitle" class="caption"><i class="icon-share"></i>Factura Detalle</div>
-				<div class="tools">
-					<a title="" data-original-title="" href="javascript:;" class="collapse"></a>
-					<a title="" data-original-title="" href="#portlet-config" data-toggle="modal" class="config"></a>
-					<a title="" data-original-title="" href="javascript:;" class="fullscreen"></a>
-				</div>
-			</div>
-			<div class="portlet-body">
-				<div class="detailPane">
-					<div class="summaryBody sectionBody">
-						<div class="summaryBodyLeft">
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Cliente</span><span id="spnNombreCliente" class="value"></span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Nombre</span><span id="spnNombre" class="value"></span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Tipo</span><span id="spnTipo" class="value"></span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Trabajo</span><span id="spnTrabajo" class="value"></span>
-							</div>
-						</div>
-						<div class="summaryBodyMiddle">
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Monto</span><span id="spnMonto" class="value"></span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">IGV</span><span id="spnIgv" class="value"></span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Monto + IGV</span><span id="spnConIgv" class="value"></span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Detraccion</span><span id="spnDetraccion" class="value"></span>
-							</div>
-						</div>
-						<div class="summaryBodyRight">
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Cobrar</span><span id="spnCobrar" class="value"></span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Vence</span><span id="spnVence" class="value"></span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Creador (Cuenta)</span><span id="spnNombreCreadorCuenta" class="value"></span>
-							</div>
-							<div class="summaryBodyItem">
-								<span class="spanLabel">Creacion (Cuenta)</span><span id="spnFechaCrecionCuenta" class="value"></span>
-							</div>
-						</div>
-					
-					</div>
-				</div>
-			</div>
-		
-		
-		</div>
-		
 	</div>
 </div>
 </form:form>
@@ -194,7 +174,7 @@ jQuery(document).ready(function() {
 	listarFacturas();
 	
 	 $("#btnEmitirFactura").click(function(){
-		 var idCuenta = $('#divSltCPC option:selected').val();
+		 var idCuenta = $('#divSltCuentas option:selected').val();
 		 if(idCuenta != ''){
 			var detraArr = $('#spnDetraccion').text().split("  ");
 			var det = detraArr[1].slice(0,-2);
@@ -260,9 +240,9 @@ function createTable(){
 }
 function borrarDatos(){
 	$('.form-control').val('');
-	$('#sltTipoIngreso').find('option:first').attr('selected', 'selected');
+	$('#sltTipoFactura').find('option:first').attr('selected', 'selected');
 	$('#sltOT').find('option:first').attr('selected', 'selected');
-	$('#sltCuentaPorCobrar').find('option:first').attr('selected', 'selected');
+	$('#sltCuentas').find('option:first').attr('selected', 'selected');
 }
 </script>
 <script>
@@ -361,30 +341,78 @@ function emitirFactura(idCuenta, detraccion){
 }
 </script>
 <script>
-$('#sltTipoIngreso').change(function(){
-	var value = $('#sltTipoIngreso option:selected').val();
-	if(value == "OT"){
+$('#sltTipoFactura').change(function(){
+	var value = $('#sltTipoFactura option:selected').val();
+	
+	if(value == "Emitir"){
+		$('#txtCodigoFactura').prop('disabled', true);
+		
 		$('#sltOT').remove();
 		$('#divSltOT').append('<select id="sltOT" class="form-control" name="operacion"><option value="">Seleccione OT</option></select>');
+		$('#sltCuentas').remove();
+		$('#divSltCuentas').append('<select id="sltCuentas" class="form-control" name="operacion"><option value="">Seleccione Cuenta Cobrar</option></select>');
+		
+		$('#divClienteProveedor').empty();
+		$('#divClienteProveedor').append('<span class="spanLabel">Cliente</span><span id="spnNombreCliente" class="value"></span>');
+		$('#divTrabajo').empty();
+		$('#divTrabajo').append('<span class="spanLabel">Trabajo</span><span id="spnTrabajoCliente" class="value"></span>');
+		$('#divAccionCuenta').empty();
+		$('#divAccionCuenta').append('<span class="spanLabel">Cobrar</span><span id="spnCobrar" class="value"></span>');
+		
 		listarOT();
+		
 		$('#sltOT').on('change', function(){
-			$('#sltCuentaPorCobrar').remove();
-			$('#divSltCPC').append('<select id="sltCuentaPorCobrar" class="form-control" name="operacion"><option value="">Seleccione Cuenta Cobrar</option></select>');
+			$('#sltCuentas').remove();
+			$('#divSltCuentas').append('<select id="sltCuentas" class="form-control" name="operacion"><option value="">Seleccione Cuenta Cobrar</option></select>');
 			var idOrden = $('#sltOT option:selected').val();
 			
-			listarDetalleFactura(idOrden);
-			listarCuentasPorCobrar(idOrden);
+			listarDetalleFactura(idOrden, "cobrar");
+			listarCuentas(idOrden, "cobrar");
+			
+			$('#sltCuentas').on('change', function(){
+				var idCuenta = $('#sltCuentas option:selected').val();
+				listarDetalleCuenta(idCuenta, "cobrar");
+			});
+			
 		});
-		$('#divSltCPC').on('change', function(){
-			var idCuenta = $('#divSltCPC option:selected').val();
-			listarDetalleCuenta(idCuenta);
+		
+	}else{
+		$('#txtCodigoFactura').prop('disabled', false);
+		
+		$('#sltOT').remove();
+		$('#divSltOT').append('<select id="sltOT" class="form-control" name="operacion"><option value="">Seleccione OT</option></select>');
+		$('#sltCuentas').remove();
+		$('#divSltCuentas').append('<select id="sltCuentas" class="form-control" name="operacion"><option value="">Seleccione Cuenta Pagar</option></select>');
+		
+		$('#divClienteProveedor').empty();
+		$('#divClienteProveedor').append('<span class="spanLabel">Proveedor</span><span id="spnNombreProveedor" class="value"></span>');
+		$('#divTrabajo').empty();
+		$('#divTrabajo').append('<span class="spanLabel">Trabajo</span><span id="spnTrabajoProveedor" class="value"></span>');
+		$('#divAccionCuenta').empty();
+		$('#divAccionCuenta').append('<span class="spanLabel">Pagar</span><span id="spnPagar" class="value"></span>');
+		
+		listarOT();
+		
+		$('#sltOT').on('change', function(){
+			$('#sltCuentas').remove();
+			$('#divSltCuentas').append('<select id="sltCuentas" class="form-control" name="operacion"><option value="">Seleccione Cuenta Pagar</option></select>');
+			var idOrden = $('#sltOT option:selected').val();
+			
+			listarDetalleFactura(idOrden, "pagar");
+			listarCuentas(idOrden, "pagar");
+			
+			$('#sltCuentas').on('change', function(){
+				var idCuenta = $('#sltCuentas option:selected').val();
+				listarDetalleCuenta(idCuenta, "pagar");
+			});
 		});
 	}
 });
-function listarDetalleCuenta(idCuenta){
+
+function listarDetalleCuenta(idCuenta, tipo){
 	if(idCuenta != ""){
 		$.ajax({
-	 		url: 'ajaxDetalleCuenta-' + idCuenta,
+	 		url: 'ajaxDetalleCuenta-' + tipo + '-' + idCuenta,
 	 		type: 'post',
 	 		dataType: 'json',
 	 		data: '',
@@ -397,14 +425,34 @@ function listarDetalleCuenta(idCuenta){
 	 			$('#spnVence').text(cuenta.fechaVencimiento);
 	 			$('#spnNombreCreadorCuenta').text(cuenta.nombreCreador);
 	 			$('#spnFechaCrecionCuenta').text(cuenta.fechaCreacion);
+	 			
+	 			$('#spnNombreProveedor').text(cuenta.nombreProveedor);
+	 			$('#spnTrabajoProveedor').text(cuenta.scTipoTrabajo);
+	 			$('#spnPagar').text(cuenta.cobrar);
 	 		}
 	 	});
 	}
 }
-function listarDetalleFactura(idOrden){
+function listarCuentas(idOrden, tipo){
 	if(idOrden != ""){
 		$.ajax({
-	 		url: 'ajaxObtenerInformacionOrden-' + idOrden,
+	 		url: 'ajaxListarCuentasFactura-' + tipo + '-' + idOrden,
+	 		type: 'post',
+	 		dataType: 'json',
+	 		data: '',
+	 		success: function(cuentascobrar){
+	 			$.each(cuentascobrar, function(i, cuenta){
+	 				$('#sltCuentas').append('<option value="' + cuenta.idCuenta + '">' + cuenta.monto + '&nbsp;&nbsp(' + cuenta.fechaVencimiento + ')</option>');
+	 			});	 	        
+	 		},
+	 		async: false
+	 	});
+	}
+}
+function listarDetalleFactura(idOrden, tipo){
+	if(idOrden != ""){
+		$.ajax({
+	 		url: 'ajaxObtenerInformacionOrden-tipo-' + idOrden,
 	 		type: 'post',
 	 		dataType: 'json',
 	 		data: '',
@@ -416,22 +464,8 @@ function listarDetalleFactura(idOrden){
 	 			}else{
 	 				$('#spnTipo').text('Trabajos Varios');	
 	 			}
-	 			$('#spnTrabajo').text(orden.tipoTrabajo);
-	 		}
-	 	});
-	}
-}
-function listarCuentasPorCobrar(idOrden){
-	if(idOrden != ""){
-		$.ajax({
-	 		url: 'ajaxListarCuentasFactura-cobro-' + idOrden,
-	 		type: 'post',
-	 		dataType: 'json',
-	 		data: '',
-	 		success: function(cuentascobrar){
-	 			$.each(cuentascobrar, function(i, cuenta){
-	 				$('#sltCuentaPorCobrar').append('<option value="' + cuenta.idCuenta + '">' + cuenta.monto + '&nbsp;&nbsp(' + cuenta.fechaVencimiento + ')</option>');
-	 			});	 	        
+	 			
+	 			$('#spnTrabajoCliente').text(orden.tipoTrabajo);
 	 		}
 	 	});
 	}
