@@ -46,8 +46,11 @@ public class FacturaController {
 	@RequestMapping(value = "ajaxListarFacturaSuggest", method = RequestMethod.GET) @ResponseBody
 	public List<FacturaBean> ajaxListarFacturaSuggest(HttpServletRequest req){
 		String codigoFactura = (String)req.getParameter("q");
-				
-		return fs.getFacturasSuggested(codigoFactura, req);
+		String[] arr = codigoFactura.split("-");
+		codigoFactura = arr[0];
+		String tipo = arr[1];
+		
+		return fs.getFacturasSuggested(codigoFactura, tipo, req);
 	}
 	
 	@RequestMapping(value = "ajaxListarFacturaDetraccionSuggest", method = RequestMethod.GET) @ResponseBody

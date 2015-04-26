@@ -59,7 +59,7 @@ public class LibroServiceImpl implements LibroService{
 		
 			em.persist(detalleLibro);
 			
-			if(dlb.getTipoOperacion().equals("Cobranza Venta/Servicio")){
+			if(dlb.getTipoOperacion().equals("Cobranza Venta/Servicio") || dlb.getTipoOperacion().equals("Pago Proveedor")){
 				Factura facturaX = em.find(Factura.class, dlb.getIdFactura());
 				Factura facturaY = em.merge(facturaX);
 				

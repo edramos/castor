@@ -38,7 +38,7 @@
 			<div class="col-md-6">
 				<div class="portlet box blue-hoki">
 					<div class="portlet-title">
-						<div class="caption"><i class="icon-bar-chart"></i>Diagrama</div>
+						<div class="caption"><i class="icon-graph"></i>Diagrama</div>
 						<div class="tools">
 							<a title="" data-original-title="" href="javascript:;" class="collapse"></a>
 							<a title="" data-original-title="" href="javascript:;" class="reload"></a>
@@ -89,64 +89,7 @@
 						</div>
 					</div>
 				</div>
-				<!-- <div class="portlet box blue-hoki">
-					<div class="portlet-title">
-						<div class="caption"><i class="icon-speedometer"></i>Facturas</div>
-						<div class="actions">							
-							<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title="">
-							</a>
-						</div>
-					</div>
-					<div class="portlet-body">
-						<div class="table-scrollable table-scrollable-borderless">
-							<table class="table table-hover table-light">
-							<thead>
-							<tr class="uppercase">
-								<th>N°</th>
-								<th colspan="2">Estado</th>
-								<th>Oferta</th>
-								<th>Plazas</th>
-								<th>RATE</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td><span class="bold theme-font-color">85</span></td>
-								<td class="fit"><i class="icon-paper-plane font-green-sharp"></i></td>
-								<td>Nuevo</td>
-								<td>S/. 2,500</td>
-								<td>750</td>
-								<td><span class="bold theme-font-color">70%</span></td>
-							</tr>
-							<tr>
-								<td><span class="bold theme-font-color">7</span></td>
-								<td class="fit"><i class="icon-plane font-green-sharp"></i></td>
-								<td>Esperando</td>
-								<td>S/. 4,500</td>
-								<td>450</td>
-								<td><span class="bold theme-font-color">10%</span></td>
-							</tr>
-							<tr>
-								<td><span class="bold theme-font-color">12</span></td>
-								<td class="fit"><i class="icon-rocket font-green-sharp"></i></td>
-								<td>En proceso</td>
-								<td>S/. 3,500</td>
-								<td>425</td>
-								<td><span class="bold theme-font-color">13%</span></td>
-							</tr>
-							<tr>
-								<td><span class="bold theme-font-color">18</span></td>
-								<td class="fit"><i class="icon-trophy font-green-sharp"></i></td>
-								<td>Finalizado</td>
-								<td>S/. 4,500</td>
-								<td>950</td>
-								<td><span class="bold theme-font-color">24%</span></td>
-							</tr>
-							</tbody>
-							</table>
-						</div>
-					</div>
-				</div> -->
+				
 			</div>
 			
 			
@@ -268,47 +211,7 @@
 <script>
 jQuery(document).ready(function() {    
 	Metronic.init(); // init metronic core componets
-    Layout.init(); // init layout  
-    
-    /* AmCharts.ready(function(){
-    	var chart = new AmCharts.AmSerialChart();
-    	var chartData = AmCharts.loadJSON('getChartDashboard');
-    	chart.dataProvider = chartData;
-    	chart.categoryField = "fechaOperacion";
-    	chart.dataDateFormat = "YYYY-MM-DD";
-    	
-    	var graph = new AmCharts.AmGraph();
-    	graph.valueField = "montoCobrar";
-    	graph.type = "line";
-    	graph.fillAlphas = 0; // or delete this line, as 0 is default
-    	graph.bullet = "round";
-    	chart.addGraph(graph);
-    	
-    	
-    	var graph1 = new AmCharts.AmGraph();
-   	  	graph1.valueField = "montoPagar";
-   	  	graph1.bullet = "round";
-   	  	graph1.bulletBorderColor = "#FFFFFF";
-   	  	graph1.bulletBorderThickness = 2;
-   	  	graph1.lineThickness = 2;
-   	  	graph1.lineAlpha = 0.5;
-   	  	chart.addGraph(graph1);
-   	  	
-   	  	var graph2 = new AmCharts.AmGraph();
-   	 	graph2.valueField = "saldo";
-   		graph2.bullet = "round";
-   		graph2.bulletBorderColor = "#FFFFFF";
-   		graph2.bulletBorderThickness = 2;
-   		graph2.lineThickness = 2;
-   		graph2.lineAlpha = 0.5;
-   	  	chart.addGraph(graph2);
-    	
-   	 	chart.categoryAxis.parseDates = false;
-    	
-    	chart.write('divChart');
-    });
-    */
-    
+    Layout.init(); // init layout    
 });
 </script>
 <script type="text/javascript">

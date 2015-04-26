@@ -229,7 +229,7 @@ jQuery(document).ready(function() {
 	
 	listarSelectorClientes('sltCliente');
 	listarCaja();
-	suggestFactura();
+	suggestFactura("cobrar");
 	
 	$('#sltCuentaBanco').change(function(){
 		listarCaja();
@@ -237,12 +237,13 @@ jQuery(document).ready(function() {
 });
 </script>
 <script>
-function suggestFactura(){
+function suggestFactura(tipo){
 	var facturas = new Bloodhound({
 		datumTokenizer: function (datum) {return Bloodhound.tokenizers.whitespace(datum.value);},
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		remote: 'ajaxListarFacturaSuggest?q=%QUERY'
+		remote: 'ajaxListarFacturaSuggest?q=%QUERY' + '-' + tipo	//Workaround mientras aprendo como enviar mas parametros aparte de la cadena de busqueda
 	});
+	
 	facturas.initialize();
 	
 	$('#txtFactura').typeahead({minLength: 1,}, {
@@ -260,6 +261,7 @@ function suggestFactura(){
 		$('#divSecondRow').append("<input id='hdnIdFactura' type='hidden' name='idFactura' value='" + datum['idFactura'] + "'/>");
 		$('#txtMonto').val(datum['conIgv']);
 		$('#txtCobrarFactura').val(datum['cobrarFactura']);
+		$('#txtPagarFactura').val(datum['cobrarFactura']);
 		$('#txtDetraccion').val(datum['montoDetraccion']);
 		
 		mostrarOrden(datum['idFactura']);
@@ -311,7 +313,7 @@ function mostrarOrden(idFactura){
 $(function($){
 	var locations = {
 	    'Ingreso': ['Cobranza Venta/Servicio', 'Detraccion', 'Otra cobranza', 'Transferencia cuenta', 'Interes ganado'],
-		'Egreso': ['Pago Proveedor', 'Pago Planilla/Beneficios', 'Compra', 'Tributo', 'Transferencia cta.', 'Reembolso Caja Chica', 'Gasto Financiero'],
+		'Egreso': ['Pago Proveedor', 'Detraccion', 'Pago Planilla/Beneficios', 'Compra', 'Tributo', 'Transferencia cta.', 'Reembolso Caja Chica', 'Gasto Financiero'],
 	}
 	
 	$('#sltTipoTransaccion').change(function(){
@@ -326,10 +328,11 @@ $(function($){
         if(value == 'Ingreso'){
         	formDynamic('#templateCobranzaVentaServicio');
         	listarSelectorClientes('sltCliente');
-        	suggestFactura();
+        	suggestFactura("cobrar");
         }else{
         	formDynamic('#templatePagoProveedor');
         	listarSelectorProveedores('sltProveedor');
+        	suggestFactura("pagar");
         }
     });
 	
@@ -342,7 +345,7 @@ $(function($){
 		case 'Cobranza Venta/Servicio':
 			formDynamic('#templateCobranzaVentaServicio');
 			listarSelectorClientes('sltCliente');
-			suggestFactura();
+			suggestFactura("cobrar");
 			break;
 		case 'Detraccion':
 			formDynamic('#templateDetraccion');
@@ -352,7 +355,7 @@ $(function($){
 		case 'Otra cobranza':
 			formDynamic('#templateOtraCobranza');
 			listarSelectorClientes('sltCliente');
-			suggestFactura();
+			suggestFactura("cobrar");
 			break;
 		case 'Transferencia cuenta':
 			formDynamic('#templateTransferenciaCuentaIngreso');
@@ -406,6 +409,40 @@ $(document).on('click','.eventBtn', function(e){
 		break;
 	}
 });
+</script>
+<script>
+function formDynamic(opcion){
+	$('.dynamic').remove();
+	
+	switch(opcion){
+	case "#templateCobranzaVentaServicio":
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/></div>'+
+		'<div class="col-md-2 dynamic"><input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto"/></div>');
+		break;
+	case "#templatePagoProveedor":
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/></div>'+
+		'<div class="col-md-2 dynamic"><input id="txtPagarFactura" class="form-control" placeholder="Pagar" name="monto"/></div>');
+		break;
+	default:
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="monto"/></div>');
+		break;
+	}
+	
+	/* if(opcion == '#templateCobranzaVentaServicio'){
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/></div>'+
+			'<div class="col-md-2 dynamic"><input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto"/></div>');
+	}else{
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/></div>'+
+			'<div class="col-md-2 dynamic"><input id="txtPagarFactura" class="form-control" placeholder="Pagar" name="monto"/></div>');
+	} */
+	
+	var source = $(opcion).html();
+	var template = Handlebars.compile(source);
+	html = template();
+	$('#divSecondRow').html(html);
+	
+	
+}
 </script>
 <script>
 function listarSelectorClientes(nombreSelector){
@@ -472,12 +509,27 @@ function listarCaja(){
  	});	
 }
 function crearDetalleLibro(){
-	if($('#sltTransaccion').val() == "Cobranza Venta/Servicio"){
+	/* if($('#sltTransaccion').val() == "Cobranza Venta/Servicio"){
 		$('#txtCobrarFactura').val(Number($('#txtCobrarFactura').val().replace(/[^0-9\.]+/g,"")));
 	}
 	if($('#sltTransaccion').val() == "Detraccion"){
 		$('#txtMonto').val(Number($('#txtMonto').val().replace(/[^0-9\.]+/g,"")));
 	}
+	if($('#sltTipoTransaccion option:selected').val() == "Ingreso"){
+		
+	} */
+	if($('#txtCobrarFactura').val() != null){
+		$('#txtCobrarFactura').val(Number($('#txtCobrarFactura').val().replace(/[^0-9\.]+/g,"")));
+	}
+	if($('#txtPagarFactura').val() != null){
+		$('#txtPagarFactura').val(Number($('#txtPagarFactura').val().replace(/[^0-9\.]+/g,"")));
+	}
+	if($('#txtDetraccion').val() != null){
+		$('#txtDetraccion').val(Number($('#txtDetraccion').val().replace(/[^0-9\.]+/g,"")));
+	}
+	$('#txtMonto').val(Number($('#txtMonto').val().replace(/[^0-9\.]+/g,"")));
+	
+	
 	$.ajax({
  		url: 'ajaxCrearRegistroLibro',
  		type: 'post',
@@ -504,25 +556,6 @@ function borrarDatos(){
 	$('#sltCuentaBanco').find('option:first').attr('selected', 'selected');
 	$('#sltTipoTransaccion').find('option:first').attr('selected', 'selected');
 	$('#sltTransaccion').find('option:first').attr('selected', 'selected');
-}
-</script>
-<script>
-function formDynamic(opcion){
-	$('.dynamic').remove();
-	
-	if(opcion == '#templateCobranzaVentaServicio'){
-		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/></div>'+
-			'<div class="col-md-2 dynamic"><input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto"/></div>');
-	}else{
-		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="monto"/></div>');
-	}
-	
-	var source = $(opcion).html();
-	var template = Handlebars.compile(source);
-	html = template();
-	$('#divSecondRow').html(html);
-	
-	
 }
 </script>
 <script>
@@ -746,7 +779,7 @@ function mostrarDetalle(idRegistro){
 	<input id="txtFactura" class="form-control" placeholder="Factura" name="factura"/>
 </div>
 <div class="col-md-3 dynamic">
-	<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>
+	<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="codigoOrden"/>
 	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>
 </div>
 <div class="col-md-2 dynamic">

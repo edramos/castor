@@ -23,8 +23,8 @@ public class LibroController {
 	LibroService cs;
 	
 	@RequestMapping(value = "ajaxCrearRegistroLibro", method = RequestMethod.POST) @ResponseBody
-	public Boolean ajaxCrearRegistroLibro(@ModelAttribute("libroDetalleBean")DetalleLibroBean libroBean, Integer idLibro, HttpServletRequest req){
-		Boolean resultado = false;
+	public boolean ajaxCrearRegistroLibro(@ModelAttribute("libroDetalleBean")DetalleLibroBean libroBean, Integer idLibro, HttpServletRequest req){
+		boolean resultado = false;
 		
 		if(cs.crearDetalleLibro(libroBean, idLibro, req)){
 			System.out.println("GRABO!!!");

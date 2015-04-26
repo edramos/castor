@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService{
 				+ "INNER JOIN orden o ON c.idorden = o.idorden "
 				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' ORDER BY c.fechavencimiento ASC");
 		
+		
 		List<Object[]> rows01 = q01.getResultList();
 		
 		//Double sumCobrar = 0.0;

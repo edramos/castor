@@ -183,14 +183,21 @@ public class FacturaServiceImpl implements FacturaService{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FacturaBean> getFacturasSuggested(String codigoFactura, HttpServletRequest req){
+	public List<FacturaBean> getFacturasSuggested(String codigoFactura, String tipo, HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
-		
-		Query q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.conigv, f.cobrarfactura, f.montodetraccion FROM factura f "
+		Query q01 = null;
+		System.out.println("tipo: " + tipo);
+		if(tipo.equals("cobrar")){
+		q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.conigv, f.cobrarfactura, f.montodetraccion FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden "
 				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado = 'Emitido'");
-		
+		}else{
+			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.conigv, f.cobrarfactura, f.montodetraccion FROM factura f "
+					+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
+					+ "INNER JOIN orden o ON o.idorden = c.idorden "
+					+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado = 'Recibido'");
+		}
 		List<Object[]> rows = q01.getResultList();
 		
 		for(int x = 0; x < rows.size(); x++){

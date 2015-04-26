@@ -26,6 +26,9 @@ public class DetalleLibroBean {
 	private String cuentaBancoDestino;
 	private String codigoOperacion;
 	
+	//Orden
+	private String codigoOrden;
+	
 	private String fechaCreacion;
 	private String estado;
 	//Fancy
@@ -190,5 +193,11 @@ public class DetalleLibroBean {
 	}
 	public void setIdFactura(int idFactura) {
 		this.idFactura = idFactura;
+	}
+	public String getCodigoOrden() {
+		return codigoOrden;
+	}
+	public void setCodigoOrden(String codigoOrden) {
+		this.codigoOrden = codigoOrden;
 	}
 }
