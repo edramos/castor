@@ -67,7 +67,7 @@
 						<jsp:include page="orden/tabCobros.jsp"/>
 					</div>
 					<div class="tab-pane" id="tab_1_1_3">
-						<jsp:include page="orden/tabSubcontratos.jsp"/>
+						<jsp:include page="orden/tabPagos.jsp"/>
 					</div>
 					<div class="tab-pane" id="tab_1_1_4">
 						<jsp:include page="orden/tabArchivos.jsp"/>
@@ -125,7 +125,7 @@ $(document).ready(function(){
 	listarFacturasCobrar(idOrden);
 	
 	listarSubcontratos(idOrden);	
-	listarCuentasPagoProveedor(idOrden);
+	listarCuentasPagar(idOrden);
 	cargarArchivos(idOrden);
 	
 	$('#hdnIdEntidad').val(idOrden);
@@ -217,7 +217,7 @@ function listarSubcontratos(idOrdenTemp){
   		}
  	});
 }
-function listarCuentasPagoProveedor(idOrdenTemp){
+function listarCuentasPagar(idOrdenTemp){
     $.ajax({
  		url: 'ajaxListarCuentas-pagar-' + idOrdenTemp,
  		type: 'post',

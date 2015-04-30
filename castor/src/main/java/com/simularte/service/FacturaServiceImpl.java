@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
@@ -57,14 +58,17 @@ public class FacturaServiceImpl implements FacturaService{
 		factura.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
 		factura.setFechaCreacion(Dates.fechaCreacion());
 		
-		int idFactura = -1;
+		int idFactura = 0;
 		if(tipo.equals("cobrar")){
 			//Factura facturaY = em.merge(factura);
 			//facturaY.setCodigo(String.format("%05d", factura.getIdFactura()));
 			Query q01 = em.createNativeQuery("SELECT f.idfactura FROM factura f WHERE f.tipo = 'Emitida' ORDER BY f.idfactura DESC LIMIT 1");
-			idFactura = (Integer)q01.getSingleResult();
-			idFactura++;
-			
+			try{
+				idFactura = (Integer)q01.getSingleResult();
+				idFactura++;
+			}catch(NoResultException e){
+				idFactura++;	//Solo se ejectutara para la primera factura
+			}
 		}
 				
 		em.persist(factura);

@@ -64,14 +64,14 @@ public class LibroServiceImpl implements LibroService{
 				Factura facturaY = em.merge(facturaX);
 				
 				facturaY.setEstado("Cancelado");
-				facturaY.setFechaCancelacion(Dates.dateCreacion());
+				facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
 			}
 			if(dlb.getTipoOperacion().equals("Detraccion")){
 				Factura facturaX = em.find(Factura.class, dlb.getIdFactura());
 				Factura facturaY = em.merge(facturaX);
 				
 				facturaY.setEstadoDetraccion("Cancelado");
-				facturaY.setFechaCancelacionDetraccion(Dates.dateCreacion());
+				facturaY.setFechaCancelacionDetraccion(detalleLibro.getFechaOperacion());
 				
 				//Se asume que primero pagan el monto de la factura y luego la detraccion, asi se cambia el estado de la cuenta
 				if(facturaX.getEstado().equals("Cancelado") && facturaX.getEstadoDetraccion().equals("Cancelado")){

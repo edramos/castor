@@ -16,6 +16,7 @@ import com.simularte.bean.CuentaBean;
 import com.simularte.model.Cuenta;
 import com.simularte.model.Orden;
 import com.simularte.model.Proveedor;
+import com.simularte.model.Subcontrato;
 import com.simularte.util.Dates;
 import com.simularte.util.Formatos;
 import com.simularte.util.Valores;
@@ -89,7 +90,7 @@ public class CuentaServiceImpl implements CuentaService {
 	public List<CuentaBean> listarCuentasFactura(int idOrden, String tipo, HttpServletRequest req) {
 		List<CuentaBean> lcb = new ArrayList<CuentaBean>();
 		System.out.println("Listar Cuentas: " + idOrden + ", tipo: " + tipo);
-		Query q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND tipo = :tipo AND estado != 'Facturado'", Cuenta.class);
+		Query q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND tipo = :tipo AND estado = 'Pendiente'", Cuenta.class);
 		q01.setParameter("idOrden", idOrden);		
 		q01.setParameter("tipo", tipo);
 		
@@ -131,15 +132,20 @@ public class CuentaServiceImpl implements CuentaService {
 				CuentaBean cb = new CuentaBean();
 				
 				cb.setIdCuenta((Integer)obj[0]);
+				
 				if(obj[13] != null){
 					cb.setIdOrden((Integer)obj[13]);
 					//cb.setIdCliente(obj[0].getCuentaOrden().getOrdenCliente().getIdCliente());
 				}
 				if(obj[14] != null){
 					cb.setIdSubcontrato((Integer)obj[14]);
-					//Proveedor prov = obj[0].getCuentaSubcontrato().getProveedorSubcontrato();
-					//cb.setIdProveedor(prov.getIdProveedor());
-					//cb.setNombreProveedor(prov.getNombre());
+					
+					Query q02 = em.createNativeQuery("SELECT p.idproveedor, p.nombre FROM subcontrato sc "
+							+ "INNER JOIN proveedor p ON sc.idproveedor = p.idproveedor WHERE sc.idsubcontrato = '" + cb.getIdSubcontrato() + "'");
+					Object[] obj02 = (Object[])q02.getSingleResult();
+					
+					cb.setIdProveedor((Integer)obj02[0]);
+					cb.setNombreProveedor(obj02[1].toString());
 				}				
 				cb.setTipo(obj[11].toString());
 				cb.setTipoPago(obj[12].toString());
