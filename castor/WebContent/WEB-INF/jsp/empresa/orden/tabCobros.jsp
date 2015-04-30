@@ -4,7 +4,7 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 			<tr class="heading">
-				<th>Fecha Vencimiento</th><th>Monto</th><th>Tipo Pago</th><th>Condicion</th><th>Estado</th><th>Acciones</th>
+				<th>N° F.</th><th>Fecha Vencimiento</th><th>Monto + IGV</th><th>Tipo Pago</th><th>Condicion</th><th>Estado</th><th>Acciones</th>
 			</tr>
 			</thead>
 		
@@ -34,6 +34,9 @@
 <script>
 function initClienteCuentasCobrar(cuentascobrar){
 	var html = '';
+	Handlebars.registerHelper('ifCuentaCobrar', function(estado, v2, options){
+		  if(estado === 'Cancelado'){return options.fn(this);}return options.inverse(this);
+	});
 		
 	$.each(cuentascobrar, function(i, cobro){
 		var source = $("#templateCobrosCliente").html();
@@ -82,12 +85,13 @@ function initFacturasCobrar(facturasCobrar){
 </tr>
 </script>
 <script id="templateCobrosCliente" type="text/x-handlebars-template">
-<tr style="border-bottom: 1px solid #D3D8DE;">
+<tr>
+	<td>{{codigo}}</td>
 	<td>{{fechaVencimiento}}</td>
-	<td id="tdMonto_{{idCuenta}}">{{monto}}</td>
+	<td id="tdMonto_{{idCuenta}}" style="text-align:right;">{{conIgv}}</td>
 	<td>{{tipoPago}}</td>
 	<td>{{estadoTrabajo}} {{avance}}</td>
-	<td>Pendiente</td>
+	<td style="text-align:center;">{{#ifCuentaCobrar estado Cancelado}}<span class="label label-success">{{estado}}</span>{{else}}{{estado}}{{/ifCuentaCobrar}}</td>
 	<td></td>
 </tr>
 </script>

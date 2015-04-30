@@ -72,6 +72,20 @@ public class LibroServiceImpl implements LibroService{
 				
 				facturaY.setEstadoDetraccion("Cancelado");
 				facturaY.setFechaCancelacionDetraccion(Dates.dateCreacion());
+				
+				//Se asume que primero pagan el monto de la factura y luego la detraccion, asi se cambia el estado de la cuenta
+				if(facturaX.getEstado().equals("Cancelado") && facturaX.getEstadoDetraccion().equals("Cancelado")){
+					Query q01 = em.createNativeQuery("SELECT c.idcuenta FROM cuenta c "
+							+ "INNER JOIN factura f "
+							+ "ON c.idcuenta = f.idcuenta WHERE f.idfactura = '" + facturaX.getIdFactura() + "'");
+					
+					int idCuenta = (Integer)q01.getSingleResult();
+					Query q02 = em.createNativeQuery("UPDATE cuenta SET estado = 'Cancelado' WHERE idcuenta = '" + idCuenta + "'");
+					
+					q02.executeUpdate();
+					
+				}
+				
 			}
 			
 			result = true;
@@ -121,8 +135,7 @@ public class LibroServiceImpl implements LibroService{
 		
 		return registros;
 	}
-	
-	
+		
 	public List<DetalleLibroBean> mostrarDetalleLibro(Integer idDetalleLibro, HttpServletRequest req){
 		List<DetalleLibroBean> registros = new ArrayList<DetalleLibroBean>();
 		DetalleLibroBean dlb = new DetalleLibroBean();

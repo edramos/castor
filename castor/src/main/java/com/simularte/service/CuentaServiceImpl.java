@@ -39,6 +39,8 @@ public class CuentaServiceImpl implements CuentaService {
 		cb.setIgv(Formatos.BigBecimalToString(cuenta.getMonto().multiply(Valores.IGV)));
 		cb.setConIgv(Formatos.BigBecimalToString(cuenta.getMonto()));
 		
+		
+		
 		if(tipo.equals("pagar")){
 			cb.setIdSubcontrato(cuenta.getCuentaSubcontrato().getIdSubcontrato());
 			
@@ -116,7 +118,68 @@ public class CuentaServiceImpl implements CuentaService {
 		double totalIgv = 0;
 		
 		try{
-			Query query;
+			Query q01 = em.createNativeQuery("SELECT c.idcuenta, c.avance, c.creadopor, c.estado, c.estadotrabajo, c.fechacreacion, c.fechapagoprogramada, c.fechapagoreal, "
+					+ "c.fechavencimiento, c.monto, c.pagador, c.tipo, c.tipopago, c.idorden, c.idsubcontrato, f.codigo "
+					+ "FROM cuenta c "
+					+ "LEFT JOIN factura f ON c.idcuenta = f.idcuenta "
+					+ "WHERE c.idorden = " + idOrder + " AND c.tipo = '" + tipo + "'");
+			
+			List<Object[]> rows = q01.getResultList();
+			
+			for(int x = 0; x < rows.size(); x++){
+				Object[] obj = rows.get(x);
+				CuentaBean cb = new CuentaBean();
+				
+				cb.setIdCuenta((Integer)obj[0]);
+				if(obj[13] != null){
+					cb.setIdOrden((Integer)obj[13]);
+					//cb.setIdCliente(obj[0].getCuentaOrden().getOrdenCliente().getIdCliente());
+				}
+				if(obj[14] != null){
+					cb.setIdSubcontrato((Integer)obj[14]);
+					//Proveedor prov = obj[0].getCuentaSubcontrato().getProveedorSubcontrato();
+					//cb.setIdProveedor(prov.getIdProveedor());
+					//cb.setNombreProveedor(prov.getNombre());
+				}				
+				cb.setTipo(obj[11].toString());
+				cb.setTipoPago(obj[12].toString());
+				if(obj[6] != null) cb.setFechaPagoProgramada(Dates.stringToStringFechaCorta(obj[6].toString()));
+				if(obj[7] != null) cb.setFechaPagoReal(Dates.stringToStringFechaCorta(obj[7].toString()));
+				if(obj[8] != null) cb.setFechaVencimiento(Dates.stringToStringFechaCorta(obj[8].toString()));
+				
+				//cb.setMonto(Formatos.BigBecimalToString(obj[].getMonto().subtract(c.getMonto().multiply(Valores.IGV))));
+				//cb.setIgv(Formatos.BigBecimalToString(obj[].getMonto().multiply(Valores.IGV)));
+				cb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[9].toString())));
+				
+				//totalMonto += obj[].getMonto().subtract(obj[].getMonto().multiply(Valores.IGV)).doubleValue();
+				//cb.setTotalMonto(Formatos.BigBecimalToString(BigDecimal.valueOf(totalMonto)));
+				
+				//totalIgv += obj[].getMonto().multiply(Valores.IGV).doubleValue();
+				//cb.setTotalIgv(Formatos.BigBecimalToString(BigDecimal.valueOf(totalIgv)));
+				
+				totalConIgv += Formatos.StringToBigDecimal(obj[9].toString()).doubleValue();
+				cb.setTotalConIgv((Formatos.BigBecimalToString(BigDecimal.valueOf(totalConIgv))));
+				
+				//cb.setPagador(obj[].getPagador());
+				
+				if(obj[4] != null){
+					cb.setEstadoTrabajo(obj[4].toString());	//Ahora puede ser null porque en CtasPagar no se ha puesto aun el estado de trabajo
+					if(obj[4].toString().equals("Proceso")){
+						cb.setAvance("(" + obj[1].toString() + "%)");
+					}else{
+						cb.setAvance("");
+					}
+				}
+				//cb.setCreadoPor(obj[].getCreadoPor());
+				//cb.setFechaCreacion(Dates.fechaHoraEspaniol(obj[].getFechaCreacion(), ""));
+				cb.setEstado(obj[3].toString());
+				if(obj[15] != null) cb.setCodigo(obj[15].toString());
+				
+				lcueBean.add(cb);
+			}
+			
+			
+			/*Query query;
 
 			String Squery = "SELECT c FROM Cuenta c WHERE c.estado != 'disable' ";
 			
@@ -154,8 +217,8 @@ public class CuentaServiceImpl implements CuentaService {
 				cb.setFechaPagoProgramada(Dates.fechaCorta(c.getFechaPagoProgramada()));
 				cb.setFechaPagoReal(Dates.fechaCorta(c.getFechaPagoReal()));
 				
-				cb.setMonto(Formatos.BigBecimalToString(c.getMonto().subtract(c.getMonto().multiply(Valores.IGV))));
-				cb.setIgv(Formatos.BigBecimalToString(c.getMonto().multiply(Valores.IGV)));
+				//cb.setMonto(Formatos.BigBecimalToString(c.getMonto().subtract(c.getMonto().multiply(Valores.IGV))));
+				//cb.setIgv(Formatos.BigBecimalToString(c.getMonto().multiply(Valores.IGV)));
 				cb.setConIgv(Formatos.BigBecimalToString(c.getMonto()));
 				
 				totalMonto += c.getMonto().subtract(c.getMonto().multiply(Valores.IGV)).doubleValue();
@@ -181,7 +244,7 @@ public class CuentaServiceImpl implements CuentaService {
 				cb.setEstado(c.getEstado());
 				
 				lcueBean.add(cb);
-			}
+			}*/
 			
 		} catch(IllegalArgumentException e){
 			lcueBean = null;

@@ -164,7 +164,7 @@ public class OrdenServiceImpl implements OrdenService {
 			for(int x = 0; x < cobros.size(); x++){	
 				cobros.get(x).setCreadoPor((Integer)session.getAttribute("idUser"));
 				cobros.get(x).setFechaCreacion(Dates.fechaCreacion());
-				cobros.get(x).setEstado("enabled");
+				cobros.get(x).setEstado("Pendiente");
 				em.persist(cobros.get(x));
 				
 				//GENERAR LAS FACTURAS (PROBABLEMENTE YA NO SE USE ASI)
@@ -306,7 +306,7 @@ public class OrdenServiceImpl implements OrdenService {
 				cuenta_prov.get(x).setCuentaOrden(orden);
 				cuenta_prov.get(x).setCreadoPor((Integer)session.getAttribute("idUser"));
 				cuenta_prov.get(x).setFechaCreacion(Dates.fechaCreacion());
-				cuenta_prov.get(x).setEstado("enabled");
+				cuenta_prov.get(x).setEstado("Pendiente");
 				em.persist(cuenta_prov.get(x));
 				
 				//if(pagosprov.get(x).getEstado().equals("enabled")){
