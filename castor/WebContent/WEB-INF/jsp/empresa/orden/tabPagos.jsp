@@ -18,12 +18,27 @@
 		<thead>
 		<tr class="heading">
 			<th>N° F.</th><th>Proveedor</th><th>Vencimiento</th><th>Monto + IGV</th><th>Tipo Pago</th><th>Condicion</th>
-			<th>Estado</th><th>Orden de Pago</th><th>Factura</th>
+			<th>Estado</th><th>Orden de Pago</th>
 		</tr>
 		</thead>
 	
 		<tbody id="viewPagosHandleBars">
 		</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="portlet-body">
+	<div class="table-scrollable">
+		<table class="table table-bordered table-hover">
+			<thead>
+			<tr class="heading">
+				<th>N° F.</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th><th>Cobrar</th><th>Estado D.</th>
+				<th>Estado F.</th><th>Emitido</th><th>Pago D.</th><th>Pago F.</th>
+			</tr>
+			</thead>
+			<tbody id="viewDatosFacturaPagar">
+			</tbody>
 		</table>
 	</div>
 </div>
@@ -65,14 +80,47 @@ function initSubsCuentasPagar(cuentaspago){
 			
 	});
 	$('#viewPagosHandleBars').html(html);
-	$('#viewPagosHandleBars').append('<tr style="text-align:right;">'+
-		'<td style="text-align:left;"><b>TOTAL</b></td>'+
-		'<td>'+ cuentaspago[cuentaspago.length - 1].totalMonto +'</td><td>'+ cuentaspago[cuentaspago.length - 1].totalIgv +'</td><td>'+ cuentaspago[cuentaspago.length - 1].totalConIgv +'</td>'+
-		'<td></td><td></td><td></td><td></td>'+
-		'</tr>');
 }
 </script>
+<script>
+function initFacturasPagar(facturasPagar){
+	var html = '';
+	Handlebars.registerHelper('ifFactura', function(estado, v2, options){
+		  if(estado === 'Cancelado'){return options.fn(this);}return options.inverse(this);
+	});
+	Handlebars.registerHelper('ifDet', function(estadoDetraccion, v2, options){
+		  if(estadoDetraccion === 'Cancelado'){return options.fn(this);}return options.inverse(this);
+	});
+	
+	$.each(facturasPagar, function(i, factura){
+		var source = $("#templateFacturasPagar").html();
+		var template = Handlebars.compile(source);
+		html += template(factura);
+	});
 
+	$('#viewDatosFacturaPagar').html(html);
+	$('#viewDatosFacturaPagar').append('<tr style="text-align:right;font-weight: bold;">'+
+			'<td style="text-align:left;font-weight:bold;">TOTAL</td>'+
+			'<td>'+ facturasPagar[facturasPagar.length - 1].totalMonto +'</td><td>'+ facturasPagar[facturasPagar.length - 1].totalIgv +'</td><td>'+ facturasPagar[facturasPagar.length - 1].totalConIgv +'</td>'+
+			'<td>'+ facturasPagar[facturasPagar.length - 1].totalDetraccion +'</td><td>'+ facturasPagar[facturasPagar.length - 1].totalCobrar +'</td><td></td><td></td><td></td><td></td><td></td>'+
+			'</tr>');
+}
+</script>
+<script id="templateFacturasPagar" type="text/x-handlebars-template">
+<tr style="text-align:right;">
+	<td style="text-align:center;">{{codigo}}</td>
+	<td>{{subTotal}}</td>
+	<td>{{igv}}</td>
+	<td>{{conIgv}}</td>
+	<td>{{montoDetraccion}} ({{detraccion}}%)</td>
+	<td>{{cobrarFactura}}</td>
+	<td style="text-align:center;">{{#ifDet estadoDetraccion Cancelado}}<span class="label label-success">{{estadoDetraccion}}</span>{{else}}{{estadoDetraccion}}{{/ifDet}}</td>
+	<td style="text-align:center;">{{#ifFactura estado Cancelado}}<span class="label label-success">{{estado}}</span>{{else}}{{estado}}{{/ifFactura}}</td>
+	<td style="text-align:center;">{{fechaEmision}}</td>
+	<td style="text-align:center;">{{fechaCancelacionDetraccion}}</td>
+	<td style="text-align:center;">{{fechaCancelacion}}</td>
+</tr>
+</script>
 <script id="templateSubcontratos" type="text/x-handlebars-template">
 <tr style="border-bottom: 1px solid #D3D8DE;">
 	<td>{{nombreProveedor}}</td>
@@ -85,14 +133,13 @@ function initSubsCuentasPagar(cuentaspago){
 
 <script id="templatePagos" type="text/x-handlebars-template">
 <tr style="text-align:right;">
-	<td></td>
+	<td style="text-align:center;">{{codigo}}</td>
 	<td style="text-align:left;">{{nombreProveedor}}</td>
 	<td>{{fechaVencimiento}}</td>
 	<td>{{conIgv}}</td>
 	<td>{{tipoPago}}</td>
-	<td>Falta</td>
-	<td><span class="label label-warning">{{estado}}</span></td>
+	<td>{{estadoTrabajo}} {{avance}}</td>
+	<td>{{estado}}</td>
 	<td style="text-align:center;">{{fechaPagoProgramada}}</td>
-	<td style="text-align:center;">Pendiente</td>
 </tr>
 </script>

@@ -264,7 +264,7 @@ public class OrdenServiceImpl implements OrdenService {
 			ArrayList<Cuenta> cuenta_prov = new ArrayList<Cuenta>();
 			int resto2;		
 			for(int x = 0; x < pagProv.length; x++){
-				resto2 = x%5;				
+				resto2 = x%6;				
 				if(resto2 == 0){
 					System.out.println("resto " + resto2 + ", creo Cuenta Proveedor e idProveedor: " + pagProv[x]);
 					Cuenta cu = new Cuenta();
@@ -288,12 +288,16 @@ public class OrdenServiceImpl implements OrdenService {
 							cuenta_prov.get(index).setTipoPago(pagProv[x]);						
 							break;	
 						case 3:
-							System.out.println("resto " + resto2 + ", x: " + x + ", fecha ven: " + pagProv[x]);
-							cuenta_prov.get(index).setFechaVencimiento(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
+							System.out.println("resto " + resto2 + ", x: " + x + ", condicion: " + pagProv[x]);
+							cuenta_prov.get(index).setEstadoTrabajo(pagProv[x]);	
 							break;
 						case 4:
-							System.out.println("resto " + resto2 + ", x: " + x + ", fecha pro: " + pagProv[x]);
-							cuenta_prov.get(index).setFechaPagoProgramada(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
+							System.out.println("resto " + resto2 + ", x: " + x + ", avance: " + pagProv[x]);
+							cuenta_prov.get(index).setAvance(Double.parseDouble(pagProv[x]));
+							break;
+						case 5:
+							System.out.println("resto " + resto2 + ", x: " + x + ", fecha ven: " + pagProv[x]);
+							cuenta_prov.get(index).setFechaVencimiento(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
 							break;
 					}
 				}

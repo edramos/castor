@@ -38,9 +38,9 @@ public class FacturaController {
 		return fs.cargarFacturas(req);
 	}
 	
-	@RequestMapping(value = "cargarFactura-{idOrden}", method = RequestMethod.POST) @ResponseBody
-	public List<FacturaBean> cargarFactura(@PathVariable("idOrden")int idOrden, HttpServletRequest req){
-		return fs.cargarFacturaOrden(idOrden, req);
+	@RequestMapping(value = "cargarFactura-{tipo}-{idOrden}", method = RequestMethod.POST) @ResponseBody
+	public List<FacturaBean> cargarFactura(@PathVariable("tipo")String tipo, @PathVariable("idOrden")int idOrden, HttpServletRequest req){
+		return fs.cargarFacturaOrden(idOrden, tipo, req);
 	}
 	
 	@RequestMapping(value = "ajaxListarFacturaSuggest", method = RequestMethod.GET) @ResponseBody

@@ -124,17 +124,19 @@ public class FacturaServiceImpl implements FacturaService{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FacturaBean> cargarFacturaOrden(int idOrden, HttpServletRequest req){
+	public List<FacturaBean> cargarFacturaOrden(int idOrden, String tipo, HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
 		double totalMonto = 0;
 		double totalIgv = 0;
 		double totalConIgv = 0;
 		double totalDetraccion = 0;
 		double totalCobrar = 0;
-		
+		System.out.println("TIPO FACTURA: " + tipo);
 		Query q1 = em.createNativeQuery("SELECT f.idfactura, f.cobrarfactura, f.codigo, f.conigv, f.detraccion, f.estado, f.fechacreacion, f.montodetraccion, f.subtotal, f.tipo, "
 				+ "f.total, f.idcuenta, f.estadodetraccion, f.fechaemision, f.fechacancelacion, f.fechacancelaciondetraccion "
-				+ "FROM factura f INNER JOIN cuenta c ON f.idcuenta = c. idcuenta WHERE c.idorden = '" + idOrden + "'");
+				+ "FROM factura f "
+				+ "INNER JOIN cuenta c ON f.idcuenta = c. idcuenta "
+				+ "WHERE c.idorden = '" + idOrden + "' AND f.tipo = '" + tipo + "'");
 		
 		try{
 			List<Object[]> rows = q1.getResultList();

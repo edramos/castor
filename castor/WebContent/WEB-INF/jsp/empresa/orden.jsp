@@ -122,10 +122,12 @@ $(document).ready(function(){
 	extraerInformacionOrden(idOrden); 
 	
 	listarCuentasCobrar(idOrden);
-	listarFacturasCobrar(idOrden);
+	listarFacturas("Emitida", idOrden);
 	
 	listarSubcontratos(idOrden);	
 	listarCuentasPagar(idOrden);
+	listarFacturas("Recibida", idOrden);
+	
 	cargarArchivos(idOrden);
 	
 	$('#hdnIdEntidad').val(idOrden);
@@ -154,16 +156,19 @@ $(document).ready(function(){
         }
 	});
 });
-
-function listarFacturasCobrar(idOrdenTemp){
+function listarFacturas(tipo, idOrdenTemp){
 	$.ajax({
-		url: 'cargarFactura-' + idOrdenTemp,
+		url: 'cargarFactura-' + tipo + '-' + idOrdenTemp,
 		type: 'post',
  		dataType: 'json',
  		data: '',
- 		success: function(facturasCobrar){ 			
- 			if(facturasCobrar.length != 0){
- 				initFacturasCobrar(facturasCobrar);
+ 		success: function(facturas){ 
+ 			if(facturas.length != 0){
+ 				if(tipo == "Emitida"){
+ 					initFacturasCobrar(facturas);
+ 				}else{
+ 					initFacturasPagar(facturas);
+ 				}
  			}
  		}
 	});

@@ -26,7 +26,8 @@ public class OrdenController {
 	
 	
 	@RequestMapping(value = "crearOrden", method = RequestMethod.POST)
-	public String crearOrden(@ModelAttribute("ordenBean") OrdenBean ordenBean,@RequestParam("cobroscliente") String[] cobrosCliente, @RequestParam("subcontratos") String[] subCont, @RequestParam("pagoproveedores") String[] pagProv, Model model, HttpServletRequest req) {		
+	public String crearOrden(@ModelAttribute("ordenBean")OrdenBean ordenBean, @RequestParam("cobroscliente") String[] cobrosCliente, @RequestParam("subcontratos") String[] subCont, 
+			@RequestParam("pagoproveedores") String[] pagProv, Model model, HttpServletRequest req){		
 		String path = "";
 		System.out.println("termino obra: " + subCont[4]);
 		

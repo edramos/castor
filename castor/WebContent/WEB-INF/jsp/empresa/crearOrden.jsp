@@ -347,11 +347,12 @@
 										<table id="tablaPagoProvDetalles_0" class="table table-striped table-bordered table-hover dataTable no-footer">
 											<thead>
 												<tr role="row" class="heading">
-													<th width="10%">Porcentaje</th>
-													<th width="20%">Monto</th>
-													<th width="20%">Tipo Pago</th>
+													<th width="8%">Porcentaje</th>
+													<th width="15%">Monto</th>
+													<th width="15%">Tipo de Pago</th>
+													<th width="20%">Estado Obra</th>
+													<th width="7%">%</th>
 													<th width="20%">Fecha Vencimiento</th>
-													<th width="20%">Fecha Pago Programada</th>
 													<th width="10%">Acciones</th>
 												</tr>
 											</thead>
@@ -373,6 +374,20 @@
 														</select>
 													</td>
 													<td>
+														<select id="sltEstadoCobro_pago_0_0" class="form-control" name="pago_estadoCobro">
+															<option value="Sin inicio">Sin inicio</option>
+															<option value="Por iniciar">Por iniciar</option>
+															<option value="Proceso">Proceso</option>
+															<option value="Terminado">Terminado</option>
+															<option value="Aceptado">Aceptado</option>
+														</select>
+													</td>
+													<td>
+														<input id="txtPorcentajeAvance_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_porcentajeAvance" placeholder="%">
+														<input style="display:none" id="txtEstado_pago_0_0" class="form-control pago_estado_0" placeholder="Estado" name="pago_estado" value="enabled"/>
+													</td>
+													
+													<td>
 														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
 															<input id="txtFechaVencimientoProv_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_fechaVencimiento" placeholder="Vencimiento">
 															<span class="input-group-btn">
@@ -381,28 +396,15 @@
 														</div>
 													</td>
 													<td>
-														<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-															<input id="txtFechaProgramadaProv_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_fechaProgramada" placeholder="Programada">
-															<span class="input-group-btn">
-															<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-															</span>
-														</div>
-														<input style="display:none" id="txtEstado_pago_0_0" class="form-control pago_estado_0" placeholder="Estado" name="pago_estado" value="enabled"/>
-													</td>
-													
-													<td>
 														<div class="margin-bottom-5">
 															<span onclick="agregarNuevaFilaPagos_Prov(0, 'pago');" class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></span>
 															<!-- <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span> -->
 														</div>
 													</td>
-													
 												</tr>
 											</tbody>
 											
-											<tbody id="vistaTablaPagos_Filas_0">
-											
-											</tbody>
+											<tbody id="vistaTablaPagos_Filas_0"></tbody>
 										
 										</table>
 										
@@ -631,8 +633,11 @@ function grabarProyecto(){
 	arreglo_Porcentaje = document.getElementsByName('pago_porcentaje');
 	arreglo_MontoParcial = document.getElementsByName('pago_montoParcial');
 	arreglo_TipoPago = document.getElementsByName('pago_tipoPago');
+	arreglo_CondicionPago = document.getElementsByName('pago_estadoCobro');
+	arreglo_PorcentajeAvancePago = document.getElementsByName('pago_porcentajeAvance');
+	
 	arreglo_FechaVen = document.getElementsByName('pago_fechaVencimiento');
-	arreglo_FechaProg = document.getElementsByName('pago_fechaProgramada');
+	//arreglo_FechaProg = document.getElementsByName('pago_fechaProgramada');
 	arreglo_Estado = document.getElementsByName('pago_estado');
 	
 	for(var x = 0; x <= idFila_Pagos; x++){		
@@ -647,8 +652,14 @@ function grabarProyecto(){
 			var montoParcial_Temp = Number(arreglo_MontoParcial[x].value.replace(/[^0-9\.]+/g,""));
 			pagoProveedores.push(montoParcial_Temp);
 			pagoProveedores.push(arreglo_TipoPago[x].value);
+			pagoProveedores.push(arreglo_CondicionPago[x].value);
+			if(arreglo_PorcentajeAvancePago[x].value != ''){
+				pagoProveedores.push(arreglo_PorcentajeAvancePago[x].value);
+			}else{
+				pagoProveedores.push(0);
+			}
 			pagoProveedores.push(arreglo_FechaVen[x].value);
-			pagoProveedores.push(arreglo_FechaProg[x].value);
+			//pagoProveedores.push(arreglo_FechaProg[x].value);
 		}		
   	}
 	
@@ -759,7 +770,7 @@ function agregarNuevaFilaPagos_Prov(idFilaProv, tipo){
 			var source = $("#templateProveedoresPago_fila").html();
 			var template = Handlebars.compile(source);
 			html += template(entidadFila2);
-			$("#vistaTablaPagos_Filas_"+idFilaProv).append(html);
+			$("#vistaTablaPagos_Filas_" + idFilaProv).append(html);
 			//listarSelectorProveedores('sltProveedor_'+idFila_Pagos);
 			
 			datePickerInit();
@@ -1127,6 +1138,19 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 		<option value="Transferencia">Transferencia</option>
 	</select>
 </td>
+<td>
+	<select id="sltEstadoCobro_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control" name="pago_estadoCobro">
+		<option value="Sin inicio">Sin inicio</option>
+		<option value="Por iniciar">Por iniciar</option>
+		<option value="Proceso">Proceso</option>
+		<option value="Terminado">Terminado</option>
+		<option value="Aceptado">Aceptado</option>
+	</select>
+</td>
+<td>
+	<input id="txtPorcentajeAvance_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_porcentajeAvance" placeholder="%">
+	<input style="display:none" id="txtEstado_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control pago_estado_{{idFilaProv}}" placeholder="Estado" name="pago_estado" value="enabled"/>
+</td>
  <td>
 	 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
 		 <input id="txtFechaVencimientoProv_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_fechaVencimiento" placeholder="Vencimiento">
@@ -1134,15 +1158,6 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 		 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
 		 </span>
 	 </div>
- </td>
- <td>
-	 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-		 <input id="txtFechaProgramadaProv_pago_{{idFilaProv}}_{{idFilaPago}}" type="text" class="form-control form-filter input-sm" name="pago_fechaProgramada" placeholder="Programada">
-		 <span class="input-group-btn">
-		 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-		 </span>
-	 </div>
-	<input style="display:none" id="txtEstado_pago_{{idFilaProv}}_{{idFilaPago}}" class="form-control pago_estado_{{idFilaProv}}" placeholder="Estado" name="pago_estado" value="enabled"/>
  </td>													
  <td>
 	 <div class="margin-bottom-5">
@@ -1175,65 +1190,66 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 										
 										
  <!-- Tabla contenedora de Pagos del Proveedor de la tabla anterior -->
- <table id="tablaPagoProvDetalles_{{idFilaProv}}" class="table table-striped table-bordered table-hover dataTable no-footer">
-	 <thead>
-		 <tr role="row" class="heading">
-			 <th width="10%">Porcentaje</th>
-			 <th width="20%">Monto</th>
-			 <th width="20%">Tipo Pago</th>
-			 <th width="20%">Fecha Vencimiento</th>
-			 <th width="20%">Fecha Pago Programada</th>
-			 <th width="10%">Acciones</th>
-		 </tr>
-	 </thead>
-	 <tbody>
-		 <tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_0">
-			 <td>
-				<input style="display:none" id="txtIdProveedor_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}"> 
-				<input onkeyup="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},0, 'pago');" id="txtPorcentaje_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm pago_porcentaje_{{idFilaProv}}" name="pago_porcentaje" placeholder="%">
-			 </td>
-			 <td>
-				 <input id="txtPagoParcial_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
-			 </td>
-			 <td>
-				<select id="sltTipoPago_pago_{{idFilaProv}}_0" class="form-control" name="pago_tipoPago">
-					<option value="Efectivo">Efectivo</option>
-					<option value="Deposito">Deposito</option>
-					<option value="Cheque">Cheque</option>
-					<option value="Transferencia">Transferencia</option>
-				</select>
-			</td>
-			 <td>
-				 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-					 <input id="txtFechaVencimientoProv_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_fechaVencimiento" placeholder="Vencimiento">
-					 <span class="input-group-btn">
-					 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-					 </span>
-				 </div>
-			 </td>
-			 <td>
-				 <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-					 <input id="txtFechaProgramadaProv_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_fechaProgramada" placeholder="Programada">
-					 <span class="input-group-btn">
-					 <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-					 </span>
-				 </div>
-				 <input style="display:none" id="txtEstado_pago_{{idFilaProv}}_0" class="form-control pago_estado_{{idFilaProv}}" placeholder="Estado" name="pago_estado" value="enabled"/>
-			 </td>
-													
-			 <td>
-				 <div class="margin-bottom-5">
-					 <span onclick="agregarNuevaFilaPagos_Prov({{idFilaProv}}, 'pago');" class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></span>
-					 <!-- <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span> -->
-				 </div>
-			 </td>
-													
-		 </tr>
-	 </tbody>
+<table id="tablaPagoProvDetalles_{{idFilaProv}}" class="table table-striped table-bordered table-hover dataTable no-footer">
+<thead>
+<tr role="row" class="heading">
+	<th width="8%">Porcentaje</th>
+	<th width="15%">Monto</th>
+	<th width="15%">Tipo de Pago</th>
+	<th width="20%">Estado Obra</th>
+	<th width="7%">%</th>
+	<th width="20%">Fecha Vencimiento</th>
+	<th width="10%">Acciones</th>
+</tr>
+</thead>
+<tbody>
+	<tr role="row" class="filter" id="fila_pago_{{idFilaProv}}_0">
+		<td>
+			<input style="display:none" id="txtIdProveedor_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="{{idFilaProv}}"> 
+			<input onkeyup="calcularMontoParcialxPorcentaje_Pago({{idFilaProv}},0, 'pago');" id="txtPorcentaje_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm pago_porcentaje_{{idFilaProv}}" name="pago_porcentaje" placeholder="%">
+		</td>
+		<td>
+			<input id="txtPagoParcial_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
+		</td>
+		<td>
+			<select id="sltTipoPago_pago_{{idFilaProv}}_0" class="form-control" name="pago_tipoPago">
+				<option value="Efectivo">Efectivo</option>
+				<option value="Deposito">Deposito</option>
+				<option value="Cheque">Cheque</option>
+				<option value="Transferencia">Transferencia</option>
+			</select>
+		</td>
+		<td>
+			<select id="sltEstadoCobro_pago_{{idFilaProv}}_0" class="form-control" name="pago_estadoCobro">
+				<option value="Sin inicio">Sin inicio</option>
+				<option value="Por iniciar">Por iniciar</option>
+				<option value="Proceso">Proceso</option>
+				<option value="Terminado">Terminado</option>
+				<option value="Aceptado">Aceptado</option>
+			</select>
+		</td>
+		<td>
+			<input id="txtPorcentajeAvance_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_porcentajeAvance" placeholder="%">
+			<input style="display:none" id="txtEstado_pago_{{idFilaProv}}_0" class="form-control pago_estado_{{idFilaProv}}" placeholder="Estado" name="pago_estado" value="enabled"/>
+		</td>										
+		<td>
+			<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+				<input id="txtFechaVencimientoProv_pago_{{idFilaProv}}_0" type="text" class="form-control form-filter input-sm" name="pago_fechaVencimiento" placeholder="Vencimiento">
+				<span class="input-group-btn">
+				<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+				</span>
+			</div>	 
+		</td>
+		<td>
+			<div class="margin-bottom-5">
+				<span onclick="agregarNuevaFilaPagos_Prov({{idFilaProv}}, 'pago');" class="btn btn-sm green filter-submit margin-bottom"><i class="fa fa-plus"></i></span>
+				<!-- <span class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i></span> -->
+			</div>
+		</td>												
+	</tr>
+	</tbody>
 											
-	 <tbody id="vistaTablaPagos_Filas_{{idFilaProv}}">
-											
-	 </tbody>
+	<tbody id="vistaTablaPagos_Filas_{{idFilaProv}}"></tbody>
 										
  </table>
 </script>
