@@ -54,7 +54,7 @@ public class Orden {
 	private String moneda;
 	@Column(name = "fechaentrega", nullable = true)
 	private Date fechaEntrega;
-	/*Se registraran cuando la Orden ya ese finalizada*/
+	/*Se registraran cuando la Orden ya este finalizada*/
 	@Column(nullable = true)
 	private double eficiencia;
 	@Column(name = "utilidadbruta", nullable = true) 
@@ -65,7 +65,13 @@ public class Orden {
 	private BigDecimal gastosGenerales;
 	@Column(name = "total", nullable = true)
 	private BigDecimal total;
-	/**/
+	@Column(nullable = true)
+	private BigDecimal detraccion;
+	@Column(name = "gananciaproyectada", nullable = true)
+	private BigDecimal gananciaProyectada;
+	@Column(name = "gananciadisponible", nullable = true)
+	private BigDecimal gananciaDisponible;
+	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
 	@Column(name = "fechacreacion", nullable = false)
@@ -218,5 +224,23 @@ public class Orden {
 	}
 	public void setCuentasOrd(Collection<Cuenta> cuentasOrd) {
 		this.cuentasOrd = cuentasOrd;
+	}
+	public BigDecimal getGananciaProyectada() {
+		return gananciaProyectada;
+	}
+	public void setGananciaProyectada(BigDecimal gananciaProyectada) {
+		this.gananciaProyectada = gananciaProyectada;
+	}
+	public BigDecimal getGananciaDisponible() {
+		return gananciaDisponible;
+	}
+	public void setGananciaDisponible(BigDecimal gananciaDisponible) {
+		this.gananciaDisponible = gananciaDisponible;
+	}
+	public BigDecimal getDetraccion() {
+		return detraccion;
+	}
+	public void setDetraccion(BigDecimal detraccion) {
+		this.detraccion = detraccion;
 	}
 }

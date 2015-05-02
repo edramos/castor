@@ -63,9 +63,9 @@ function initOrdenSubcontratos(subcontratos){
 	
 	//$('#spnSumMontoSubs').text($.getFormattedCurrency(sumMontoSubcontratos));
 	$('#spnSumMontoSubs').text(sumMontoSubcontratos);
-	$('#spnUtilBruta').text($.getFormattedCurrency(utilBruta));
+	//$('#spnUtilBruta').text($.getFormattedCurrency(utilBruta));
 	$('#spnUtilNeta').text($.getFormattedCurrency(utilNeta));
-	$('#spnEficiencia').text(eficiencia.toFixed(2) + '%');
+	//$('#spnEficiencia').text(eficiencia.toFixed(2) + '%');
 	
 	$('#viewSubcontratosHandlerbars').html(html);
 }
@@ -143,7 +143,7 @@ function initFacturasPagar(facturasPagar){
 </tr>
 </script>
 <script id="templateSubcontratos" type="text/x-handlebars-template">
-<tr style="border-bottom: 1px solid #D3D8DE;">
+<tr>
 	<td>{{nombreProveedor}}</td>
 	<td>{{tipoTrabajo}}</td>
 	<td>{{monto}}</td>

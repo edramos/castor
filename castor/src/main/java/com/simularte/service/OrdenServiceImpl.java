@@ -112,10 +112,16 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setGastosGenerales(ordenBean.getGastosGenerales());
 			orden.setTotal(ordenBean.getTotal());	
 			orden.setFechaEntrega(Dates.stringToDate(ordenBean.getFechaEntrega(), "yyyy-MM-dd"));
+			System.out.println("ordenBean.getDetraccion(): " + ordenBean.getDetraccion());
+			System.out.println("ordenBean.getGananciaProyectada(): " + ordenBean.getGananciaProyectada());
+			System.out.println("ordenBean.getGananciaDisponible(): " + ordenBean.getGananciaDisponible());
+			orden.setDetraccion(ordenBean.getDetraccion());
+			orden.setGananciaProyectada(ordenBean.getGananciaProyectada());
+			orden.setGananciaDisponible(ordenBean.getGananciaDisponible());
 						
 			orden.setCreadoPor((Integer)session.getAttribute("idUser"));
 			orden.setFechaCreacion(Dates.fechaCreacion());
-			orden.setEstado("sin inicio");
+			orden.setEstado("Sin Inicio");
 			
 			em.persist(orden);
 			
@@ -503,7 +509,11 @@ public class OrdenServiceImpl implements OrdenService {
 		ordenB.setUtilidadBruta(orden.getUtilidadBruta());
 		ordenB.setSubTotal(orden.getSubTotal());
 		ordenB.setGastosGenerales(orden.getGastosGenerales());
-		ordenB.setTotal(orden.getTotal());			
+		ordenB.setTotal(orden.getTotal());
+		
+		ordenB.setDetraccion(orden.getDetraccion());
+		ordenB.setGananciaProyectada(orden.getGananciaProyectada());
+		ordenB.setGananciaDisponible(orden.getGananciaDisponible());
 					
 		ordenB.setCreadoPor(orden.getCreadoPor());
 		

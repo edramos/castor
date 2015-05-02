@@ -130,7 +130,7 @@
 									<input id="txtConIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="SubTotal + IGV"/>
 								</div>
 								<div class="col-md-2">
-									<input id="txtUtilidad" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Ganancia Proy."/>
+									<input id="txtUtilidad" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Ganancia Proy." name="gananciaProyectada"/>
 								</div>
 								<div class="col-md-2">
 									<input id="txtUtilidadConIgv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV"/>
@@ -143,13 +143,13 @@
 							<input id="txtOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Oferta" name="oferta"/>
 						</div>
 						<div class="col-md-2">
-							<input id="txtDetraccionOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Detraccion"/>
+							<input id="txtDetraccionOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Detraccion" name="detraccion"/>
 						</div>
 						<div class="col-md-2">
 							<input id="txtDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Disponible"/>
 						</div>
 						<div class="col-md-2">
-							<input id="txtGananciaDisponible" class="form-control" disabled="disabled" placeholder="Ganancia Disp."/>
+							<input id="txtGananciaDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'prefix': '$ '" class="form-control" disabled="disabled" placeholder="Ganancia Disp." name="gananciaDisponible"/>
 						</div>
 						<div class="col-md-2">
 							<input id="txtEficiencia" class="form-control" style="text-align:right;" disabled="disabled" placeholder="Eficiencia %" name="eficiencia"/>
@@ -503,12 +503,17 @@ jQuery(document).ready(function(){
 			fechaEntrega: "*"
 		},
 		submitHandler: function(form){
-			if($('#txtLat').val()==''){
-				$('#txtLat').val(0.0);
-			}
-			if($('#txtLon').val()==''){
-				$('#txtLon').val(0.0);
-			}
+			if($('#txtLat').val()==''){$('#txtLat').val(0.0);}
+			if($('#txtLon').val()==''){$('#txtLon').val(0.0);}
+			//Los disabled no mandan data al controller
+			$('#txtDetraccionOferta').prop('disabled', false);
+			$('#txtGananciaDisponible').prop('disabled', false);
+			$('#txtUtilidadBruta').prop('disabled', false);
+			
+			var arrEfi = $('#txtEficiencia').val().split("%");
+			$('#txtEficiencia').val(Number(arrEfi[0]));
+			$('#txtEficiencia').prop('disabled', false);
+			
 			form.submit();
 		}
 	});
@@ -522,7 +527,8 @@ function calculosFinancieros(){
 	$('#txtUtilidad').keyup(function(){
 		var utilidad = formatoMoneda('#txtUtilidad');
 		var utilidadIgv = (utilidad * 0.18).toFixed(2);
-		var oferta = parseFloat(utilidad) + parseFloat(utilidadIgv) + parseFloat(formatoMoneda('#txtConIgvOrden'));
+		var totalProveedores = formatoMoneda('#txtConIgvOrden');
+		var oferta = parseFloat(utilidad) + parseFloat(utilidadIgv) + parseFloat(totalProveedores);
 		var tipoTrabajo = $('#sltTipoTrabajo option:selected').text();
 		
 		$('#txtUtilidadConIgv').val(utilidadIgv);
@@ -533,9 +539,14 @@ function calculosFinancieros(){
 		}else{
 			$('#txtDetraccionOferta').val(oferta * 0.04);
 		}
+		var utilidadBruta = oferta - formatoMoneda('');
+		var eficiencia = totalProveedores / oferta;
 		var disponible = oferta - formatoMoneda('#txtDetraccionOferta');
+		
 		$('#txtDisponible').val(disponible);
 		$('#txtGananciaDisponible').val((disponible - formatoMoneda('#txtConIgvOrden')).toFixed(2));
+		$('#txtUtilidadBruta').val(oferta - totalProveedores);
+		$('#txtEficiencia').val((eficiencia * 100).toFixed(1) + "%");
 	});
 }
 function formatoMoneda(objeto){
@@ -917,7 +928,7 @@ function recalcularTotalesSubcontratos(){
 	//*******************************************************************************
 	
 	
-	var eficiencia = 0;
+	/* var eficiencia = 0;
 	var oferta = 0; 
 	var utilidadBruta = 0;
 	
@@ -933,7 +944,7 @@ function recalcularTotalesSubcontratos(){
 		
 		utilidadBruta = oferta - total;
 		$('#txtUtilidadBruta').val(utilidadBruta);
-	}
+	} */
 }
 
 function cambiarSelectorProveedorPago(idTempFila){

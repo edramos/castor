@@ -114,7 +114,6 @@ var oferta = 0;
 var gastosGen = 0;
 var utilBruta = 0;
 var utilNeta = 0;
-var eficiencia = 0;
 
 $(document).ready(function(){
 	var idOrden = $('#txtIdOrden').val();
@@ -192,7 +191,6 @@ function extraerInformacionOrden(idOrdenTemp){
  		data: '',
  		success: function(orden){
  			$('#spnCodigo').text('ORDEN ' + orden.codigo);
- 			//$('#spnFechaHora').text('   ' + orden.fechaCreacion);
  			initOrdenGeneral(orden);
  		}
  	});	

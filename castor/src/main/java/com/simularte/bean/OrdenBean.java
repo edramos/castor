@@ -24,6 +24,9 @@ public class OrdenBean {
 	private BigDecimal gastosGenerales;
 	private BigDecimal total;
 	private String fechaEntrega;
+	private BigDecimal detraccion;
+	private BigDecimal gananciaProyectada;
+	private BigDecimal gananciaDisponible;
 	
 	private String busqueda;
 	private String campo;
@@ -253,5 +256,23 @@ public class OrdenBean {
 	}
 	public void setOfertaMaxima(BigDecimal ofertaMaxima) {
 		this.ofertaMaxima = ofertaMaxima;
+	}
+	public BigDecimal getDetraccion() {
+		return detraccion;
+	}
+	public void setDetraccion(BigDecimal detraccion) {
+		this.detraccion = detraccion;
+	}
+	public BigDecimal getGananciaProyectada() {
+		return gananciaProyectada;
+	}
+	public void setGananciaProyectada(BigDecimal gananciaProyectada) {
+		this.gananciaProyectada = gananciaProyectada;
+	}
+	public BigDecimal getGananciaDisponible() {
+		return gananciaDisponible;
+	}
+	public void setGananciaDisponible(BigDecimal gananciaDisponible) {
+		this.gananciaDisponible = gananciaDisponible;
 	}
 }
