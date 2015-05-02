@@ -22,8 +22,7 @@ public class SubcontratoController {
 	@Autowired
 	SubcontratoService subcontratoservice;
 	
-	@RequestMapping(value = "ajaxListarSubcontratos-{idOrden}", method = RequestMethod.POST)
-	@ResponseBody
+	@RequestMapping(value = "ajaxListarSubcontratos-{idOrden}", method = RequestMethod.POST)@ResponseBody
 	public List<SubcontratoBean> ajaxListarSubcontratos(@PathVariable("idOrden") Integer idOrden, HttpServletRequest req){
 		List<SubcontratoBean> clientes = new ArrayList<SubcontratoBean>();
 		clientes = subcontratoservice.listarSubcontratos(idOrden, req);

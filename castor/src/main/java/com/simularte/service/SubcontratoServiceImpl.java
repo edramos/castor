@@ -1,5 +1,6 @@
 package com.simularte.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class SubcontratoServiceImpl implements SubcontratoService {
 	@Transactional
 	public List<SubcontratoBean> listarSubcontratos(Integer idOrder, HttpServletRequest req) {
 		List<SubcontratoBean> subcontratosBean = new ArrayList<SubcontratoBean>();
+		double totalMonto = 0;
 		
 		try{
 			Query query;
@@ -44,7 +46,11 @@ public class SubcontratoServiceImpl implements SubcontratoService {
 				subConB.setIdProveedor(c.getProveedorSubcontrato().getIdProveedor());
 				subConB.setNombreProveedor(c.getProveedorSubcontrato().getNombre());
 				subConB.setMoneda(c.getMoneda());
+				
 				subConB.setMonto(Formatos.BigBecimalToString(c.getMonto()));
+				totalMonto += c.getMonto().doubleValue();
+				subConB.setTotalMonto(Formatos.BigBecimalToString(BigDecimal.valueOf(totalMonto)));
+				
 				subConB.setTipoTrabajo(c.getTipoTrabajo());
 				subConB.setFechaTerminoObra(Dates.fechaCorta(c.getFechaTerminoObra()));
 				subConB.setFechaCreacion(Dates.fechaHoraEspaniol(c.getFechaCreacion(), ""));

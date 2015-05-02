@@ -16,6 +16,8 @@ public class SubcontratoBean {
 	private String fechaCreacion;
 	private String estado;
 	
+	private String totalMonto;
+	
 	
 	
 	public String getFechaTerminoObra() {
@@ -83,5 +85,11 @@ public class SubcontratoBean {
 	}
 	public String getFechaCreacion() {
 		return fechaCreacion;
+	}
+	public String getTotalMonto() {
+		return totalMonto;
+	}
+	public void setTotalMonto(String totalMonto) {
+		this.totalMonto = totalMonto;
 	}	
 }

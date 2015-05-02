@@ -18,7 +18,7 @@
 		<thead>
 		<tr class="heading">
 			<th>N° F.</th><th>Proveedor</th><th>Vencimiento</th><th>Monto + IGV</th><th>Tipo Pago</th><th>Condicion</th>
-			<th>Estado</th><th>Orden de Pago</th>
+			<th>Estado</th>
 		</tr>
 		</thead>
 	
@@ -33,7 +33,7 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 			<tr class="heading">
-				<th>N° F.</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th><th>Cobrar</th><th>Estado D.</th>
+				<th>N° F.</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th><th>Pagar</th><th>Estado D.</th>
 				<th>Estado F.</th><th>Emitido</th><th>Pago D.</th><th>Pago F.</th>
 			</tr>
 			</thead>
@@ -50,7 +50,7 @@ function initOrdenSubcontratos(subcontratos){
 	var sumMontoSubcontratos = 0;
 	
 	$.each(subcontratos, function(i, subcontrato){
-		sumMontoSubcontratos += subcontrato.monto;
+		sumMontoSubcontratos = subcontrato.totalMonto;
 		
 		var source = $("#templateSubcontratos").html();
 		var template = Handlebars.compile(source);
@@ -61,7 +61,8 @@ function initOrdenSubcontratos(subcontratos){
 	utilNeta =  utilBruta - gastosGen;
 	eficiencia = (sumMontoSubcontratos/oferta) * 100;
 	
-	$('#spnSumMontoSubs').text($.getFormattedCurrency(sumMontoSubcontratos));
+	//$('#spnSumMontoSubs').text($.getFormattedCurrency(sumMontoSubcontratos));
+	$('#spnSumMontoSubs').text(sumMontoSubcontratos);
 	$('#spnUtilBruta').text($.getFormattedCurrency(utilBruta));
 	$('#spnUtilNeta').text($.getFormattedCurrency(utilNeta));
 	$('#spnEficiencia').text(eficiencia.toFixed(2) + '%');
@@ -72,7 +73,14 @@ function initOrdenSubcontratos(subcontratos){
 /****CUENTAS PAGAR****/
 function initSubsCuentasPagar(cuentaspago){
 	var html = '';
+	Handlebars.registerHelper('ifEst', function (estado, v2, options){
+		if(estado === v2){
+			return options.fn(this);
+		}
 		
+		return options.inverse(this);
+	});
+	
 	$.each(cuentaspago, function(i, pago){
 		var source = $("#templatePagos").html();
 		var template = Handlebars.compile(source);
@@ -121,6 +129,19 @@ function initFacturasPagar(facturasPagar){
 	<td style="text-align:center;">{{fechaCancelacion}}</td>
 </tr>
 </script>
+<script id="templatePagos" type="text/x-handlebars-template">
+<tr>
+	<td>{{codigo}}</td>
+	<td style="text-align:left;">{{nombreProveedor}}</td>
+	<td>{{fechaVencimiento}}</td>
+	<td style="text-align:right;">{{conIgv}}</td>
+	<td>{{tipoPago}}</td>
+	<td>{{estadoTrabajo}} {{avance}}</td>
+	<td>{{#ifEst estado 'Cancelado'}}<span class="label label-success">{{estado}}</span>{{/ifEst}}
+	{{#ifEst estado 'Pendiente'}}<span class="label label-warning">{{estado}}</span>{{/ifEst}}
+	{{#ifEst estado 'Facturado'}}<span class="label label-primary">{{estado}}</span>{{/ifEst}}</td>
+</tr>
+</script>
 <script id="templateSubcontratos" type="text/x-handlebars-template">
 <tr style="border-bottom: 1px solid #D3D8DE;">
 	<td>{{nombreProveedor}}</td>
@@ -128,18 +149,5 @@ function initFacturasPagar(facturasPagar){
 	<td>{{monto}}</td>
 	<td>{{fechaTerminoObra}}</td>
 	<td>{{estado}}</td><td>Eduardo Ramos</td>
-</tr>
-</script>
-
-<script id="templatePagos" type="text/x-handlebars-template">
-<tr style="text-align:right;">
-	<td style="text-align:center;">{{codigo}}</td>
-	<td style="text-align:left;">{{nombreProveedor}}</td>
-	<td>{{fechaVencimiento}}</td>
-	<td>{{conIgv}}</td>
-	<td>{{tipoPago}}</td>
-	<td>{{estadoTrabajo}} {{avance}}</td>
-	<td>{{estado}}</td>
-	<td style="text-align:center;">{{fechaPagoProgramada}}</td>
 </tr>
 </script>

@@ -35,7 +35,7 @@
 function initClienteCuentasCobrar(cuentascobrar){
 	var html = '';
 	Handlebars.registerHelper('ifCuentaCobrar', function(estado, v2, options){
-		  if(estado === 'Cancelado'){return options.fn(this);}return options.inverse(this);
+		  if(estado === v2){return options.fn(this);}return options.inverse(this);
 	});
 		
 	$.each(cuentascobrar, function(i, cobro){
@@ -91,7 +91,9 @@ function initFacturasCobrar(facturasCobrar){
 	<td id="tdMonto_{{idCuenta}}" style="text-align:right;">{{conIgv}}</td>
 	<td>{{tipoPago}}</td>
 	<td>{{estadoTrabajo}} {{avance}}</td>
-	<td style="text-align:center;">{{#ifCuentaCobrar estado Cancelado}}<span class="label label-success">{{estado}}</span>{{else}}{{estado}}{{/ifCuentaCobrar}}</td>
+	<td style="text-align:center;">{{#ifCuentaCobrar estado 'Cancelado'}}<span class="label label-success">{{estado}}</span>{{/ifCuentaCobrar}}
+	{{#ifCuentaCobrar estado 'Pendiente'}}<span class="label label-warning">{{estado}}</span>{{/ifCuentaCobrar}}
+	{{#ifCuentaCobrar estado 'Facturado'}}<span class="label label-primary">{{estado}}</span>{{/ifCuentaCobrar}}</td>
 	<td></td>
 </tr>
 </script>

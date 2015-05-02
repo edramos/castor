@@ -121,7 +121,7 @@
 									</select>	
 								</div>
 								<div class="col-md-2">
-									<input id="txtSubTotalOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="SubTotal"/>
+									<input id="txtSubTotalOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="SubTotal"/>
 								</div>
 								<div class="col-md-2">
 									<input id="txtIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV"/>
@@ -130,7 +130,7 @@
 									<input id="txtConIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="SubTotal + IGV"/>
 								</div>
 								<div class="col-md-2">
-									<input id="txtUtilidad" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Utilidad"/>
+									<input id="txtUtilidad" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Ganancia Proy."/>
 								</div>
 								<div class="col-md-2">
 									<input id="txtUtilidadConIgv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV"/>
@@ -146,7 +146,10 @@
 							<input id="txtDetraccionOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Detraccion"/>
 						</div>
 						<div class="col-md-2">
-							<input id="txtDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Disponible" name="utilidadBruta"/>
+							<input id="txtDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Disponible"/>
+						</div>
+						<div class="col-md-2">
+							<input id="txtGananciaDisponible" class="form-control" disabled="disabled" placeholder="Ganancia Disp."/>
 						</div>
 						<div class="col-md-2">
 							<input id="txtEficiencia" class="form-control" style="text-align:right;" disabled="disabled" placeholder="Eficiencia %" name="eficiencia"/>
@@ -516,25 +519,13 @@ jQuery(document).ready(function(){
 
 <script>
 function calculosFinancieros(){
-	var igv = 0.18;
-	
-	$('#txtSubTotalOrden').keyup(function(){
-		var subTotalOrden = formatoMoneda('#txtSubTotalOrden');
-		var montoIgvSubTotal = (subTotalOrden * igv).toFixed(2);
-		var subTotalConIgv = parseFloat(subTotalOrden) + parseFloat(montoIgvSubTotal);
-		
-		$('#txtIgvOrden').val(montoIgvSubTotal);
-		$('#txtConIgvOrden').val(subTotalConIgv);
-	});
-	
 	$('#txtUtilidad').keyup(function(){
 		var utilidad = formatoMoneda('#txtUtilidad');
-		var conIgv = formatoMoneda('#txtConIgvOrden');
-		var utitlidadConIgv = (utilidad * igv).toFixed(2);
-		var oferta = parseFloat(utilidad) + parseFloat(conIgv);
+		var utilidadIgv = (utilidad * 0.18).toFixed(2);
+		var oferta = parseFloat(utilidad) + parseFloat(utilidadIgv) + parseFloat(formatoMoneda('#txtConIgvOrden'));
 		var tipoTrabajo = $('#sltTipoTrabajo option:selected').text();
 		
-		$('#txtUtilidadConIgv').val(utitlidadConIgv);
+		$('#txtUtilidadConIgv').val(utilidadIgv);
 		$('#txtOferta').val(oferta);
 		
 		if(tipoTrabajo == "Estudio"){
@@ -542,7 +533,9 @@ function calculosFinancieros(){
 		}else{
 			$('#txtDetraccionOferta').val(oferta * 0.04);
 		}
-		$('#txtDisponible').val(oferta - formatoMoneda('#txtDetraccionOferta'));
+		var disponible = oferta - formatoMoneda('#txtDetraccionOferta');
+		$('#txtDisponible').val(disponible);
+		$('#txtGananciaDisponible').val((disponible - formatoMoneda('#txtConIgvOrden')).toFixed(2));
 	});
 }
 function formatoMoneda(objeto){
@@ -909,7 +902,21 @@ function recalcularTotalesSubcontratos(){
 	
 	$('#spnSubtotal').val(subtotal);
 	
-	//
+	
+	//********************CALCULO TOTAL PROVEEDOR y SUS IGVS, MONTOS****************
+	$('#txtConIgvOrden').val(subtotal);
+	//var subTotalOrden = formatoMoneda('#txtSubTotalOrden');
+	//var montoIgvSubTotal = (subTotalOrden * igv).toFixed(2);
+	//var subTotalConIgv = parseFloat(subTotalOrden) + parseFloat(montoIgvSubTotal);
+	
+	var igvProveedor = (subtotal * 0.18).toFixed(2);
+	var subTotalProveedor = parseFloat(subtotal) - parseFloat(igvProveedor);
+	
+	$('#txtIgvOrden').val(igvProveedor);
+	$('#txtSubTotalOrden').val(subTotalProveedor);
+	//*******************************************************************************
+	
+	
 	var eficiencia = 0;
 	var oferta = 0; 
 	var utilidadBruta = 0;
