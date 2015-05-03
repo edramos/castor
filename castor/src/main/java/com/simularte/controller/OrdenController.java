@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.simularte.bean.CuentaBean;
 import com.simularte.bean.OrdenBean;
 import com.simularte.service.OrdenService;
 
@@ -72,5 +73,10 @@ public class OrdenController {
 	@RequestMapping(value = "ajaxBuscarOrdenCaja-{idFactura}", method = RequestMethod.POST) @ResponseBody
 	public List<OrdenBean> ajaxBuscarOrdenCaja(@PathVariable("idFactura")int idFactura, HttpServletRequest req){
 		return ordenserv.buscarOrdenCaja(idFactura, req);
+	}
+	//CHART GENERAL
+	@RequestMapping(value = "getChartOrden-{idOrden}", method = RequestMethod.GET) @ResponseBody
+	public List<CuentaBean> getChartOrden(@PathVariable("idOrden")int idOrden, HttpServletRequest req){
+		return ordenserv.grafOrdenGeneral(idOrden, req);
 	}
 }

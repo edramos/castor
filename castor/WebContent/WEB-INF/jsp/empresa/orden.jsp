@@ -93,6 +93,8 @@
 <script src="assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
 <script src="assets/admin/pages/scripts/form-fileupload.js"></script>
 <script src="assets/global/plugins/malsup/jquery.form.js" type="text/javascript"></script>
+<script src="assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
+<script src="assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -234,6 +236,55 @@ function listarCuentasPagar(idOrdenTemp){
   		}
  	});
 }
+</script>
+<script type="text/javascript">
+var idOrden = $('#txtIdOrden').val();
+AmCharts.loadJSON = function(url){
+	if(window.XMLHttpRequest){
+		  	// IE7+, Firefox, Chrome, Opera, Safari
+			var request = new XMLHttpRequest();
+	  }else{
+	    	// code for IE6, IE5
+	    	var request = new ActiveXObject('Microsoft.XMLHTTP');
+	  }
+	  request.open('GET', url, false);
+	  request.send();
+
+	  // parse adn return the output
+	  return eval(request.responseText);
+	};
+	AmCharts.makeChart("divChartOrden",
+		{
+			"type": "serial",
+			"pathToImages": "http://cdn.amcharts.com/lib/3/images/",
+			"categoryField": "fechaOperacion",
+			"dataDateFormat": "YYYY-MM-DD",
+			"categoryAxis": {
+				"parseDates": true
+			},
+			"chartCursor": {},
+			"chartScrollbar": {},
+			"trendLines": [],
+			"graphs": [
+				{
+					"bullet": "round",
+					"id": "AmGraph-1",
+					"title": "Ctas x Cobrar",
+					"valueField": "montoCobrar"
+				},
+				{
+					"bullet": "square",
+					"id": "AmGraph-2",
+					"title": "Ctas x Pagar",
+					"valueField": "montoPagar"
+				}
+			],
+			"guides": [],
+			"allLabels": [],
+			"balloon": {},
+			"dataProvider": AmCharts.loadJSON('getChartOrden-' + idOrden)
+		}
+	);
 </script>
 </body>
 </html>

@@ -1,4 +1,6 @@
 <div class="portlet-body">	
+	<!-- GRAPH -->
+	<div id="divChartOrden" class="chart" style="height: 250px;"></div>
 	<!-- GENERAL -->
 	<div class="detailPane">
 		<div class="detailHeader"><div class="detailHeaderLeft"><span class="h2v1">General</span></div></div>
@@ -120,8 +122,5 @@ function initOrdenGeneral(orden){
 	$('#spnDetraccion').text($.getFormattedCurrency(orden.detraccion));
 	$('#spnGananciaProyectada').text($.getFormattedCurrency(orden.gananciaProyectada));
 	$('#spnGananciaDisponible').text($.getFormattedCurrency(orden.gananciaDisponible));
-	
-	oferta = orden.oferta;
-	gastosGen = orden.gastosGenerales;
 }
 </script>

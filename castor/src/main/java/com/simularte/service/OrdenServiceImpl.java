@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.simularte.bean.CuentaBean;
 import com.simularte.bean.OrdenBean;
 import com.simularte.model.Cliente;
 import com.simularte.model.Cuenta;
@@ -527,6 +528,75 @@ public class OrdenServiceImpl implements OrdenService {
 		ordenB.setCreadoPorNombre(perfil[0].toString() + " " + perfil[1].toString());
 		
 		return ordenB;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<CuentaBean> grafOrdenGeneral(int idOrden, HttpServletRequest req){
+		List<CuentaBean> resultados = new ArrayList<CuentaBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT c.idcuenta, c.estado, c.fechavencimiento, c.monto, c.tipo "
+				+ "FROM cuenta c "
+				+ "WHERE c.idorden = '" + idOrden + "' ORDER BY c.fechavencimiento ASC");
+		
+		List<Object[]> rows = q01.getResultList();
+		
+		boolean skip = false;
+		
+		for(int x = 0; x < rows.size(); x++){
+			if(!skip){
+				Object[] obj = rows.get(x);
+				CuentaBean cb = new CuentaBean();
+				if(x < rows.size() - 1){
+					Object[] obj02 = rows.get(x + 1);
+					
+					String currentDate = obj[2].toString();
+					String nextDate = obj02[2].toString();
+									
+					
+					
+					if(currentDate.equals(nextDate)){
+						skip = true;
+						cb.setFechaOperacion(obj[2].toString());
+						
+						if(obj[4].toString().equals("cobrar")){
+							cb.setMontoCobrar(obj[3].toString());
+							cb.setMontoPagar(obj02[03].toString());
+						}else{
+							cb.setMontoPagar(obj[3].toString());
+							cb.setMontoCobrar(obj02[3].toString());
+						}	
+					}else{
+						skip = false;
+						cb.setFechaOperacion(obj[2].toString());
+						if(obj[4].toString().equals("cobrar")){
+							cb.setMontoCobrar(obj[3].toString());
+							cb.setMontoPagar("");
+						}else{
+							cb.setMontoPagar(obj[3].toString());
+							cb.setMontoCobrar("");
+						}	
+						
+					}			
+				}else{
+					Object[] obj03 = rows.get(x);
+					
+					cb.setFechaOperacion(obj03[2].toString());
+					if(obj[4].toString().equals("cobrar")){
+						cb.setMontoCobrar(obj03[3].toString());
+						cb.setMontoPagar("");
+					}else{
+						cb.setMontoPagar(obj03[3].toString());
+						cb.setMontoCobrar("");
+					}	
+				}
+				System.out.println(cb.getFechaOperacion() + ", " + cb.getMontoCobrar() + ", " + cb.getMontoPagar());
+				resultados.add(cb);
+			}else{
+				skip = false;
+			}
+		}
+		
+		return resultados;
 	}
 	
 }

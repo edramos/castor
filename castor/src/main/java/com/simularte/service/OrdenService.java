@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.simularte.bean.CuentaBean;
 import com.simularte.bean.OrdenBean;
 
 public interface OrdenService {
@@ -13,4 +14,7 @@ public interface OrdenService {
 	List<OrdenBean> buscarOrderPanel(HttpServletRequest req);
 	List<OrdenBean> buscarOrdenFactura(HttpServletRequest req);
 	List<OrdenBean> buscarOrdenCaja(int idFactura, HttpServletRequest req);
+	
+	//CHART
+	List<CuentaBean> grafOrdenGeneral(int idOrden, HttpServletRequest req);
 }
