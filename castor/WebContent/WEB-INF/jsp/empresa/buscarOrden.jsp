@@ -35,11 +35,31 @@
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>
 			</div>
+			
 			<div class="portlet-body form">
-			<form:form id="frmBuscarOrden" commandName="ordenBean" method="post">
+			<form:form id="frmBuscarOrden" class="form-horizontal" commandName="ordenBean" method="post">
 				<div class="form-body">
 					<div class="row">
-						<div class="col-md-3">
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="col-md-3">
+									<input id="txtCodigo" class="form-control" placeholder="Codigo Orden" name="codigo"/>
+								</div>
+								<div class="col-md-3">
+									<input id="txtNombreCliente" class="form-control" placeholder="Nombre Cliente" name="nombreCliente"/>
+								</div>
+								<div class="col-md-3">
+									<input id="txtOfertaMinima" class="form-control" placeholder="Oferta Minima" name="ofertaMinima"/>
+								</div>
+								<div class="col-md-3">
+									<input id="txtOfertaMaxima" class="form-control" placeholder="Oferta Maxima" name="ofertaMaxima"/>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+						<!-- <div class="col-md-3">
 							<div class="form-group">
 								<div class="col-md-12">
 									<input id="txtCodigo" class="form-control" placeholder="Codigo Orden" name="codigo"/>
@@ -65,10 +85,40 @@
 							<a href="#" class="btn yellow" onclick="buscarOrden();">Buscar <i class="fa fa-search"></i></a>
 							<input id="hdnCampo" type="hidden" name="campo"/><input id="hdnBusqueda" type="hidden" name="busqueda"/>
 							</div>
-						</div>
+						</div> -->
 					</div>
 					
 					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="col-md-3">
+									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+										<input id="txtFechaMinima" type="text" class="form-control form-filter input-sm" name="fechaCreacionMinima" placeholder="Fecha Inicio">
+										<span class="input-group-btn">
+											<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+										</span>
+									</div>	
+								</div>
+								<div class="col-md-3">
+									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+										<input id="txtFechaMaxima" type="text" class="form-control form-filter input-sm" name="fechaCreacionMaxima" placeholder="Fecha Fin">
+										<span class="input-group-btn">
+											<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+										</span>
+									</div>	
+								</div>
+								<div class="col-md-3">
+								</div>
+								<div class="col-md-3">
+									<a href="#" class="btn yellow" onclick="buscarOrden();">Buscar <i class="fa fa-search"></i></a>
+									<input id="hdnCampo" type="hidden" name="campo"/><input id="hdnBusqueda" type="hidden" name="busqueda"/>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<!-- <div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="col-md-12">
@@ -100,7 +150,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					
 				</div>
 			</form:form>
