@@ -36,6 +36,28 @@ public class OrdenServiceImpl implements OrdenService {
 	EntityManager em;
 	
 	@SuppressWarnings("unchecked")
+	public List<OrdenBean> getOrdenesSuggest(String codigo, HttpServletRequest req){
+		List<OrdenBean> resultados = new ArrayList<OrdenBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT o.idorden, o.codigo FROM orden o "
+				+ "WHERE o.estado != 'disabled' AND o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") +"' AND o.codigo LIKE '%" + codigo + "%'");
+		
+		List<Object[]> rows = q01.getResultList();
+		
+		for(int x = 0; x < rows.size(); x++){
+			Object[] obj = rows.get(x);
+			OrdenBean ob = new OrdenBean();
+			
+			ob.setIdOrden((Integer)obj[0]);
+			ob.setCodigo(obj[1].toString());
+			
+			resultados.add(ob);
+		}
+		
+		return resultados;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<OrdenBean> buscarOrdenCaja(int idFactura, HttpServletRequest req){
 		List<OrdenBean> resultados = new ArrayList<OrdenBean>();
 		
@@ -105,11 +127,11 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setCiudad(ordenBean.getCiudad());
 			orden.setDepartamento(ordenBean.getDepartamento());
 			orden.setOferta(ordenBean.getOferta());
+			orden.setOfertaIgv(ordenBean.getOfertaIgv());
 			orden.setMoneda(ordenBean.getMoneda());
 			
 			orden.setEficiencia(ordenBean.getEficiencia());
 			orden.setUtilidadBruta(ordenBean.getUtilidadBruta());
-			orden.setSubTotal(ordenBean.getSubTotal());
 			orden.setGastosGenerales(ordenBean.getGastosGenerales());
 			orden.setTotal(ordenBean.getTotal());	
 			orden.setFechaEntrega(Dates.stringToDate(ordenBean.getFechaEntrega(), "yyyy-MM-dd"));
@@ -503,12 +525,12 @@ public class OrdenServiceImpl implements OrdenService {
 		ordenB.setCiudad(orden.getCiudad());
 		ordenB.setDepartamento(orden.getDepartamento());
 		ordenB.setOferta(orden.getOferta());
+		ordenB.setOfertaIgv(orden.getOfertaIgv());
 		ordenB.setMoneda(orden.getMoneda());
 		ordenB.setFechaEntrega(Dates.fechaEspaniol(orden.getFechaEntrega()));
 		
 		ordenB.setEficiencia(orden.getEficiencia());
 		ordenB.setUtilidadBruta(orden.getUtilidadBruta());
-		ordenB.setSubTotal(orden.getSubTotal());
 		ordenB.setGastosGenerales(orden.getGastosGenerales());
 		ordenB.setTotal(orden.getTotal());
 		

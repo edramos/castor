@@ -11,8 +11,15 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="assets/global/plugins/typeahead/typeahead.css">
+<link href="assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"/>
 <!-- END PAGE LEVEL STYLES -->
 </head>
+<style>
+.tt-hint, .tt-input {
+	color: #000000;
+}
+</style>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
 <jsp:include page="../comps/cabecera.jsp"/>
@@ -66,7 +73,7 @@
 			</div>
 		</div>
 		
-		<form:form id="frmCrearDetalleLibro" class="form-horizontal" commandName="libroDetalleBean">
+		<form:form id="frmCrearDetalleLibro" action="ajaxCrearRegistroLibro" class="form-horizontal" commandName="libroDetalleBean" enctype="multipart/form-data">
 		<div id="divCrearDetalleLibro" class="portlet box blue-hoki" style="display: none;">
 			<div class="portlet-title">
 				<div class="caption"><i class="icon-share"></i>Caja Chica - Nuevo</div>
@@ -82,76 +89,68 @@
 			</div>
 			<div class="portlet-body form">
 				<div class="form-body">
+				
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<div class="col-md-3">
+								<div id="txtFechaOperacion" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+									<input type="text" class="form-control form-filter valid" placeholder="Fecha Operacion" name="fechaOperacion" aria-required="true" aria-invalid="false">												
+									<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<select id="sltTipoTransaccion" class="form-control" name="operacion">
+									<option value="Egreso">Egreso</option>
+									<option value="Ingreso">Ingreso</option>
+								</select>
+							</div>
+							<div class="col-md-3">
+								<select id="sltTransaccion" class="form-control" name="tipoOperacion">
+									<option value="Permanente">Permanente</option>
+									<option value="Temporal">Temporal</option>
+								</select>
+							</div>
+							<div class="col-md-3">
+								<input id="txtMonto" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Monto"/>
+								<input id="hdnMonto" type="hidden" name="monto"/>
+							</div>
+						</div>
+					</div>		
+				</div>
 					
-					<div class="row">
-						<div class="col-md-3">
-							<div id="txtFechaOperacion" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-								<input type="text" class="form-control form-filter valid" placeholder="Fecha Operacion" name="fechaOperacion" aria-required="true" aria-invalid="false">												
-								<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtMonto" class="form-control" placeholder="Monto" name="monto"/>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<select id="sltTipoTransaccion" class="form-control" name="operacion">
-										<option value="Egreso">Egreso</option>
-										<option value="Ingreso">Ingreso</option>
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<select id="sltTransaccion" class="form-control" name="tipoOperacion">
-										<option value="Permanente">Permanente</option>
-										<option value="Temporal">Temporal</option>
-									</select>
-								</div>
+					
+				<div id="divSecondRow" class="row">
+				<div class="col-md-12">
+				<div class="form-group">
+					<div class="col-md-3 dynamic">
+						<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>
+					</div>
+					<div class="col-md-3 dynamic">
+						<input id="txtCodigoOperacion" type="text" class="form-control" placeholder="Codigo Temporal" name="codigoOperacion"/>
+					</div>
+					<div class="col-md-3 dynamic">
+						<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo"/>
+						<input id="hdnIdOrden" type="hidden" name="idOrden"/>
+					</div>
+					<div class="col-md-3 dynamic">
+						<input type="file" id="exampleInputFile1">
+						<input id="hdnIdEntidad" type="hidden" name="idEntidad"/><input id="hdnTipoEntidad" type="hidden" name="tipoEntidad"/>
+					</div>
+				</div>
+				</div>
+				</div>
+					
+					
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<div class="col-md-12">
+								<input id="txtDescripcion" class="form-control" placeholder="Descripcion..." name="descripcion"/>
 							</div>
 						</div>
 					</div>
-					
-					<div id="divSecondRow" class="row">
-						<div class="col-md-3 dynamic">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3 dynamic">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtCodigoOperacion" type="text" class="form-control" placeholder="Codigo Temporal" name="codigoOperacion"/>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3 dynamic">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtDescripcion" class="form-control" placeholder="Descripcion..." name="descripcion"/>
-								</div>
-							</div>
-						</div>
-					</div>
+				</div>
 					
 				</div>
 			</div>
@@ -194,6 +193,9 @@
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+<script src="assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
+<script src="assets/global/plugins/malsup/jquery.form.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -212,7 +214,49 @@ jQuery(document).ready(function() {
 	});
 	
 	listarResultados();
+	$(":input").inputmask();
+	suggestOT();
+	
+	
+	/* $('#frmCrearDetalleLibro').ajaxForm({
+		beforeSend: function() {
+			var montoNum = formatoMoneda('#txtMonto');
+			$('#hdnMonto').val(montoNum);
+        },
+        uploadProgress: function(event, position, total, percentComplete) {
+        
+        },
+        complete: function(xhr) {
+     	
+        }
+	}); */
+	
 });
+</script>
+<script>
+function suggestOT(){
+	var ots = new Bloodhound({
+		datumTokenizer: function (datum) {return Bloodhound.tokenizers.whitespace(datum.value);},
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		remote: 'ajaxListarOrdenesSuggest?q=%QUERY'
+	});
+	ots.initialize();
+	
+	$('#txtOrdenTrabajo').typeahead({minLength: 1,}, {
+		displayKey: 'codigo',
+		source: ots.ttAdapter(),
+		templates: {
+			suggestion: Handlebars.compile([
+				'{{codigo}}',
+			].join(''))
+		}
+	});
+		
+	$('#txtOrdenTrabajo').on('typeahead:selected', function (e, datum){   
+		$('#hdnIdOrden').remove();
+		$('#divSecondRow').append("<input id='hdnIdOrden' type='hidden' name='idOrden' value='" + datum['idOrden'] + "'/>");
+	});
+}
 </script>
 <script>
 $(document).on('click','.eventBtn', function(e){
@@ -222,6 +266,8 @@ $(document).on('click','.eventBtn', function(e){
 		$('#divCrearDetalleLibro').show();
 		break;
 	case "btnCrearDetalleLibro":
+		var montoNum = formatoMoneda('#txtMonto');
+		$('#hdnMonto').val(montoNum);
 		crearDetalleLibro();
 		break;
 	case "btnCancelarCrearCajaBanco":
@@ -394,6 +440,11 @@ function mostrarDetalle(idRegistro){
  			//initTable();
  		}
  	});	
+}
+function formatoMoneda(objeto){
+	if($(objeto).val() != null){
+		return Number($(objeto).val().replace(/[^0-9\.]+/g,""));
+	}
 }
 </script>
 <script id="templateDetalleRegistro" type="text/x-handlebars-template">

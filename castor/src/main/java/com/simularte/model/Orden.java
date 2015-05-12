@@ -48,22 +48,21 @@ public class Orden {
 	private String ciudad;
 	@Column(length = 60, nullable = true)
 	private String departamento;
-	@Column(nullable = false)
-	private BigDecimal oferta;
+	@Column(nullable = false)					//Tambien se le llama SubTotal
+	private BigDecimal oferta;		
+	@Column(name = "ofertaigv", nullable = true)
+	private BigDecimal ofertaIgv;
 	@Column(length = 30, nullable = false)
 	private String moneda;
 	@Column(name = "fechaentrega", nullable = true)
 	private Date fechaEntrega;
-	/*Se registraran cuando la Orden ya este finalizada*/
 	@Column(nullable = true)
 	private double eficiencia;
 	@Column(name = "utilidadbruta", nullable = true) 
 	private BigDecimal utilidadBruta;
-	@Column(name = "subtotal", nullable = true)
-	private BigDecimal subTotal;
 	@Column(name = "gastosgenerales", nullable = true)
 	private BigDecimal gastosGenerales;
-	@Column(name = "total", nullable = true)
+	@Column(nullable = true)				//Oferta + IGV
 	private BigDecimal total;
 	@Column(nullable = true)
 	private BigDecimal detraccion;
@@ -81,18 +80,6 @@ public class Orden {
 	
 	
 	
-	public Date getFechaEntrega() {
-		return fechaEntrega;
-	}
-	public void setFechaEntrega(Date fechaEntrega) {
-		this.fechaEntrega = fechaEntrega;
-	}
-	public double getEficiencia() {
-		return eficiencia;
-	}
-	public void setEficiencia(double eficiencia) {
-		this.eficiencia = eficiencia;
-	}
 	public Integer getIdOrden() {
 		return idOrden;
 	}
@@ -116,6 +103,12 @@ public class Orden {
 	}
 	public void setOrdenEmpresa(Empresa ordenEmpresa) {
 		this.ordenEmpresa = ordenEmpresa;
+	}
+	public Collection<Cuenta> getCuentasOrd() {
+		return cuentasOrd;
+	}
+	public void setCuentasOrd(Collection<Cuenta> cuentasOrd) {
+		this.cuentasOrd = cuentasOrd;
 	}
 	public String getCodigo() {
 		return codigo;
@@ -171,23 +164,35 @@ public class Orden {
 	public void setOferta(BigDecimal oferta) {
 		this.oferta = oferta;
 	}
+	public BigDecimal getOfertaIgv() {
+		return ofertaIgv;
+	}
+	public void setOfertaIgv(BigDecimal ofertaIgv) {
+		this.ofertaIgv = ofertaIgv;
+	}
 	public String getMoneda() {
 		return moneda;
 	}
 	public void setMoneda(String moneda) {
 		this.moneda = moneda;
 	}
+	public Date getFechaEntrega() {
+		return fechaEntrega;
+	}
+	public void setFechaEntrega(Date fechaEntrega) {
+		this.fechaEntrega = fechaEntrega;
+	}
+	public double getEficiencia() {
+		return eficiencia;
+	}
+	public void setEficiencia(double eficiencia) {
+		this.eficiencia = eficiencia;
+	}
 	public BigDecimal getUtilidadBruta() {
 		return utilidadBruta;
 	}
 	public void setUtilidadBruta(BigDecimal utilidadBruta) {
 		this.utilidadBruta = utilidadBruta;
-	}
-	public BigDecimal getSubTotal() {
-		return subTotal;
-	}
-	public void setSubTotal(BigDecimal subTotal) {
-		this.subTotal = subTotal;
 	}
 	public BigDecimal getGastosGenerales() {
 		return gastosGenerales;
@@ -200,6 +205,24 @@ public class Orden {
 	}
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+	public BigDecimal getDetraccion() {
+		return detraccion;
+	}
+	public void setDetraccion(BigDecimal detraccion) {
+		this.detraccion = detraccion;
+	}
+	public BigDecimal getGananciaProyectada() {
+		return gananciaProyectada;
+	}
+	public void setGananciaProyectada(BigDecimal gananciaProyectada) {
+		this.gananciaProyectada = gananciaProyectada;
+	}
+	public BigDecimal getGananciaDisponible() {
+		return gananciaDisponible;
+	}
+	public void setGananciaDisponible(BigDecimal gananciaDisponible) {
+		this.gananciaDisponible = gananciaDisponible;
 	}
 	public Integer getCreadoPor() {
 		return creadoPor;
@@ -218,29 +241,5 @@ public class Orden {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-	public Collection<Cuenta> getCuentasOrd() {
-		return cuentasOrd;
-	}
-	public void setCuentasOrd(Collection<Cuenta> cuentasOrd) {
-		this.cuentasOrd = cuentasOrd;
-	}
-	public BigDecimal getGananciaProyectada() {
-		return gananciaProyectada;
-	}
-	public void setGananciaProyectada(BigDecimal gananciaProyectada) {
-		this.gananciaProyectada = gananciaProyectada;
-	}
-	public BigDecimal getGananciaDisponible() {
-		return gananciaDisponible;
-	}
-	public void setGananciaDisponible(BigDecimal gananciaDisponible) {
-		this.gananciaDisponible = gananciaDisponible;
-	}
-	public BigDecimal getDetraccion() {
-		return detraccion;
-	}
-	public void setDetraccion(BigDecimal detraccion) {
-		this.detraccion = detraccion;
-	}
+	}	
 }

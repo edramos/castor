@@ -15,12 +15,12 @@ public class OrdenBean {
 	private String lon;
 	private String ciudad;
 	private String departamento;
-	private BigDecimal oferta;
 	private String moneda;
 	
 	private double eficiencia;
+	private BigDecimal oferta;
+	private BigDecimal ofertaIgv;
 	private BigDecimal utilidadBruta;
-	private BigDecimal subTotal;
 	private BigDecimal gastosGenerales;
 	private BigDecimal total;
 	private String fechaEntrega;
@@ -53,54 +53,6 @@ public class OrdenBean {
 	
 	
 	
-	public String getCreadoPorNombre() {
-		return creadoPorNombre;
-	}
-	public void setCreadoPorNombre(String creadoPorNombre) {
-		this.creadoPorNombre = creadoPorNombre;
-	}
-	public String getSumOferta() {
-		return sumOferta;
-	}
-	public void setSumOferta(String sumOferta) {
-		this.sumOferta = sumOferta;
-	}
-	public String getSumMonto() {
-		return sumMonto;
-	}
-	public void setSumMonto(String sumMonto) {
-		this.sumMonto = sumMonto;
-	}
-	public String getUtilidad() {
-		return utilidad;
-	}
-	public void setUtilidad(String utilidad) {
-		this.utilidad = utilidad;
-	}
-	public String getContador() {
-		return contador;
-	}
-	public void setContador(String contador) {
-		this.contador = contador;
-	}
-	public String getFechaEntrega() {
-		return fechaEntrega;
-	}
-	public void setFechaEntrega(String fechaEntrega) {
-		this.fechaEntrega = fechaEntrega;
-	}
-	public String getCampo() {
-		return campo;
-	}
-	public void setCampo(String campo) {
-		this.campo = campo;
-	}
-	public String getBusqueda() {
-		return busqueda;
-	}
-	public void setBusqueda(String busqueda) {
-		this.busqueda = busqueda;
-	}
 	public Integer getIdOrden() {
 		return idOrden;
 	}
@@ -167,12 +119,6 @@ public class OrdenBean {
 	public void setDepartamento(String departamento) {
 		this.departamento = departamento;
 	}
-	public BigDecimal getOferta() {
-		return oferta;
-	}
-	public void setOferta(BigDecimal oferta) {
-		this.oferta = oferta;
-	}
 	public String getMoneda() {
 		return moneda;
 	}
@@ -185,17 +131,23 @@ public class OrdenBean {
 	public void setEficiencia(double eficiencia) {
 		this.eficiencia = eficiencia;
 	}
+	public BigDecimal getOferta() {
+		return oferta;
+	}
+	public void setOferta(BigDecimal oferta) {
+		this.oferta = oferta;
+	}
+	public BigDecimal getOfertaIgv() {
+		return ofertaIgv;
+	}
+	public void setOfertaIgv(BigDecimal ofertaIgv) {
+		this.ofertaIgv = ofertaIgv;
+	}
 	public BigDecimal getUtilidadBruta() {
 		return utilidadBruta;
 	}
 	public void setUtilidadBruta(BigDecimal utilidadBruta) {
 		this.utilidadBruta = utilidadBruta;
-	}
-	public BigDecimal getSubTotal() {
-		return subTotal;
-	}
-	public void setSubTotal(BigDecimal subTotal) {
-		this.subTotal = subTotal;
 	}
 	public BigDecimal getGastosGenerales() {
 		return gastosGenerales;
@@ -209,11 +161,53 @@ public class OrdenBean {
 	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
+	public String getFechaEntrega() {
+		return fechaEntrega;
+	}
+	public void setFechaEntrega(String fechaEntrega) {
+		this.fechaEntrega = fechaEntrega;
+	}
+	public BigDecimal getDetraccion() {
+		return detraccion;
+	}
+	public void setDetraccion(BigDecimal detraccion) {
+		this.detraccion = detraccion;
+	}
+	public BigDecimal getGananciaProyectada() {
+		return gananciaProyectada;
+	}
+	public void setGananciaProyectada(BigDecimal gananciaProyectada) {
+		this.gananciaProyectada = gananciaProyectada;
+	}
+	public BigDecimal getGananciaDisponible() {
+		return gananciaDisponible;
+	}
+	public void setGananciaDisponible(BigDecimal gananciaDisponible) {
+		this.gananciaDisponible = gananciaDisponible;
+	}
+	public String getBusqueda() {
+		return busqueda;
+	}
+	public void setBusqueda(String busqueda) {
+		this.busqueda = busqueda;
+	}
+	public String getCampo() {
+		return campo;
+	}
+	public void setCampo(String campo) {
+		this.campo = campo;
+	}
 	public Integer getCreadoPor() {
 		return creadoPor;
 	}
 	public void setCreadoPor(Integer creadoPor) {
 		this.creadoPor = creadoPor;
+	}
+	public String getCreadoPorNombre() {
+		return creadoPorNombre;
+	}
+	public void setCreadoPorNombre(String creadoPorNombre) {
+		this.creadoPorNombre = creadoPorNombre;
 	}
 	public String getFechaCreacion() {
 		return fechaCreacion;
@@ -226,7 +220,7 @@ public class OrdenBean {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}	
+	}
 	public String getNombreCliente() {
 		return nombreCliente;
 	}
@@ -257,22 +251,28 @@ public class OrdenBean {
 	public void setOfertaMaxima(BigDecimal ofertaMaxima) {
 		this.ofertaMaxima = ofertaMaxima;
 	}
-	public BigDecimal getDetraccion() {
-		return detraccion;
+	public String getContador() {
+		return contador;
 	}
-	public void setDetraccion(BigDecimal detraccion) {
-		this.detraccion = detraccion;
+	public void setContador(String contador) {
+		this.contador = contador;
 	}
-	public BigDecimal getGananciaProyectada() {
-		return gananciaProyectada;
+	public String getSumOferta() {
+		return sumOferta;
 	}
-	public void setGananciaProyectada(BigDecimal gananciaProyectada) {
-		this.gananciaProyectada = gananciaProyectada;
+	public void setSumOferta(String sumOferta) {
+		this.sumOferta = sumOferta;
 	}
-	public BigDecimal getGananciaDisponible() {
-		return gananciaDisponible;
+	public String getSumMonto() {
+		return sumMonto;
 	}
-	public void setGananciaDisponible(BigDecimal gananciaDisponible) {
-		this.gananciaDisponible = gananciaDisponible;
+	public void setSumMonto(String sumMonto) {
+		this.sumMonto = sumMonto;
+	}
+	public String getUtilidad() {
+		return utilidad;
+	}
+	public void setUtilidad(String utilidad) {
+		this.utilidad = utilidad;
 	}
 }

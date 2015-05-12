@@ -63,10 +63,8 @@ public class OrdenController {
 	
 	@RequestMapping(value = "ajaxObtenerInformacionOrden-{tipo}-{idOrden}", method = RequestMethod.POST) @ResponseBody
 	public OrdenBean ajaxObtenerInformacionOrden(@PathVariable("tipo")String tipo, @PathVariable("idOrden")int idOrden, HttpServletRequest req){
-		System.out.println("idOrden: " + idOrden);
 		OrdenBean orden = new OrdenBean();		
 		orden = ordenserv.obtenerInformacionOrden(idOrden, tipo, req);
-		System.out.println(orden.getNombreCliente());
 		return orden;
 	}
 	
@@ -74,9 +72,28 @@ public class OrdenController {
 	public List<OrdenBean> ajaxBuscarOrdenCaja(@PathVariable("idFactura")int idFactura, HttpServletRequest req){
 		return ordenserv.buscarOrdenCaja(idFactura, req);
 	}
+	@RequestMapping(value = "ajaxListarOrdenesSuggest", method = RequestMethod.GET) @ResponseBody
+	public List<OrdenBean> ajaxListarFacturaDetraccionSuggest(HttpServletRequest req){
+		String codigo = (String)req.getParameter("q");
+				
+		return ordenserv.getOrdenesSuggest(codigo, req);
+	}
+	
+	
 	//CHART GENERAL
 	@RequestMapping(value = "getChartOrden-{idOrden}", method = RequestMethod.GET) @ResponseBody
 	public List<CuentaBean> getChartOrden(@PathVariable("idOrden")int idOrden, HttpServletRequest req){
 		return ordenserv.grafOrdenGeneral(idOrden, req);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

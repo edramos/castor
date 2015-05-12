@@ -121,32 +121,38 @@
 									</select>	
 								</div>
 								<div class="col-md-2">
-									<input id="txtSubTotalOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="SubTotal"/>
+									<input id="txtSubTotalOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Monto Proveed."/>
 								</div>
 								<div class="col-md-2">
-									<input id="txtIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV"/>
+									<input id="txtIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV Proveed."/>
 								</div>
 								<div class="col-md-2">
-									<input id="txtConIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="SubTotal + IGV"/>
+									<input id="txtConIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Total Proveed."/>
 								</div>
-								<div class="col-md-2">
+								<!-- <div class="col-md-2">
 									<input id="txtUtilidad" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Ganancia Proy." name="gananciaProyectada"/>
 								</div>
 								<div class="col-md-2">
 									<input id="txtUtilidadConIgv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV"/>
+								</div> -->
+								<div class="col-md-2">
+									<input id="txtOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Oferta" name="oferta"/>
+								</div>
+								<div class="col-md-2">
+									<input id="txtOfertaIgv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV Oferta" name="ofertaIgv"/>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-2">
-							<input id="txtOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Oferta" name="oferta"/>
+							<input id="txtOfertaMasIgv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Oferta+IGV" name="total"/>
 						</div>
 						<div class="col-md-2">
 							<input id="txtDetraccionOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Detraccion" name="detraccion"/>
 						</div>
 						<div class="col-md-2">
-							<input id="txtDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Disponible"/>
+							<input id="txtDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Oferta-Detra."/>
 						</div>
 						<div class="col-md-2">
 							<input id="txtGananciaDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'prefix': '$ '" class="form-control" disabled="disabled" placeholder="Ganancia Disp." name="gananciaDisponible"/>
@@ -155,7 +161,7 @@
 							<input id="txtEficiencia" class="form-control" style="text-align:right;" disabled="disabled" placeholder="Eficiencia %" name="eficiencia"/>
 						</div>
 						<div class="col-md-2">
-							<input id="txtUtilidadBruta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Utilidad Bruta" name="utilidadBruta"/>
+							<input id="txtUtilidadBruta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ '" class="form-control" disabled="disabled" placeholder="Utilidad Bruta" name="utilidadBruta"/>
 						</div>
 					</div>	
 						
@@ -509,6 +515,8 @@ jQuery(document).ready(function(){
 			$('#txtDetraccionOferta').prop('disabled', false);
 			$('#txtGananciaDisponible').prop('disabled', false);
 			$('#txtUtilidadBruta').prop('disabled', false);
+			$('#txtOfertaIgv').prop('disabled', false);
+			$('#txtOfertaMasIgv').prop('disabled', false);
 			
 			var arrEfi = $('#txtEficiencia').val().split("%");
 			$('#txtEficiencia').val(Number(arrEfi[0]));
@@ -521,31 +529,30 @@ jQuery(document).ready(function(){
     calculosFinancieros();
 });
 </script>
-
 <script>
 function calculosFinancieros(){
-	$('#txtUtilidad').keyup(function(){
-		var utilidad = formatoMoneda('#txtUtilidad');
-		var utilidadIgv = (utilidad * 0.18).toFixed(2);
-		var totalProveedores = formatoMoneda('#txtConIgvOrden');
-		var oferta = parseFloat(utilidad) + parseFloat(utilidadIgv) + parseFloat(totalProveedores);
+	$('#txtOferta').keyup(function(){
 		var tipoTrabajo = $('#sltTipoTrabajo option:selected').text();
+		var oferta = formatoMoneda('#txtOferta');
+		var ofertaIgv = oferta * 0.18;
+		var ofertaMasIgv = oferta + ofertaIgv;
 		
-		$('#txtUtilidadConIgv').val(utilidadIgv);
-		$('#txtOferta').val(oferta);
+		$('#txtOfertaIgv').val(ofertaIgv);
+		$('#txtOfertaMasIgv').val(ofertaMasIgv);
 		
 		if(tipoTrabajo == "Estudio"){
-			$('#txtDetraccionOferta').val(oferta * 0.1);
+			$('#txtDetraccionOferta').val(ofertaMasIgv * 0.1);
 		}else{
-			$('#txtDetraccionOferta').val(oferta * 0.04);
+			$('#txtDetraccionOferta').val(ofertaMasIgv * 0.04);
 		}
-		var utilidadBruta = oferta - formatoMoneda('');
-		var eficiencia = totalProveedores / oferta;
-		var disponible = oferta - formatoMoneda('#txtDetraccionOferta');
+		var disponible = ofertaMasIgv - formatoMoneda('#txtDetraccionOferta');
+		var totalProveedores = formatoMoneda('#txtConIgvOrden');
+		var eficiencia = totalProveedores / ofertaMasIgv;
+		var utilBruta = oferta - formatoMoneda('#txtSubTotalOrden');
 		
 		$('#txtDisponible').val(disponible);
 		$('#txtGananciaDisponible').val((disponible - formatoMoneda('#txtConIgvOrden')).toFixed(2));
-		$('#txtUtilidadBruta').val(oferta - totalProveedores);
+		$('#txtUtilidadBruta').val(utilBruta.toFixed(2));
 		$('#txtEficiencia').val((eficiencia * 100).toFixed(1) + "%");
 	});
 }
@@ -915,16 +922,16 @@ function recalcularTotalesSubcontratos(){
 	
 	
 	//********************CALCULO TOTAL PROVEEDOR y SUS IGVS, MONTOS****************
-	$('#txtConIgvOrden').val(subtotal);
 	//var subTotalOrden = formatoMoneda('#txtSubTotalOrden');
 	//var montoIgvSubTotal = (subTotalOrden * igv).toFixed(2);
 	//var subTotalConIgv = parseFloat(subTotalOrden) + parseFloat(montoIgvSubTotal);
 	
 	var igvProveedor = (subtotal * 0.18).toFixed(2);
-	var subTotalProveedor = parseFloat(subtotal) - parseFloat(igvProveedor);
+	var totalProveedor = parseFloat(subtotal) + parseFloat(igvProveedor);
 	
 	$('#txtIgvOrden').val(igvProveedor);
-	$('#txtSubTotalOrden').val(subTotalProveedor);
+	$('#txtSubTotalOrden').val(subtotal);
+	$('#txtConIgvOrden').val(totalProveedor);
 	//*******************************************************************************
 	
 	

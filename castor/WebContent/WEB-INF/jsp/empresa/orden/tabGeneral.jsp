@@ -73,11 +73,14 @@
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Detraccion</span><span id="spnDetraccion" class="value"></span>
 				</div>
-				<div class="summaryBodyItem">
+				<!-- <div class="summaryBodyItem">
 					<span class="spanLabel">Ganancia Proy.</span><span id="spnGananciaProyectada" class="value"></span>
-				</div>
+				</div> -->
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Ganancia Disp.</span><span id="spnGananciaDisponible" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Eficiencia</span><span id="spnEficiencia" class="value"></span>
 				</div>
 			</div>
 			
@@ -89,7 +92,7 @@
 					<span class="spanLabel">Utilidad Neta</span><span id="spnUtilNeta" class="value"></span>
 				</div>
 				<div class="summaryBodyItem">
-					<span class="spanLabel">Eficiencia</span><span id="spnEficiencia" class="value"></span>
+					<span class="spanLabel"></span><span id="" class="value"></span>
 				</div>
 			</div>
 		
@@ -120,7 +123,7 @@ function initOrdenGeneral(orden){
 	$('#spnEficiencia').text(orden.eficiencia + "%");
 	$('#spnUtilBruta').text($.getFormattedCurrency(orden.utilidadBruta));
 	$('#spnDetraccion').text($.getFormattedCurrency(orden.detraccion));
-	$('#spnGananciaProyectada').text($.getFormattedCurrency(orden.gananciaProyectada));
+	//$('#spnGananciaProyectada').text($.getFormattedCurrency(orden.gananciaProyectada));
 	$('#spnGananciaDisponible').text($.getFormattedCurrency(orden.gananciaDisponible));
 }
 </script>

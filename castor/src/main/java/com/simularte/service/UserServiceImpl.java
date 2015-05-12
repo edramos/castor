@@ -37,8 +37,64 @@ public class UserServiceImpl implements UserService{
 		
 		List<Object[]> rows01 = q01.getResultList();
 		
-		//Double sumCobrar = 0.0;
-		//Double sumPagar = 0.0;
+		boolean skip = false;
+		
+		for(int x = 0; x < rows01.size(); x++){
+			if(!skip){
+				Object[] obj = rows01.get(x);
+				CuentaBean cb = new CuentaBean();
+				if(x < rows01.size() - 1){
+					Object[] obj02 = rows01.get(x + 1);
+					
+					String currentDate = obj[2].toString();
+					String nextDate = obj02[2].toString();
+									
+					
+					
+					if(currentDate.equals(nextDate)){
+						skip = true;
+						cb.setFechaOperacion(obj[2].toString());
+						
+						if(obj[4].toString().equals("cobrar")){
+							cb.setMontoCobrar(obj[3].toString());
+							cb.setMontoPagar(obj02[03].toString());
+						}else{
+							cb.setMontoPagar(obj[3].toString());
+							cb.setMontoCobrar(obj02[3].toString());
+						}	
+					}else{
+						skip = false;
+						cb.setFechaOperacion(obj[2].toString());
+						if(obj[4].toString().equals("cobrar")){
+							cb.setMontoCobrar(obj[3].toString());
+							cb.setMontoPagar("");
+						}else{
+							cb.setMontoPagar(obj[3].toString());
+							cb.setMontoCobrar("");
+						}	
+						
+					}			
+				}else{
+					Object[] obj03 = rows01.get(x);
+					
+					cb.setFechaOperacion(obj03[2].toString());
+					if(obj[4].toString().equals("cobrar")){
+						cb.setMontoCobrar(obj03[3].toString());
+						cb.setMontoPagar("");
+					}else{
+						cb.setMontoPagar(obj03[3].toString());
+						cb.setMontoCobrar("");
+					}	
+				}
+				System.out.println(cb.getFechaOperacion() + ", " + cb.getMontoCobrar() + ", " + cb.getMontoPagar());
+				cuentas.add(cb);
+			}else{
+				skip = false;
+			}
+		}
+		
+		/*Double sumCobrar = 0.0;
+		Double sumPagar = 0.0;
 		Double saldo = 0.0;
 		
 		for(int x = 0; x < rows01.size(); x++){
@@ -64,7 +120,7 @@ public class UserServiceImpl implements UserService{
 			cb.setSaldo(saldo.toString());
 			
 			cuentas.add(cb);
-		}
+		}*/
 		
 		return cuentas;
 	}
