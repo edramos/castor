@@ -574,8 +574,6 @@ public class OrdenServiceImpl implements OrdenService {
 					String currentDate = obj[2].toString();
 					String nextDate = obj02[2].toString();
 									
-					
-					
 					if(currentDate.equals(nextDate)){
 						skip = true;
 						cb.setFechaOperacion(obj[2].toString());

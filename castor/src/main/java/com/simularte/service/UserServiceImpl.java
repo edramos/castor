@@ -1,5 +1,7 @@
 package com.simularte.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import com.simularte.model.Empresa;
 import com.simularte.model.Perfil;
 import com.simularte.model.Usuario;
 import com.simularte.util.Dates;
+import com.simularte.util.Formatos;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -29,98 +32,39 @@ public class UserServiceImpl implements UserService{
 	public List<CuentaBean> getCuentas(HttpServletRequest req){
 		List<CuentaBean> cuentas = new ArrayList<CuentaBean>();
 		
-		Query q01 = em.createNativeQuery("SELECT c.idcuenta, c.fechavencimiento, c.monto, c.tipo "
+		Query q01 = em.createNativeQuery("SELECT c.fechavencimiento, SUM(IF(c.tipo = 'cobrar', c.monto, 0)) AS cobrar, SUM(IF(c.tipo = 'pagar', c.monto, 0)) AS pagar "
 				+ "FROM cuenta c "
 				+ "INNER JOIN orden o ON c.idorden = o.idorden "
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' ORDER BY c.fechavencimiento ASC");
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' "
+				+ "GROUP BY c.fechavencimiento ASC");
 		
+		double saldo = 0;
 		
 		List<Object[]> rows01 = q01.getResultList();
-		
-		boolean skip = false;
-		
-		for(int x = 0; x < rows01.size(); x++){
-			if(!skip){
-				Object[] obj = rows01.get(x);
-				CuentaBean cb = new CuentaBean();
-				if(x < rows01.size() - 1){
-					Object[] obj02 = rows01.get(x + 1);
-					
-					String currentDate = obj[2].toString();
-					String nextDate = obj02[2].toString();
-									
-					
-					
-					if(currentDate.equals(nextDate)){
-						skip = true;
-						cb.setFechaOperacion(obj[2].toString());
-						
-						if(obj[4].toString().equals("cobrar")){
-							cb.setMontoCobrar(obj[3].toString());
-							cb.setMontoPagar(obj02[03].toString());
-						}else{
-							cb.setMontoPagar(obj[3].toString());
-							cb.setMontoCobrar(obj02[3].toString());
-						}	
-					}else{
-						skip = false;
-						cb.setFechaOperacion(obj[2].toString());
-						if(obj[4].toString().equals("cobrar")){
-							cb.setMontoCobrar(obj[3].toString());
-							cb.setMontoPagar("");
-						}else{
-							cb.setMontoPagar(obj[3].toString());
-							cb.setMontoCobrar("");
-						}	
-						
-					}			
-				}else{
-					Object[] obj03 = rows01.get(x);
-					
-					cb.setFechaOperacion(obj03[2].toString());
-					if(obj[4].toString().equals("cobrar")){
-						cb.setMontoCobrar(obj03[3].toString());
-						cb.setMontoPagar("");
-					}else{
-						cb.setMontoPagar(obj03[3].toString());
-						cb.setMontoCobrar("");
-					}	
-				}
-				System.out.println(cb.getFechaOperacion() + ", " + cb.getMontoCobrar() + ", " + cb.getMontoPagar());
-				cuentas.add(cb);
-			}else{
-				skip = false;
-			}
-		}
-		
-		/*Double sumCobrar = 0.0;
-		Double sumPagar = 0.0;
-		Double saldo = 0.0;
-		
 		for(int x = 0; x < rows01.size(); x++){
 			Object[] obj = rows01.get(x);
 			CuentaBean cb = new CuentaBean();
 			
-			cb.setFechaOperacion(obj[1].toString());
+			cb.setFechaOperacion(obj[0].toString());
+			cb.setMontoCobrar(obj[1].toString());
+			cb.setMontoPagar(obj[2].toString());
 			
-			if(obj[3].toString().equals("cobrar")){
-				cb.setMontoCobrar(obj[2].toString());
-				cb.setMontoPagar("");
-				
-				saldo += Double.valueOf(obj[2].toString());
-				
-			}else{
-				cb.setMontoPagar(obj[2].toString());
-				//cb.setMontoCobrar(cuentas.get(x - 1).getMontoCobrar());
-				cb.setMontoCobrar("");
-				
-				saldo -= Double.valueOf(obj[2].toString());
-			}
+			//double cobrar = Double.parseDouble(cb.getMontoCobrar());
+			//double pagar = Double.parseDouble(cb.getMontoPagar());
 			
-			cb.setSaldo(saldo.toString());
+			BigDecimal cobrar = Formatos.StringToBigDecimal(cb.getMontoCobrar());
+			BigDecimal pagar = Formatos.StringToBigDecimal(cb.getMontoPagar());
 			
-			cuentas.add(cb);
-		}*/
+			saldo += cobrar.subtract(pagar).doubleValue();
+			
+			BigDecimal fSaldo = new BigDecimal(saldo);
+			System.out.println("fSaldo: " + fSaldo.setScale(2, RoundingMode.HALF_UP));
+			cb.setSaldo(fSaldo.setScale(2, RoundingMode.HALF_UP).toString());
+			
+			//System.out.println(cb.getFechaOperacion() + ", " + cb.getMontoCobrar() + ", " + cb.getMontoPagar() + ", " + saldo);
+			cuentas.add(cb);		
+		}
+		
 		
 		return cuentas;
 	}
