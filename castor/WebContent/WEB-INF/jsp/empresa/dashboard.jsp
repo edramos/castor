@@ -229,41 +229,41 @@ AmCharts.loadJSON = function(url) {
 	  // parse adn return the output
 	  return eval(request.responseText);
 	};
-	AmCharts.makeChart("divChart",
-		{
+	AmCharts.makeChart("divChart",{
 			"type": "serial",
+			"theme": "dark",
 			"pathToImages": "http://cdn.amcharts.com/lib/3/images/",
 			"categoryField": "fechaOperacion",
 			"dataDateFormat": "YYYY-MM-DD",
 			"categoryAxis": {
-				"parseDates": true
+				"parseDates": true,
+		        "dashLength": 1,
+		        "minorGridEnabled": true
 			},
 			"chartCursor": {},
 			"chartScrollbar": {},
 			"trendLines": [],
 			"graphs": [
 				{
+					"id": "g1",
 					"bullet": "round",
-					"id": "AmGraph-1",
+					"bulletBorderAlpha": 1,
+			        "bulletColor": "#FFFFFF",
+			        "bulletSize": 5,
+			        "hideBulletsCount": 50,
+			        "lineThickness": 2,
+			        "lineColor": "#67B7DC",
 					"title": "Ctas x Cobrar",
-					"valueField": "montoCobrar"
-				},
-				{
-					"bullet": "square",
-					"id": "AmGraph-2",
-					"title": "Ctas x Pagar",
-					"valueField": "montoPagar"
-				},
-				{
-					"bullet": "square",
-					"id": "AmGraph-3",
-					"title": "Saldo",
+					"useLineColorForBulletBorder": true,
 					"valueField": "saldo"
-				}
+				},
 			],
 			"guides": [],
 			"allLabels": [],
-			"balloon": {},
+			"balloon": {
+				"borderThickness": 1,
+		        "shadowAlpha": 0
+			},
 			"dataProvider": AmCharts.loadJSON('getChartDashboard')
 		}
 	);

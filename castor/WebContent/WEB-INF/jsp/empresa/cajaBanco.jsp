@@ -251,7 +251,7 @@ function suggestFactura(tipo){
 		source: facturas.ttAdapter(),
 		templates: {
 			suggestion: Handlebars.compile([
-				'{{codigo}} - {{conIgv}}',
+				'{{codigo}} - {{subTotal}}',
 			].join(''))
 		}
 	});
@@ -259,7 +259,7 @@ function suggestFactura(tipo){
 	$('#txtFactura').on('typeahead:selected', function (e, datum) {   
 		$('#hdnIdFactura').remove();
 		$('#divSecondRow').append("<input id='hdnIdFactura' type='hidden' name='idFactura' value='" + datum['idFactura'] + "'/>");
-		$('#txtMonto').val(datum['conIgv']);
+		$('#txtMonto').val(datum['subTotal']);
 		$('#txtCobrarFactura').val(datum['cobrarFactura']);
 		$('#txtPagarFactura').val(datum['cobrarFactura']);
 		$('#txtDetraccion').val(datum['montoDetraccion']);

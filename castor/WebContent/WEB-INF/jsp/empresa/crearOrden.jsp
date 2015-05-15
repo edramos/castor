@@ -15,6 +15,9 @@
 .well {
 	padding: 0px;margin-bottom: 0px;
 }
+[disabled] {
+  pointer-events: none;
+}
 </style>
 </head>
 
@@ -120,13 +123,13 @@
 										<option value="nuevo sol">PEN (S/.)</option>
 									</select>	
 								</div>
-								<div class="col-md-2">
+								<div class="col-md-2 tooltips" data-original-title="Monto Proveedor">
 									<input id="txtSubTotalOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Monto Proveed."/>
 								</div>
-								<div class="col-md-2">
+								<div class="col-md-2 tooltips" data-original-title="IGV Proveedor">
 									<input id="txtIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV Proveed."/>
 								</div>
-								<div class="col-md-2">
+								<div class="col-md-2 tooltips" data-original-title="Total Proveedor">
 									<input id="txtConIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Total Proveed."/>
 								</div>
 								<!-- <div class="col-md-2">
@@ -136,31 +139,31 @@
 									<input id="txtUtilidadConIgv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV"/>
 								</div> -->
 								<div class="col-md-2">
-									<input id="txtOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Oferta" name="oferta"/>
+									<input id="txtOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control tooltips" data-original-title="Oferta" placeholder="Oferta" name="oferta"/>
 								</div>
-								<div class="col-md-2">
+								<div class="col-md-2 tooltips" data-original-title="IGV Oferta">
 									<input id="txtOfertaIgv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV Oferta" name="ofertaIgv"/>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-2">
+						<div class="col-md-2 tooltips" data-original-title="Oferta + IGV">
 							<input id="txtOfertaMasIgv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Oferta+IGV" name="total"/>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 tooltips" data-original-title="Detraccion">
 							<input id="txtDetraccionOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Detraccion" name="detraccion"/>
 						</div>
-						<div class="col-md-2">
-							<input id="txtDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Oferta-Detra."/>
+						<div class="col-md-2 tooltips" data-original-title="Oferta - Detra.">
+							<input id="txtDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Oferta - Detra."/>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 tooltips" data-original-title="Ganancia Disp.">
 							<input id="txtGananciaDisponible" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'prefix': '$ '" class="form-control" disabled="disabled" placeholder="Ganancia Disp." name="gananciaDisponible"/>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 tooltips" data-original-title="Eficiencia">
 							<input id="txtEficiencia" class="form-control" style="text-align:right;" disabled="disabled" placeholder="Eficiencia %" name="eficiencia"/>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 tooltips" data-original-title="Utilidad Bruta">
 							<input id="txtUtilidadBruta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ '" class="form-control" disabled="disabled" placeholder="Utilidad Bruta" name="utilidadBruta"/>
 						</div>
 					</div>	
@@ -427,7 +430,7 @@
 						</div>
 						
 						
-						 <a id="btnGrabar" class="btn btn-default btn-sm eventBtn" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
+						 <a id="btnGrabar" class="btn btn-default btn-sm tooltips eventBtn" data-original-title="Tooltip goes here" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
 					</div>
 					<input id="hdnCobrosCliente" type="hidden" name="cobroscliente" value=""/>
 					<input id="hdnSubcontratos" type="hidden" name="subcontratos" value=""/>

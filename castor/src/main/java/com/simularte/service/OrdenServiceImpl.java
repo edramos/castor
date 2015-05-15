@@ -107,7 +107,9 @@ public class OrdenServiceImpl implements OrdenService {
 	@Transactional
 	public int crearOrden(OrdenBean ordenBean, int idCliente, String[] cobrosCliente, String[] subCont, String[] pagProv, HttpServletRequest req) {
 		int idOrden = -1;
-		
+		//Preguntar si el IGV  y la Detraccion se redondea a 3 o 2 digitos, porque en algunos casos hay una diferencia de -1 centimo,
+		//EJEMPLO: Ofera = 10,344.24, igv = 1861.9632, redondeado a 2 IGV sale la detraccion 488.24, pero sin rendondeo sale 488.248128
+		//si lo ultimo que redondeo a 2 es 488.248128 entonces tengo 488.25 
 		try{
 			HttpSession session = req.getSession();
 			
@@ -135,9 +137,6 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setGastosGenerales(ordenBean.getGastosGenerales());
 			orden.setTotal(ordenBean.getTotal());	
 			orden.setFechaEntrega(Dates.stringToDate(ordenBean.getFechaEntrega(), "yyyy-MM-dd"));
-			System.out.println("ordenBean.getDetraccion(): " + ordenBean.getDetraccion());
-			System.out.println("ordenBean.getGananciaProyectada(): " + ordenBean.getGananciaProyectada());
-			System.out.println("ordenBean.getGananciaDisponible(): " + ordenBean.getGananciaDisponible());
 			orden.setDetraccion(ordenBean.getDetraccion());
 			orden.setGananciaProyectada(ordenBean.getGananciaProyectada());
 			orden.setGananciaDisponible(ordenBean.getGananciaDisponible());

@@ -106,7 +106,7 @@ hr {
 							</div>
 							<div class="summaryBodyRight">
 								<div id="divAccionCuenta" class="summaryBodyItem">
-									<span class="spanLabel">Cobrar</span><span id="spnCobrar" class="value"></span>
+									<span class="spanLabel">Disponible</span><span id="spnCobrar" class="value"></span>
 								</div>
 								<div class="summaryBodyItem">
 									<span class="spanLabel">Vence</span><span id="spnVence" class="value"></span>
@@ -362,7 +362,7 @@ $('#sltTipoFactura').change(function(){
 		$('#divTrabajo').empty();
 		$('#divTrabajo').append('<span class="spanLabel">Trabajo</span><span id="spnTrabajoCliente" class="value"></span>');
 		$('#divAccionCuenta').empty();
-		$('#divAccionCuenta').append('<span class="spanLabel">Cobrar</span><span id="spnCobrar" class="value"></span>');
+		$('#divAccionCuenta').append('<span class="spanLabel">Disponible</span><span id="spnCobrar" class="value"></span>');
 		
 		listarOT();
 		

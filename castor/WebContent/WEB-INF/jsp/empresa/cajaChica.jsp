@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		
-		<form:form id="frmCrearDetalleLibro" action="ajaxCrearRegistroLibro" class="form-horizontal" commandName="libroDetalleBean" enctype="multipart/form-data">
+		<form:form id="frmCrearDetalleLibro" action="ajaxCrearRegistroLibro" class="form-horizontal" commandName="libroDetalleBean" enctype="multipart/form-data" method="post">
 		<div id="divCrearDetalleLibro" class="portlet box blue-hoki" style="display: none;">
 			<div class="portlet-title">
 				<div class="caption"><i class="icon-share"></i>Caja Chica - Nuevo</div>
@@ -91,32 +91,32 @@
 				<div class="form-body">
 				
 				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group">
-							<div class="col-md-3">
-								<div id="txtFechaOperacion" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-									<input type="text" class="form-control form-filter valid" placeholder="Fecha Operacion" name="fechaOperacion" aria-required="true" aria-invalid="false">												
-									<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<select id="sltTipoTransaccion" class="form-control" name="operacion">
-									<option value="Egreso">Egreso</option>
-									<option value="Ingreso">Ingreso</option>
-								</select>
-							</div>
-							<div class="col-md-3">
-								<select id="sltTransaccion" class="form-control" name="tipoOperacion">
-									<option value="Permanente">Permanente</option>
-									<option value="Temporal">Temporal</option>
-								</select>
-							</div>
-							<div class="col-md-3">
-								<input id="txtMonto" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Monto"/>
-								<input id="hdnMonto" type="hidden" name="monto"/>
-							</div>
+				<div class="col-md-12">
+				<div class="form-group">
+					<div class="col-md-3">
+						<div id="txtFechaOperacion" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+							<input type="text" class="form-control form-filter valid" placeholder="Fecha Operacion" name="fechaOperacion" aria-required="true" aria-invalid="false">												
+							<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span>
 						</div>
-					</div>		
+					</div>
+					<div class="col-md-3">
+						<select id="sltTipoTransaccion" class="form-control" name="operacion">
+							<option value="Egreso">Egreso</option>
+							<option value="Ingreso">Ingreso</option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<select id="sltTransaccion" class="form-control" name="tipoOperacion">
+							<option value="Permanente">Permanente</option>
+							<option value="Temporal">Temporal</option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<input id="txtMonto" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Monto"/>
+						<input id="hdnMonto" type="hidden" name="monto"/>
+					</div>
+				</div>
+				</div>		
 				</div>
 					
 					
@@ -133,10 +133,12 @@
 						<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo"/>
 						<input id="hdnIdOrden" type="hidden" name="idOrden"/>
 					</div>
+					
 					<div class="col-md-3 dynamic">
-						<input type="file" id="exampleInputFile1">
+						<input type="file" name="files" multiple/>
 						<input id="hdnIdEntidad" type="hidden" name="idEntidad"/><input id="hdnTipoEntidad" type="hidden" name="tipoEntidad"/>
 					</div>
+					
 				</div>
 				</div>
 				</div>
@@ -217,20 +219,18 @@ jQuery(document).ready(function() {
 	$(":input").inputmask();
 	suggestOT();
 	
-	
-	/* $('#frmCrearDetalleLibro').ajaxForm({
+	$('#frmCrearDetalleLibro').ajaxForm({
 		beforeSend: function() {
-			var montoNum = formatoMoneda('#txtMonto');
-			$('#hdnMonto').val(montoNum);
+            alert('Voy a enviar');
         },
         uploadProgress: function(event, position, total, percentComplete) {
-        
+            
         },
         complete: function(xhr) {
-     	
+        	listarResultados();
+ 			borrarDatos();
         }
-	}); */
-	
+	});
 });
 </script>
 <script>
@@ -284,7 +284,11 @@ $(document).on('click','.eventBtn', function(e){
 </script>
 <script>
 function crearDetalleLibro(){
-	$.ajax({
+	alert('Hey');
+	
+	
+	
+	/* $.ajax({
  		url: 'ajaxCrearRegistroLibro',
  		type: 'post',
  		dataType: 'json',
@@ -293,7 +297,7 @@ function crearDetalleLibro(){
  			listarResultados();
  			borrarDatos();
  		}
- 	});	
+ 	});	 */
 }
 function listarResultados(){
 	var html = '';

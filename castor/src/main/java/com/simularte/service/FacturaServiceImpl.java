@@ -1,6 +1,7 @@
 package com.simularte.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class FacturaServiceImpl implements FacturaService{
 	
 	@Transactional
 	public boolean crearFactura(int idCuenta, String tipo, double detraccion, String codigo, HttpServletRequest req){
+		//Luego revisar para usar al bean Factura que viene del form de la UI
 		boolean result = false;
 		
 		Cuenta cuenta = em.find(Cuenta.class, idCuenta);
@@ -44,15 +46,19 @@ public class FacturaServiceImpl implements FacturaService{
 		factura.setFacturaCuenta(cuenta);			
 		factura.setFechaEmision(Dates.dateCreacion());
 		
+		BigDecimal monto = cuenta.getMonto();
+		BigDecimal montoMasIgv = monto.multiply(Valores.IGV).setScale(2, RoundingMode.HALF_UP);
+		BigDecimal total = cuenta.getMonto().add(montoMasIgv).setScale(2, RoundingMode.HALF_UP);
 		
-		factura.setSubTotal(cuenta.getMonto().subtract(cuenta.getMonto().multiply(Valores.IGV)));
-		factura.setConIgv(cuenta.getMonto());
-		factura.setTotal(factura.getConIgv());		//Por ahora porque son facturas emitidas por 1 solo concepto, cuando sean grupales se creara DetalleFactura
+		factura.setSubTotal(monto);					//Tambien le llaman Monto
+		factura.setConIgv(montoMasIgv);
+		factura.setTotal(total);					//Por ahora porque son facturas emitidas por 1 solo concepto, cuando sean grupales se creara DetalleFactura
 		
 		factura.setDetraccion(detraccion);
-		factura.setMontoDetraccion(factura.getConIgv().multiply(BigDecimal.valueOf(factura.getDetraccion() * 0.01)));
 		
-		factura.setCobrarFactura(factura.getConIgv().subtract(factura.getMontoDetraccion()));
+		factura.setMontoDetraccion(total.multiply(BigDecimal.valueOf(factura.getDetraccion() * 0.01)));
+		
+		factura.setCobrarFactura(total.subtract(factura.getMontoDetraccion()));
 		factura.setEstadoDetraccion("Pendiente");
 		
 		factura.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
@@ -97,7 +103,7 @@ public class FacturaServiceImpl implements FacturaService{
 				+ "FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden "
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "'");
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' ORDER BY f.fechacreacion");
 		
 		List<Object[]> rows = q1.getResultList();
 		
@@ -108,8 +114,8 @@ public class FacturaServiceImpl implements FacturaService{
 			fb.setIdFactura((Integer)obj[0]);
 			fb.setCodigo(obj[1].toString());
 			fb.setSubTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[2].toString())));
-			fb.setIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[3].toString()).subtract(Formatos.StringToBigDecimal(obj[2].toString()))));
-			fb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[3].toString()))));
+			fb.setIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[3].toString())));
+			fb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[4].toString())));		//Se podria mejorar como mostrar el formato currency o hacerlo en UI
 			fb.setDetraccion(obj[10].toString());
 			fb.setMontoDetraccion(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[5].toString()))));
 			fb.setEstadoDetraccion(obj[7].toString());
@@ -148,7 +154,7 @@ public class FacturaServiceImpl implements FacturaService{
 				fb.setIdFactura((Integer)obj[0]);
 				fb.setCobrarFactura(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[1].toString()))));
 				fb.setCodigo(obj[2].toString());
-				fb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[3].toString()))));
+				fb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[10].toString()))));
 				fb.setDetraccion(Integer.toString(Double.valueOf(obj[4].toString()).intValue()));
 				fb.setEstado(obj[5].toString());
 				fb.setMontoDetraccion(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[7].toString()))));
@@ -157,13 +163,13 @@ public class FacturaServiceImpl implements FacturaService{
 				fb.setTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[10].toString()))));
 				fb.setIdCuenta((Integer)obj[11]);
 				fb.setEstadoDetraccion(obj[12].toString());
-				fb.setIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[3].toString()).subtract(Formatos.StringToBigDecimal(obj[8].toString()))));
+				fb.setIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[3].toString()))));
 				
 				totalMonto += Formatos.StringToBigDecimal(obj[8].toString()).doubleValue();
 				fb.setTotalMonto(Formatos.BigBecimalToString(BigDecimal.valueOf(totalMonto)));
-				totalIgv += Formatos.StringToBigDecimal(obj[3].toString()).subtract(Formatos.StringToBigDecimal(obj[8].toString())).doubleValue();
+				totalIgv += Formatos.StringToBigDecimal(obj[3].toString()).doubleValue();
 				fb.setTotalIgv(Formatos.BigBecimalToString(BigDecimal.valueOf(totalIgv)));
-				totalConIgv += Formatos.StringToBigDecimal(obj[3].toString()).doubleValue();
+				totalConIgv += Formatos.StringToBigDecimal((obj[10].toString())).doubleValue();
 				fb.setTotalConIgv(Formatos.BigBecimalToString(BigDecimal.valueOf(totalConIgv)));
 				
 				totalDetraccion += Formatos.StringToBigDecimal(obj[7].toString()).doubleValue();
@@ -192,14 +198,14 @@ public class FacturaServiceImpl implements FacturaService{
 	public List<FacturaBean> getFacturasSuggested(String codigoFactura, String tipo, HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
 		Query q01 = null;
-		System.out.println("tipo: " + tipo);
+		
 		if(tipo.equals("cobrar")){
-		q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.conigv, f.cobrarfactura, f.montodetraccion FROM factura f "
+		q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.subtotal, f.cobrarfactura, f.montodetraccion FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden "
 				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado = 'Emitido'");
 		}else{
-			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.conigv, f.cobrarfactura, f.montodetraccion FROM factura f "
+			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.subtotal, f.cobrarfactura, f.montodetraccion FROM factura f "
 					+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 					+ "INNER JOIN orden o ON o.idorden = c.idorden "
 					+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado = 'Recibido'");
@@ -212,7 +218,7 @@ public class FacturaServiceImpl implements FacturaService{
 			
 			fb.setIdFactura((Integer)obj[0]);
 			fb.setCodigo(obj[1].toString());
-			fb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[3].toString())));
+			fb.setSubTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[3].toString())));
 			fb.setCobrarFactura(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[4].toString())));
 			fb.setMontoDetraccion(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[5].toString())));
 			

@@ -1,5 +1,9 @@
 package com.simularte.bean;
 
+import java.util.List;
+
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 public class DetalleLibroBean {
 
 	private Integer idLibro;
@@ -35,6 +39,9 @@ public class DetalleLibroBean {
 	private String ingreso;
 	private String egreso;
 	private String saldo;
+	//Archivo
+	private List<CommonsMultipartFile> files;
+	private List<S3Bean> archivosS3;
 	
 	
 	
@@ -199,5 +206,17 @@ public class DetalleLibroBean {
 	}
 	public void setCodigoOrden(String codigoOrden) {
 		this.codigoOrden = codigoOrden;
+	}
+	public List<CommonsMultipartFile> getFiles() {
+		return files;
+	}
+	public void setFiles(List<CommonsMultipartFile> files) {
+		this.files = files;
+	}
+	public List<S3Bean> getArchivosS3() {
+		return archivosS3;
+	}
+	public void setArchivosS3(List<S3Bean> archivosS3) {
+		this.archivosS3 = archivosS3;
 	}
 }

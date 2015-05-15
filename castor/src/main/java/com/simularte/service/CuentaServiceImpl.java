@@ -1,6 +1,7 @@
 package com.simularte.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +37,13 @@ public class CuentaServiceImpl implements CuentaService {
 		
 		Cuenta cuenta = (Cuenta)q01.getSingleResult();
 		
-		cb.setMonto(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(Valores.IGV))));
-		cb.setIgv(Formatos.BigBecimalToString(cuenta.getMonto().multiply(Valores.IGV)));
-		cb.setConIgv(Formatos.BigBecimalToString(cuenta.getMonto()));
+		BigDecimal monto = cuenta.getMonto();
+		BigDecimal montoIgv = monto.multiply(Valores.IGV).setScale(2, RoundingMode.HALF_UP);
+		BigDecimal total = cuenta.getMonto().add(montoIgv).setScale(2, RoundingMode.HALF_UP);
 		
-		
+		cb.setMonto(Formatos.BigBecimalToString(monto));
+		cb.setIgv(Formatos.BigBecimalToString(montoIgv));
+		cb.setConIgv(Formatos.BigBecimalToString(total));
 		
 		if(tipo.equals("pagar")){
 			cb.setIdSubcontrato(cuenta.getCuentaSubcontrato().getIdSubcontrato());
@@ -65,19 +68,27 @@ public class CuentaServiceImpl implements CuentaService {
 		
 		if(tipo.equals("cobrar")){
 			if(orden.getTipoTrabajo().equals("Estudio")){
-				cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1))) + "  (10%)");
-				cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1)))));
+				BigDecimal montoDetraccion = total.multiply(BigDecimal.valueOf(0.1));
+				
+				cb.setMontoDetraccion(Formatos.BigBecimalToString(montoDetraccion) + "  (10%)");
+				cb.setCobrar(Formatos.BigBecimalToString(total.subtract(montoDetraccion)));
 			}else{
-				cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04))) + "  (4%)");
-				cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04)))));
+				BigDecimal montoDetraccion = total.multiply(BigDecimal.valueOf(0.04));
+				
+				cb.setMontoDetraccion(Formatos.BigBecimalToString(montoDetraccion) + "  (4%)");
+				cb.setCobrar(Formatos.BigBecimalToString(total.subtract(montoDetraccion)));
 			}
 		}else{
 			if(cb.getScTipoTrabajo().equals("Estudio")){
-				cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1))) + "  (10%)");
-				cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.1)))));
+				BigDecimal montoDetraccion = total.multiply(BigDecimal.valueOf(0.1));
+				
+				cb.setMontoDetraccion(Formatos.BigBecimalToString(montoDetraccion) + "  (10%)");
+				cb.setCobrar(Formatos.BigBecimalToString(total.subtract(montoDetraccion)));
 			}else{
-				cb.setMontoDetraccion(Formatos.BigBecimalToString(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04))) + "  (4%)");
-				cb.setCobrar(Formatos.BigBecimalToString(cuenta.getMonto().subtract(cuenta.getMonto().multiply(BigDecimal.valueOf(0.04)))));
+				BigDecimal montoDetraccion = total.multiply(BigDecimal.valueOf(0.04));
+				System.out.println("total: " + total + "montoDetraccion: " + montoDetraccion);
+				cb.setMontoDetraccion(Formatos.BigBecimalToString(montoDetraccion) + "  (4%)");
+				cb.setCobrar(Formatos.BigBecimalToString(total.subtract(montoDetraccion)));
 			}
 		}
 		cb.setFechaVencimiento(Dates.fechaCorta(cuenta.getFechaVencimiento()));

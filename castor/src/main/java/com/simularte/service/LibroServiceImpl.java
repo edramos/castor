@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,9 @@ public class LibroServiceImpl implements LibroService{
 
 	@PersistenceContext 
 	EntityManager em;
+	
+	@Autowired
+	S3Service s3;
 	
 	@Transactional
 	public boolean crearDetalleLibro(DetalleLibroBean dlb, Integer idLibro, HttpServletRequest req){

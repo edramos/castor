@@ -4,7 +4,7 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 			<tr class="heading">
-				<th>N° F.</th><th>Fecha Vencimiento</th><th>Monto + IGV</th><th>Tipo Pago</th><th>Condicion</th><th>Estado</th><th>Acciones</th>
+				<th>N° F.</th><th>Vencimiento</th><th>Monto</th><th>Tipo Pago</th><th>Condicion</th><th>Estado</th><th>Acciones</th>
 			</tr>
 			</thead>
 		

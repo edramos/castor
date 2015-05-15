@@ -17,7 +17,7 @@
 		<table class="table table-bordered table-hover">
 		<thead>
 		<tr class="heading">
-			<th>N° F.</th><th>Proveedor</th><th>Vencimiento</th><th>Monto + IGV</th><th>Tipo Pago</th><th>Condicion</th>
+			<th>N° F.</th><th>Proveedor</th><th>Vencimiento</th><th>Monto</th><th>Tipo Pago</th><th>Condicion</th>
 			<th>Estado</th>
 		</tr>
 		</thead>
