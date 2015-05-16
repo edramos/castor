@@ -313,7 +313,7 @@ function mostrarOrden(idFactura){
 $(function($){
 	var locations = {
 	    'Ingreso': ['Cobranza Venta/Servicio', 'Detraccion', 'Otra cobranza', 'Transferencia cuenta', 'Interes ganado'],
-		'Egreso': ['Pago Proveedor', 'Detraccion', 'Pago Planilla/Beneficios', 'Compra', 'Tributo', 'Transferencia cta.', 'Reembolso Caja Chica', 'Gasto Financiero'],
+		'Egreso': ['Pago Proveedor', 'Detraccion', 'Retiro', 'Compra', 'Pago Planilla/Beneficios', 'Servicio de Terceros', 'Impuesto', 'Transferencia cta.', 'Reembolso Caja Chica', 'Gasto Financiero'],
 	}
 	
 	$('#sltTipoTransaccion').change(function(){
@@ -366,14 +366,23 @@ $(function($){
 		//EGRESOS
 		case 'Pago Proveedor':
 			formDynamic('#templatePagoProveedor');
+			listarSelectorProveedores('sltProveedor');
+			suggestFactura("pagar");
+			break;
+		case 'Retiro':
+			formDynamic('#templateCodigoOperacion');
 			break;
 		case 'Pago Planilla/Beneficios':
 			formDynamic('#templatePagoPlanillaBeneficios');
+			listarSelectorEmpleados('sltEmpleado');
+			break;
+		case 'Servicio de Terceros':
+			formDynamic('#templateServicioTerceros');
 			break;
 		case 'Compra':
 			formDynamic('#templateCompra');
 			break;
-		case 'Tributo':
+		case 'Impuesto':
 			formDynamic('#templateCodigoOperacion');
 			break;
 		case 'Transferencia cta.':
@@ -445,6 +454,28 @@ function formDynamic(opcion){
 }
 </script>
 <script>
+function listarSelectorEmpleados(nombreSelector){
+	var html = '';
+    $.ajax({
+ 		url: 'ajaxListarEmpleados',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(empleados){
+ 			html = '';
+ 			$.each(empleados, function(i, empleado){
+	 			var source = $("#templateSelectorEmpleados").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(empleado);
+	 			
+ 			});		
+ 			$("#" + nombreSelector).html(html);	        
+ 		},
+ 		complete: function() {	 			
+ 			
+  		}
+ 	});
+}
 function listarSelectorClientes(nombreSelector){
 	var html = '';
     $.ajax({
@@ -547,7 +578,7 @@ function removeTable(){
 }
 function createTable(){
 	$('#divPortletBody').append(
-		"<table class='table table-striped table-hover' id='tblResultados'><thead><tr><th style='width: 0px;display: none;'></th><th>Fecha</th><th style='width: 20%;'>Tipo Operacion</th><th>Descripcion</th>"+
+		"<table class='table table-striped table-hover' id='tblResultados'><thead><tr><th style='width: 0px;display: none;'></th><th>Fecha</th><th style='width: 20%;'>Concepto</th><th>Descripcion</th>"+
 		"<th>Ingreso</th><th>Egreso</th><th>Saldo</th></tr></thead><tbody id='viewResultadosHandlerbars'></tbody></table>"	
 	);
 }
@@ -671,6 +702,9 @@ function mostrarDetalle(idRegistro){
  	});	
 }
 </script>
+<script id="templateSelectorEmpleados" type="text/x-handlebars-template">
+	<option value="{{idUsuario}}">{{primerNombre}} {{apellidoPaterno}}</option>
+</script>
 <script id="templateSelectorClientes" type="text/x-handlebars-template">
 	<option value="{{idCliente}}">{{nombre}}</option>
 </script>
@@ -725,6 +759,22 @@ function mostrarDetalle(idRegistro){
 </tr>
 </script>
 <!-- EGRESOS -->
+<script id="templateServicioTerceros" type="text/x-handlebars-template">
+<div class="col-md-3 dynamic">
+	<select id="sltTipoDocumento" class="form-control" name="tipoDocumento">
+		<option value="Recibo por Honorarios">Recibo por Honorarios</option>
+		<option value="Recibo">Recibo</option>
+		<option value="Factura">Factura</option>
+		<option value="Otros">Otros</option>
+	</select>
+</div>
+<div class="col-md-3 dynamic">
+	<input id="txtCodigoDocumento" class="form-control" placeholder="Codigo" name="codigoDocumento"/>
+</div>
+<div class="col-md-4 dynamic">
+	<input id="txtNombreProveedor" class="form-control" placeholder="Nombre" name="nombreTercero"/>
+</div>
+</script>
 <script id="templateCodigoOperacion" type="text/x-handlebars-template">
 <div class="col-md-3 dynamic">
 	<input id="txtCodigoOperacion" class="form-control" placeholder="Codigo Operacion" name="codigoOperacion"/>
@@ -732,43 +782,31 @@ function mostrarDetalle(idRegistro){
 </script>
 <script id="templateTransferenciaCuentaEgreso" type="text/x-handlebars-template">
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtCuentaDestino" class="form-control" placeholder="Cuenta Destino" name="cuentaBancoDestino"/>
-		</div>
-	</div>
+	<input id="txtCuentaDestino" class="form-control" placeholder="Cuenta Destino" name="cuentaBancoDestino"/>
 </div>
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtCodigoOperacion" class="form-control" placeholder="Codigo Operacion" name="codigoOperacion"/>
-		</div>
-	</div>
+	<input id="txtCodigoOperacion" class="form-control" placeholder="Codigo Operacion" name="codigoOperacion"/>
 </div>
 </script>
 <script id="templateCompra" type="text/x-handlebars-template">
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtProveedor" class="form-control" placeholder="Factura" name="factura"/>
-		</div>
-	</div>
+	<input id="txtProveedor" class="form-control" placeholder="Factura" name="factura"/>
+</div>
+<div class="col-md-3 dynamic">
+	<select id="sltTipoCompra" class="form-control" name="tipoCompra">
+		<option value="Maquinaria y Equipo">Maquinaria y Equipo</option>
+		<option value="Muebles y Enseres">Muebles y Enseres</option>
+		<option value="Vehiculos">Vehiculos</option>
+		<option value="Otros">Otros</option>
+	</select>
 </div>
 </script>
 <script id="templatePagoPlanillaBeneficios" type="text/x-handlebars-template">
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtEmpleado" class="form-control" placeholder="Empleado" name="idEmpleado"/>
-		</div>
-	</div>
+	<select id="sltEmpleado" class="form-control" name="idEmpleado"></select>
 </div>
 <div class="col-md-3 dynamic">
-	<div class="form-group">
-		<div class="col-md-12">
-			<input id="txtFactura" class="form-control" placeholder="Codigo Operacion" name="codigoOperacion"/>
-		</div>
-	</div>
+	<input id="txtFactura" class="form-control" placeholder="Codigo Operacion" name="codigoOperacion"/>
 </div>
 </script>
 <script id="templatePagoProveedor" type="text/x-handlebars-template">

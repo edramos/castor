@@ -55,7 +55,11 @@ public class LibroServiceImpl implements LibroService{
 			detalleLibro.setCuentaBancoOrigen(dlb.getCuentaBancoOrigen());
 			detalleLibro.setCuentaBancoDestino(dlb.getCuentaBancoDestino());
 			detalleLibro.setCodigoOperacion(dlb.getCodigoOperacion());
-			detalleLibro.setIdEmpleado(dlb.getIdEmpleado());			
+			detalleLibro.setIdEmpleado(dlb.getIdEmpleado());
+			detalleLibro.setTipoCompra(dlb.getTipoCompra());
+			detalleLibro.setTipoDocumento(dlb.getTipoDocumento());
+			detalleLibro.setCodigoDocumento(dlb.getCodigoDocumento());
+			detalleLibro.setNombreTercero(dlb.getNombreTercero());
 			
 			detalleLibro.setCreadoPor((Integer)session.getAttribute("idUser"));
 			detalleLibro.setFechaCreacion(Dates.fechaCreacion());

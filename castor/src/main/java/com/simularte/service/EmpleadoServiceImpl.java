@@ -124,12 +124,12 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 			Query query = null;
 
 			String Squery = "";
-			Squery = "SELECT c FROM Perfil c WHERE c.perfilUsuario.usuarioEmpresa.idEmpresa =:idEmpresa AND c.estado='enabled' ";
+			Squery = "SELECT p FROM Perfil p WHERE p.perfilUsuario.usuarioEmpresa.idEmpresa =:idEmpresa AND p.estado='enabled' ";
 			query = em.createQuery(Squery);
 			query.setParameter("idEmpresa", (Integer)session.getAttribute("idEmpresa"));
 
 			lc = query.getResultList();
-			for(int i =0; i < lc.size(); i++){
+			for(int i = 0; i < lc.size(); i++){
 				Perfil c = lc.get(i);
 				EmpleadoBean cb = new EmpleadoBean();
 				

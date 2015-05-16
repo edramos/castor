@@ -29,6 +29,10 @@ public class DetalleLibroBean {
 	private String cuentaBancoOrigen;
 	private String cuentaBancoDestino;
 	private String codigoOperacion;
+	private String tipoCompra;
+	private String tipoDocumento;
+	private String codigoDocumento;
+	private String nombreTercero;
 	
 	//Orden
 	private String codigoOrden;
@@ -218,5 +222,29 @@ public class DetalleLibroBean {
 	}
 	public void setArchivosS3(List<S3Bean> archivosS3) {
 		this.archivosS3 = archivosS3;
+	}
+	public String getTipoCompra() {
+		return tipoCompra;
+	}
+	public void setTipoCompra(String tipoCompra) {
+		this.tipoCompra = tipoCompra;
+	}
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+	public String getCodigoDocumento() {
+		return codigoDocumento;
+	}
+	public void setCodigoDocumento(String codigoDocumento) {
+		this.codigoDocumento = codigoDocumento;
+	}
+	public String getNombreTercero() {
+		return nombreTercero;
+	}
+	public void setNombreTercero(String nombreTercero) {
+		this.nombreTercero = nombreTercero;
 	}
 }

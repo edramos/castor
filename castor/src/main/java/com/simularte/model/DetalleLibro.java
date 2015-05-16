@@ -55,6 +55,14 @@ public class DetalleLibro {
 	/**/
 	@Column(name = "codigooperacion", length = 30, nullable = true)
 	private String codigoOperacion;
+	@Column(name = "tipocompra", length = 30, nullable = true)
+	private String tipoCompra;
+	@Column(name = "tipodocumento", length = 30, nullable = true)
+	private String tipoDocumento;
+	@Column(name = "codigodocumento", length = 30, nullable = true)
+	private String codigoDocumento;
+	@Column(name = "nombretercero", length = 180, nullable = true)
+	private String nombreTercero;
 	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
@@ -178,5 +186,29 @@ public class DetalleLibro {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public String getTipoCompra() {
+		return tipoCompra;
+	}
+	public void setTipoCompra(String tipoCompra) {
+		this.tipoCompra = tipoCompra;
+	}
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+	public String getCodigoDocumento() {
+		return codigoDocumento;
+	}
+	public void setCodigoDocumento(String codigoDocumento) {
+		this.codigoDocumento = codigoDocumento;
+	}
+	public String getNombreTercero() {
+		return nombreTercero;
+	}
+	public void setNombreTercero(String nombreTercero) {
+		this.nombreTercero = nombreTercero;
 	}
 }
