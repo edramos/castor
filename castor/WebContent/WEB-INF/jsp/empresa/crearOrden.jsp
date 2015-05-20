@@ -430,7 +430,7 @@
 						</div>
 						
 						
-						 <a id="btnGrabar" class="btn btn-default btn-sm tooltips eventBtn" data-original-title="Tooltip goes here" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
+						 <a id="btnGrabar" class="btn btn-default btn-sm eventBtn" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
 					</div>
 					<input id="hdnCobrosCliente" type="hidden" name="cobroscliente" value=""/>
 					<input id="hdnSubcontratos" type="hidden" name="subcontratos" value=""/>

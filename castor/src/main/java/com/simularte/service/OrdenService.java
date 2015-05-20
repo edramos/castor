@@ -16,6 +16,9 @@ public interface OrdenService {
 	List<OrdenBean> buscarOrdenCaja(int idFactura, HttpServletRequest req);
 	List<OrdenBean> getOrdenesSuggest(String codigo, HttpServletRequest req);
 	
+	//REPORTE
+	List<OrdenBean> mostrarReporteOT(HttpServletRequest req);
+	
 	//CHART
 	List<CuentaBean> grafOrdenGeneral(int idOrden, HttpServletRequest req);
 }

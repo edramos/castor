@@ -78,7 +78,11 @@ public class OrdenController {
 				
 		return ordenserv.getOrdenesSuggest(codigo, req);
 	}
-	
+	//REPORTES 
+	@RequestMapping(value = "mostrarReporteOT", method = RequestMethod.POST) @ResponseBody
+	public List<OrdenBean> mostrarReporteOT(HttpServletRequest req){
+		return ordenserv.mostrarReporteOT(req);
+	}
 	
 	//CHART GENERAL
 	@RequestMapping(value = "getChartOrden-{idOrden}", method = RequestMethod.GET) @ResponseBody

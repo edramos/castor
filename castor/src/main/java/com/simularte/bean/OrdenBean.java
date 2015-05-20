@@ -51,6 +51,17 @@ public class OrdenBean {
 	private String sumMonto;
 	private String utilidad;
 	
+	//REPORTE
+	private String totalPagarProveedor;
+	private String totalPagadoProveedor;
+	private String totalDeudaProveedor;
+	private String nombreProveedor;
+	private String porcentajePagado;
+	private String totalPagar;
+	private String totalPagado;
+	private String totalDeuda;
+	private String totalPorcentajePagado;
+	
 	
 	
 	public Integer getIdOrden() {
@@ -274,5 +285,59 @@ public class OrdenBean {
 	}
 	public void setUtilidad(String utilidad) {
 		this.utilidad = utilidad;
+	}
+	public String getNombreProveedor() {
+		return nombreProveedor;
+	}
+	public void setNombreProveedor(String nombreProveedor) {
+		this.nombreProveedor = nombreProveedor;
+	}
+	public String getPorcentajePagado() {
+		return porcentajePagado;
+	}
+	public void setPorcentajePagado(String porcentajePagado) {
+		this.porcentajePagado = porcentajePagado;
+	}
+	public String getTotalPagarProveedor() {
+		return totalPagarProveedor;
+	}
+	public void setTotalPagarProveedor(String totalPagarProveedor) {
+		this.totalPagarProveedor = totalPagarProveedor;
+	}
+	public String getTotalPagadoProveedor() {
+		return totalPagadoProveedor;
+	}
+	public void setTotalPagadoProveedor(String totalPagadoProveedor) {
+		this.totalPagadoProveedor = totalPagadoProveedor;
+	}
+	public String getTotalDeudaProveedor() {
+		return totalDeudaProveedor;
+	}
+	public void setTotalDeudaProveedor(String totalDeudaProveedor) {
+		this.totalDeudaProveedor = totalDeudaProveedor;
+	}
+	public String getTotalPagar() {
+		return totalPagar;
+	}
+	public void setTotalPagar(String totalPagar) {
+		this.totalPagar = totalPagar;
+	}
+	public String getTotalPagado() {
+		return totalPagado;
+	}
+	public void setTotalPagado(String totalPagado) {
+		this.totalPagado = totalPagado;
+	}
+	public String getTotalDeuda() {
+		return totalDeuda;
+	}
+	public void setTotalDeuda(String totalDeuda) {
+		this.totalDeuda = totalDeuda;
+	}
+	public String getTotalPorcentajePagado() {
+		return totalPorcentajePagado;
+	}
+	public void setTotalPorcentajePagado(String totalPorcentajePagado) {
+		this.totalPorcentajePagado = totalPorcentajePagado;
 	}
 }

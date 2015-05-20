@@ -150,4 +150,8 @@ public class UserController {
 	public List<CuentaBean> getChartDashboard(HttpServletRequest req){
 		return us.getCuentas(req);
 	}
+	@RequestMapping("toReporte")
+	public String toReporte(){
+		return "empresa/reporteGeneral";
+	}
 }

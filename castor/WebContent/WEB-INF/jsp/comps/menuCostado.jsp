@@ -66,7 +66,7 @@
 			</li>
 			
 			<li class="tooltips" data-container="body" data-placement="right" data-html="true" data-original-title="">
-				<a href="#"><i class="icon-paper-plane"></i>
+				<a href="toReporte"><i class="icon-paper-plane"></i>
 				<span class="title">Reportes </span>
 				</a>
 			</li>

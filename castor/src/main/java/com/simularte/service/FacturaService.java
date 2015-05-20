@@ -12,5 +12,5 @@ public interface FacturaService {
 	List<FacturaBean> cargarFacturas(HttpServletRequest req);
 	List<FacturaBean> cargarFacturaOrden(int idOrden, String tipo, HttpServletRequest req);
 	List<FacturaBean> getFacturasSuggested(String codigoFactura, String tipo, HttpServletRequest req);
-	List<FacturaBean> getFacturasDetraccionSuggested(String codigoFactura, HttpServletRequest req);
+	List<FacturaBean> getFacturasDetraccionSuggested(String codigoFactura, String operacion, HttpServletRequest req);
 }

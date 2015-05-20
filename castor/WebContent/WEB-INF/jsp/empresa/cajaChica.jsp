@@ -284,11 +284,7 @@ $(document).on('click','.eventBtn', function(e){
 </script>
 <script>
 function crearDetalleLibro(){
-	alert('Hey');
-	
-	
-	
-	/* $.ajax({
+	$.ajax({
  		url: 'ajaxCrearRegistroLibro',
  		type: 'post',
  		dataType: 'json',
@@ -297,7 +293,7 @@ function crearDetalleLibro(){
  			listarResultados();
  			borrarDatos();
  		}
- 	});	 */
+ 	});
 }
 function listarResultados(){
 	var html = '';

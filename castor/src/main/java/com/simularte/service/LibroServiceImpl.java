@@ -46,8 +46,7 @@ public class LibroServiceImpl implements LibroService{
 			detalleLibro.setOperacion(dlb.getOperacion());
 			detalleLibro.setTipoOperacion(dlb.getTipoOperacion());
 			detalleLibro.setDescripcion(dlb.getDescripcion());
-			detalleLibro.setMonto(Formatos.StringToBigDecimal(dlb.getMonto()));
-			
+			detalleLibro.setMonto(Formatos.StringToBigDecimal(dlb.getMonto()));	
 			detalleLibro.setIdCliente(dlb.getIdCliente());
 			detalleLibro.setIdProveedor(dlb.getIdProveedor());
 			detalleLibro.setFactura(dlb.getFactura());

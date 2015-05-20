@@ -4,6 +4,8 @@ public class FacturaBean {
 
 	private int idFactura;
 	private int idCuenta;
+	private int idProveedor;
+	private int idCliente;
 	
 	private String tipo;
 	private String cobrarFactura;
@@ -170,5 +172,17 @@ public class FacturaBean {
 	}
 	public void setTotalCobrar(String totalCobrar) {
 		this.totalCobrar = totalCobrar;
+	}
+	public int getIdProveedor() {
+		return idProveedor;
+	}
+	public void setIdProveedor(int idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+	public int getIdCliente() {
+		return idCliente;
+	}
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
 	}	
 }

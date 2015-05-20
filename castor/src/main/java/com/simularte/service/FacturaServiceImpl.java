@@ -229,14 +229,24 @@ public class FacturaServiceImpl implements FacturaService{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FacturaBean> getFacturasDetraccionSuggested(String codigoFactura, HttpServletRequest req){
+	public List<FacturaBean> getFacturasDetraccionSuggested(String codigoFactura, String operacion, HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
+		Query q01 = null;
 		
-		Query q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.montodetraccion FROM factura f "
+		if(operacion.equals("ingreso")){
+		q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.montodetraccion, o.idcliente FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden "
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estadodetraccion = 'Pendiente'");
-		
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + 
+				"' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estadodetraccion = 'Pendiente' AND f.tipo = 'Emitida'");
+		}else{
+			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.montodetraccion, sc.idproveedor FROM factura f "
+					+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
+					+ "INNER JOIN orden o ON o.idorden = c.idorden "
+					+ "INNER JOIN subcontrato sc ON c.idsubcontrato = sc.idsubcontrato "
+					+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + 
+					"' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estadodetraccion = 'Pendiente' AND f.tipo = 'Recibida'");
+		}
 		List<Object[]> rows = q01.getResultList();
 		
 		for(int x = 0; x < rows.size(); x++){
@@ -247,6 +257,11 @@ public class FacturaServiceImpl implements FacturaService{
 			fb.setCodigo(obj[1].toString());
 			fb.setMontoDetraccion(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[2].toString())));
 			
+			if(operacion.equals("ingreso")){
+				fb.setIdCliente((Integer)obj[3]);
+			}else{
+				fb.setIdProveedor((Integer)obj[3]);
+			}
 			facturas.add(fb);
 		}
 		

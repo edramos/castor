@@ -1,6 +1,7 @@
 package com.simularte.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +35,86 @@ public class OrdenServiceImpl implements OrdenService {
 
 	@PersistenceContext 
 	EntityManager em;
+	
+	@SuppressWarnings("unchecked")
+	public List<OrdenBean> mostrarReporteOT(HttpServletRequest req){
+		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT o.codigo, o.nombre, p.nombre as nombreProv, o.estado, SUM(c.monto) as pagar FROM orden o "
+				+ "INNER JOIN cuenta c ON o.idorden = c.idorden "
+				+ "INNER JOIN subcontrato sc ON c.idsubcontrato = sc.idsubcontrato "
+				+ "INNER JOIN proveedor p ON sc.idproveedor = p.idproveedor "
+				+ "WHERE c.tipo = 'pagar' GROUP BY codigo");
+		
+		/*Query q02 = em.createNativeQuery("SELECT o.codigo, o.tipotrabajo, SUM(dl.monto) as pagado FROM detallelibro dl "
+				+ "INNER JOIN orden o ON dl.idorden = o.idorden "
+				+ "INNER JOIN proveedor p ON dl.idproveedor = p.idproveedor "
+				+ "WHERE operacion = 'Egreso' AND (dl.tipooperacion = 'Pago Proveedor' OR dl.tipooperacion = 'Detraccion') GROUP BY codigo");*/
+		
+		Query q02 = em.createNativeQuery("SELECT o.codigo, o.nombre, p.nombre as NJP, o.estado, c.monto FROM orden o "
+				+ "INNER JOIN cuenta c ON o.idorden = c.idorden "
+				+ "INNER JOIN factura f ON c.idcuenta = f.idcuenta "
+				+ "INNER JOIN subcontrato sc ON c.idsubcontrato = sc.idsubcontrato "
+				+ "INNER JOIN proveedor p ON sc.idproveedor = p.idproveedor "
+				+ "WHERE f.tipo = 'Recibida' AND f.estado = 'Cancelado'");
+		
+		List<Object[]> rows01 = q01.getResultList();
+		List<Object[]> rows02 = q02.getResultList();
+		
+		double totalPagar = 0;
+		double totalPagado = 0;
+		double totalDeuda = 0;
+		
+		for(int x = 0; x < rows01.size(); x++){
+			Object[] obj01 = rows01.get(x);
+			OrdenBean ob = new OrdenBean();
+			
+			ob.setCodigo(obj01[0].toString());
+			ob.setNombre(obj01[1].toString());
+			ob.setNombreProveedor(obj01[2].toString());
+			ob.setEstado(obj01[3].toString());
+			
+			BigDecimal tPagar = Formatos.StringToBigDecimal(obj01[4].toString());
+			BigDecimal tPagado = null;
+			
+			ob.setTotalPagarProveedor(Formatos.BigBecimalToString(tPagar));
+			
+			for(int y = 0; y < rows02.size(); y++){
+				Object[] obj02 = rows02.get(y);
+				
+				if(obj01[0].toString().equals(obj02[0].toString())){
+					tPagado = Formatos.StringToBigDecimal(obj02[4].toString());
+					ob.setTotalPagadoProveedor(Formatos.BigBecimalToString(tPagado)); 
+					break;
+				}else{
+					tPagado = BigDecimal.ZERO;
+					ob.setTotalPagadoProveedor(Formatos.BigBecimalToString(tPagado));
+				}
+			} 
+			double perc = 100;
+			double pagado = (tPagado.multiply(BigDecimal.valueOf(perc)).divide(tPagar)).doubleValue();
+			BigDecimal tDeu = tPagar.subtract(tPagado);
+			
+			ob.setPorcentajePagado(pagado + "%");
+			ob.setTotalDeudaProveedor(Formatos.BigBecimalToString(tDeu));
+			
+			totalPagar += tPagar.doubleValue();
+			totalPagado += tPagado.doubleValue();
+			totalDeuda += tDeu.doubleValue();
+			
+			ob.setTotalPagar(Formatos.BigBecimalToString(BigDecimal.valueOf(totalPagar)));
+			ob.setTotalPagado(Formatos.BigBecimalToString(BigDecimal.valueOf(totalPagado)));
+			ob.setTotalDeuda(Formatos.BigBecimalToString(BigDecimal.valueOf(totalDeuda)));
+			
+			double totalPercPagado = (totalPagado * 100) / totalPagar;
+			
+			ob.setTotalPorcentajePagado(BigDecimal.valueOf(totalPercPagado).setScale(2, RoundingMode.HALF_UP) + "%");
+			System.out.println(ob.getTotalPorcentajePagado());
+			ordenes.add(ob);
+		}
+		
+		return ordenes;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<OrdenBean> getOrdenesSuggest(String codigo, HttpServletRequest req){

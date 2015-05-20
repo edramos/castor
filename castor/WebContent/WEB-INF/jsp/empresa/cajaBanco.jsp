@@ -267,11 +267,11 @@ function suggestFactura(tipo){
 		mostrarOrden(datum['idFactura']);
 	});
 }
-function suggestFacturaDetraccion(){
+function suggestFacturaDetraccion(operacion){
 	var facturas = new Bloodhound({
 		datumTokenizer: function (datum) {return Bloodhound.tokenizers.whitespace(datum.value);},
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		remote: 'ajaxListarFacturaDetraccionSuggest?q=%QUERY'
+		remote: 'ajaxListarFacturaDetraccionSuggest?q=%QUERY' + '-' + operacion	//Workaround mientras aprendo como enviar mas parametros aparte de la cadena de busqueda
 	});
 	facturas.initialize();
 	
@@ -289,7 +289,12 @@ function suggestFacturaDetraccion(){
 		$('#hdnIdFactura').remove();
 		$('#divSecondRow').append("<input id='hdnIdFactura' type='hidden' name='idFactura' value='" + datum['idFactura'] + "'/>");
 		$('#txtMonto').val(datum['montoDetraccion']);
-			
+		
+		if(datum['idProveedor'] != 0){
+			$('#sltProveedor').val(datum['idProveedor']);
+		}else{
+			$('#sltCliente').val(datum['idCliente']);
+		}
 		mostrarOrden(datum['idFactura']);
 	});
 }
@@ -348,9 +353,16 @@ $(function($){
 			suggestFactura("cobrar");
 			break;
 		case 'Detraccion':
-			formDynamic('#templateDetraccion');
-			listarSelectorClientes('sltCliente');
-			suggestFacturaDetraccion();
+			var value = $('#sltTipoTransaccion option:selected').text();
+			if(value == "Ingreso"){
+				formDynamic('#templateDetraccion');
+				listarSelectorClientes('sltCliente');
+				suggestFacturaDetraccion('ingreso');
+			}else{
+				formDynamic('#templateDetraccionEgreso');
+				listarSelectorProveedores('sltProveedor');
+				suggestFacturaDetraccion('egreso');
+			}
 			break;
 		case 'Otra cobranza':
 			formDynamic('#templateOtraCobranza');
@@ -759,6 +771,18 @@ function mostrarDetalle(idRegistro){
 </tr>
 </script>
 <!-- EGRESOS -->
+<script id="templateDetraccionEgreso" type="text/x-handlebars-template">
+<div class="col-md-3 dynamic">	
+	<select id="sltProveedor" class="form-control" name="idProveedor"></select>
+</div>
+<div class="col-md-2 dynamic">		
+	<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>	
+</div>
+<div class="col-md-3 dynamic">
+	<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo"/>
+	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>	
+</div>
+</script>
 <script id="templateServicioTerceros" type="text/x-handlebars-template">
 <div class="col-md-3 dynamic">
 	<select id="sltTipoDocumento" class="form-control" name="tipoDocumento">
