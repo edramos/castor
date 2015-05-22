@@ -29,9 +29,9 @@
 		<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption"><span id="spnCodigo"></span><!-- <span id="spnFechaHora" class="caption-helper"></span> --></div>
+				<div class="caption"><span id="spnCodigo"></span></div>
 				<div id="dynamicActions" class="actions">
-					<a id="btnIrCrearCliente" class="label label-info"> Nuevo </a>						
+					<label id="lblOrdenEstado" style="font-size: 16px;"></label>						
 					<input id="txtIdOrden" value="<c:out value="${idOrden}"/>"  type="hidden" class="form-control"/>
 				</div>
 			</div>
@@ -193,6 +193,7 @@ function extraerInformacionOrden(idOrdenTemp){
  		data: '',
  		success: function(orden){
  			$('#spnCodigo').text('ORDEN ' + orden.codigo);
+ 			$('#lblOrdenEstado').text(orden.estado);
  			initOrdenGeneral(orden);
  		}
  	});	

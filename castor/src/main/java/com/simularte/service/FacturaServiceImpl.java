@@ -103,7 +103,7 @@ public class FacturaServiceImpl implements FacturaService{
 				+ "FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden "
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' ORDER BY f.fechacreacion");
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' ORDER BY f.fechacreacion DESC");
 		
 		List<Object[]> rows = q1.getResultList();
 		

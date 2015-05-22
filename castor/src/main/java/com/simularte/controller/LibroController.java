@@ -39,11 +39,8 @@ public class LibroController {
 	
 	
 	@RequestMapping(value = "listarDetalleLibro-{idLibro}", method = RequestMethod.POST) @ResponseBody
-	public List<DetalleLibroBean> listarDetalleLibro(@PathVariable("idLibro") Integer idLibro, HttpServletRequest req){
-		List<DetalleLibroBean> registros = new ArrayList<DetalleLibroBean>();
-		registros = cs.listarDetalleLibro(idLibro, req);
-	
-		return registros;
+	public List<DetalleLibroBean> listarDetalleLibro(@PathVariable("idLibro") Integer idLibro, HttpServletRequest req){	
+		return cs.listarDetalleLibro(idLibro, req);
 	}
 	
 	@RequestMapping(value = "mostrarDetalleRegistro-{idDetalleLibro}", method = RequestMethod.POST) @ResponseBody

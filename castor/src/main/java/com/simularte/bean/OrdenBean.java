@@ -23,6 +23,7 @@ public class OrdenBean {
 	private BigDecimal utilidadBruta;
 	private BigDecimal gastosGenerales;
 	private BigDecimal total;
+	private String fechaInicio;
 	private String fechaEntrega;
 	private BigDecimal detraccion;
 	private BigDecimal gananciaProyectada;
@@ -339,5 +340,11 @@ public class OrdenBean {
 	}
 	public void setTotalPorcentajePagado(String totalPorcentajePagado) {
 		this.totalPorcentajePagado = totalPorcentajePagado;
+	}
+	public String getFechaInicio() {
+		return fechaInicio;
+	}
+	public void setFechaInicio(String fechaInicio) {
+		this.fechaInicio = fechaInicio;
 	}
 }

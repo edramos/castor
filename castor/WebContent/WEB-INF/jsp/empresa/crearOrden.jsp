@@ -76,38 +76,47 @@
 					</div>
 						
 					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
 								<div class="col-md-3">
 									<div class="form-group">
-										<div class="col-md-6">
+										<div class="col-md-6" style="padding-right: 5px">
 											<input id="txtLat" class="form-control" placeholder="Latitud" name="lat"/>
 										</div>
-										<div class="col-md-6">
+										<div class="col-md-6" style="padding-left: 5px">
 											<input id="txtLon" class="form-control" placeholder="Longitud" name="lon"/>
 										</div>
 									</div>
 								</div>
 								<div class="col-md-3">
-									<input id="txtCiudad" class="form-control" placeholder="Ciudad" name="ciudad"/>
+									<div class="form-group">
+										<div class="col-md-6" style="padding-right: 5px">
+											<input id="txtCiudad" class="form-control" placeholder="Ciudad" name="ciudad"/>
+										</div>
+										<div class="col-md-6" style="padding-left: 5px">
+											<select id="sltDepartamento" class="form-control" name="departamento">
+												<option value="Lima">Lima</option>
+												<option value="Cajamarca">Cajamarca</option>
+												<option value="Ancash">Ancash</option>
+											</select>
+										</div>
+									</div>
 								</div>							
 								<div class="col-md-3">
-									<select id="sltDepartamento" class="form-control" name="departamento">
-										<option value="Lima">Lima</option>
-										<option value="Cajamarca">Cajamarca</option>
-										<option value="Ancash">Ancash</option>
-									</select>
+									<div id="txtFechaInicio" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+										<input type="text" class="form-control form-filter" placeholder="Fecha Inicio" name="fechaInicio"/>											
+										<span class="input-group-btn">
+										<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+										</span>
+									</div>
 								</div>
 								<div class="col-md-3">
 									<div id="txtFechaEntrega" class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-										<input type="text" class="form-control form-filter" placeholder="Fecha Entrega" name="fechaEntrega"/>											
+										<input type="text" class="form-control form-filter" placeholder="Fecha Fin" name="fechaEntrega"/>											
 										<span class="input-group-btn">
 										<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
 										</span>
 									</div>	
 								</div>
-							</div>
-						</div>
+							
 					</div>
 						
 						
@@ -132,12 +141,6 @@
 								<div class="col-md-2 tooltips" data-original-title="Total Proveedor">
 									<input id="txtConIgvOrden" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="Total Proveed."/>
 								</div>
-								<!-- <div class="col-md-2">
-									<input id="txtUtilidad" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" placeholder="Ganancia Proy." name="gananciaProyectada"/>
-								</div>
-								<div class="col-md-2">
-									<input id="txtUtilidadConIgv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control" disabled="disabled" placeholder="IGV"/>
-								</div> -->
 								<div class="col-md-2">
 									<input id="txtOferta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ','placeholder': '0'" class="form-control tooltips" data-original-title="Oferta" placeholder="Oferta" name="oferta"/>
 								</div>

@@ -38,8 +38,8 @@
 				<table id="tblResultados" class="table table-striped table-hover">
 				<thead>
 				<tr>
-					<th>OT</th>
-					<th width="20%">Nombre</th>
+					<th width="12%">OT</th>
+					<th width="18%">Nombre</th>
 					<th>Provedor</th>
 					<th>Estado</th>
 					<th width="15%">Pagar</th>

@@ -54,6 +54,8 @@ public class Orden {
 	private BigDecimal ofertaIgv;
 	@Column(length = 30, nullable = false)
 	private String moneda;
+	@Column(name = "fechainicio", nullable = true)
+	private Date fechaInicio;
 	@Column(name = "fechaentrega", nullable = true)
 	private Date fechaEntrega;
 	@Column(nullable = true)
@@ -241,5 +243,11 @@ public class Orden {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
 	}	
 }

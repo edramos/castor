@@ -2,6 +2,7 @@ package com.simularte.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -94,6 +95,24 @@ public class LibroServiceImpl implements LibroService{
 				}
 				
 			}
+			//Por ahora mientras se crea el modulo de Gestion de Obras el estado se cambia segun la condicion de pago al Proveedor 
+			//Recordas que podria traer problemas si 2 o mas proveedores vienen con el mismo codigo de factura
+			Query q01 = em.createNativeQuery("SELECT o.idorden, c.estadotrabajo, c.avance FROM factura f "
+					+ "INNER JOIN cuenta c ON f.idcuenta = c.idcuenta "
+					+ "INNER JOIN orden o ON c.idorden = o.idorden "
+					+ "WHERE f.tipo = 'Recibida' AND f.codigo = '" + detalleLibro.getFactura() + "' AND o.idempresa = '" + session.getAttribute("idEmpresa") + "'");
+			
+			Object[] obj = (Object[])q01.getSingleResult();
+			System.out.println("AVANCE: " + obj[2].toString());
+			String estadoObra = "";
+			if(obj[2].toString().equals("0.0")){
+				estadoObra = obj[1].toString();
+			}else{
+				estadoObra = obj[1].toString() + " " + obj[2].toString() + "%";
+			}
+			
+			Query q02 = em.createNativeQuery("UPDATE orden SET estado = '" + estadoObra + "' WHERE idorden = '" + (Integer)obj[0] + "'");
+			q02.executeUpdate();
 			
 			result = true;
 		}catch(Exception e){
@@ -107,9 +126,9 @@ public class LibroServiceImpl implements LibroService{
 		List<DetalleLibroBean> registros = new ArrayList<DetalleLibroBean>();
 		
 		double saldo = 0;
-		Query q = em.createNativeQuery("SELECT idDetalleLibro, fechaoperacion, tipooperacion, operacion, monto , descripcion "
+		Query q = em.createNativeQuery("SELECT iddetallelibro, fechaoperacion, tipooperacion, operacion, monto, descripcion "
 				+ "FROM detallelibro "
-				+ "WHERE idLibro = '" + idLibro + "' ORDER BY fechaoperacion");
+				+ "WHERE idlibro = '" + idLibro + "' ORDER BY fechaoperacion");
 		
 		try{
 			List<Object[]> rows = q.getResultList();
@@ -121,6 +140,7 @@ public class LibroServiceImpl implements LibroService{
 				dlb.setIdDetalleLibro((Integer)caja[0]);
 				dlb.setFechaOperacion(Dates.stringToStringFechaCorta(caja[1].toString()));
 				dlb.setTipoOperacion(caja[2].toString());
+				
 				if(caja[3].equals("Ingreso")){
 					dlb.setIngreso(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(caja[4].toString())));
 					saldo += Formatos.StringToBigDecimal(caja[4].toString()).doubleValue();
@@ -131,11 +151,14 @@ public class LibroServiceImpl implements LibroService{
 					saldo -= Formatos.StringToBigDecimal(caja[4].toString()).doubleValue();
 					System.out.println("Egreso Saldo" + saldo);
 				}
+				
 				dlb.setDescripcion(caja[5].toString());
 				dlb.setSaldo(Formatos.BigBecimalToString(BigDecimal.valueOf(saldo)));
 				
 				registros.add(dlb);
 			}
+			Collections.reverse(registros);
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

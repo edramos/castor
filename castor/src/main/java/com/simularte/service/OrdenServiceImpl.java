@@ -217,6 +217,7 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setUtilidadBruta(ordenBean.getUtilidadBruta());
 			orden.setGastosGenerales(ordenBean.getGastosGenerales());
 			orden.setTotal(ordenBean.getTotal());	
+			orden.setFechaInicio(Dates.stringToDate(ordenBean.getFechaInicio(), "yyyy-MM-dd"));
 			orden.setFechaEntrega(Dates.stringToDate(ordenBean.getFechaEntrega(), "yyyy-MM-dd"));
 			orden.setDetraccion(ordenBean.getDetraccion());
 			orden.setGananciaProyectada(ordenBean.getGananciaProyectada());
