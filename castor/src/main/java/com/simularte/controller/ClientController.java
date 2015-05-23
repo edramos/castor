@@ -34,11 +34,11 @@ public class ClientController {
 		}
 		return clientes;
 	}
-	@RequestMapping(value = "ajaxModificarCliente", method = RequestMethod.POST)
-	@ResponseBody
+	@RequestMapping(value = "ajaxModificarCliente", method = RequestMethod.POST) @ResponseBody
 	public List<ClienteBean> ajaxModificarCliente(@ModelAttribute Cliente cliente, HttpServletRequest req){
-		//System.out.println("ruc: " + cliente.getRuc() + ", dire: " + cliente.getDireccion());
+		System.out.println("idCliente: " + cliente.getIdCliente() + ", ruc: " + cliente.getRuc() + ", direccion: " + cliente.getDireccion());
 		List<ClienteBean> clientes = new ArrayList<ClienteBean>();		
+		
 		if(clienteservice.modificarCliente(cliente, req)){
 			clientes = clienteservice.listarClientes(req);
 		}else{
@@ -47,9 +47,9 @@ public class ClientController {
 		
 		return clientes;
 	}
-	@RequestMapping(value = "ajaxEliminarCliente-{idCliente}", method = RequestMethod.POST)
-	@ResponseBody
+	@RequestMapping(value = "ajaxEliminarCliente-{idCliente}", method = RequestMethod.POST) @ResponseBody
 	public List<ClienteBean> ajaxEliminarCliente(@PathVariable("idCliente") Integer idCliente, HttpServletRequest req){
+		System.out.println("idCliente: " + idCliente);
 		List<ClienteBean> clientes = new ArrayList<ClienteBean>();
 		if(clienteservice.eliminarCliente(idCliente, req)){
 			clientes = clienteservice.listarClientes(req);

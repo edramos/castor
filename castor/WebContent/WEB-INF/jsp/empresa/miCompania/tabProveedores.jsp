@@ -27,6 +27,10 @@ function modificarProveedor(){
  		type: 'post',
  		dataType: 'json',
  		data: $('#frmModificarProveedor').serialize(),
+ 		beforeSend: function(){
+ 			var formy = $('#frmModificarProveedor').serialize();
+ 			alert(formy);
+ 		},
  		success: function(resultado){
  			$('#txtNombreProvE').val('');
  			listarProveedores(); 			

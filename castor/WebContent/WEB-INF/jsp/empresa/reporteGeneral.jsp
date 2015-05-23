@@ -42,9 +42,9 @@
 					<th width="18%">Nombre</th>
 					<th>Provedor</th>
 					<th>Estado</th>
-					<th width="15%">Pagar</th>
-					<th width="15%">Pagado</th>
-					<th width="15%">Deuda Actual</th>
+					<th width="10%">Pagar</th>
+					<th width="10%">Pagado</th>
+					<th width="10%">Deuda Actual</th>
 					<th width="10%">% Pagado</th>
 				</tr>
 				</thead>

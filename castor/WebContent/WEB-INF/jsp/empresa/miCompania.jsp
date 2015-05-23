@@ -6,6 +6,8 @@
 <jsp:include page="../comps/headMandatory.jsp"/>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link href="assets/global/plugins/icheck/skins/all.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css"/>
+<link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
 <!-- END PAGE LEVEL STYLES -->
 <style>
 #map-container img { 
@@ -89,6 +91,9 @@
 <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
 <script src="assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/icheck/icheck.min.js"></script>
+<script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="assets/admin/pages/scripts/maps-google.js" type="text/javascript"></script>
@@ -97,6 +102,7 @@
 <script type="text/javascript" src="assets/admin/layout4/scripts/demo.js"></script>
 <script src="assets/global/plugins/icheck/icheck.min.js"></script>
 <script src="assets/admin/pages/scripts/form-icheck.js"></script>
+<script src="assets/admin/pages/scripts/table-editable.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 var flag = 0;
@@ -105,8 +111,7 @@ jQuery(document).ready(function() {
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
 	FormiCheck.init(); // init page demo
-	
-	
+
 	
 	$(document).on('click','.eventBtn', function(e){
 		switch(this.id){
@@ -196,6 +201,7 @@ jQuery(document).ready(function() {
 	});
 	extraerInformacionEmpresa(); 
 	listarClientes();
+	
 	listarProveedores();
 	listarOficinas();
 	listarEmpleados();

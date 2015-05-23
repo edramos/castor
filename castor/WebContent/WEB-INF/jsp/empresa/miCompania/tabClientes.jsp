@@ -7,7 +7,6 @@ function crearCliente(){
  		dataType: 'json',
  		data: $('#frmCrearCliente').serialize(),
  		success: function(resultado){
- 			//$('#txtNombre').val('');
  			borrarDatos();
  			listarClientes(); 			
  		}
@@ -50,11 +49,9 @@ function eliminarCliente(idCliente){
 	 	});
 	}		
 }
-
+</script>
+<script>
 function listarClientes(){
-	$('#clienteCrear').hide();
-	$('#clienteModificar').hide();
-	$('#clienteInit').show();
 	var html = '';
     $.ajax({
  		url: 'ajaxListarClientes',
@@ -68,113 +65,73 @@ function listarClientes(){
 	 			html += template(cliente);
 	 			
  			});		
- 			$("#viewClientesHandlerbars").html(html);	        
+ 			$("#viewClientesHandlerbars").html(html);
+ 			TableEditable.init();
  		},
- 		complete: function() {	 			
- 			//removeNulls();
-  		}
  	});
 }
 </script>
 
 
-<div id="clienteInit" class="portlet box blue-hoki">
-	<div class="portlet-title">
-		<div class="caption">Clientes</div>
-		<div id="dynamicActions" class="actions">
-			<a id="btnIrCrearCliente" class="btn btn-default btn-sm eventBtn"><i class="fa fa-plus"></i> Crear </a>
-			<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
-		</div>
-	</div>
-	
-	<div class="portlet-body">
-		<div class="table-responsive">
-			<table class="table table-bordered table-hover">
-			<thead>
-			<tr class="heading">
-				<th>RUC</th><th>Nombre</th><th>Direccion</th><th>Acciones</th>
-			</tr>
-			</thead>
-			<tbody id="viewClientesHandlerbars">
-			</tbody>
-			</table>
-		</div>
-	</div>
-</div>
 
-
-<div id="clienteCrear" class="portlet box blue-hoki" style="display: none;">
-	<div class="portlet-title">
-		<div class="caption">Clientes</div>
-		<div id="dynamicActions" class="actions">
-			<a id="btnCrearCliente" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-check"></i> Grabar </a>
-			<a id="btnCancelarCliente" class="btn red-sunglo btn-sm eventBtn"><i class="fa fa-close"></i> Cancelar </a>
-			<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
-		</div>
-	</div>
-	
-	<div class="portlet-body">	
-		<div class="form-body">
-			<form:form id="frmCrearCliente" commandName="cliente">
-			<div class="row">
-				<div class="col-md-2">
-					<input type="text" class="form-control" id="txtRucCliente" name="ruc" placeholder="RUC">
-				</div>
-				<div class="col-md-4">
-					<input type="text" class="form-control" id="txtNombreCliente" name="nombre" placeholder="Nombre">
-				</div>
-				<div class="col-md-6">
-					<input type="text" class="form-control" id="txtDireccionCliente" name="direccion" placeholder="Direccion">
+<div class="row">
+	<div class="col-md-12">
+		<!-- BEGIN EXAMPLE TABLE PORTLET-->
+		<div class="portlet box blue-hoki">
+			<div class="portlet-title">
+				<div class="caption"><i class="fa fa-edit"></i>Clientes</div>
+				<div class="tools">
+					<a href="javascript:;" class="collapse"></a>
+					<a href="#portlet-config" data-toggle="modal" class="config"></a>
+					<a href="javascript:;" class="reload"></a>
 				</div>
 			</div>
-			</form:form>
+			<div id="divPortletBody" class="portlet-body">
+				<div class="table-toolbar">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="btn-group">
+								<button id="sample_editable_1_new" class="btn green-meadow">Nuevo <i class="fa fa-plus"></i></button>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="btn-group pull-right">
+								<button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i class="fa fa-angle-down"></i></button>
+								<ul class="dropdown-menu pull-right">
+									<li><a href="#">Print </a></li>
+									<li><a href="#">Save as PDF </a></li>
+									<li><a href="#">Export to Excel </a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<table class="table table-striped table-hover table-bordered" id="sample_editable_1">
+				<thead>
+				<tr>
+					<th></th><th width="10%">RUC</th><th>Nombre</th><th width="30%">Direccion</th><th></th><th></th>
+				</tr>
+				</thead>
+				<tbody id="viewClientesHandlerbars">
+				</tbody>
+				</table>
+				
+				<div id="divFormEditarCliente"></div>
+				
+			</div>
 		</div>
+		<!-- END EXAMPLE TABLE PORTLET-->
 	</div>
-	
-	
 </div>
 
-<div id="clienteModificar" class="portlet box blue-hoki" style="display: none;">
-	<div class="portlet-title">
-		<div class="caption">Clientes</div>
-		<div id="dynamicActions" class="actions">
-			<a id="btnModificarCliente" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-check"></i> Grabar </a>
-			<a id="btnCancelarCliente" class="btn red-sunglo btn-sm eventBtn"><i class="fa fa-close"></i> Cancelar </a>
-			<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
-		</div>
-	</div>
-	<div class="portlet-body">
-		<div class="form-body">
-			<form:form id="frmModificarCliente" commandName="cliente">
-			<div class="row">
-				<div class="col-md-2">
-					<input type="text" class="form-control" id="txtRucClienteE" name="ruc" placeholder="RUC">
-				</div>
-				<div class="col-md-4">
-					<input type="hidden" class="form-control" id="txtIdClienteE" name="idCliente">
-					<input type="text" class="form-control" id="txtNombreE" name="nombre" placeholder="Nombre Cliente">
-				</div>
-				<div class="col-md-6">
-					<input type="text" class="form-control" id="txtDireccionClienteE" name="direccion" placeholder="Direccion">
-				</div>
-			</div>
-			</form:form>
-		</div>
-	</div>
-</div>
-<script>
-function borrarDatos(){
-	$('.form-control').val('');
-}
-</script>
 <script id="templateClientes" type="text/x-handlebars-template">
 <tr>
+	<td>{{idCliente}}</td>
 	<td id="tdRucCliente_{{idCliente}}">{{ruc}}</td>	
 	<td id="tdNombreCliente_{{idCliente}}">{{nombre}}</td>
 	<td id="tdDireccionCliente_{{idCliente}}">{{direccion}}</td>
-	<td>
-		<a id="btnEditarCliente_{{idCliente}}" class="btn btn-default btn-sm eventBtn" onclick="editarCliente({{idCliente}});" ><i class="fa fa-pencil"></i> Editar </a>
-		<a id="btnBorrarCliente_{{idCliente}}" class="btn btn-default btn-sm eventBtn" onclick="eliminarCliente({{idCliente}});" ><i class="fa fa-trash"></i> Borrar </a>
-	</td>
+	<td><a class="edit" href="javascript:;">Editar </a></td>
+	<td><a class="delete" href="javascript:;">Borrar </a></td>
 </tr>
 </script>

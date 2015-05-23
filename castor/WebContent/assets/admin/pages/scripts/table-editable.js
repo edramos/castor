@@ -1,7 +1,7 @@
 var TableEditable = function () {
 
     var handleTable = function () {
-
+   
         function restoreRow(oTable, nRow) {
             var aData = oTable.fnGetData(nRow);
             var jqTds = $('>td', nRow);
@@ -16,12 +16,13 @@ var TableEditable = function () {
         function editRow(oTable, nRow) {
             var aData = oTable.fnGetData(nRow);
             var jqTds = $('>td', nRow);
-            jqTds[0].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[0] + '">';
-            jqTds[1].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[1] + '">';
-            jqTds[2].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[2] + '">';
-            jqTds[3].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[3] + '">';
-            jqTds[4].innerHTML = '<a class="edit" href="">Save</a>';
-            jqTds[5].innerHTML = '<a class="cancel" href="">Cancel</a>';
+                        
+            jqTds[0].innerHTML = '<input type="hidden" name="idCliente" value="'+ aData[0] +'">';
+            jqTds[1].innerHTML = '<input type="text" class="form-control input-small" name="ruc" value="' + aData[1] + '">';
+            jqTds[2].innerHTML = '<input type="text" class="form-control input-small" name="nombre" value="' + aData[2] + '">';
+            jqTds[3].innerHTML = '<input type="text" class="form-control input-large" name="direccion" value="' + aData[3] + '">';
+            jqTds[4].innerHTML = '<a class="edit" href="">Grabar</a>';
+            jqTds[5].innerHTML = '<a class="cancel" href="">Cancelar</a>';
         }
 
         function saveRow(oTable, nRow) {
@@ -30,8 +31,8 @@ var TableEditable = function () {
             oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
             oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
             oTable.fnUpdate(jqInputs[3].value, nRow, 3, false);
-            oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 4, false);
-            oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 5, false);
+            oTable.fnUpdate('<a class="edit" href="">Editar</a>', nRow, 4, false);
+            oTable.fnUpdate('<a class="delete" href="">Borrar</a>', nRow, 5, false);
             oTable.fnDraw();
         }
 
@@ -41,8 +42,19 @@ var TableEditable = function () {
             oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
             oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
             oTable.fnUpdate(jqInputs[3].value, nRow, 3, false);
-            oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 4, false);
+            oTable.fnUpdate('<a class="edit" href="">Editar</a>', nRow, 4, false);
             oTable.fnDraw();
+        }
+        
+        function borrarCrearTabla(){
+        	$('#sample_editable_1').remove();
+			$('#sample_editable_1_wrapper').remove();
+		
+		
+			$('#divPortletBody').append(
+				"<table class='table table-striped table-hover' id='sample_editable_1'><thead><tr><th></th><th>RUC</th><th>Nombre</th><th>Direccion</th>" +
+				"<th>Acciones</th><th>Delete</th></tr></thead><tbody id='viewClientesHandlerbars'></tbody></table>"	
+			);
         }
 
         var table = $('#sample_editable_1');
@@ -81,7 +93,7 @@ var TableEditable = function () {
                 [0, "asc"]
             ] // set first column as a default sort by asc
         });
-
+        
         var tableWrapper = $("#sample_editable_1_wrapper");
 
         tableWrapper.find(".dataTables_length select").select2({
@@ -100,7 +112,6 @@ var TableEditable = function () {
                     $(nEditing).find("td:first").html("Untitled");
                     nEditing = null;
                     nNew = false;
-
                 } else {
                     oTable.fnDeleteRow(nEditing); // cancel
                     nEditing = null;
@@ -119,18 +130,29 @@ var TableEditable = function () {
 
         table.on('click', '.delete', function (e) {
             e.preventDefault();
-
-            if (confirm("Are you sure to delete this row ?") == false) {
+            
+            if(confirm("¿Seguro de Borrar?") == false) {
                 return;
             }
 
             var nRow = $(this).parents('tr')[0];
+            var aData = oTable.fnGetData(nRow);
             oTable.fnDeleteRow(nRow);
-            alert("Deleted! Do not forget to do some ajax to sync with backend :)");
+            //alert("Deleted! Do not forget to do some ajax to sync with backend :)");
+            $.ajax({
+    	 		url: 'ajaxEliminarCliente-' + aData[0],
+    	 		type: 'post',
+    	 		dataType: 'json',
+    	 		data: '',
+    	 		success: function(resultado){
+    	 			//listarClientes(); 			
+    	 		}
+    	 	});
         });
 
         table.on('click', '.cancel', function (e) {
             e.preventDefault();
+            
             if (nNew) {
                 oTable.fnDeleteRow(nEditing);
                 nEditing = null;
@@ -143,7 +165,7 @@ var TableEditable = function () {
 
         table.on('click', '.edit', function (e) {
             e.preventDefault();
-
+            
             /* Get the row as a parent of the link that was clicked on */
             var nRow = $(this).parents('tr')[0];
 
@@ -152,11 +174,62 @@ var TableEditable = function () {
                 restoreRow(oTable, nEditing);
                 editRow(oTable, nRow);
                 nEditing = nRow;
-            } else if (nEditing == nRow && this.innerHTML == "Save") {
+            } else if (nEditing == nRow && this.innerHTML == "Grabar") {
                 /* Editing this row and want to save it */
                 saveRow(oTable, nEditing);
                 nEditing = null;
-                alert("Updated! Do not forget to do some ajax to sync with backend :)");
+                //alert("Updated! Do not forget to do some ajax to sync with backend :)");
+                var aData = oTable.fnGetData(nRow);
+                
+                if(aData[0] == ""){
+                	$('#frmModificarCliente').remove();
+                    $('<form id="frmModificarCliente_'+ aData[0] +'" method="post">'+
+                    		'<input type="hidden" name="idCliente" value="'+ aData[0] +'">'+
+                    		'<input type="hidden" name="ruc" value="'+ aData[1] +'">'+
+                    		'<input type="hidden" name="nombre" value="'+ aData[2] +'">'+
+                    		'<input type="hidden" name="direccion" value="'+ aData[3] +'">'+
+                    '</form>').appendTo('#divFormEditarCliente');
+                    
+                    $.ajax({
+                 		url: 'ajaxCrearCliente',
+                 		type: 'post',
+                 		dataType: 'json',
+                 		data: $('#frmModificarCliente_' + aData[0]).serialize(),
+                 		beforeSend: function(){
+                 			;
+                 		},
+                 		success: function(resultado){
+                 			$('#frmModificarCliente_').remove();
+                 			
+                 			borrarCrearTabla();
+                 			
+                 			listarClientes();			
+                 		}
+                 	});
+                }else{
+                    $('<form id="frmModificarCliente_'+ aData[0] +'" method="post">'+
+                    		'<input type="hidden" name="idCliente" value="'+ aData[0] +'">'+
+                    		'<input type="hidden" name="ruc" value="'+ aData[1] +'">'+
+                    		'<input type="hidden" name="nombre" value="'+ aData[2] +'">'+
+                    		'<input type="hidden" name="direccion" value="'+ aData[3] +'">'+
+                    '</form>').appendTo('#divFormEditarCliente');
+                    
+                    $.ajax({
+                 		url: 'ajaxModificarCliente',
+                 		type: 'post',
+                 		dataType: 'json',
+                 		data: $('#frmModificarCliente_' + aData[0]).serialize(),
+                 		beforeSend: function(){
+                 			;
+                 		},
+                 		success: function(resultado){
+                 			$('#frmModificarCliente_' + aData[0]).remove();
+                 			//borrarCrearTabla();	
+                 			//listarClientes();
+                 		}
+                 	});
+                }
+
             } else {
                 /* No edit in progress - let's start one */
                 editRow(oTable, nRow);
