@@ -1,6 +1,6 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <script>
-function crearCliente(){
+/* function crearCliente(){
 	$.ajax({
  		url: 'ajaxCrearCliente',
  		type: 'post',
@@ -48,7 +48,7 @@ function eliminarCliente(idCliente){
 	 		}
 	 	});
 	}		
-}
+} */
 </script>
 <script>
 function listarClientes(){
@@ -107,6 +107,7 @@ function listarClientes(){
 					</div>
 				</div>
 				
+				
 				<table class="table table-striped table-hover table-bordered" id="sample_editable_1">
 				<thead>
 				<tr>
@@ -116,6 +117,7 @@ function listarClientes(){
 				<tbody id="viewClientesHandlerbars">
 				</tbody>
 				</table>
+				
 				
 				<div id="divFormEditarCliente"></div>
 				

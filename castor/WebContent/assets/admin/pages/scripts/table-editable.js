@@ -15,10 +15,10 @@ var TableEditable = function () {
 
         function editRow(oTable, nRow) {
             var aData = oTable.fnGetData(nRow);
-            var jqTds = $('>td', nRow);
-                        
+            var jqTds = $('>td', nRow); 
+            
             jqTds[0].innerHTML = '<input type="hidden" name="idCliente" value="'+ aData[0] +'">';
-            jqTds[1].innerHTML = '<input type="text" class="form-control input-small" name="ruc" value="' + aData[1] + '">';
+            jqTds[1].innerHTML = '<input id="txtRuc" type="text" class="form-control input-small" name="ruc" value="' + aData[1] + '">';
             jqTds[2].innerHTML = '<input type="text" class="form-control input-small" name="nombre" value="' + aData[2] + '">';
             jqTds[3].innerHTML = '<input type="text" class="form-control input-large" name="direccion" value="' + aData[3] + '">';
             jqTds[4].innerHTML = '<a class="edit" href="">Grabar</a>';
@@ -165,73 +165,72 @@ var TableEditable = function () {
 
         table.on('click', '.edit', function (e) {
             e.preventDefault();
-            
             /* Get the row as a parent of the link that was clicked on */
             var nRow = $(this).parents('tr')[0];
-
+            
             if (nEditing !== null && nEditing != nRow) {
                 /* Currently editing - but not this row - restore the old before continuing to edit mode */
                 restoreRow(oTable, nEditing);
+                
                 editRow(oTable, nRow);
                 nEditing = nRow;
             } else if (nEditing == nRow && this.innerHTML == "Grabar") {
                 /* Editing this row and want to save it */
-                saveRow(oTable, nEditing);
-                nEditing = null;
-                //alert("Updated! Do not forget to do some ajax to sync with backend :)");
-                var aData = oTable.fnGetData(nRow);
-                
-                if(aData[0] == ""){
-                	$('#frmModificarCliente').remove();
-                    $('<form id="frmModificarCliente_'+ aData[0] +'" method="post">'+
-                    		'<input type="hidden" name="idCliente" value="'+ aData[0] +'">'+
-                    		'<input type="hidden" name="ruc" value="'+ aData[1] +'">'+
-                    		'<input type="hidden" name="nombre" value="'+ aData[2] +'">'+
-                    		'<input type="hidden" name="direccion" value="'+ aData[3] +'">'+
-                    '</form>').appendTo('#divFormEditarCliente');
-                    
-                    $.ajax({
-                 		url: 'ajaxCrearCliente',
-                 		type: 'post',
-                 		dataType: 'json',
-                 		data: $('#frmModificarCliente_' + aData[0]).serialize(),
-                 		beforeSend: function(){
-                 			;
-                 		},
-                 		success: function(resultado){
-                 			$('#frmModificarCliente_').remove();
-                 			
-                 			borrarCrearTabla();
-                 			
-                 			listarClientes();			
-                 		}
-                 	});
-                }else{
-                    $('<form id="frmModificarCliente_'+ aData[0] +'" method="post">'+
-                    		'<input type="hidden" name="idCliente" value="'+ aData[0] +'">'+
-                    		'<input type="hidden" name="ruc" value="'+ aData[1] +'">'+
-                    		'<input type="hidden" name="nombre" value="'+ aData[2] +'">'+
-                    		'<input type="hidden" name="direccion" value="'+ aData[3] +'">'+
-                    '</form>').appendTo('#divFormEditarCliente');
-                    
-                    $.ajax({
-                 		url: 'ajaxModificarCliente',
-                 		type: 'post',
-                 		dataType: 'json',
-                 		data: $('#frmModificarCliente_' + aData[0]).serialize(),
-                 		beforeSend: function(){
-                 			;
-                 		},
-                 		success: function(resultado){
-                 			$('#frmModificarCliente_' + aData[0]).remove();
-                 			//borrarCrearTabla();	
-                 			//listarClientes();
-                 		}
-                 	});
-                }
-
+            	if($('#txtRuc').val() != ""){	//Validacion temporal, ver luego un mejor metodo de validacion, es dinamico
+	                saveRow(oTable, nEditing);
+	                nEditing = null;
+	                //alert("Updated! Do not forget to do some ajax to sync with backend :)");
+	                var aData = oTable.fnGetData(nRow);
+	                
+	                if(aData[0] == ""){
+	                	$('#frmModificarCliente').remove();
+	                    $('<form id="frmModificarCliente_'+ aData[0] +'" method="post">'+
+	                    		'<input type="hidden" name="idCliente" value="'+ aData[0] +'">'+
+	                    		'<input type="hidden" name="ruc" value="'+ aData[1] +'">'+
+	                    		'<input type="hidden" name="nombre" value="'+ aData[2] +'">'+
+	                    		'<input type="hidden" name="direccion" value="'+ aData[3] +'">'+
+	                    '</form>').appendTo('#divFormEditarCliente');
+	                    
+	                    $.ajax({
+	                 		url: 'ajaxCrearCliente',
+	                 		type: 'post',
+	                 		dataType: 'json',
+	                 		data: $('#frmModificarCliente_' + aData[0]).serialize(),
+	                 		success: function(resultado){
+	                 			$('#frmModificarCliente_' + aData[0]).remove();
+	                 			
+	                 			borrarCrearTabla();
+	                 			
+	                 			listarClientes();			
+	                 		}
+	                 	});
+	                }else{
+	                
+	                    $('<form id="frmModificarCliente_'+ aData[0] +'" method="post">'+
+	                    		'<input type="hidden" name="idCliente" value="'+ aData[0] +'">'+
+	                    		'<input type="hidden" name="ruc" value="'+ aData[1] +'">'+
+	                    		'<input type="hidden" name="nombre" value="'+ aData[2] +'">'+
+	                    		'<input type="hidden" name="direccion" value="'+ aData[3] +'">'+
+	                    '</form>').appendTo('#divFormEditarCliente');
+	                	
+	 					$.ajax({
+	                 		url: 'ajaxModificarCliente',
+	                 		type: 'post',
+	                 		dataType: 'json',
+	                 		data: $('#frmModificarCliente_' + aData[0]).serialize(),
+	                 		success: function(resultado){
+	                 			$('#frmModificarCliente_' + aData[0]).remove();
+	                 		}
+	                 	});                     
+	                	
+	                }
+            	}else{
+            		//Mensaje de Validacion o marcos rojos #F3565D
+            		$('#txtRuc').css('border', '1px solid #F3565D');
+            	}
             } else {
                 /* No edit in progress - let's start one */
+            	
                 editRow(oTable, nRow);
                 nEditing = nRow;
             }

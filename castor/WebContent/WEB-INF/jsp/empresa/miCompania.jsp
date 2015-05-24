@@ -88,6 +88,8 @@
 <jsp:include page="../comps/footer.jsp"/>
 <jsp:include page="../comps/corePlugins.jsp"/>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="assets/global/plugins/jquery-validation/js/additional-methods.min.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
 <script src="assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/icheck/icheck.min.js"></script>
