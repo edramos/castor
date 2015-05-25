@@ -102,7 +102,7 @@ public class LibroServiceImpl implements LibroService{
 					+ "INNER JOIN orden o ON c.idorden = o.idorden "
 					+ "WHERE f.tipo = 'Recibida' AND f.codigo = '" + detalleLibro.getFactura() + "' AND o.idempresa = '" + session.getAttribute("idEmpresa") + "'");
 			
-			Object[] obj = (Object[])q01.getSingleResult();
+			Object[] obj = (Object[])q01.getSingleResult();				//Cuando se inicializa DB da un error 500 porque no encuentra nada
 			System.out.println("AVANCE: " + obj[2].toString());
 			String estadoObra = "";
 			if(obj[2].toString().equals("0.0")){

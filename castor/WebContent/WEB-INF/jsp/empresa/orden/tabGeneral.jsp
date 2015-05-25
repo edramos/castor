@@ -36,16 +36,16 @@
 			</div>
 			<div class="summaryBodyRight">
 				<div class="summaryBodyItem">
-					<span class="spanLabel">Entrega</span><span id="spnEntrega" class="value"></span>
+					<span class="spanLabel">Inicio</span><span id="spnInicio" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Fin</span><span id="spnEntrega" class="value"></span>
 				</div>
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Creacion</span><span id="spnCreacion" class="value"></span>
 				</div>
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Creador</span><span id="spnCreador" class="value"></span>
-				</div>
-				<div class="summaryBodyItem">
-					<span class="spanLabel"></span><span id="#" class="value"></span>
 				</div>
 			</div>
 		
@@ -113,6 +113,7 @@ function initOrdenGeneral(orden){
 	$('#spnLon').text(orden.lon);
 	$('#spnCiudad').text(orden.ciudad);
 	$('#spnDepartamento').text(orden.departamento);
+	$('#spnInicio').text(orden.fechaInicio);
 	$('#spnEntrega').text(orden.fechaEntrega);
 	$('#spnCreacion').text(orden.fechaCreacion);
 	$('#spnCreador').text(orden.creadoPorNombre);

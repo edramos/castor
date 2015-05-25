@@ -306,8 +306,8 @@
 									<tbody id="vistaTablaSubcontratosProveedores">
 									</tbody>
 									
-									
-									<tbody>
+									<!-- Este DIV se va a borrar pero no olvidar que el total lo jalan en Calculos financieros -->
+									<tbody style="display: none;">
 									<tr>
 										<td></td><td></td><td></td>
 										<td>
@@ -529,6 +529,7 @@ jQuery(document).ready(function(){
     
     $('#txtFechaEntrega').on('change', function(){
 		$('#txtFechaVencimientoProv_cobro_0_1').val(this.value);
+  		$('#txtTerminoObraSC_0').val(this.value);
   		
   		var aFF = this.value.split("/");
   		var date = new Date(aFF[1] + "/" + aFF[0] + "/" + aFF[2]);
@@ -544,6 +545,7 @@ jQuery(document).ready(function(){
     formatoMoneda("#txtCobroParcial_cobro_0_0");
     formatoMoneda("#txtCobroParcial_cobro_0_1");
     formatoMoneda("#txtCobroParcial_cobro_0_2");
+    
     
     /**********************************************************************************/
     

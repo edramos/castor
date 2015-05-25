@@ -55,6 +55,7 @@ public class OrdenBean {
 	//REPORTE
 	private String totalPagarProveedor;
 	private String totalPagadoProveedor;
+	private String totalPagadoDetraccionProveedor;
 	private String totalDeudaProveedor;
 	private String nombreProveedor;
 	private String porcentajePagado;
@@ -346,5 +347,12 @@ public class OrdenBean {
 	}
 	public void setFechaInicio(String fechaInicio) {
 		this.fechaInicio = fechaInicio;
+	}
+	public String getTotalPagadoDetraccionProveedor() {
+		return totalPagadoDetraccionProveedor;
+	}
+	public void setTotalPagadoDetraccionProveedor(
+			String totalPagadoDetraccionProveedor) {
+		this.totalPagadoDetraccionProveedor = totalPagadoDetraccionProveedor;
 	}
 }
