@@ -133,6 +133,16 @@ function listarOT(){
 	<td style="text-align:center;"><a class="btn default btn-xs red delete" href="javascript:;"><i class="fa fa-trash-o"></i></a></td>
 </tr>
 </script>
+<script id="templatePagos" type="text/x-handlebars-template">
+<tr>
+	<td>{{nombreProveedor}}</td>
+	<td>{{fechaVencimiento}}</td>
+	<td>{{conIgv}}</td>
+	<td>{{tipoPago}}</td>
+	<td>{{estadoTrabajo}} {{avance}}</td>
+	<td>{{estado}}</td>
+</tr>
+</script>
 <script>
 function initTable(){
 	function restoreRow(oTable, nRow){
@@ -148,23 +158,23 @@ function initTable(){
 	function editRow(oTable, nRow){
 		var aData = oTable.fnGetData(nRow);
         var jqTds = $('>td', nRow); 
-        var nombre = aData[2].split(">");
+        var nombre = aData[3].split(">");
         
-        jqTds[0].innerHTML = '<input id="txtNombre" type="text" class="form-control input-sm" name="nombre" value="' + nombre[1].slice(0,-3) + '">';
-        jqTds[2].innerHTML = '<select id="sltClientes"></select>';
-        jqTds[6].innerHTML = '<select id="sltEstadoObra"></select>';
-        jqTds[7].innerHTML = '<a class="btn default btn-xs edit" href=""><i class="fa fa-check"></i> Grabar</a>';
-        jqTds[8].innerHTML = '<a class="btn default btn-xs cancel" href=""><i class="fa fa-close"></i> Cancelar</a>';
+        jqTds[1].innerHTML = '<input id="txtNombre" type="text" class="form-control input-sm" name="nombre" value="' + nombre[1].slice(0,-3) + '">';
+        jqTds[3].innerHTML = '<select id="sltClientes"></select>';
+        jqTds[7].innerHTML = '<select id="sltEstadoObra"></select>';
+        jqTds[8].innerHTML = '<a class="btn default btn-xs edit" href=""><i class="fa fa-check"></i> Grabar</a>';
+        jqTds[9].innerHTML = '<a class="btn default btn-xs cancel" href=""><i class="fa fa-close"></i> Cancelar</a>';
         
         for(var i = 0; i < aClientes.length; i++){
        		$('<option/>').val(aClientes[i].idCliente).html(aClientes[i].nombre).appendTo('#sltClientes');
         }
-        $('#sltClientes').val(aData[1]);
+        $('#sltClientes').val(aData[2]);
         
         for(var i = 0; i < aEstados.length; i++){
        		$('<option/>').val(aEstados[i]).html(aEstados[i]).appendTo('#sltEstadoObra');
         }
-        $('#sltEstadoObra').val(aData[8]);
+        $('#sltEstadoObra').val(aData[9]);
 	}
 
 	function cancelEditRow(oTable, nRow){
@@ -179,6 +189,47 @@ function initTable(){
 	}
 	
 	var table = $('#tblMasterOT');
+	
+	function fnFormatDetails(oTable, nTr){
+	    var aData = oTable.fnGetData(nTr);
+	    var html = '';
+	    
+	    $.ajax({
+	 		url: 'ajaxListarCuentas-pagar-' + aData[1],
+	 		type: 'post',
+	 		dataType: 'json',
+	 		data: '',
+	 		success: function(cuentaspago){
+	 			$.each(cuentaspago, function(i, pago){
+	 				var source = $("#templatePagos").html();
+	 				var template = Handlebars.compile(source);
+	 				html += template(pago);		
+	 			});
+	 			$('#viewPagosHandleBars').html(html);	 	        
+	 		}
+	 	});
+	    
+	    var sOut = '<table class="table table-striped table-bordered table-condensed table-hover" style="margin-bottom:0px;">'+
+	    '<thead><tr><th>Proveedor</th><th>Vence</th><th>Monto</th><th>Tipo Pago</th><th>Condicion</th><th>Estado</th></tr></thead>'+
+	    '<tbody id="viewPagosHandleBars"></tbody></table>';
+	
+	    return sOut;
+	}
+	// Insert a 'details' column to the table
+	var nCloneTh = document.createElement('th');
+	nCloneTh.className = "table-checkbox";
+	
+	var nCloneTd = document.createElement('td');
+	nCloneTd.innerHTML = '<span class="row-details row-details-close"></span>';
+	
+	table.find('thead tr').each(function () {
+	    this.insertBefore(nCloneTh, this.childNodes[0]);
+	});
+	table.find('tbody tr').each(function () {
+	    this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
+	});
+	
+	
     var oTable = table.dataTable({
 
         // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
@@ -204,9 +255,9 @@ function initTable(){
         },
         "columnDefs": [
         { 
-        	"visible": false, "targets": [0,1] 
+        	"visible": false, "targets": [1,2] 
         },{ 
-            'orderable': true,
+            'orderable': false,
             'targets': [0]
         }, {
             "searchable": true,
@@ -222,6 +273,21 @@ function initTable(){
     tableWrapper.find(".dataTables_length select").select2({
         showSearchInput: false //hide search box with special css class
     }); // initialize select2 dropdown
+    
+    table.on('click', ' tbody td .row-details', function (){
+	    var nTr = $(this).parents('tr')[0];
+	    if (oTable.fnIsOpen(nTr)) {
+	        // This row is already open - close it 
+	        $(this).addClass("row-details-close").removeClass("row-details-open");
+	        oTable.fnClose(nTr);
+	    } else {
+	        // Open this row 
+	        $(this).addClass("row-details-open").removeClass("row-details-close");
+	        oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+	    }
+	});
+    
+    
     
     var nEditing = null;
     var nNew = false;
