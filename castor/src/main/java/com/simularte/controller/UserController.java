@@ -154,4 +154,8 @@ public class UserController {
 	public String toReporte(){
 		return "empresa/reporteGeneral";
 	}
+	@RequestMapping("toMasterOT")
+	public String toMasterOT(){
+		return "empresa/reportes/masterOrden";
+	}
 }

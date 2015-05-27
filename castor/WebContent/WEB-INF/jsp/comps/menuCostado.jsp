@@ -65,10 +65,12 @@
 				</ul>
 			</li>
 			
-			<li class="tooltips" data-container="body" data-placement="right" data-html="true" data-original-title="">
-				<a href="toReporte"><i class="icon-paper-plane"></i>
-				<span class="title">Reportes </span>
-				</a>
+			<li>
+				<a href="javascript:;"><i class="icon-paper-plane"></i><span class="title">Reportes</span><span class="arrow "></span></a>
+				<ul class="sub-menu">
+					<li><a href="toMasterOT">Master Orden</a></li>
+					<li><a href="toReporte">Deuda</a></li>
+				</ul>
 			</li>
 			
 			<li>

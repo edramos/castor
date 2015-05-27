@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.simularte.bean.CuentaBean;
 import com.simularte.model.Cuenta;
 import com.simularte.model.Orden;
-import com.simularte.model.Proveedor;
-import com.simularte.model.Subcontrato;
 import com.simularte.util.Dates;
 import com.simularte.util.Formatos;
 import com.simularte.util.Valores;
@@ -126,8 +124,6 @@ public class CuentaServiceImpl implements CuentaService {
 	public List<CuentaBean> listarCuentas(String tipo, Integer idOrder, HttpServletRequest req) {
 		List<CuentaBean> lcueBean = new ArrayList<CuentaBean>();
 		double totalConIgv = 0;
-		double totalMonto = 0;
-		double totalIgv = 0;
 		
 		try{
 			Query q01 = em.createNativeQuery("SELECT c.idcuenta, c.avance, c.creadopor, c.estado, c.estadotrabajo, c.fechacreacion, c.fechapagoprogramada, c.fechapagoreal, "

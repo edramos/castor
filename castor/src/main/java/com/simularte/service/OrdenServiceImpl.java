@@ -38,6 +38,41 @@ public class OrdenServiceImpl implements OrdenService {
 	EntityManager em;
 	
 	@SuppressWarnings("unchecked")
+	public List<OrdenBean> mostrarMasterOT(HttpServletRequest req){
+		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT o.idorden, o.codigo, o.nombre, c.idcliente, c.nombre as cliente, "
+				+ "o.tipoorden, o.tipotrabajo, o.fechainicio, o.fechaentrega, o.estado, o.oferta, o.ciudad FROM orden o "
+				+ "INNER JOIN cliente c ON o.idcliente = c.idcliente "
+				+ "WHERE o.idempresa = "+ (Integer)req.getSession().getAttribute("idEmpresa") +" AND o.estado != 'Borrado'");
+		
+		List<Object[]> rows01 = q01.getResultList();
+		
+		for(int x = 0; x < rows01.size(); x++){
+			Object[] obj01 = rows01.get(x);
+			OrdenBean ob = new OrdenBean();
+			
+			ob.setIdOrden((Integer)obj01[0]);
+			ob.setCodigo(obj01[1].toString());
+			ob.setNombre(obj01[2].toString());
+			ob.setIdCliente((Integer)obj01[3]);
+			ob.setNombreCliente(obj01[4].toString());
+			ob.setTipoOrden(obj01[5].toString());
+			ob.setTipoTrabajo(obj01[6].toString());
+			ob.setFechaInicio(Dates.stringToStringFechaCorta(obj01[7].toString()));
+			ob.setFechaEntrega(Dates.stringToStringFechaCorta(obj01[8].toString()));
+			ob.setEstado(obj01[9].toString());
+			ob.setOferta(Formatos.StringToBigDecimal(obj01[10].toString()));
+			ob.setCiudad(obj01[11].toString());
+			
+
+			ordenes.add(ob);
+		}
+		
+		return ordenes;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<OrdenBean> mostrarReporteOT(HttpServletRequest req){
 		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
 		
@@ -76,10 +111,11 @@ public class OrdenServiceImpl implements OrdenService {
 			ob.setEstado(obj01[3].toString());
 			
 			BigDecimal tMonto = Formatos.StringToBigDecimal(obj01[4].toString());
-			BigDecimal tPagar = tMonto.add(tMonto.multiply(Valores.IGV)).setScale(2,RoundingMode.HALF_UP);
+			BigDecimal igv = tMonto.multiply(Valores.IGV).setScale(2, RoundingMode.HALF_UP);
+			BigDecimal tPagar = tMonto.add(igv);
 			
 			ob.setTotalPagarProveedor(Formatos.BigBecimalToString(tPagar));
-			
+			System.out.println("tMonto: " + tMonto + ", igv: " + igv + ", totalPagar " + ob.getCodigo() + " : " + ob.getTotalPagarProveedor());
 			BigDecimal tPagado = BigDecimal.ZERO;
 			BigDecimal tPagadoDetraccion = BigDecimal.ZERO;
 			ob.setTotalPagadoProveedor(Formatos.BigBecimalToString(tPagado));		//DB inicializada no entra al segundo For
@@ -99,10 +135,10 @@ public class OrdenServiceImpl implements OrdenService {
 			} 
 			
 			BigDecimal perc = new BigDecimal("100");
-			double pagado = tPagado.multiply(perc).divide(tPagar, 2, RoundingMode.HALF_UP).doubleValue();
+			double pagadoPerc = tPagado.multiply(perc).divide(tPagar, 2, RoundingMode.HALF_UP).doubleValue();
 			BigDecimal tDeu = tPagar.subtract(tPagado);
 			
-			ob.setPorcentajePagado(Double.toString(pagado));
+			ob.setPorcentajePagado(Double.toString(pagadoPerc));
 			ob.setTotalDeudaProveedor(Formatos.BigBecimalToString(tDeu));
 			
 			totalPagar += tPagar.doubleValue();
