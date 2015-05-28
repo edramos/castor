@@ -78,6 +78,18 @@ public class OrdenController {
 				
 		return ordenserv.getOrdenesSuggest(codigo, req);
 	}
+	//EDITAR
+	@RequestMapping(value = "ajaxEditarOrden", method = RequestMethod.POST) @ResponseBody
+	public List<OrdenBean> ajaxEditarOrden(@ModelAttribute("ordenBean") OrdenBean ob, HttpServletRequest req){
+			
+		if(ordenserv.editarOrden(ob, req)){
+			return ordenserv.mostrarMasterOT(req); 
+		}else{
+			return null;
+		}
+		
+	} 
+	
 	//REPORTES 
 	@RequestMapping(value = "mostrarMasterOT", method = RequestMethod.POST) @ResponseBody
 	public List<OrdenBean> mostrarMasterOT(HttpServletRequest req){

@@ -37,6 +37,28 @@ public class OrdenServiceImpl implements OrdenService {
 	@PersistenceContext 
 	EntityManager em;
 	
+	@Transactional
+	public boolean editarOrden(OrdenBean ob, HttpServletRequest req){
+		boolean result = false;
+		
+		Orden ordenX = em.find(Orden.class, ob.getIdOrden());
+		Orden ordenY = em.merge(ordenX);
+		
+		Cliente cliente = em.find(Cliente.class, ob.getIdCliente());
+		
+		ordenY.setNombre(ob.getNombre());
+		ordenY.setCiudad(ob.getCiudad());
+		ordenY.setOrdenCliente(cliente);
+		ordenY.setTipoTrabajo(ob.getTipoTrabajo());
+		ordenY.setFechaInicio(Dates.stringToDate(ob.getFechaInicio(), "yyyy-MM-dd"));
+		ordenY.setFechaEntrega(Dates.stringToDate(ob.getFechaEntrega(), "yyyy-MM-dd"));
+		ordenY.setEstado(ob.getEstado());
+				
+		result = true;
+		
+		return result;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<OrdenBean> mostrarMasterOT(HttpServletRequest req){
 		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();

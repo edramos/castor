@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -9,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
 <!-- END PAGE LEVEL STYLES -->
 </head>
 
@@ -34,6 +36,8 @@
 			</div>
 			<div id="divPortletBody" class="portlet-body">	
 				
+				<form:form id="frmEditarFila" action="ajaxEditarOrden" modelAttribute="ordenBean" method="post">
+				
 				<table id="tblMasterOT" class="table table-striped table-bordered table-condensed table-hover">
 				<thead>
 				<tr>
@@ -45,6 +49,8 @@
 				<tbody id="viewMasterOTHandlerbars">
 				</tbody>
 				</table>
+				
+				</form:form>
 		
 			</div>
 		</div>
@@ -65,6 +71,7 @@
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -73,7 +80,8 @@
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 var aClientes = [];
-var aEstados = ["Sin Inicio", "Por iniciar", "Proceso", "Terminado", "Aceptado", "Paralizada"];
+var aEstados = ["Sin inicio", "Por iniciar", "Proceso", "Terminado", "Aceptado", "Paralizada"];
+var aTipoTrabajo = ["Obra", "Estudio", "Adecuacion", "Proyecto", "Estructura Metalica", "Greenfield"];
 
 jQuery(document).ready(function() {   
 	Metronic.init(); // init metronic core components
@@ -157,24 +165,65 @@ function initTable(){
 	
 	function editRow(oTable, nRow){
 		var aData = oTable.fnGetData(nRow);
-        var jqTds = $('>td', nRow); 
+        var jqTds = $('>td', nRow);
         var nombre = aData[3].split(">");
         
         jqTds[1].innerHTML = '<input id="txtNombre" type="text" class="form-control input-sm" name="nombre" value="' + nombre[1].slice(0,-3) + '">';
-        jqTds[3].innerHTML = '<select id="sltClientes"></select>';
-        jqTds[7].innerHTML = '<select id="sltEstadoObra"></select>';
+        jqTds[2].innerHTML = '<input id="txtCiudad" type="text" class="form-control input-sm" name="ciudad" value="' + aData[4] + '">';
+        jqTds[3].innerHTML = '<select id="sltClientes" name="idCliente"></select>';
+        jqTds[4].innerHTML = '<select id="sltTipoTrabajo" name="tipoTrabajo"></select>';
+        jqTds[5].innerHTML = '<input id="txtFechaInicio" type="text" class="date-picker form-control form-filter input-sm" name="fechaInicio" value="'+ aData[7] +'"/>';
+        jqTds[6].innerHTML = '<input id="txtFechaFin" type="text" class="date-picker form-control form-filter input-sm" name="fechaEntrega" value="'+ aData[8] +'"/>';
+        jqTds[7].innerHTML = '<select id="sltEstadoObra" name="estado"></select>';
+        
         jqTds[8].innerHTML = '<a class="btn default btn-xs edit" href=""><i class="fa fa-check"></i> Grabar</a>';
-        jqTds[9].innerHTML = '<a class="btn default btn-xs cancel" href=""><i class="fa fa-close"></i> Cancelar</a>';
+        jqTds[9].innerHTML = '<a class="btn default btn-xs cancel" href=""><i class="fa fa-close"></i> Cancelar</a><input type="hidden" name="idOrden" value="'+ aData[1] +'">';
+        
+        $('.date-picker').datepicker({
+        	format: 'dd/mm/yyyy',
+        	autoclose: true 
+        });
         
         for(var i = 0; i < aClientes.length; i++){
        		$('<option/>').val(aClientes[i].idCliente).html(aClientes[i].nombre).appendTo('#sltClientes');
         }
         $('#sltClientes').val(aData[2]);
         
+        for(var i = 0; i < aTipoTrabajo.length; i++){
+       		$('<option/>').val(aTipoTrabajo[i]).html(aTipoTrabajo[i]).appendTo('#sltTipoTrabajo');
+        }
+        $('#sltTipoTrabajo').val(aData[6]);
+        
         for(var i = 0; i < aEstados.length; i++){
        		$('<option/>').val(aEstados[i]).html(aEstados[i]).appendTo('#sltEstadoObra');
         }
         $('#sltEstadoObra').val(aData[9]);
+	}
+	
+	function saveRow(oTable, nRow){
+		var jqInputs = $('input', nRow);
+		var jqSelects = $('select', nRow);
+		var nombreCliente = "";
+		
+		
+		for(var i = 0; i < aClientes.length; i++){
+			if(aClientes[i].idCliente == jqSelects[0].value){
+				nombreCliente = aClientes[i].nombre;
+			}
+		}
+		oTable.fnUpdate(jqSelects[0].value, nRow, 2, false);
+		oTable.fnUpdate('<a href="ordenPag-'+ jqInputs[1].value +'" target="_blank">'+ jqInputs[0].value +'</a>', nRow, 3, false);
+		oTable.fnUpdate(jqInputs[1].value, nRow, 4, false);
+		oTable.fnUpdate(nombreCliente, nRow, 5, false);
+		oTable.fnUpdate(jqSelects[1].value, nRow, 6, false);
+		oTable.fnUpdate(jqInputs[2].value, nRow, 7, false);
+		oTable.fnUpdate(jqInputs[3].value, nRow, 8, false);
+        oTable.fnUpdate(jqSelects[2].value, nRow, 9, false);
+        
+		oTable.fnUpdate('<a class="btn default btn-xs edit" href=""><i class="fa fa-edit"></i> Editar</a>', nRow, 10, false);
+        //oTable.fnUpdate('<a class="delete" href="">Borrar</a>', nRow, 9, false);
+        
+		oTable.fnDraw();
 	}
 
 	function cancelEditRow(oTable, nRow){
@@ -311,16 +360,30 @@ function initTable(){
     	var nRow = $(this).parents('tr')[0];
     	
     	if(nEditing !== null && nEditing != nRow){
-            /* Currently editing - but not this row - restore the old before continuing to edit mode */
+            /* Estan editando - pero no esta fila - restaura esta fila antes de continuar con la otra */
+            alert('Restaurar la fila');
             restoreRow(oTable, nEditing);
             
             editRow(oTable, nRow);
             nEditing = nRow;
-        }else if(nEditing == nRow && this.innerHTML == "Grabar"){
-        	;
+        }else if(nEditing == nRow && this.innerHTML == '<i class="fa fa-check"></i> Grabar'){
+        	
+        	$.ajax({
+         		url: 'ajaxEditarOrden',
+         		type: 'post',
+         		dataType: 'json',
+         		data: $('#frmEditarFila').serialize(),
+         		success: function(resultado){
+         			;
+         		}
+         	});
+        	
+        	saveRow(oTable, nEditing);
+            nEditing = null;
         }else{
         	/* No se esta editando ninguna fila, empezemos a editar */
-            editRow(oTable, nRow);
+            //alert("nRow: " + nRow.rowIndex);
+        	editRow(oTable, nRow);
             nEditing = nRow;
         }
 
