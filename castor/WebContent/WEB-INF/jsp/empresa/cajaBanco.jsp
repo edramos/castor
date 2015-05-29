@@ -217,23 +217,22 @@
 <script src="assets/admin/pages/scripts/table-advanced.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
+var aClientes = [];
+var aProveedores = [];
+
 jQuery(document).ready(function() {   
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	Demo.init();
 	
-	$('#txtFechaOperacion').datepicker("setDate", new Date());
-	$('#txtFechaOperacion').datepicker({
-		format: 'dd/mm/yyyy',
-		"setDate": new Date(),
-		autoclose: true,
-		language: "es"
-	});
+	initDatePicker();
+		
 	$('.date-picker').datepicker().on('changeDate', function (ev){
 		$(this).datepicker('hide');
 	});
+	llenarClientes();
 	
-	listarSelectorClientes('sltCliente');
+	//listarSelectorClientes('sltCliente');
 	listarCaja();
 	suggestFactura("cobrar");
 	
@@ -259,7 +258,44 @@ jQuery(document).ready(function() {
         }
     });
 	
+	
+	//llenarProveedores();
+	
 });
+function initDatePicker(){
+	$('#txtFechaOperacion').datepicker("setDate", new Date());
+	$('#txtFechaOperacion').datepicker({
+		format: 'dd/mm/yyyy',
+		"setDate": new Date(),
+		autoclose: true,
+		language: "es"
+	});
+}
+function llenarClientes(){
+	$.ajax({
+ 		url: 'ajaxListarClientes',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: '',
+ 		success: function(clientes){
+ 			$.each(clientes, function(i, cliente){
+ 				aClientes[i] = cliente;
+ 			});
+ 			llenarSelect("sltCliente", aClientes);
+ 		}
+ 	});
+}
+function llenarSelect(objeto, array){
+	switch(objeto){
+	case "sltCliente":
+		$('#' + objeto).empty();
+		for(var i = 0; i < array.length; i++){
+			$('<option/>').val(array[i].idCliente).html(array[i].nombre).appendTo('#' + objeto);
+		}
+		break;
+	}
+}
+
 </script>
 <script>
 function suggestFactura(tipo){
@@ -383,14 +419,16 @@ $(function($){
 		//INGRESOS
 		case 'Cobranza Venta/Servicio':
 			formDynamic('#templateCobranzaVentaServicio');
-			listarSelectorClientes('sltCliente');
+			//listarSelectorClientes('sltCliente');
+			llenarSelect("sltCliente", aClientes);
 			suggestFactura("cobrar");
 			break;
 		case 'Detraccion':
 			//var value = $('#sltTipoTransaccion option:selected').text();
 			//if(value == "Ingreso"){
 				formDynamic('#templateDetraccion');
-				listarSelectorClientes('sltCliente');
+				//listarSelectorClientes('sltCliente');
+				llenarSelect("sltCliente", aClientes);
 				suggestFacturaDetraccion('ingreso');
 			/*}else{
 				formDynamic('#templateDetraccionEgreso');
@@ -400,7 +438,8 @@ $(function($){
 			break;
 		case 'Otra cobranza':
 			formDynamic('#templateOtraCobranza');
-			listarSelectorClientes('sltCliente');
+			//listarSelectorClientes('sltCliente');
+			llenarSelect("sltCliente", aClientes);
 			suggestFactura("cobrar");
 			break;
 		case 'Transferencia cuenta':
@@ -605,6 +644,7 @@ function listarCaja(){
  		}
  	});	
 }
+/************************AQUI LO GRABA*******************************/
 function crearDetalleLibro(){
 	/* if($('#sltTransaccion').val() == "Cobranza Venta/Servicio"){
 		$('#txtCobrarFactura').val(Number($('#txtCobrarFactura').val().replace(/[^0-9\.]+/g,"")));
@@ -631,9 +671,7 @@ function crearDetalleLibro(){
 	
 	//$('#txtMonto').val(monto);
 	//alert($('#txtMonto').val());
-	
-	
-	
+
 	$.ajax({
  		url: 'ajaxCrearRegistroLibro',
  		type: 'post',
@@ -642,6 +680,9 @@ function crearDetalleLibro(){
  		success: function(resultado){
  			listarCaja();
  			borrarDatos();
+ 			initDatePicker();
+ 			llenarSelect("sltCliente", aClientes);
+ 			location.reload();		//Solo para asegurar pero demora refrescar, luego de pruebas finales se podria quitar
  		}
  	});	
 }
@@ -918,7 +959,7 @@ function mostrarDetalle(idRegistro){
 	<input id="txtFactura" type="text" class="form-control" placeholder="Factura" name="factura"/>	
 </div>
 <div class="col-md-3 dynamic">
-	<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="idOrden"/>
+	<input id="txtOrdenTrabajo" class="form-control" placeholder="Orden Trabajo" name="codigoOrden"/>
 	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>	
 </div>
 <div class="col-md-2 dynamic">
