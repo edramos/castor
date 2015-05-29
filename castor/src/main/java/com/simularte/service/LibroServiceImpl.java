@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.simularte.bean.DetalleLibroBean;
 import com.simularte.model.Cliente;
+import com.simularte.model.Cuenta;
 import com.simularte.model.DetalleLibro;
 import com.simularte.model.Factura;
 import com.simularte.model.Libro;
@@ -67,14 +68,51 @@ public class LibroServiceImpl implements LibroService{
 		
 			em.persist(detalleLibro);
 			
-			if(dlb.getTipoOperacion().equals("Cobranza Venta/Servicio") || dlb.getTipoOperacion().equals("Pago Proveedor")){
+			/*if(dlb.getTipoOperacion().equals("Cobranza Venta/Servicio") || dlb.getTipoOperacion().equals("Pago Proveedor")){
 				Factura facturaX = em.find(Factura.class, dlb.getIdFactura());
 				Factura facturaY = em.merge(facturaX);
 				
-				facturaY.setEstado("Cancelado");
+				facturaY.setEstado("Falta Detraccion");	//Ha pagao el total - detraccion, con el checkbox Pagar Detraccion se cambiaria a Cancelado
 				facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
+			}*/
+			Factura facturaX = null;
+			Factura facturaY = null;
+			
+			switch(dlb.getTipoOperacion()){
+			
+			case "Pago Proveedor":
+				facturaX = em.find(Factura.class, dlb.getIdFactura());
+				facturaY = em.merge(facturaX);
+				if(facturaX.getEstado().equals("Solo Detraccion")){
+					facturaY.setEstado("Cancelado");
+					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Cancelado");
+				}else{
+					facturaY.setEstado("Falta Detraccion");	//Ha pagao el total - detraccion, con el checkbox Pagar Detraccion se cambiaria a Cancelado
+					
+					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Falta Detraccion");
+				}
+				facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
+				break;
+			case "Detraccion Proveedor":
+				facturaX = em.find(Factura.class, dlb.getIdFactura());
+				facturaY = em.merge(facturaX);
+				if(facturaX.getEstado().equals("Falta Detraccion")){
+					facturaY.setEstado("Cancelado");
+					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Cancelado");
+				}else{
+					facturaY.setEstado("Solo Detraccion");
+					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Solo Detraccion");
+				}
+				facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
+				
+				facturaY.setEstadoDetraccion("Cancelado");
+				facturaY.setFechaCancelacionDetraccion(detalleLibro.getFechaOperacion());
+				break;
 			}
-			if(dlb.getTipoOperacion().equals("Detraccion")){
+			
+			
+			
+			/*if(dlb.getTipoOperacion().equals("Detraccion")){
 				Factura facturaX = em.find(Factura.class, dlb.getIdFactura());
 				Factura facturaY = em.merge(facturaX);
 				
@@ -94,7 +132,7 @@ public class LibroServiceImpl implements LibroService{
 					
 				}
 				
-			}
+			}*/
 			//Por ahora mientras se crea el modulo de Gestion de Obras el estado se cambia segun la condicion de pago al Proveedor 
 			//Recordas que podria traer problemas si 2 o mas proveedores vienen con el mismo codigo de factura
 			Query q01 = em.createNativeQuery("SELECT o.idorden, c.estadotrabajo, c.avance FROM factura f "
@@ -119,6 +157,13 @@ public class LibroServiceImpl implements LibroService{
 			e.printStackTrace();
 		}
 		return result;
+	}
+	@Transactional
+	private void actualizarEstadoCuenta(int idCuenta, String estado){
+		Cuenta cX = em.find(Cuenta.class, idCuenta);
+		Cuenta cY = em.merge(cX);
+		
+		cY.setEstado(estado);
 	}
 	
 	@SuppressWarnings("unchecked")

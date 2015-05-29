@@ -106,13 +106,13 @@ public class OrdenServiceImpl implements OrdenService {
 		
 		Query q02 = em.createNativeQuery("SELECT o.codigo, f.cobrarfactura, f.estado, f.montodetraccion, f.estadodetraccion, "
 				+ "SUM((CASE WHEN (f.estadodetraccion = 'Cancelado') THEN f.montodetraccion ELSE 0 END)) as DetraccionPagada, "
-				+ "SUM((CASE WHEN (f.estadodetraccion = 'Cancelado') THEN f.cobrarfactura + f.montodetraccion ELSE f.cobrarfactura END)) as TotalPagado "
+				+ "SUM((CASE WHEN (f.estadodetraccion = 'Cancelado') THEN (CASE WHEN (f.estado != 'Solo Detraccion') THEN f.cobrarfactura + f.montodetraccion ELSE f.montodetraccion END) ELSE f.cobrarfactura END)) as TotalPagado "
 				+ "FROM orden o "
 				+ "INNER JOIN cuenta c ON o.idorden = c.idorden "
 				+ "INNER JOIN factura f ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN subcontrato sc ON c.idsubcontrato = sc.idsubcontrato "
 				+ "INNER JOIN proveedor p ON sc.idproveedor = p.idproveedor "
-				+ "WHERE f.tipo = 'Recibida' AND f.estado = 'Cancelado' GROUP BY o.codigo;");
+				+ "WHERE f.tipo = 'Recibida' AND f.estado = 'Cancelado' OR f.estado = 'Falta Detraccion' OR f.estado = 'Solo Detraccion' GROUP BY o.codigo");
 		
 		List<Object[]> rows01 = q01.getResultList();
 		List<Object[]> rows02 = q02.getResultList();
@@ -291,7 +291,7 @@ public class OrdenServiceImpl implements OrdenService {
 						
 			orden.setCreadoPor((Integer)session.getAttribute("idUser"));
 			orden.setFechaCreacion(Dates.fechaCreacion());
-			orden.setEstado("Sin Inicio");
+			orden.setEstado("Sin inicio");
 			
 			em.persist(orden);
 			

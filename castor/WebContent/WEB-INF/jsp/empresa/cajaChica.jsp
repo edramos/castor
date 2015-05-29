@@ -209,10 +209,15 @@ jQuery(document).ready(function() {
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	
+	$('#txtFechaOperacion').datepicker("setDate", new Date());
 	$('#txtFechaOperacion').datepicker({
 		format: 'dd/mm/yyyy',
+		"setDate": new Date(),
 		autoclose: true,
 		language: "es"
+	});
+	$('.date-picker').datepicker().on('changeDate', function (ev){
+		$(this).datepicker('hide');
 	});
 	
 	listarResultados();

@@ -200,19 +200,19 @@ function initTable(){
         $('#sltEstadoObra').val(aData[9]);
 	}
 	
-	function saveRow(oTable, nRow){
+	function saveRow(oTable, nRow, idOrden){
 		var jqInputs = $('input', nRow);
 		var jqSelects = $('select', nRow);
 		var nombreCliente = "";
-		
 		
 		for(var i = 0; i < aClientes.length; i++){
 			if(aClientes[i].idCliente == jqSelects[0].value){
 				nombreCliente = aClientes[i].nombre;
 			}
 		}
+		
 		oTable.fnUpdate(jqSelects[0].value, nRow, 2, false);
-		oTable.fnUpdate('<a href="ordenPag-'+ jqInputs[1].value +'" target="_blank">'+ jqInputs[0].value +'</a>', nRow, 3, false);
+		oTable.fnUpdate('<a href="ordenPag-'+ idOrden +'" target="_blank">'+ jqInputs[0].value +'</a>', nRow, 3, false);
 		oTable.fnUpdate(jqInputs[1].value, nRow, 4, false);
 		oTable.fnUpdate(nombreCliente, nRow, 5, false);
 		oTable.fnUpdate(jqSelects[1].value, nRow, 6, false);
@@ -361,13 +361,14 @@ function initTable(){
     	
     	if(nEditing !== null && nEditing != nRow){
             /* Estan editando - pero no esta fila - restaura esta fila antes de continuar con la otra */
-            alert('Restaurar la fila');
+            //alert('Restaurar la fila');
             restoreRow(oTable, nEditing);
             
             editRow(oTable, nRow);
             nEditing = nRow;
         }else if(nEditing == nRow && this.innerHTML == '<i class="fa fa-check"></i> Grabar'){
-        	
+        	var aData = oTable.fnGetData(nRow);
+        	//alert(aData[1]);
         	$.ajax({
          		url: 'ajaxEditarOrden',
          		type: 'post',
@@ -377,8 +378,8 @@ function initTable(){
          			;
          		}
          	});
-        	
-        	saveRow(oTable, nEditing);
+        	var idOrden = aData[1];
+        	saveRow(oTable, nEditing, idOrden);
             nEditing = null;
         }else{
         	/* No se esta editando ninguna fila, empezemos a editar */

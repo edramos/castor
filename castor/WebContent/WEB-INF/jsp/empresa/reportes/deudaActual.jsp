@@ -2,8 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Castor | Reporte Deuda Actual</title>
-<jsp:include page="../comps/headMandatory.jsp"/>
+<title>Castor | Deuda Actual</title>
+<jsp:include page="../../comps/headMandatory.jsp"/>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
@@ -14,12 +14,12 @@
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
-<jsp:include page="../comps/cabecera.jsp"/>
+<jsp:include page="../../comps/cabecera.jsp"/>
 <div class="clearfix"></div>
 
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
-<jsp:include page="../comps/menuCostado.jsp"/>
+<jsp:include page="../../comps/menuCostado.jsp"/>
 	
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
@@ -35,27 +35,7 @@
 				</div>
 			</div>
 			<div id="divPortletBody" class="portlet-body">
-				<!-- <table id="tblResultados" class="table table-striped table-hover">
-				<thead>
-				<tr>
-					<th width="12%">OT</th>
-					<th width="18%">Nombre</th>
-					<th width="10%">Provedor</th>
-					<th>Estado</th>
-					<th width="10%">Pagar</th>
-					<th width="10%">Pagado</th>
-					<th width="10%">Deuda Actual</th>
-					<th width="10%">% Pagado</th>
-				</tr>
-				</thead>
-				
-				<tbody id="viewReporteHandlerbars">
-				</tbody>
-				</table> -->	
-				
-				
-				
-				
+		
 				<table id="sample_3" class="table table-striped table-bordered table-condensed table-hover">
 				<thead>
 				<tr>
@@ -81,8 +61,8 @@
 </div>
 <!-- END CONTAINER -->
 
-<jsp:include page="../comps/footer.jsp"/>
-<jsp:include page="../comps/corePlugins.jsp"/>
+<jsp:include page="../../comps/footer.jsp"/>
+<jsp:include page="../../comps/corePlugins.jsp"/>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>

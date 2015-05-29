@@ -123,10 +123,10 @@
 									</select>
 								</div>
 								<div class="col-md-2 dynamic">
-									<input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/>
+									<input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv" data-toggle="tooltip" title="Monto"/>
 								</div>
 								<div class="col-md-2 dynamic">
-									<input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto"/>
+									<input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto" data-toggle="tooltip" title="Total Sin Detraccion"/>
 								</div>								
 							</div>
 						</div>
@@ -147,7 +147,7 @@
 									<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>	
 								</div>
 								<div class="col-md-2 dynamic">
-									<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion"/>	
+									<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion" data-toggle="tooltip" title="Detraccion"/>	
 								</div>
 							</div>
 						</div>
@@ -221,10 +221,15 @@ jQuery(document).ready(function() {
 	Layout.init(); // init current layout
 	Demo.init();
 	
+	$('#txtFechaOperacion').datepicker("setDate", new Date());
 	$('#txtFechaOperacion').datepicker({
 		format: 'dd/mm/yyyy',
+		"setDate": new Date(),
 		autoclose: true,
 		language: "es"
+	});
+	$('.date-picker').datepicker().on('changeDate', function (ev){
+		$(this).datepicker('hide');
 	});
 	
 	listarSelectorClientes('sltCliente');
@@ -236,7 +241,7 @@ jQuery(document).ready(function() {
 	});
 	
 	
-	
+	$('[data-toggle="tooltip"]').tooltip(); 
 	
 });
 </script>
@@ -245,6 +250,7 @@ function suggestFactura(tipo){
 	var facturas = new Bloodhound({
 		datumTokenizer: function (datum) {return Bloodhound.tokenizers.whitespace(datum.value);},
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		limit: 10,
 		remote: 'ajaxListarFacturaSuggest?q=%QUERY' + '-' + tipo	//Workaround mientras aprendo como enviar mas parametros aparte de la cadena de busqueda
 	});
 	
@@ -268,13 +274,21 @@ function suggestFactura(tipo){
 		$('#txtPagarFactura').val(datum['cobrarFactura']);
 		$('#txtDetraccion').val(datum['montoDetraccion']);
 		
+		if(datum['idProveedor'] != 0){
+			$('#sltProveedor').val(datum['idProveedor']);
+		}else{
+			$('#sltCliente').val(datum['idCliente']);
+		}
+		
 		mostrarOrden(datum['idFactura']);
 	});
 }
+
 function suggestFacturaDetraccion(operacion){
 	var facturas = new Bloodhound({
 		datumTokenizer: function (datum) {return Bloodhound.tokenizers.whitespace(datum.value);},
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		limit: 10,
 		remote: 'ajaxListarFacturaDetraccionSuggest?q=%QUERY' + '-' + operacion	//Workaround mientras aprendo como enviar mas parametros aparte de la cadena de busqueda
 	});
 	facturas.initialize();
@@ -322,7 +336,7 @@ function mostrarOrden(idFactura){
 $(function($){
 	var locations = {
 	    'Ingreso': ['Cobranza Venta/Servicio', 'Detraccion', 'Otra cobranza', 'Transferencia cuenta', 'Interes ganado'],
-		'Egreso': ['Pago Proveedor', 'Detraccion', 'Retiro', 'Compra', 'Pago Planilla/Beneficios', 'Servicio de Terceros', 'Impuesto', 'Transferencia cta.', 'Reembolso Caja Chica', 'Gasto Financiero'],
+		'Egreso': ['Pago Proveedor', 'Detraccion Proveedor', 'Retiro', 'Compra', 'Pago Planilla/Beneficios', 'Servicio de Terceros', 'Impuesto', 'Transferencia cta.', 'Reembolso Caja Chica', 'Gasto Financiero'],
 	}
 	
 	$('#sltTipoTransaccion').change(function(){
@@ -357,16 +371,16 @@ $(function($){
 			suggestFactura("cobrar");
 			break;
 		case 'Detraccion':
-			var value = $('#sltTipoTransaccion option:selected').text();
-			if(value == "Ingreso"){
+			//var value = $('#sltTipoTransaccion option:selected').text();
+			//if(value == "Ingreso"){
 				formDynamic('#templateDetraccion');
 				listarSelectorClientes('sltCliente');
 				suggestFacturaDetraccion('ingreso');
-			}else{
+			/*}else{
 				formDynamic('#templateDetraccionEgreso');
 				listarSelectorProveedores('sltProveedor');
 				suggestFacturaDetraccion('egreso');
-			}
+			}*/
 			break;
 		case 'Otra cobranza':
 			formDynamic('#templateOtraCobranza');
@@ -384,6 +398,11 @@ $(function($){
 			formDynamic('#templatePagoProveedor');
 			listarSelectorProveedores('sltProveedor');
 			suggestFactura("pagar");
+			break;
+		case 'Detraccion Proveedor':
+			formDynamic('#templateDetraccionEgreso');
+			listarSelectorProveedores('sltProveedor');
+			suggestFacturaDetraccion('egreso');
 			break;
 		case 'Retiro':
 			formDynamic('#templateCodigoOperacion');
@@ -441,15 +460,15 @@ function formDynamic(opcion){
 	
 	switch(opcion){
 	case "#templateCobranzaVentaServicio":
-		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/></div>'+
-		'<div class="col-md-2 dynamic"><input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto"/></div>');
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv" data-toggle="tooltip" title="Monto"/></div>'+
+		'<div class="col-md-2 dynamic"><input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto" data-toggle="tooltip" title="Total Sin Detraccion"/></div>');
 		break;
 	case "#templatePagoProveedor":
-		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv"/></div>'+
-		'<div class="col-md-2 dynamic"><input id="txtPagarFactura" class="form-control" placeholder="Pagar" name="monto"/></div>');
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv" data-toggle="tooltip" title="Monto"/></div>'+
+		'<div class="col-md-2 dynamic"><input id="txtPagarFactura" class="form-control" placeholder="Pagar" name="monto" data-toggle="tooltip" title="Total Sin Detraccion"/></div>');
 		break;
 	default:
-		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="monto"/></div>');
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="monto" data-toggle="tooltip" title="Monto"/></div>');
 		break;
 	}
 	
@@ -466,7 +485,7 @@ function formDynamic(opcion){
 	html = template();
 	$('#divSecondRow').html(html);
 	
-	
+	$('[data-toggle="tooltip"]').tooltip(); 
 }
 </script>
 <script>
@@ -849,7 +868,7 @@ function mostrarDetalle(idRegistro){
 	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>
 </div>
 <div class="col-md-2 dynamic">
-	<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion"/>	
+	<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion" data-toggle="tooltip" title="Detraccion"/>	
 </div>
 </script>
 <!-- INGRESOS -->
@@ -865,7 +884,7 @@ function mostrarDetalle(idRegistro){
 	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>	
 </div>
 <div class="col-md-2 dynamic">
-	<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion"/>	
+	<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion" data-toggle="tooltip" title="Detraccion"/>	
 </div>
 </script>
 <script id="templateOtraCobranza" type="text/x-handlebars-template">

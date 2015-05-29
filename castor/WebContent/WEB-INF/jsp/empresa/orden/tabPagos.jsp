@@ -139,7 +139,9 @@ function initFacturasPagar(facturasPagar){
 	<td>{{estadoTrabajo}} {{avance}}</td>
 	<td>{{#ifEst estado 'Cancelado'}}<span class="label label-success">{{estado}}</span>{{/ifEst}}
 	{{#ifEst estado 'Pendiente'}}<span class="label label-warning">{{estado}}</span>{{/ifEst}}
-	{{#ifEst estado 'Facturado'}}<span class="label label-primary">{{estado}}</span>{{/ifEst}}</td>
+	{{#ifEst estado 'Facturado'}}<span class="label label-default">{{estado}}</span>{{/ifEst}}
+	{{#ifEst estado 'Falta Detraccion'}}<span class="label label-primary">{{estado}}</span>{{/ifEst}}
+	{{#ifEst estado 'Solo Detraccion'}}<span class="label label-info">{{estado}}</span>{{/ifEst}}</td>
 </tr>
 </script>
 <script id="templateSubcontratos" type="text/x-handlebars-template">

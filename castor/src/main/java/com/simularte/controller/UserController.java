@@ -152,7 +152,7 @@ public class UserController {
 	}
 	@RequestMapping("toReporte")
 	public String toReporte(){
-		return "empresa/reporteGeneral";
+		return "empresa/reportes/deudaActual";
 	}
 	@RequestMapping("toMasterOT")
 	public String toMasterOT(){

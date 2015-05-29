@@ -95,7 +95,7 @@ public class OrdenController {
 	public List<OrdenBean> mostrarMasterOT(HttpServletRequest req){
 		return ordenserv.mostrarMasterOT(req);
 	}
-	
+	/*Deuda Actual*/
 	@RequestMapping(value = "mostrarReporteOT", method = RequestMethod.POST) @ResponseBody
 	public List<OrdenBean> mostrarReporteOT(HttpServletRequest req){
 		return ordenserv.mostrarReporteOT(req);
