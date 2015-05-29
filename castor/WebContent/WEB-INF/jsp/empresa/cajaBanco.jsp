@@ -123,10 +123,10 @@
 									</select>
 								</div>
 								<div class="col-md-2 dynamic">
-									<input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv" data-toggle="tooltip" title="Monto"/>
+									<input id="txtMonto" class="form-control dolar" placeholder="Monto" name="conIgv" data-toggle="tooltip" title="Monto"/>
 								</div>
 								<div class="col-md-2 dynamic">
-									<input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto" data-toggle="tooltip" title="Total Sin Detraccion"/>
+									<input id="txtCobrarFactura" class="form-control dolar" placeholder="Cobrar" name="monto" data-toggle="tooltip" title="Total Sin Detraccion"/>
 								</div>								
 							</div>
 						</div>
@@ -147,7 +147,7 @@
 									<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>	
 								</div>
 								<div class="col-md-2 dynamic">
-									<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion" data-toggle="tooltip" title="Detraccion"/>	
+									<input id="txtDetraccion" class="form-control dolar" placeholder="Detraccion" name="montoDetraccion" data-toggle="tooltip" title="Detraccion"/>	
 								</div>
 							</div>
 						</div>
@@ -206,7 +206,8 @@
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
-<script src="assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="assets/global/plugins/typeahead/typeahead.bundle.min.js"></script>
+<script type="text/javascript" src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -242,6 +243,21 @@ jQuery(document).ready(function() {
 	
 	
 	$('[data-toggle="tooltip"]').tooltip(); 
+	
+	$('.dolar').inputmask("decimal",{
+		prefix: '$ ',
+		digitsOptional: false,
+		alias: 'numeric',
+		placeholder: '0',
+		radixPoint: ".", 
+        groupSeparator: ",", 
+        digits: 2,
+        autoGroup: true,
+        autoUnmask: true,
+        onUnMask: function(value){
+        	return value.replace(/[^0-9\.]+/g,"");
+        }
+    });
 	
 });
 </script>
@@ -460,15 +476,15 @@ function formDynamic(opcion){
 	
 	switch(opcion){
 	case "#templateCobranzaVentaServicio":
-		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv" data-toggle="tooltip" title="Monto"/></div>'+
-		'<div class="col-md-2 dynamic"><input id="txtCobrarFactura" class="form-control" placeholder="Cobrar" name="monto" data-toggle="tooltip" title="Total Sin Detraccion"/></div>');
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control dolar" placeholder="Monto" name="conIgv" data-toggle="tooltip" title="Monto"/></div>'+
+		'<div class="col-md-2 dynamic"><input id="txtCobrarFactura" class="form-control dolar" placeholder="Cobrar" name="monto" data-toggle="tooltip" title="Total Sin Detraccion"/></div>');
 		break;
 	case "#templatePagoProveedor":
-		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="conIgv" data-toggle="tooltip" title="Monto"/></div>'+
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control dolar" placeholder="Monto" name="conIgv" data-toggle="tooltip" title="Monto"/></div>'+
 		'<div class="col-md-2 dynamic"><input id="txtPagarFactura" class="form-control" placeholder="Pagar" name="monto" data-toggle="tooltip" title="Total Sin Detraccion"/></div>');
 		break;
 	default:
-		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control" placeholder="Monto" name="monto" data-toggle="tooltip" title="Monto"/></div>');
+		$('#divFirstRow').append('<div class="col-md-2 dynamic"><input id="txtMonto" class="form-control dolar" placeholder="Monto" name="monto" data-toggle="tooltip" title="Monto"/></div>');
 		break;
 	}
 	
@@ -486,6 +502,21 @@ function formDynamic(opcion){
 	$('#divSecondRow').html(html);
 	
 	$('[data-toggle="tooltip"]').tooltip(); 
+	
+	$('.dolar').inputmask("decimal",{
+		prefix: '$ ',
+		digitsOptional: false,
+		alias: 'numeric',
+		placeholder: '0',
+		radixPoint: ".", 
+        groupSeparator: ",", 
+        digits: 2,
+        autoGroup: true,
+        autoUnmask: true,
+        onUnMask: function(value){
+        	return value.replace(/[^0-9\.]+/g,"");
+        }
+    });
 }
 </script>
 <script>
@@ -584,6 +615,8 @@ function crearDetalleLibro(){
 	if($('#sltTipoTransaccion option:selected').val() == "Ingreso"){
 		
 	} */
+	
+	//Estos 3 if parece que estan por las puras
 	if($('#txtCobrarFactura').val() != null){
 		$('#txtCobrarFactura').val(Number($('#txtCobrarFactura').val().replace(/[^0-9\.]+/g,"")));
 	}
@@ -593,7 +626,12 @@ function crearDetalleLibro(){
 	if($('#txtDetraccion').val() != null){
 		$('#txtDetraccion').val(Number($('#txtDetraccion').val().replace(/[^0-9\.]+/g,"")));
 	}
-	$('#txtMonto').val(Number($('#txtMonto').val().replace(/[^0-9\.]+/g,"")));
+	//alert($('#txtMonto').val());
+	//var monto = Number($('#txtMonto').val().replace(/[^0-9\.]+/g,""));
+	
+	//$('#txtMonto').val(monto);
+	//alert($('#txtMonto').val());
+	
 	
 	
 	$.ajax({
@@ -868,7 +906,7 @@ function mostrarDetalle(idRegistro){
 	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>
 </div>
 <div class="col-md-2 dynamic">
-	<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion" data-toggle="tooltip" title="Detraccion"/>	
+	<input id="txtDetraccion" class="form-control dolar" placeholder="Detraccion" name="montoDetraccion" data-toggle="tooltip" title="Detraccion"/>	
 </div>
 </script>
 <!-- INGRESOS -->
@@ -884,7 +922,7 @@ function mostrarDetalle(idRegistro){
 	<input id="hdnOrdenTrabajo" type="hidden" name="idOrden"/>	
 </div>
 <div class="col-md-2 dynamic">
-	<input id="txtDetraccion" class="form-control" placeholder="Detraccion" name="montoDetraccion" data-toggle="tooltip" title="Detraccion"/>	
+	<input id="txtDetraccion" class="form-control dolar" placeholder="Detraccion" name="montoDetraccion" data-toggle="tooltip" title="Detraccion"/>	
 </div>
 </script>
 <script id="templateOtraCobranza" type="text/x-handlebars-template">
