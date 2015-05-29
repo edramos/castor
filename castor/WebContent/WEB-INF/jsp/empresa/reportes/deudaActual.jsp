@@ -113,14 +113,31 @@ function initTable(){
 	var table = $('#sample_3');
 	
 	// Formatting function for row details 
-	function fnFormatDetails(oTable, nTr) {
+	function fnFormatDetails(oTable, nTr){
 	    var aData = oTable.fnGetData(nTr);
-	    var sOut = '<table>';
-	    sOut += '<tr><td>Platform(s):</td><td>' + aData[2] + '</td></tr>';
-	    sOut += '<tr><td>Engine version:</td><td>' + aData[3] + '</td></tr>';
-	    sOut += '<tr><td>CSS grade:</td><td>' + aData[4] + '</td></tr>';
-	    sOut += '<tr><td>Others:</td><td>Could provide a link here</td></tr>';
-	    sOut += '</table>';
+	    var html = '';
+	    var aIdO = aData[1].split("-");		//Por ahora porque el idOrden esta en un <a>
+	    var aTemp = aIdO[1].split('\"');
+	    
+	    alert(aTemp[0]);
+	    $.ajax({
+	 		url: 'ajaxListarCuentas-pagar-' + aTemp[0],
+	 		type: 'post',
+	 		dataType: 'json',
+	 		data: '',
+	 		success: function(cuentaspago){
+	 			$.each(cuentaspago, function(i, pago){
+	 				var source = $("#templatePagos").html();
+	 				var template = Handlebars.compile(source);
+	 				html += template(pago);		
+	 			});
+	 			$('#viewPagosHandleBars').html(html);	 	        
+	 		}
+	 	});
+	    
+	    var sOut = '<table class="table table-striped table-bordered table-condensed table-hover" style="margin-bottom:0px;">'+
+	    '<thead><tr><th>Proveedor</th><th>Vence</th><th>Monto</th><th>Tipo Pago</th><th>Condicion</th><th>Estado</th></tr></thead>'+
+	    '<tbody id="viewPagosHandleBars"></tbody></table>';
 	
 	    return sOut;
 	}
@@ -207,6 +224,16 @@ function initTable(){
 	<td style="text-align: right;">{{totalPagadoProveedor}}</td>
 	<td style="text-align: right;">{{totalDeudaProveedor}}</td>
 	<td>{{porcentajePagado}}%</td>
+</tr>
+</script>
+<script id="templatePagos" type="text/x-handlebars-template">
+<tr>
+	<td>{{nombreProveedor}}</td>
+	<td>{{fechaVencimiento}}</td>
+	<td>{{conIgv}}</td>
+	<td>{{tipoPago}}</td>
+	<td>{{estadoTrabajo}} {{avance}}</td>
+	<td>{{estado}}</td>
 </tr>
 </script>
 </body>
