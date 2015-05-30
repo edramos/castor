@@ -33,7 +33,7 @@
 							<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
 							<img alt="" class="img-circle" src="assets/admin/layout4/img/avatar9.jpg"/>
 						<% } else {%>
-							<span style="color:#EFA800;">CONTINETAL TOWERS SAC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<span style="color:#EFA800;">CONTINENTAL TOWERS SAC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 						    <span class="username username-hide-on-mobile" style="color:#EFA800;">Vinicio </span>
 							<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
 							<img alt="" class="img-circle" src="assets/admin/layout4/img/avatar7.jpg"/>

@@ -682,7 +682,7 @@ function crearDetalleLibro(){
  			borrarDatos();
  			initDatePicker();
  			llenarSelect("sltCliente", aClientes);
- 			location.reload();		//Solo para asegurar pero demora refrescar, luego de pruebas finales se podria quitar
+ 			//location.reload();		//Solo para asegurar pero demora refrescar, luego de pruebas finales se podria quitar
  		}
  	});	
 }

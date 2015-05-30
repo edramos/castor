@@ -536,15 +536,15 @@ public class OrdenServiceImpl implements OrdenService {
 		}catch(NoResultException e){
 			;
 		}
-		campos = "o.idOrden, o.codigo, o.nombre, cli.nombre as CN, o.oferta ";
-		from = "FROM Orden o ";
+		campos = "o.idorden, o.codigo, o.nombre, cli.nombre as CN, o.oferta ";
+		from = "FROM orden o ";
 		//join = "INNER JOIN o.ordenCliente cli ";
 		//join += "INNER JOIN o.ordenEmpresa empr ";
 		//condiciones = "WHERE empr.idEmpresa = :idEmpresa AND cli.idCliente = :idEmpresa";
 		
 		join = "INNER JOIN cliente cli ON cli.idcliente = o.idcliente ";
 		join += "INNER JOIN empresa empr ON empr.idempresa = o.idempresa ";
-		condiciones = "WHERE empr.idEmpresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") + "' OR o.idCliente = '"+ idClienteEmp +"'";
+		condiciones = "WHERE empr.idempresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") + "' OR o.idcliente = '"+ idClienteEmp +"'";
 
 		/*if(!ordenBean.getCodigo().equals("")){
 			condiciones += "AND o.codigo LIKE :codigo AND o.estado != 'disable' ";
