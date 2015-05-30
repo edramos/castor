@@ -120,11 +120,11 @@ function initOrdenGeneral(orden){
 	//Financiera
 	//$('#spnMoneda').text(orden.moneda);
 	$('#spnOferta').text($.getFormattedCurrency(orden.oferta));
-	$('#spnGastosGenerales').text($.getFormattedCurrency(orden.gastosGenerales));
-	$('#spnEficiencia').text(orden.eficiencia + "%");
-	$('#spnUtilBruta').text($.getFormattedCurrency(orden.utilidadBruta));
-	$('#spnDetraccion').text($.getFormattedCurrency(orden.detraccion));
+	if(tipoOrg == "empresa") $('#spnGastosGenerales').text($.getFormattedCurrency(orden.gastosGenerales));
+	if(tipoOrg == "empresa") $('#spnEficiencia').text(orden.eficiencia + "%");
+	if(tipoOrg == "empresa") $('#spnUtilBruta').text($.getFormattedCurrency(orden.utilidadBruta));
+	if(tipoOrg == "empresa") $('#spnDetraccion').text($.getFormattedCurrency(orden.detraccion));
 	//$('#spnGananciaProyectada').text($.getFormattedCurrency(orden.gananciaProyectada));
-	$('#spnGananciaDisponible').text($.getFormattedCurrency(orden.gananciaDisponible));
+	if(tipoOrg == "empresa") $('#spnGananciaDisponible').text($.getFormattedCurrency(orden.gananciaDisponible));
 }
 </script>

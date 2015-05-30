@@ -3,7 +3,6 @@ package com.simularte.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +36,24 @@ public class OrdenServiceImpl implements OrdenService {
 
 	@PersistenceContext 
 	EntityManager em;
+	
+	@Transactional
+	public String editarOrdenEstado(String accion, int idOrden){
+		String result = "";
+		
+		Orden ordenX = em.find(Orden.class, idOrden);
+		Orden ordenY = em.merge(ordenX);
+		
+		if(accion.equals("aceptar")){
+			ordenY.setEstado("Sin inicio");
+			result = "Sin inicio";
+		}else{
+			ordenY.setEstado("Rechazada");
+			result = "Rechazada";
+		}
+		
+		return result;
+	}
 	
 	@Transactional
 	public boolean editarOrden(OrdenBean ob, HttpServletRequest req){
@@ -291,7 +309,7 @@ public class OrdenServiceImpl implements OrdenService {
 						
 			orden.setCreadoPor((Integer)session.getAttribute("idUser"));
 			orden.setFechaCreacion(Dates.fechaCreacion());
-			orden.setEstado("Sin inicio");
+			orden.setEstado("Aceptacion Pendiente");
 			
 			em.persist(orden);
 			
@@ -509,16 +527,26 @@ public class OrdenServiceImpl implements OrdenService {
 		String from = "";
 		String join = "";
 		String condiciones = "";
+		int idClienteEmp = 0;
 		
 		HttpSession session = req.getSession();
-		
-		campos = "o.idOrden, o.codigo, o.nombre, cli.nombre, o.oferta ";
+		try{
+			Query p = em.createNativeQuery("SELECT c.idcliente FROM cliente c WHERE c.ruc = '"+ req.getSession().getAttribute("ruc") +"'");
+			idClienteEmp = (Integer)p.getSingleResult();
+		}catch(NoResultException e){
+			;
+		}
+		campos = "o.idOrden, o.codigo, o.nombre, cli.nombre as CN, o.oferta ";
 		from = "FROM Orden o ";
-		join = "INNER JOIN o.ordenCliente cli ";
-		join += "INNER JOIN o.ordenEmpresa empr ";
-		condiciones = "WHERE empr.idEmpresa = :idEmpresa ";
+		//join = "INNER JOIN o.ordenCliente cli ";
+		//join += "INNER JOIN o.ordenEmpresa empr ";
+		//condiciones = "WHERE empr.idEmpresa = :idEmpresa AND cli.idCliente = :idEmpresa";
+		
+		join = "INNER JOIN cliente cli ON cli.idcliente = o.idcliente ";
+		join += "INNER JOIN empresa empr ON empr.idempresa = o.idempresa ";
+		condiciones = "WHERE empr.idEmpresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") + "' OR o.idCliente = '"+ idClienteEmp +"'";
 
-		if(!ordenBean.getCodigo().equals("")){
+		/*if(!ordenBean.getCodigo().equals("")){
 			condiciones += "AND o.codigo LIKE :codigo AND o.estado != 'disable' ";
 		}
 		if(!ordenBean.getNombreCliente().equals("")){
@@ -535,11 +563,13 @@ public class OrdenServiceImpl implements OrdenService {
 		}
 		if(!ordenBean.getFechaCreacionMaxima().equals("")){
 			condiciones += "AND o.fechaCreacion < :fechaCreacionMaxima ";
-		}
+		}*/
 		
 		
+		
+		Query q = em.createNativeQuery("SELECT " + campos + from + join + condiciones);
 		System.out.println("QUERY: SELECT DISTINCT " + campos + from + join + condiciones + "--- BASIC" );
-		Query q = em.createQuery("SELECT DISTINCT " + campos + from + join + condiciones);
+		/*Query q = em.createQuery("SELECT DISTINCT " + campos + from + join + condiciones);
 
 		q.setParameter("idEmpresa", (Integer)session.getAttribute("idEmpresa"));
 		
@@ -574,7 +604,7 @@ public class OrdenServiceImpl implements OrdenService {
 			}catch(Exception e){
 				 
 			}
-		}
+		}*/
 		
 		List<Object[]> rows = q.getResultList();
 		System.out.println("SIZE: " + rows.size());
@@ -589,6 +619,7 @@ public class OrdenServiceImpl implements OrdenService {
 			
 			ordenBeans.add(ordenB);
 		}
+		
 		
 		return ordenBeans;
 	}
@@ -612,14 +643,18 @@ public class OrdenServiceImpl implements OrdenService {
 			case 4:
 				estado = "Aceptado";break;
 			}
+			
+			OrdenBean ordenBean = new OrdenBean();
+			
+			try{
 			q01 = em.createNativeQuery("SELECT COUNT(codigo)as contador, SUM(oferta) as sumOferta, moneda FROM orden WHERE estado = '" + estado + "'");
 			q02 = em.createNativeQuery("SELECT SUM(subcontrato.monto) as sumMonto FROM subcontrato INNER JOIN orden ON subcontrato.idorden  =  orden.idorden "
-					+ "WHERE orden.estado = '" + estado + "'");
+					+ "WHERE orden.estado = '" + estado + "' AND orden.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"'");
 			
 			Object[] obj = (Object[])q01.getSingleResult();			
 			BigDecimal rsMonto = (BigDecimal)q02.getSingleResult();
 			
-			OrdenBean ordenBean = new OrdenBean();
+			
 			
 			if(!obj[0].toString().equals("0")){
 				ordenBean.setContador(obj[0].toString());
@@ -641,8 +676,17 @@ public class OrdenServiceImpl implements OrdenService {
 				ordenBean.setUtilidad("$0.00");
 			}
 			
-			ordenBeans.add(ordenBean);
 			
+			}catch(NullPointerException | IllegalArgumentException e){
+				//Si la empresa es nueva o no tienes ordenes entonces no hacer nada
+				ordenBean.setContador("0");
+				ordenBean.setEstado(estado);
+				
+				ordenBean.setSumOferta("$0.00");
+				ordenBean.setSumMonto("$0.00");
+				ordenBean.setUtilidad("$0.00");;
+			}
+			ordenBeans.add(ordenBean);
 		}
 
 		return ordenBeans;

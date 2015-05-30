@@ -34,7 +34,7 @@
 <script>
 function initClienteCuentasCobrar(cuentascobrar){
 	var html = '';
-	Handlebars.registerHelper('ifCuentaCobrar', function(estado, v2, options){
+	Handlebars.registerHelper('ifEst', function(estado, v2, options){
 		  if(estado === v2){return options.fn(this);}return options.inverse(this);
 	});
 		
@@ -91,9 +91,11 @@ function initFacturasCobrar(facturasCobrar){
 	<td id="tdMonto_{{idCuenta}}" style="text-align:right;">{{conIgv}}</td>
 	<td>{{tipoPago}}</td>
 	<td>{{estadoTrabajo}} {{avance}}</td>
-	<td style="text-align:center;">{{#ifCuentaCobrar estado 'Cancelado'}}<span class="label label-success">{{estado}}</span>{{/ifCuentaCobrar}}
-	{{#ifCuentaCobrar estado 'Pendiente'}}<span class="label label-warning">{{estado}}</span>{{/ifCuentaCobrar}}
-	{{#ifCuentaCobrar estado 'Facturado'}}<span class="label label-primary">{{estado}}</span>{{/ifCuentaCobrar}}</td>
+	<td>{{#ifEst estado 'Cancelado'}}<span class="label label-success">{{estado}}</span>{{/ifEst}}
+	{{#ifEst estado 'Pendiente'}}<span class="label label-warning">{{estado}}</span>{{/ifEst}}
+	{{#ifEst estado 'Facturado'}}<span class="label label-default">{{estado}}</span>{{/ifEst}}
+	{{#ifEst estado 'Falta Detraccion'}}<span class="label label-primary">{{estado}}</span>{{/ifEst}}
+	{{#ifEst estado 'Solo Detraccion'}}<span class="label label-info">{{estado}}</span>{{/ifEst}}</td>
 	<td></td>
 </tr>
 </script>

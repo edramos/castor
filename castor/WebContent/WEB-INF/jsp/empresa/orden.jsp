@@ -31,6 +31,7 @@
 			<div class="portlet-title">
 				<div class="caption"><span id="spnCodigo"></span></div>
 				<div id="dynamicActions" class="actions">
+					
 					<label id="lblOrdenEstado" style="font-size: 16px;"></label>						
 					<input id="txtIdOrden" value="<c:out value="${idOrden}"/>"  type="hidden" class="form-control"/>
 				</div>
@@ -43,14 +44,22 @@
 							<a aria-expanded="true" href="#tab_1_1_1" data-toggle="tab">
 							<span class="caption-subject font-blue-madison bold uppercase">General</span></a>
 						</li>
-						<li class="">
-							<a aria-expanded="false" href="#tab_1_1_2" data-toggle="tab">
-							<span class="caption-subject font-blue-madison bold uppercase">Cobros</span></a>
-						</li>
-						<li class="">
-							<a aria-expanded="false" href="#tab_1_1_3" data-toggle="tab">
-							<span class="caption-subject font-blue-madison bold uppercase">Pagos</span></a>
-						</li>
+						<% if(session.getAttribute("tipo").equals("empresa")){ %>
+						    <li class="">
+								<a aria-expanded="false" href="#tab_1_1_2" data-toggle="tab">
+								<span class="caption-subject font-blue-madison bold uppercase">Cobros</span></a>
+							</li>
+							<li class="">
+								<a aria-expanded="false" href="#tab_1_1_3" data-toggle="tab">
+								<span class="caption-subject font-blue-madison bold uppercase">Pagos</span></a>
+							</li>
+						<%}else{%>
+						    <li class="">
+								<a aria-expanded="false" href="#tab_1_1_2" data-toggle="tab">
+								<span class="caption-subject font-blue-madison bold uppercase">Pagos</span></a>
+							</li>
+						<% } %>
+						
 						<li class="">
 							<a aria-expanded="false" href="#tab_1_1_4" data-toggle="tab">
 							<span class="caption-subject font-blue-madison bold uppercase">Archivos</span></a>
@@ -104,11 +113,33 @@
 <script src="assets/global/plugins/plupload/js/plupload.full.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
+var tipoOrg = '<%= session.getAttribute("tipo") %>';
+
 jQuery(document).ready(function() { 
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
-	$(".fancybox-button").fancybox(); 
+	$(".fancybox-button").fancybox();
+	
+	$(document).on('click','.eventBtn', function(e){
+		var ajaxUrl = "";
+		var idOrden = $('#txtIdOrden').val();
+		
+		if(this.id == "btnAceptar"){
+			ajaxUrl = "aceptar";
+		}else{
+			ajaxUrl = "rechazar";
+		}
+		
+		$.ajax({
+			url: 'ajaxEditarEstadoOrden-' + ajaxUrl + '-' + idOrden,
+			type: 'post',
+	 		success: function(resultado){ 
+	 			$('#lblOrdenEstado').text(resultado);
+	 			$('#dynamicActions .eventBtn').remove();
+	 		}
+		});
+	});
 });
 </script>
 <script>
@@ -194,6 +225,11 @@ function extraerInformacionOrden(idOrdenTemp){
  		success: function(orden){
  			$('#spnCodigo').text('ORDEN ' + orden.codigo);
  			$('#lblOrdenEstado').text(orden.estado);
+ 			
+ 			
+ 			if(orden.estado == "Aceptacion Pendiente" && tipoOrg == "cliente"){
+ 				$('#dynamicActions').append('<a id="btnAceptar" class="btn green eventBtn"><i class="fa fa-check"></i> Aceptar</a><a id="btnRechazar" class="btn red eventBtn"><i class="fa fa-times"></i> Rechazar</a>');
+ 			}
  			initOrdenGeneral(orden);
  		}
  	});	
@@ -240,6 +276,9 @@ function listarCuentasPagar(idOrdenTemp){
 </script>
 <script type="text/javascript">
 var idOrden = $('#txtIdOrden').val();
+
+
+if(tipoOrg == "empresa"){
 AmCharts.loadJSON = function(url){
 	if(window.XMLHttpRequest){
 		  	// IE7+, Firefox, Chrome, Opera, Safari
@@ -286,6 +325,9 @@ AmCharts.loadJSON = function(url){
 			"dataProvider": AmCharts.loadJSON('getChartOrden-' + idOrden)
 		}
 	);
+}else{
+	$('#divChartOrden').hide();
+}
 </script>
 </body>
 </html>

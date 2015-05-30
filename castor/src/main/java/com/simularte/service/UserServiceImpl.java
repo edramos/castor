@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService{
 				Empresa empresaSR = tqEmpresa.getSingleResult();
 				
 				session.setAttribute("tipo", empresaSR.getTipo());
-				
+				session.setAttribute("ruc", empresaSR.getRuc());
 				result = true;
 			}			
 		}catch(Exception e){

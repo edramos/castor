@@ -62,7 +62,7 @@ function initOrdenSubcontratos(subcontratos){
 	eficiencia = (sumMontoSubcontratos/oferta) * 100;
 	
 	//$('#spnSumMontoSubs').text($.getFormattedCurrency(sumMontoSubcontratos));
-	$('#spnSumMontoSubs').text(sumMontoSubcontratos);
+	if(tipoOrg == "empresa") $('#spnSumMontoSubs').text(sumMontoSubcontratos);
 	//$('#spnUtilBruta').text($.getFormattedCurrency(utilBruta));
 	$('#spnUtilNeta').text($.getFormattedCurrency(utilNeta));
 	//$('#spnEficiencia').text(eficiencia.toFixed(2) + '%');

@@ -78,6 +78,19 @@ public class OrdenController {
 				
 		return ordenserv.getOrdenesSuggest(codigo, req);
 	}
+	@RequestMapping(value = "ajaxEditarEstadoOrden-{accion}-{idOrden}", method = RequestMethod.POST) @ResponseBody
+	public String ajaxEditarEstadoOrden(@PathVariable("accion")String accion, @PathVariable("idOrden")int idOrden, HttpServletRequest req){
+		String estado = "Aceptacion Pendiente";
+		System.out.println("accion: " + accion + ", idOrden: " + idOrden);
+		if(ordenserv.editarOrdenEstado(accion, idOrden).equals("Sin inicio")){
+			estado = "Sin inicio";
+		}else{
+			estado = "Rechazada";
+		}
+		return estado;
+	}
+	
+	
 	//EDITAR
 	@RequestMapping(value = "ajaxEditarOrden", method = RequestMethod.POST) @ResponseBody
 	public List<OrdenBean> ajaxEditarOrden(@ModelAttribute("ordenBean") OrdenBean ob, HttpServletRequest req){

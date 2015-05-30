@@ -203,7 +203,7 @@ public class FacturaServiceImpl implements FacturaService{
 		q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.subtotal, f.cobrarfactura, f.montodetraccion, o.idcliente FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden "
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado = 'Emitido'");
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado != 'Cancelado' AND f.estado != 'Falta Detraccion'");
 		}else{
 			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.subtotal, f.cobrarfactura, f.montodetraccion, sc.idproveedor FROM factura f "
 					+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "

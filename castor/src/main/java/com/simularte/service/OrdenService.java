@@ -17,6 +17,7 @@ public interface OrdenService {
 	List<OrdenBean> getOrdenesSuggest(String codigo, HttpServletRequest req);
 	
 	boolean editarOrden(OrdenBean ob, HttpServletRequest req);
+	String editarOrdenEstado(String accion, int idOrden);	//Temporal
 	
 	//REPORTE
 	List<OrdenBean> mostrarReporteOT(HttpServletRequest req);

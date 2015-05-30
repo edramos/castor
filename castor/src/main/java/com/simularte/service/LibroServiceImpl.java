@@ -79,7 +79,6 @@ public class LibroServiceImpl implements LibroService{
 			Factura facturaY = null;
 			
 			switch(dlb.getTipoOperacion()){
-			
 			case "Pago Proveedor":
 				facturaX = em.find(Factura.class, dlb.getIdFactura());
 				facturaY = em.merge(facturaX);
@@ -94,6 +93,35 @@ public class LibroServiceImpl implements LibroService{
 				facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
 				break;
 			case "Detraccion Proveedor":
+				facturaX = em.find(Factura.class, dlb.getIdFactura());
+				facturaY = em.merge(facturaX);
+				if(facturaX.getEstado().equals("Falta Detraccion")){
+					facturaY.setEstado("Cancelado");
+					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Cancelado");
+				}else{
+					facturaY.setEstado("Solo Detraccion");
+					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Solo Detraccion");
+				}
+				facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
+				
+				facturaY.setEstadoDetraccion("Cancelado");
+				facturaY.setFechaCancelacionDetraccion(detalleLibro.getFechaOperacion());
+				break;
+			case "Cobranza Venta/Servicio":
+				//Lo mismo que Pago Proveedor
+				facturaX = em.find(Factura.class, dlb.getIdFactura());
+				facturaY = em.merge(facturaX);
+				if(facturaX.getEstado().equals("Solo Detraccion")){
+					facturaY.setEstado("Cancelado");
+					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Cancelado");
+				}else{
+					facturaY.setEstado("Falta Detraccion");	//Ha pagao el total - detraccion, con el checkbox Pagar Detraccion se cambiaria a Cancelado
+					
+					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Falta Detraccion");
+				}
+				facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
+				break;
+			case "Detraccion":
 				facturaX = em.find(Factura.class, dlb.getIdFactura());
 				facturaY = em.merge(facturaX);
 				if(facturaX.getEstado().equals("Falta Detraccion")){

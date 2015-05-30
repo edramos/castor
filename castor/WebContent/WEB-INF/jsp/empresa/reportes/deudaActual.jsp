@@ -29,7 +29,7 @@
 	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption">Ordenes de Trabajo</div>
+				<div class="caption">Deuda OT</div>
 				<div class="actions">							
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>
@@ -119,7 +119,7 @@ function initTable(){
 	    var aIdO = aData[1].split("-");		//Por ahora porque el idOrden esta en un <a>
 	    var aTemp = aIdO[1].split('\"');
 	    
-	    alert(aTemp[0]);
+	    //alert(aTemp[0]);
 	    $.ajax({
 	 		url: 'ajaxListarCuentas-pagar-' + aTemp[0],
 	 		type: 'post',
