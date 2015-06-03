@@ -56,36 +56,6 @@
 								</div>
 							</div>
 						</div>
-					
-					
-					
-						<!-- <div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtCodigo" class="form-control" placeholder="Codigo Orden" name="codigo"/>
-								</div>	
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtNombreCliente" class="form-control" placeholder="Nombre Cliente" name="nombreCliente"/>
-								</div>	
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtOfertaMinima" class="form-control" placeholder="Oferta Minima" name="ofertaMinima"/>
-								</div>	
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="col-md-12">
-							<a href="#" class="btn yellow" onclick="buscarOrden();">Buscar <i class="fa fa-search"></i></a>
-							<input id="hdnCampo" type="hidden" name="campo"/><input id="hdnBusqueda" type="hidden" name="busqueda"/>
-							</div>
-						</div> -->
 					</div>
 					
 					<div class="row">
@@ -117,41 +87,6 @@
 						</div>
 					</div>
 					
-					
-					<!-- <div class="row">
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-										<input id="txtFechaMinima" type="text" class="form-control form-filter input-sm" name="fechaCreacionMinima" placeholder="Fecha Inicio">
-										<span class="input-group-btn">
-											<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-										</span>
-									</div>	
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-										<input id="txtFechaMaxima" type="text" class="form-control form-filter input-sm" name="fechaCreacionMaxima" placeholder="Fecha Fin">
-										<span class="input-group-btn">
-											<button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-										</span>
-									</div>	
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<div class="col-md-12">
-									<input id="txtOfertaMaxima" class="form-control" placeholder="Oferta Maxima" name="ofertaMaxima"/>
-								</div>
-							</div>
-						</div>
-					</div> -->
-					
 				</div>
 			</form:form>
 			</div>
@@ -175,6 +110,7 @@
 					<th>Codigo</th>
 					<th>Nombre</th>
 					<th>Cliente</th>
+					<th>Estado</th>
 					<th>Oferta</th>
 				</tr>
 				</thead>
@@ -260,7 +196,7 @@ function removeTable(){
 }
 function createTable(){
 	$('#divPortletBody').append(
-			"<table class='table table-striped table-hover' id='sample_1'><thead><tr><th>Codigo</th><th>Nombre</th><th>Cliente</th><th>Oferta</th>"+
+			"<table class='table table-striped table-hover' id='sample_1'><thead><tr><th>Codigo</th><th>Nombre</th><th>Cliente</th><th>Estado</th><th>Oferta</th>"+
 			"</tr></thead><tbody id='viewOrdenesHandlerbars'></tbody></table>"	
 	);
 }
@@ -279,6 +215,7 @@ function datePickerInit(){
 	<td><a href="ordenPag-{{idOrden}}">{{codigo}}<a/></td>
 	<td>{{nombre}}</td>
 	<td>{{nombreCliente}}</td>
+	<td>{{estado}}</td>
 	<td>{{oferta}}</td>
 </tr>
 </script>

@@ -16,12 +16,13 @@ public interface OrdenService {
 	List<OrdenBean> buscarOrdenCaja(int idFactura, HttpServletRequest req);
 	List<OrdenBean> getOrdenesSuggest(String codigo, HttpServletRequest req);
 	
-	boolean editarOrden(OrdenBean ob, HttpServletRequest req);
+	boolean editarOrden(OrdenBean ob, String action, HttpServletRequest req);
 	String editarOrdenEstado(String accion, int idOrden);	//Temporal
 	
 	//REPORTE
 	List<OrdenBean> mostrarReporteOT(HttpServletRequest req);
 	List<OrdenBean> mostrarMasterOT(HttpServletRequest req);
+	List<OrdenBean> mostrarMasterDeudaOT(HttpServletRequest req);
 	
 	//CHART
 	List<CuentaBean> grafOrdenGeneral(int idOrden, HttpServletRequest req);

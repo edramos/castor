@@ -72,6 +72,10 @@ public class Orden {
 	private BigDecimal gananciaProyectada;
 	@Column(name = "gananciadisponible", nullable = true)
 	private BigDecimal gananciaDisponible;
+	//Este valor es solo cuando el cliente ingresa de manera directa cuanto le ha pagado al Proveedor, es temporal solo para el reporte Master Deuda
+	//Si CT nos contrata entonces revisar bien el analisis, diseño, pruebas e impacto
+	@Column(name = "pagado", nullable = true)
+	private BigDecimal pagado;
 	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
@@ -249,5 +253,11 @@ public class Orden {
 	}
 	public void setFechaInicio(Date fechaInicio) {
 		this.fechaInicio = fechaInicio;
+	}
+	public BigDecimal getPagado() {
+		return pagado;
+	}
+	public void setPagado(BigDecimal pagado) {
+		this.pagado = pagado;
 	}	
 }

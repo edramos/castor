@@ -63,6 +63,12 @@ public class OrdenBean {
 	private String totalPagado;
 	private String totalDeuda;
 	private String totalPorcentajePagado;
+	private int idProveedor;
+	private int idCuenta;
+	private BigDecimal deudaActual;
+	private BigDecimal deudaComprometida;
+	private BigDecimal deudaCorrespondiente;
+	private BigDecimal pagado;
 	
 	
 	
@@ -354,5 +360,41 @@ public class OrdenBean {
 	public void setTotalPagadoDetraccionProveedor(
 			String totalPagadoDetraccionProveedor) {
 		this.totalPagadoDetraccionProveedor = totalPagadoDetraccionProveedor;
+	}
+	public int getIdProveedor() {
+		return idProveedor;
+	}
+	public void setIdProveedor(int idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+	public int getIdCuenta() {
+		return idCuenta;
+	}
+	public void setIdCuenta(int idCuenta) {
+		this.idCuenta = idCuenta;
+	}
+	public BigDecimal getDeudaActual() {
+		return deudaActual;
+	}
+	public void setDeudaActual(BigDecimal deudaActual) {
+		this.deudaActual = deudaActual;
+	}
+	public BigDecimal getDeudaComprometida() {
+		return deudaComprometida;
+	}
+	public void setDeudaComprometida(BigDecimal deudaComprometida) {
+		this.deudaComprometida = deudaComprometida;
+	}
+	public BigDecimal getDeudaCorrespondiente() {
+		return deudaCorrespondiente;
+	}
+	public void setDeudaCorrespondiente(BigDecimal deudaCorrespondiente) {
+		this.deudaCorrespondiente = deudaCorrespondiente;
+	}
+	public BigDecimal getPagado() {
+		return pagado;
+	}
+	public void setPagado(BigDecimal pagado) {
+		this.pagado = pagado;
 	}
 }

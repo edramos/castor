@@ -114,6 +114,7 @@
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 var tipoOrg = '<%= session.getAttribute("tipo") %>';
+var rol = '<%= session.getAttribute("rol") %>';
 
 jQuery(document).ready(function() { 
 	Metronic.init(); // init metronic core components
@@ -227,7 +228,7 @@ function extraerInformacionOrden(idOrdenTemp){
  			$('#lblOrdenEstado').text(orden.estado);
  			
  			
- 			if(orden.estado == "Aceptacion Pendiente" && tipoOrg == "cliente"){
+ 			if(orden.estado == "Aceptacion Pendiente" && tipoOrg == "cliente" && rol == "Administrador"){
  				$('#dynamicActions').append('<a id="btnAceptar" class="btn green eventBtn"><i class="fa fa-check"></i> Aceptar</a><a id="btnRechazar" class="btn red eventBtn"><i class="fa fa-times"></i> Rechazar</a>');
  			}
  			initOrdenGeneral(orden);

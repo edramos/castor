@@ -127,6 +127,10 @@ public class UserServiceImpl implements UserService{
 				Perfil profileSR = tqPerfil.getSingleResult();
 				session.setAttribute("rol", profileSR.getRol());
 				
+				String nombreUsuario = (profileSR.getPrimerNombre() != null)? profileSR.getPrimerNombre() : "Usuario";
+				
+				session.setAttribute("nombreUsuario", nombreUsuario);
+				
 				TypedQuery<Empresa> tqEmpresa = em.createQuery("SELECT e FROM Empresa e WHERE e.idEmpresa =:idempresa", Empresa.class);
 				tqEmpresa.setParameter("idempresa", usuarioSR.getUsuarioEmpresa().getIdEmpresa());
 				
@@ -134,6 +138,8 @@ public class UserServiceImpl implements UserService{
 				
 				session.setAttribute("tipo", empresaSR.getTipo());
 				session.setAttribute("ruc", empresaSR.getRuc());
+				session.setAttribute("nombreEmpresa", empresaSR.getNombre());
+				
 				result = true;
 			}			
 		}catch(Exception e){

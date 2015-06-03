@@ -92,15 +92,15 @@ public class OrdenController {
 	
 	
 	//EDITAR
-	@RequestMapping(value = "ajaxEditarOrden", method = RequestMethod.POST) @ResponseBody
-	public List<OrdenBean> ajaxEditarOrden(@ModelAttribute("ordenBean") OrdenBean ob, HttpServletRequest req){
-			
-		if(ordenserv.editarOrden(ob, req)){
+	@RequestMapping(value = "ajaxEditarOrden-{action}", method = RequestMethod.POST) @ResponseBody
+	public List<OrdenBean> ajaxEditarOrden(@ModelAttribute("ordenBean") OrdenBean ob,@PathVariable("action")String action, HttpServletRequest req){
+		System.out.println("action: " + action + ", IdOrden: " + ob.getIdOrden() + ", pago: " + ob.getPagado() + ", estado: " + ob.getEstado());
+		if(ordenserv.editarOrden(ob, action, req)){
 			return ordenserv.mostrarMasterOT(req); 
 		}else{
 			return null;
 		}
-		
+		//return null;
 	} 
 	
 	//REPORTES 
@@ -113,7 +113,11 @@ public class OrdenController {
 	public List<OrdenBean> mostrarReporteOT(HttpServletRequest req){
 		return ordenserv.mostrarReporteOT(req);
 	}
-	
+	/*MASTER DEUDA OT*/
+	@RequestMapping(value = "reporteMasterDeudaOT", method = RequestMethod.POST) @ResponseBody
+	public List<OrdenBean> reporteMasterDeudaOT(HttpServletRequest req){
+		return ordenserv.mostrarMasterDeudaOT(req);
+	}
 	
 	
 	//CHART GENERAL

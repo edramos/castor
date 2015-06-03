@@ -26,20 +26,12 @@
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 					<li class="dropdown dropdown-user dropdown-dark">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-						
-						<% if(session.getAttribute("tipo").equals("empresa")) { %>
-							<span>CONSTRUCTORA SAC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-						    <span class="username username-hide-on-mobile" >Eduardo </span>
+							<span <% if(session.getAttribute("tipo").equals("cliente")) { %>style="color:#EFA800;"<% } %>>
+								<%=session.getAttribute("nombreEmpresa")%>&nbsp;&nbsp;(<%=session.getAttribute("rol")%>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+						    <span class="username username-hide-on-mobile" ><%=session.getAttribute("nombreUsuario")%> </span>
 							<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-							<img alt="" class="img-circle" src="assets/admin/layout4/img/avatar9.jpg"/>
-						<% } else {%>
-							<span style="color:#EFA800;">CONTINENTAL TOWERS SAC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-						    <span class="username username-hide-on-mobile" style="color:#EFA800;">Vinicio </span>
-							<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-							<img alt="" class="img-circle" src="assets/admin/layout4/img/avatar7.jpg"/>
-						<% } %>
-						
-						
+							<img alt="" class="img-circle" src="assets/admin/layout4/img/avatar.png"/>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-default">
 							<li><a href="toMyCompany"><i class="icon-user"></i> Mi Compañia </a></li>

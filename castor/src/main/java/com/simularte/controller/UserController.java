@@ -158,6 +158,8 @@ public class UserController {
 	public List<CuentaBean> getChartDashboard(HttpServletRequest req){
 		return us.getCuentas(req);
 	}
+	
+	//REPORTES
 	@RequestMapping("toReporte")
 	public String toReporte(){
 		return "empresa/reportes/deudaActual";
@@ -165,5 +167,9 @@ public class UserController {
 	@RequestMapping("toMasterOT")
 	public String toMasterOT(){
 		return "empresa/reportes/masterOrden";
+	}
+	@RequestMapping("toMasterDeuda")
+	public String toMasterDeuda(){
+		return "empresa/reportes/masterDeuda";
 	}
 }

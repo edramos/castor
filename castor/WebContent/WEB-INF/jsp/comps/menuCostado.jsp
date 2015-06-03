@@ -21,7 +21,9 @@
 				<span class="arrow "></span>
 				</a>
 				<ul class="sub-menu">
-					<% if(session.getAttribute("tipo").equals("empresa")){ %><li><a href="toCrearOrden"><span class="badge badge-warning">new</span>Crear Orden</a></li><% }%>
+					<% if(session.getAttribute("rol").equals("Administrador") || session.getAttribute("rol").equals("Coordinador")){ %>
+					<li><a href="toCrearOrden"><span class="badge badge-warning">new</span>Crear Orden</a></li>
+					<% }%>
 					<li><a href="toBuscarOrden">Buscar Orden</a></li>
 				</ul>
 			</li>
@@ -81,7 +83,14 @@
 					<li><a href="toReporte">Deuda</a></li>
 				</ul>
 			</li>
-			<% }%>
+			<%}else{%>
+			<li>
+				<a href="javascript:;"><i class="icon-paper-plane"></i><span class="title">Reportes</span><span class="arrow "></span></a>
+				<ul class="sub-menu">
+					<li><a href="toMasterDeuda">Master Deuda</a></li>
+				</ul>
+			</li>
+			<%} %>
 			
 			<li>
 				<a href="javascript:;"><i class="icon-settings"></i>

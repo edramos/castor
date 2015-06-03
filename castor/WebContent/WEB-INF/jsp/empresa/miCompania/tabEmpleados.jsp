@@ -215,6 +215,7 @@ function listarEmpleados(){
 	
 	<div class="portlet-body">
 		<div class="table-responsive">
+			
 			<table class="table table-striped table-bordered table-hover">
 			<thead>
 			<tr class="heading" role="row">
@@ -228,56 +229,9 @@ function listarEmpleados(){
 			</tr>
 			</thead>
 			<tbody id="viewEmpleadosHandlerbars">
-			<!-- <tr>
-				<td>Eduardo H. Ramos Barrientos</td>
-				<td>contacto@simularte.com</td>
-				<td>949-546-515</td>
-				<td>261-1605</td>
-				<td>Administrador</td>
-				<td><span class="label label-sm label-success">Enabled </span></td>
-				<td>
-					<a href="#" class="btn bg-green-meadow btn-sm"><i class="fa fa-pencil"></i></a>
-					<a href="#" class="btn red-sunglo btn-sm"><i class="fa fa-trash"></i></a>
-				</td>				
-			</tr>
-			<tr>
-				<td>Eduardo H. Ramos Barrientos</td>
-				<td>contacto@simularte.com</td>
-				<td>949-546-515</td>
-				<td>261-1605</td>
-				<td>Cobranza</td>
-				<td><span class="label label-sm label-info">Pendiente </span></td>
-				<td>
-					<a href="#" class="btn bg-green-meadow btn-sm"><i class="fa fa-pencil"></i></a>
-					<a href="#" class="btn red-sunglo btn-sm"><i class="fa fa-trash"></i></a>
-				</td>				
-			</tr>
-			<tr>
-				<td>Eduardo H. Ramos Barrientos</td>
-				<td>contacto@simularte.com</td>
-				<td>949-546-515</td>
-				<td>261-1605</td>
-				<td>Proyecto</td>
-				<td><span class="label label-sm label-warning">Suspendido </span></td>
-				<td>
-					<a href="#" class="btn bg-green-meadow btn-sm"><i class="fa fa-pencil"></i></a>
-					<a href="#" class="btn red-sunglo btn-sm"><i class="fa fa-trash"></i></a>
-				</td>				
-			</tr>
-			<tr>
-				<td>Eduardo H. Ramos Barrientos</td>
-				<td>contacto@simularte.com</td>
-				<td>949-546-515</td>
-				<td>261-1605</td>
-				<td>Pagos</td>
-				<td><span class="label label-sm label-danger">Disabled </span></td>	
-				<td>
-					<a href="#" class="btn bg-green-meadow btn-sm"><i class="fa fa-pencil"></i></a>
-					<a href="#" class="btn red-sunglo btn-sm"><i class="fa fa-trash"></i></a>
-				</td>			
-			</tr> -->
 			</tbody>
 			</table>
+			
 		</div>
 	</div>
 </div>
@@ -346,9 +300,9 @@ function listarEmpleados(){
 					<div class="col-md-8">
 						<select id="sltRolEmp" class="form-control" name="rol">
 							<option value="Administrador">Administrador</option>
-							<option value="R1">R1</option>
-							<option value="R2">R2</option>
-							<option value="R3">R3</option>
+							<option value="Coordinador">Coordinador</option>
+							<option value="Supervisor">Supervisor</option>
+							<option value="Contable">Contable</option>
 						</select>
 					</div>
 				</div>
