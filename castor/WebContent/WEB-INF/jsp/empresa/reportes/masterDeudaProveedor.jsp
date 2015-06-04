@@ -40,12 +40,12 @@
 			<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover">
 			<thead>
 			<tr>
-				<th>idO</th><th>idC</th><th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Monto</th><th>Pagado</th>
-				<th>Deuda Actual</th><th>Deuda Comprom.</th><th>Deuda Corresp.</th><th></th><th></th>
+				<th>idO</th><th>idC</th><th>Nombre</th><th>Cliente</th><th>Estado</th><th>Monto</th><th>Pagado</th>
+				<th>Deuda Actual</th><th>Deuda Comprom.</th><th>Deuda Corresp.</th>
 			</tr>
 			</thead>
 			
-			<tbody id="viewMasterDeudaOTHandlerbars">
+			<tbody id="viewMasterDeudaProveedorOTHandlerbars">
 			</tbody>
 			</table>
 			
@@ -85,7 +85,7 @@ jQuery(document).ready(function() {
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	
-	buscarOrden("cliente");
+	buscarOrden("empresa");
 });
 </script>
 <script id="templateMasterDeudaOT" type="text/x-handlebars-template">
@@ -93,15 +93,13 @@ jQuery(document).ready(function() {
 	<td>{{idOrden}}"></td>
 	<td>{{idCuenta}}</td>
 	<td><a href="ordenPag-{{idOrden}}" target="_blank">{{nombre}}<a/></td>
-	<td>{{nombreProveedor}}</td>
+	<td>{{nombreCliente}}</td>
 	<td>{{estado}}</td>
 	<td>{{oferta}}</td>
 	<td>{{pagado}}</td>
 	<td>{{deudaActual}}</td>
 	<td>{{deudaComprometida}}</td>
 	<td>{{deudaCorrespondiente}}</td>
-	<td><a class="btn green-meadow btn-xs edit" href="javascript:;"><i class="fa fa-edit"></i> Editar</a></td>
-	<td></td>
 </tr>
 </script>
 <script>
@@ -119,8 +117,7 @@ function buscarOrden(tipo){
  				var template = Handlebars.compile(source);
  				html += template(orden);
 			});
-			removeAddTable();
-			$("#viewMasterDeudaOTHandlerbars").html(html);
+			$("#viewMasterDeudaProveedorOTHandlerbars").html(html);
 			initTableMasterDeudaOT();
 		}
 	});	
@@ -128,57 +125,6 @@ function buscarOrden(tipo){
 </script>
 <script>
 function initTableMasterDeudaOT(){
-	function restoreRow(oTable, nRow){
-		var aData = oTable.fnGetData(nRow);
-        var jqTds = $('>td', nRow);
-
-        for(var i = 0, iLen = jqTds.length; i < iLen; i++) {
-            oTable.fnUpdate(aData[i], nRow, i, false);
-        }
-        oTable.fnDraw();
-	}
-	function editRow(oTable, nRow){
-		var aData = oTable.fnGetData(nRow);
-		var jqTds = $('>td', nRow);
-		
-		switch(rol){
-		case "Supervisor":
-			jqTds[2].innerHTML = '<select id="sltEstadoObra" name="estado"></select>';
-			break;
-		case "Contable":
-			jqTds[4].innerHTML = '<input id="txtPago" type="text" class="form-control input-sm" name="pagado" value="' + aData[6] + '">';
-			break;
-		}
-		
-		
-		jqTds[8].innerHTML = '<a class="btn green-meadow btn-xs edit" href=""><i class="fa fa-check"></i> Grabar</a>';
-        jqTds[9].innerHTML = '<a class="btn red btn-xs cancel" href=""><i class="fa fa-close"></i> Cancelar</a><input type="hidden" name="idOrden" value="'+ aData[0] +'">';
-		
-		for(var i = 0; i < aEstados.length; i++){
-       		$('<option/>').val(aEstados[i]).html(aEstados[i]).appendTo('#sltEstadoObra');
-        }
-        $('#sltEstadoObra').val(aData[4]);
-	}
-	function saveRow(oTable, nRow, idOrden){
-		var jqInputs = $('input', nRow);
-		var jqSelects = $('select', nRow);
-		//Aqui la columna se busca de toda la tabla, incluido las columnas hidden
-		switch(rol){
-		case "Supervisor":
-			oTable.fnUpdate(jqSelects[0].value, nRow, 4, false);
-			break;
-		case "Contable":
-			oTable.fnUpdate(jqInputs[0].value, nRow, 6, false);
-			break;
-		}
-		
-		oTable.fnDraw();
-	}
-	function cancelEditRow(oTable, nRow){
-		//Parece que esta funcion no se usa
-		alert("Simularte");
-	}
-	
 	var table = $('#tblMasterDeudaOT');
 	var oTable = table.dataTable({
         "lengthMenu": [
@@ -209,64 +155,6 @@ function initTableMasterDeudaOT(){
         showSearchInput: false //hide search box with special css class
     }); // initialize select2 dropdown
     
-    
-	var nEditing = null;
-    var nNew = false;
-    
-    table.on('click', '.cancel', function (e){
-    	e.preventDefault();
-    	
-    	if(nNew){
-            oTable.fnDeleteRow(nEditing);
-            nEditing = null;
-            nNew = false;
-        }else{
-            restoreRow(oTable, nEditing);
-            nEditing = null;
-        }
-    });
-	
-    table.on('click', '.edit', function (e){
-    	e.preventDefault();
-    	var nRow = $(this).parents('tr')[0];
-    	
-    	if(nEditing !== null && nEditing != nRow){
-            /* Estan editando - pero no esta fila - restaura esta fila antes de continuar con la otra */
-            restoreRow(oTable, nEditing);
-            
-            editRow(oTable, nRow);
-            nEditing = nRow;
-        }else if(nEditing == nRow && this.innerHTML == '<i class="fa fa-check"></i> Grabar'){
-        	var aData = oTable.fnGetData(nRow);
-        	
-        	$.ajax({
-         		url: 'ajaxEditarOrden-masDeu',
-         		type: 'post',
-         		dataType: 'json',
-         		data: $('#frmEditarFila').serialize(),
-         		success: function(resultado){
-         			buscarOrden("cliente");
-         		}
-         	});
-        	var idOrden = aData[1];
-        	saveRow(oTable, nEditing, idOrden);
-            nEditing = null;
-        }else{
-        	/* No se esta editando ninguna fila, empezemos a editar */
-            //alert("nRow: " + nRow.rowIndex);
-        	editRow(oTable, nRow);
-            nEditing = nRow;
-        }
-    });
-}
-</script>
-<script>
-function removeAddTable(){
-	$('#tblMasterDeudaOT').remove();
-	$('#tblMasterDeudaOT_wrapper').remove();
-	
-	$('#frmEditarFila').append('<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr><th>idO</th><th>idC</th>'+
-		'<th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Monto</th><th>Pagado</th><th>Deuda Actual</th><th>Deuda Comprom.</th><th>Deuda Corresp.</th><th></th><th></th></tr></thead><tbody id="viewMasterDeudaOTHandlerbars"></tbody></table>');
 }
 </script>
 </body>

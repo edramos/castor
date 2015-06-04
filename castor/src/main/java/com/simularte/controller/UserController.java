@@ -172,4 +172,8 @@ public class UserController {
 	public String toMasterDeuda(){
 		return "empresa/reportes/masterDeuda";
 	}
+	@RequestMapping("toMasterDeudaProveedor")
+	public String toMasterDeudaProveedor(){
+		return "empresa/reportes/masterDeudaProveedor";
+	}
 }

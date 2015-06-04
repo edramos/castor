@@ -1,6 +1,6 @@
 <div class="portlet-body">	
 	<!-- GRAPH -->
-	<div id="divChartOrden" class="chart" style="height: 250px;"></div>
+	<div id="divChartOrden" style="display: none;" class="chart" style="height: 250px;"></div>
 	<!-- GENERAL -->
 	<div class="detailPane">
 		<div class="detailHeader"><div class="detailHeaderLeft"><span class="h2v1">General</span></div></div>
@@ -53,7 +53,7 @@
 	</div>
 
 	<!-- INFORMACION FINANCIERA -->
-	<div class="detailPane">
+	<!-- <div class="detailPane">
 		<div class="detailHeader"><div class="detailHeaderLeft"><span class="h2v1">Informacion Financiera</span></div></div>
 		
 		<div class="summaryBody sectionBody">
@@ -73,9 +73,9 @@
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Detraccion</span><span id="spnDetraccion" class="value"></span>
 				</div>
-				<!-- <div class="summaryBodyItem">
+				<div class="summaryBodyItem">
 					<span class="spanLabel">Ganancia Proy.</span><span id="spnGananciaProyectada" class="value"></span>
-				</div> -->
+				</div>
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Ganancia Disp.</span><span id="spnGananciaDisponible" class="value"></span>
 				</div>
@@ -97,7 +97,7 @@
 			</div>
 		
 		</div>
-	</div>
+	</div> -->
 </div>
 <script>
 function initOrdenGeneral(orden){
@@ -120,11 +120,11 @@ function initOrdenGeneral(orden){
 	//Financiera
 	//$('#spnMoneda').text(orden.moneda);
 	$('#spnOferta').text($.getFormattedCurrency(orden.oferta));
-	if(tipoOrg == "empresa") $('#spnGastosGenerales').text($.getFormattedCurrency(orden.gastosGenerales));
-	if(tipoOrg == "empresa") $('#spnEficiencia').text(orden.eficiencia + "%");
-	if(tipoOrg == "empresa") $('#spnUtilBruta').text($.getFormattedCurrency(orden.utilidadBruta));
-	if(tipoOrg == "empresa") $('#spnDetraccion').text($.getFormattedCurrency(orden.detraccion));
+	if(tipoOrg == "cliente") $('#spnGastosGenerales').text($.getFormattedCurrency(orden.gastosGenerales));
+	if(tipoOrg == "cliente") $('#spnEficiencia').text(orden.eficiencia + "%");
+	if(tipoOrg == "cliente") $('#spnUtilBruta').text($.getFormattedCurrency(orden.utilidadBruta));
+	if(tipoOrg == "cliente") $('#spnDetraccion').text($.getFormattedCurrency(orden.detraccion));
 	//$('#spnGananciaProyectada').text($.getFormattedCurrency(orden.gananciaProyectada));
-	if(tipoOrg == "empresa") $('#spnGananciaDisponible').text($.getFormattedCurrency(orden.gananciaDisponible));
+	if(tipoOrg == "cliente") $('#spnGananciaDisponible').text($.getFormattedCurrency(orden.gananciaDisponible));
 }
 </script>

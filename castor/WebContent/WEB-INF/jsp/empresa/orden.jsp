@@ -44,19 +44,19 @@
 							<a aria-expanded="true" href="#tab_1_1_1" data-toggle="tab">
 							<span class="caption-subject font-blue-madison bold uppercase">General</span></a>
 						</li>
-						<% if(session.getAttribute("tipo").equals("empresa")){ %>
-						    <li class="">
+						<% if(session.getAttribute("tipo").equals("cliente")){ %>
+						    <!-- <li class="">
 								<a aria-expanded="false" href="#tab_1_1_2" data-toggle="tab">
 								<span class="caption-subject font-blue-madison bold uppercase">Cobros</span></a>
-							</li>
+							</li> -->
 							<li class="">
 								<a aria-expanded="false" href="#tab_1_1_3" data-toggle="tab">
 								<span class="caption-subject font-blue-madison bold uppercase">Pagos</span></a>
 							</li>
 						<%}else{%>
 						    <li class="">
-								<a aria-expanded="false" href="#tab_1_1_2" data-toggle="tab">
-								<span class="caption-subject font-blue-madison bold uppercase">Pagos</span></a>
+								<a aria-expanded="false" href="#tab_1_1_3" data-toggle="tab">
+								<span class="caption-subject font-blue-madison bold uppercase">Cobros</span></a>
 							</li>
 						<% } %>
 						
@@ -227,7 +227,6 @@ function extraerInformacionOrden(idOrdenTemp){
  			$('#spnCodigo').text('ORDEN ' + orden.codigo);
  			$('#lblOrdenEstado').text(orden.estado);
  			
- 			
  			if(orden.estado == "Aceptacion Pendiente" && tipoOrg == "cliente" && rol == "Administrador"){
  				$('#dynamicActions').append('<a id="btnAceptar" class="btn green eventBtn"><i class="fa fa-check"></i> Aceptar</a><a id="btnRechazar" class="btn red eventBtn"><i class="fa fa-times"></i> Rechazar</a>');
  			}
@@ -279,7 +278,7 @@ function listarCuentasPagar(idOrdenTemp){
 var idOrden = $('#txtIdOrden').val();
 
 
-if(tipoOrg == "empresa"){
+/* if(tipoOrg == "empresa"){
 AmCharts.loadJSON = function(url){
 	if(window.XMLHttpRequest){
 		  	// IE7+, Firefox, Chrome, Opera, Safari
@@ -328,7 +327,7 @@ AmCharts.loadJSON = function(url){
 	);
 }else{
 	$('#divChartOrden').hide();
-}
+} */
 </script>
 </body>
 </html>

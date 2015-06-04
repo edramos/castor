@@ -34,10 +34,12 @@
 							<img alt="" class="img-circle" src="assets/admin/layout4/img/avatar.png"/>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-default">
+							<% if(session.getAttribute("rol").equals("Administrador")) {%>
 							<li><a href="toMyCompany"><i class="icon-user"></i> Mi Compañia </a></li>
-							<li><a href="toMyProfile"><i class="icon-calendar"></i> Mi Perfil </a></li>
+							<% } %>
+							<!-- <li><a href="toMyProfile"><i class="icon-calendar"></i> Mi Perfil </a></li>
 							<li><a href="inbox.html"><i class="icon-envelope-open"></i> Mi Inbox <span class="badge badge-danger">3 </span></a></li>
-							<li><a href="page_todo.html"><i class="icon-rocket"></i> Mis Tareas <span class="badge badge-success">7 </span></a></li>
+							<li><a href="page_todo.html"><i class="icon-rocket"></i> Mis Tareas <span class="badge badge-success">7 </span></a></li> -->
 							<li class="divider"></li>
 							<li><a href="toLogout"><i class="icon-key"></i> Log Out </a></li>
 						</ul>

@@ -38,10 +38,22 @@ public class OrdenServiceImpl implements OrdenService {
 	EntityManager em;
 	
 	@SuppressWarnings("unchecked")
-	public List<OrdenBean> mostrarMasterDeudaOT(HttpServletRequest req){
+	public List<OrdenBean> mostrarMasterDeudaOT(String tipo, HttpServletRequest req){
 		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
-		
-		Query q01 = em.createNativeQuery("SELECT o.idorden, o.nombre, o.oferta, o.estado, o.pagado FROM orden o WHERE o.idcliente = 5");
+		//Funciona para 1 solo Proveedor, mejorarlo a n Proveedores
+		Query q01 = null;
+		if(tipo.equals("cliente")){
+			q01 = em.createNativeQuery("SELECT o.idorden, o.nombre, o.oferta, o.estado, o.pagado, sc.monto, p.nombre as np FROM orden o "
+					+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
+					+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+					+ "WHERE o.idempresa = '"+ (Integer)req.getSession().getAttribute("idEmpresa") +"'");
+		}else{
+			q01 = em.createNativeQuery("SELECT o.idorden, o.nombre, o.oferta, o.estado, o.pagado, sc.monto, p.nombre as np, e.nombre as ne FROM orden o "
+					+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
+					+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+					+ "INNER JOIN empresa e ON e.idempresa = o.idempresa "
+					+ "WHERE p.ruc = '"+ req.getSession().getAttribute("ruc") +"'");
+		}
 		
 		try{
 			List<Object[]> rows01 = q01.getResultList();
@@ -53,43 +65,53 @@ public class OrdenServiceImpl implements OrdenService {
 				
 				ob.setIdOrden((Integer)obj01[0]);
 				ob.setNombre(obj01[1].toString());
-				ob.setOferta(Formatos.StringToBigDecimal(obj01[2].toString()));
+				//El Cliente debe ver el monto que le tiene que pagar al Proveedor
+				//ob.setOferta(Formatos.StringToBigDecimal(obj01[2].toString()));
+				ob.setOferta(Formatos.StringToBigDecimal(obj01[5].toString()));
+				
+				if(tipo.equals("cliente")){
+					ob.setNombreProveedor(obj01[6].toString());
+				}else{
+				ob.setNombreCliente(obj01[7].toString());
+				}
+				
 				ob.setEstado(obj01[3].toString());
 				ob.setPagado(Formatos.StringToBigDecimal(obj01[4].toString()));
 				
-				Query q02 = em.createNativeQuery("SELECT c.idcuenta, c.estadotrabajo, c.monto FROM cuenta c WHERE c.tipo = 'cobrar' AND c.idorden = '"+ ob.getIdOrden() +"'");
+				Query q02 = em.createNativeQuery("SELECT c.idcuenta, c.estadotrabajo, c.monto FROM cuenta c WHERE c.tipo = 'pagar' AND c.idorden = '"+ ob.getIdOrden() +"'");
 				List<Object[]> rows02 = q02.getResultList();
 				
 				BigDecimal totalDeudaCorrespondiente = BigDecimal.ZERO;
 				BigDecimal deudaActual = BigDecimal.ZERO;
 				BigDecimal deudaComprometida = BigDecimal.ZERO;
-				
+								
 				for(int y = 0; y < rows02.size(); y++){
 					Object[] obj02 = rows02.get(y);
-					
-					//BigDecimal montoCuenta = Formatos.StringToBigDecimal(obj02[2].toString()); 
-					
 							
 					if(ob.getEstado().equals(obj02[1].toString())){
-						System.out.println("COINCIDIO: " + ob.getEstado() + "idCuenta: " + obj02[0]);
+						System.out.println("COINCIDIO: " + ob.getEstado() + ", idCuenta: " + obj02[0]);
 						Query q03 = null;
 						
 						switch(obj02[1].toString()){
 						case "Sin inicio":
 							q03 = em.createNativeQuery("SELECT SUM(c.monto) as acumuladoDeudaComprometida FROM cuenta c "
-									+ "WHERE c.tipo = 'cobrar' AND c.idorden = '"+ ob.getIdOrden() +"' AND c.estadotrabajo = 'Sin inicio'");
+									+ "WHERE c.tipo = 'pagar' AND c.idorden = '"+ ob.getIdOrden() +"' AND c.estadotrabajo = 'Sin inicio'");
 							break;
 						case "Por iniciar":
 							q03 = em.createNativeQuery("SELECT SUM(c.monto) as acumuladoDeudaComprometida FROM cuenta c "
-									+ "WHERE c.tipo = 'cobrar' AND c.idorden = '"+ ob.getIdOrden() +"' AND (c.estadotrabajo = 'Sin inicio' OR c.estadotrabajo = 'Por iniciar')");
+									+ "WHERE c.tipo = 'pagar' AND c.idorden = '"+ ob.getIdOrden() +"' AND (c.estadotrabajo = 'Sin inicio' OR c.estadotrabajo = 'Por iniciar')");
+							break;
+						case "Proceso":
+							q03 = em.createNativeQuery("SELECT SUM(c.monto) as acumuladoDeudaComprometida FROM cuenta c "
+									+ "WHERE c.tipo = 'pagar' AND c.idorden = '"+ ob.getIdOrden() +"' AND (c.estadotrabajo = 'Sin inicio' OR c.estadotrabajo = 'Por iniciar' OR c.estadotrabajo = 'Proceso')");
 							break;
 						case "Terminado":
 							q03 = em.createNativeQuery("SELECT SUM(c.monto) as acumuladoDeudaComprometida FROM cuenta c "
-									+ "WHERE c.tipo = 'cobrar' AND c.idorden = '"+ ob.getIdOrden() +"' AND (c.estadotrabajo = 'Sin inicio' OR c.estadotrabajo = 'Por iniciar' OR c.estadotrabajo = 'Terminado')");
+									+ "WHERE c.tipo = 'pagar' AND c.idorden = '"+ ob.getIdOrden() +"' AND (c.estadotrabajo = 'Sin inicio' OR c.estadotrabajo = 'Por iniciar' OR c.estadotrabajo = 'Proceso' OR c.estadotrabajo = 'Terminado')");
 							break;
 						case "Aceptado":
 							q03 = em.createNativeQuery("SELECT SUM(c.monto) as acumuladoDeudaComprometida FROM cuenta c "
-									+ "WHERE c.tipo = 'cobrar' AND c.idorden = '"+ ob.getIdOrden() +"'");
+									+ "WHERE c.tipo = 'pagar' AND c.idorden = '"+ ob.getIdOrden() +"'");
 							break;
 						}
 						
@@ -100,8 +122,14 @@ public class OrdenServiceImpl implements OrdenService {
 						}
 						deudaActual = totalDeudaCorrespondiente.subtract(ob.getPagado());
 						deudaComprometida = ob.getOferta().subtract(ob.getPagado());
+						
+					}else{
+						System.out.println("Conidicion de Pago no encotntrada: " + ob.getEstado());	//Se podria hacer un case con los estados parecido al anterior
 					}
 				}
+				
+					
+				
 				
 				ob.setDeudaCorrespondiente(totalDeudaCorrespondiente);
 				ob.setDeudaActual(deudaActual);
@@ -118,7 +146,7 @@ public class OrdenServiceImpl implements OrdenService {
 		
 	@Transactional
 	public String editarOrdenEstado(String accion, int idOrden){
-		//Aqui el Jefe aprueba la orden, podria mejorarse o cambiar
+		//Aqui el Jefe (Cliente) aprueba la orden, podria mejorarse o cambiar
 		String result = "";
 		
 		Orden ordenX = em.find(Orden.class, idOrden);
@@ -386,9 +414,12 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setLon(Double.parseDouble(ordenBean.getLon().replace("°", "")));
 			orden.setCiudad(ordenBean.getCiudad());
 			orden.setDepartamento(ordenBean.getDepartamento());
-			orden.setOferta(ordenBean.getOferta());
-			orden.setOfertaIgv(ordenBean.getOfertaIgv());
-			orden.setMoneda(ordenBean.getMoneda());
+			//orden.setOferta(ordenBean.getOferta());
+			orden.setOferta(BigDecimal.ZERO);
+			//orden.setOfertaIgv(ordenBean.getOfertaIgv());
+			orden.setOfertaIgv(BigDecimal.ZERO);
+			//orden.setMoneda(ordenBean.getMoneda());
+			orden.setMoneda("dolar americano");
 			
 			orden.setEficiencia(ordenBean.getEficiencia());
 			orden.setUtilidadBruta(ordenBean.getUtilidadBruta());
@@ -410,7 +441,7 @@ public class OrdenServiceImpl implements OrdenService {
 			Orden ordenY = em.merge(orden);
 			ordenY.setCodigo("OT-" + orden.getTipoOrden() + "-" + String.format("%05d", orden.getIdOrden()));
 		
-			ArrayList<Cuenta> cobros = new ArrayList<Cuenta>();
+			/*ArrayList<Cuenta> cobros = new ArrayList<Cuenta>();
 			int restoCobros;
 			for(int x = 0; x < cobrosCliente.length; x++){
 				//System.out.println("valor: " + cobrosCliente[x]);
@@ -482,8 +513,8 @@ public class OrdenServiceImpl implements OrdenService {
 				
 				Factura facturaY = em.merge(factura);
 				
-				facturaY.setCodigo(String.format("%05d", factura.getIdFactura()));*/
-			}
+				facturaY.setCodigo(String.format("%05d", factura.getIdFactura())); (PROBABLEMENTE YA NO SE USE ASI)
+			}*/
 			
 			
 			
@@ -623,23 +654,30 @@ public class OrdenServiceImpl implements OrdenService {
 		String condiciones = "";
 		int idClienteEmp = 0;
 		
-		//HttpSession session = req.getSession();
 		try{
-			Query p = em.createNativeQuery("SELECT c.idcliente FROM cliente c WHERE c.ruc = '"+ req.getSession().getAttribute("ruc") +"'");
-			idClienteEmp = (Integer)p.getSingleResult();
+			Query p01 = em.createNativeQuery("SELECT c.idcliente FROM cliente c WHERE c.ruc = '"+ req.getSession().getAttribute("ruc") +"'");
+			idClienteEmp = (Integer)p01.getSingleResult();
 		}catch(NoResultException e){
 			;
 		}
-		campos = "o.idorden, o.codigo, o.nombre, cli.nombre as CN, o.oferta, o.estado ";
+		
 		from = "FROM orden o ";
 		//join = "INNER JOIN o.ordenCliente cli ";
 		//join += "INNER JOIN o.ordenEmpresa empr ";
 		//condiciones = "WHERE empr.idEmpresa = :idEmpresa AND cli.idCliente = :idEmpresa";
-		
-		join = "INNER JOIN cliente cli ON cli.idcliente = o.idcliente ";
-		join += "INNER JOIN empresa empr ON empr.idempresa = o.idempresa ";
-		condiciones = "WHERE empr.idempresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") + "' OR o.idcliente = '"+ idClienteEmp +"'";
-
+		switch(req.getSession().getAttribute("tipo").toString()){
+		case "cliente":
+			campos = "o.idorden, o.codigo, o.nombre, cli.nombre as CN, o.oferta, o.estado ";
+			join = "INNER JOIN cliente cli ON cli.idcliente = o.idcliente ";
+			join += "INNER JOIN empresa empr ON empr.idempresa = o.idempresa ";
+			condiciones = "WHERE empr.idempresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") + "' OR o.idcliente = '"+ idClienteEmp +"'";
+			break;
+		case "empresa":
+			campos = "o.idorden, o.codigo, o.nombre, o.oferta, o.estado, o.idempresa, o.idcliente ";
+			join = "INNER JOIN subcontrato sc ON sc.idorden = o.idorden ";
+			join += "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor ";
+			condiciones = "WHERE p.ruc = '"+ req.getSession().getAttribute("ruc") +"' OR o.idempresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") +"'";
+		}
 		/*if(!ordenBean.getCodigo().equals("")){
 			condiciones += "AND o.codigo LIKE :codigo AND o.estado != 'disable' ";
 		}
@@ -699,22 +737,47 @@ public class OrdenServiceImpl implements OrdenService {
 				 
 			}
 		}*/
-		
 		List<Object[]> rows = q.getResultList();
 		System.out.println("SIZE: " + rows.size());
-		for(int x = 0; x < rows.size(); x++){
-			Object[] ord = rows.get(x);
-			OrdenBean ordenB = new OrdenBean();
-			ordenB.setIdOrden((Integer)ord[0]);
-			ordenB.setCodigo(ord[1].toString());
-			ordenB.setNombre(ord[2].toString());
-			ordenB.setNombreCliente(ord[3].toString());			
-			ordenB.setOferta(new BigDecimal(ord[4].toString()));
-			ordenB.setEstado(ord[5].toString());
-			
-			ordenBeans.add(ordenB);
-		}
 		
+		switch(req.getSession().getAttribute("tipo").toString()){
+		case "cliente":
+			for(int x = 0; x < rows.size(); x++){
+				Object[] ord = rows.get(x);
+				OrdenBean ordenB = new OrdenBean();
+				ordenB.setIdOrden((Integer)ord[0]);
+				ordenB.setCodigo(ord[1].toString());
+				ordenB.setNombre(ord[2].toString());
+				ordenB.setNombreCliente(ord[3].toString());			
+				ordenB.setOferta(new BigDecimal(ord[4].toString()));
+				ordenB.setEstado(ord[5].toString());
+				
+				ordenBeans.add(ordenB);
+			}
+			break;
+		case "empresa":
+			for(int x = 0; x < rows.size(); x++){
+				Object[] ord = rows.get(x);
+				OrdenBean ordenB = new OrdenBean();
+				ordenB.setIdOrden((Integer)ord[0]);
+				ordenB.setCodigo(ord[1].toString());
+				ordenB.setNombre(ord[2].toString());		
+				ordenB.setOferta(new BigDecimal(ord[3].toString()));
+				ordenB.setEstado(ord[4].toString());
+				
+				if((Integer)ord[5] != (Integer)req.getSession().getAttribute("idEmpresa")){
+					Query r01 = em.createNativeQuery("SELECT e.nombre FROM empresa e WHERE e.idempresa = '"+ (Integer)ord[5] +"'");
+					ordenB.setNombreCliente(r01.getSingleResult().toString());
+				}else{
+					Query r01 = em.createNativeQuery("SELECT c.nombre FROM cliente c WHERE c.idcliente = '"+ (Integer)ord[6] +"'");
+					ordenB.setNombreCliente(r01.getSingleResult().toString());
+				}
+				
+				
+				ordenBeans.add(ordenB);
+			}
+			break;
+		}
 		
 		return ordenBeans;
 	}
@@ -797,9 +860,16 @@ public class OrdenServiceImpl implements OrdenService {
 		
 		OrdenBean ordenB = new OrdenBean();		
 		
-		Cliente cli = orden.getOrdenCliente();
-		ordenB.setIdCliente(cli.getIdCliente());
-		ordenB.setNombreCliente(cli.getNombre());
+		
+		if(req.getSession().getAttribute("tipo").equals("cliente")){
+			Cliente cli = orden.getOrdenCliente();
+			ordenB.setIdCliente(cli.getIdCliente());
+			ordenB.setNombreCliente(cli.getNombre());
+		}else{
+			//Para el Proveedor su cliente es el creador de la Orden que lo ha escogido como Proveedor
+			Empresa e = em.find(Empresa.class, orden.getOrdenEmpresa().getIdEmpresa());
+			ordenB.setNombreCliente(e.getNombre());
+		}
 		
 		ordenB.setIdOrden(orden.getIdOrden());
 		ordenB.setCodigo(orden.getCodigo());

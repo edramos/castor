@@ -21,7 +21,7 @@
 				<span class="arrow "></span>
 				</a>
 				<ul class="sub-menu">
-					<% if(session.getAttribute("rol").equals("Administrador") || session.getAttribute("rol").equals("Coordinador")){ %>
+					<% if(session.getAttribute("tipo").equals("cliente") && session.getAttribute("rol").equals("Coordinador")){ %>
 					<li><a href="toCrearOrden"><span class="badge badge-warning">new</span>Crear Orden</a></li>
 					<% }%>
 					<li><a href="toBuscarOrden">Buscar Orden</a></li>
@@ -29,7 +29,7 @@
 			</li>
 			
 			<% if(session.getAttribute("tipo").equals("empresa")){ %>
-			    <li>
+			    <!-- <li>
 					<a href="javascript:;"><i class="icon-speedometer"></i>
 					<span class="title">Facturas</span>
 					<span class="arrow "></span>
@@ -48,8 +48,8 @@
 						<li><a href="toCajaBanco">Caja Banco</a></li>
 						<li><a href="toCajaChica">Caja Chica</a></li>
 					</ul>
-				</li>
-				<li>
+				</li> -->
+				<!-- <li>
 					<a href="javascript:;"><i class="icon-diamond"></i>
 					<span class="title">Clientes</span>
 					<span class="arrow "></span>
@@ -58,13 +58,13 @@
 						<li><a href="#"><span class="badge badge-warning">new</span>Crear Cliente</a></li>
 						<li><a href="#">Buscar Cliente</a></li>
 					</ul>
-				</li>
+				</li> -->
 			<% }%>
 			    
 			
 			
 			
-			<li>
+			<!-- <li>
 				<a href="javascript:;"><i class="icon-puzzle"></i>
 				<span class="title">Proveedores</span>
 				<span class="arrow "></span>
@@ -73,14 +73,15 @@
 					<li><a href="#"><span class="badge badge-warning">new</span>Crear Proveedor</a></li>
 					<li><a href="#">Buscar Proveedor</a></li>
 				</ul>
-			</li>
+			</li> -->
 			
 			<% if(session.getAttribute("tipo").equals("empresa")){ %>
 			<li>
 				<a href="javascript:;"><i class="icon-paper-plane"></i><span class="title">Reportes</span><span class="arrow "></span></a>
 				<ul class="sub-menu">
-					<li><a href="toMasterOT">Master Orden</a></li>
-					<li><a href="toReporte">Deuda</a></li>
+					<!-- <li><a href="toMasterOT">Master Orden</a></li>
+					<li><a href="toReporte">Deuda</a></li> -->
+					<li><a href="toMasterDeudaProveedor">Master Deuda</a></li>
 				</ul>
 			</li>
 			<%}else{%>
@@ -92,7 +93,7 @@
 			</li>
 			<%} %>
 			
-			<li>
+			<!-- <li>
 				<a href="javascript:;"><i class="icon-settings"></i>
 				<span class="title">Configuracion</span>
 				<span class="arrow "></span>
@@ -102,7 +103,7 @@
 					
 					
 				</ul>
-			</li>
+			</li> -->
 			
 			
 		</ul>

@@ -1,4 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
 <div id="divCobrosCliente" class="portlet-body">
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover">
@@ -28,9 +29,7 @@
 		</table>
 	</div>
 </div>
-<script>
 
-</script>
 <script>
 function initClienteCuentasCobrar(cuentascobrar){
 	var html = '';

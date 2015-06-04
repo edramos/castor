@@ -75,53 +75,52 @@
 						</div>
 					</div>
 					<div class="row">
-								<div class="col-md-3">
-									<div class="form-group">
-										<div class="col-md-6" style="padding-right: 5px">
-											<input id="txtLat" class="form-control" placeholder="Latitud" name="lat"/>
-										</div>
-										<div class="col-md-6" style="padding-left: 5px">
-											<input id="txtLon" class="form-control" placeholder="Longitud" name="lon"/>
-										</div>
-									</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="col-md-6" style="padding-right: 5px">
+									<input id="txtLat" class="form-control" placeholder="Latitud" name="lat"/>
 								</div>
-								<div class="col-md-3">
-									<div class="form-group">
-										<div class="col-md-6" style="padding-right: 5px">
-											<input id="txtCiudad" class="form-control" placeholder="Ciudad" name="ciudad"/>
-										</div>
-										<div class="col-md-6" style="padding-left: 5px">
-											<select id="sltDepartamento" class="form-control" name="departamento">
-												<option value="Lima">Lima</option>
-												<option value="Cajamarca">Cajamarca</option>
-												<option value="Ancash">Ancash</option>
-											</select>
-										</div>
-									</div>
-								</div>							
-								<div class="col-md-3">
-									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-										<input id="txtFechaInicio" type="text" class="form-control form-filter" placeholder="Fecha Inicio" name="fechaInicio"/>											
-										<span class="input-group-btn">
-										<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
-										</span>
-									</div>
+								<div class="col-md-6" style="padding-left: 5px">
+									<input id="txtLon" class="form-control" placeholder="Longitud" name="lon"/>
 								</div>
-								<div class="col-md-3">
-									<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-										<input id="txtFechaEntrega" type="text" class="form-control form-filter" placeholder="Fecha Fin" name="fechaEntrega"/>											
-										<span class="input-group-btn">
-										<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
-										</span>
-									</div>	
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="col-md-6" style="padding-right: 5px">
+									<input id="txtCiudad" class="form-control" placeholder="Ciudad" name="ciudad"/>
 								</div>
-							
+								<div class="col-md-6" style="padding-left: 5px">
+									<select id="sltDepartamento" class="form-control" name="departamento">
+										<option value="Lima">Lima</option>
+										<option value="Cajamarca">Cajamarca</option>
+										<option value="Ancash">Ancash</option>
+									</select>
+								</div>
+							</div>
+						</div>							
+						<div class="col-md-3">
+							<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+								<input id="txtFechaInicio" type="text" class="form-control form-filter" placeholder="Fecha Inicio" name="fechaInicio"/>											
+								<span class="input-group-btn">
+								<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+								</span>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+								<input id="txtFechaEntrega" type="text" class="form-control form-filter" placeholder="Fecha Fin" name="fechaEntrega"/>											
+								<span class="input-group-btn">
+								<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+								</span>
+							</div>	
+						</div>	
 					</div>
 						
 						
 					<!-- INFORMACION FINANCIERA -->
 					
-					<h4 class="form-section">Informacion Financiera</h4>
+					<!-- <h4 class="form-section">Informacion Financiera</h4>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
@@ -168,11 +167,11 @@
 						<div class="col-md-2 tooltips" data-original-title="Utilidad Bruta">
 							<input id="txtUtilidadBruta" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ '" class="form-control" disabled="disabled" placeholder="Utilidad Bruta" name="utilidadBruta"/>
 						</div>
-					</div>	
+					</div>	 -->
 						
 					<!-- COBRO CLIENTE -->
 					
-					<h4 class="form-section">Cobro Cliente</h4>	
+					<!-- <h4 class="form-section">Cobro Cliente</h4>	
 					<div class="row">
 						<div class="col-md-12">
 							<div class="table-container">
@@ -237,7 +236,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 						
 					
 					<!-- SUBCONTRATOS -->
@@ -374,7 +373,7 @@
 											<tr role="row" class="filter" id="fila_pago_0_0">
 												<td>
 													<input style="display:none" id="txtIdProveedor_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_filaProveedor" placeholder="idProveedor" value="0">
-													<input onkeyup="calcularMontoParcialxPorcentaje_Pago(0,0,'pago');" id="txtPorcentaje_pago_0_0" type="text" class="form-control form-filter input-sm pago_porcentaje_0" name="pago_porcentaje" placeholder="%" value="30">
+													<input onkeyup="calcularMontoParcialxPorcentaje_Pago(0,0,'pago');" id="txtPorcentaje_pago_0_0" type="text" class="form-control form-filter input-sm pago_porcentaje_0" name="pago_porcentaje" placeholder="%" value="40">
 												</td>
 												<td>
 													<input id="txtPagoParcial_pago_0_0" type="text" class="form-control form-filter input-sm" name="pago_montoParcial" placeholder="USD $/.">
@@ -509,7 +508,7 @@ jQuery(document).ready(function(){
     $("#sltEstadoCobro_cobro_0_2").val("Aceptado");
     
     agregarNuevaFilaPagos_Prov(0, 'pago');
-    $("#txtPorcentaje_pago_0_1").val(30);
+    $("#txtPorcentaje_pago_0_1").val(40);
     agregarNuevaFilaPagos_Prov(0, 'pago');
     
     $("#sltEstadoCobro_pago_0_0").val("Por iniciar");
@@ -550,12 +549,6 @@ jQuery(document).ready(function(){
     /**********************************************************************************/
     
     
-    
-    
-    
-    
-    
-    
     $("#frmCrearOrden").validate({
 		rules: {
 			nombre: {required: true},   
@@ -583,8 +576,8 @@ jQuery(document).ready(function(){
 			$('#txtOfertaIgv').prop('disabled', false);
 			$('#txtOfertaMasIgv').prop('disabled', false);
 			
-			var arrEfi = $('#txtEficiencia').val().split("%");
-			$('#txtEficiencia').val(Number(arrEfi[0]));
+			//var arrEfi = $('#txtEficiencia').val().split("%");
+			//$('#txtEficiencia').val(Number(arrEfi[0]));
 			$('#txtEficiencia').prop('disabled', false);
 			
 			form.submit();
@@ -657,7 +650,7 @@ function grabarProyecto(){
 	}
 	
 	//COBROS
-	var cobros = [];
+	/*var cobros = [];
 	
 	arreglo_MontoParcialC = document.getElementsByName('cobro_montoParcial');
 	arreglo_TipoPagoC = document.getElementsByName('cobro_tipoPago');
@@ -665,31 +658,20 @@ function grabarProyecto(){
 	arreglo_PorcentajeAvanceC = document.getElementsByName('cobro_porcentajeAvance');
 	arreglo_EstadoCobroC = document.getElementsByName('cobro_estadoCobro');
 	arreglo_EstadoC = document.getElementsByName('cobro_estado');
-	//alert('idFila_Cobros: ' + idFila_Cobros);
+	
 	for(var x = 0; x <= idFila_Cobros; x++){
-		/*if(arreglo_EstadoC[x] == undefined){
-			;
+		var montoParcial_TempC = Number(arreglo_MontoParcialC[x].value.replace(/[^0-9\.]+/g,""));
+		
+		cobros.push(montoParcial_TempC);
+		cobros.push(arreglo_TipoPagoC[x].value);
+		cobros.push(arreglo_EstadoCobroC[x].value);
+		if(arreglo_PorcentajeAvanceC[x].value != ''){
+			cobros.push(arreglo_PorcentajeAvanceC[x].value);
+		}else{
+			cobros.push(0);
 		}
-		else if(arreglo_EstadoC[x].value == 'disabled'){
-			;
-		}
-		else{*/	
-			var montoParcial_TempC = Number(arreglo_MontoParcialC[x].value.replace(/[^0-9\.]+/g,""));
-			//alert('arreglo_TipoPagoC[x].value: ' + arreglo_TipoPagoC[x].value);
-			cobros.push(montoParcial_TempC);
-			cobros.push(arreglo_TipoPagoC[x].value);
-			cobros.push(arreglo_EstadoCobroC[x].value);
-			if(arreglo_PorcentajeAvanceC[x].value != ''){
-				cobros.push(arreglo_PorcentajeAvanceC[x].value);
-			}else{
-				cobros.push(0);
-			}
-			cobros.push(arreglo_FechaVenC[x].value);
-			
-			
-			//alert('montoParcial_TempC: ' + montoParcial_TempC + ", arreglo_PorcentajeAvanceC: " + arreglo_PorcentajeAvanceC[x].value);
-		//}		
-  	}
+		cobros.push(arreglo_FechaVenC[x].value);
+  	}*/
 	
 	
 	//SUBCONTRATOS
@@ -760,7 +742,7 @@ function grabarProyecto(){
 		}		
   	}
 	
-	$('#hdnCobrosCliente').val(cobros);
+	//$('#hdnCobrosCliente').val(cobros);
 	$('#hdnSubcontratos').val(subcontratos);
 	$('#hdnPagoProveedores').val(pagoProveedores);
 	
@@ -1091,7 +1073,8 @@ function calcularMontoParcialxPorcentaje_Pago(filaProv, filaPago, tipo){
 			$('#btnGrabar').removeAttr("disabled");
 		}
 	}else{
-		var oferta = Number($('#txtOferta').val().replace(/[^0-9\.]+/g,""));
+		//var oferta = Number($('#txtOferta').val().replace(/[^0-9\.]+/g,""));
+		var oferta = 0;
 		var porcentaje = $('#txtPorcentaje_cobro_' + filaProv + '_' + filaPago).val();
 		var montoParcial = (oferta * (porcentaje / 100));
 		

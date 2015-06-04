@@ -1,3 +1,4 @@
+<% if(session.getAttribute("tipo").equals("cliente")){ %>
 <div id="viewSubcontratos" class="portlet-body">
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover">
@@ -11,7 +12,7 @@
 		</table>
 	</div>
 </div>
-
+<% } %>
 <div id="viewPagos" class="portlet-body" style="margin-top: 20px">
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover">
@@ -62,7 +63,7 @@ function initOrdenSubcontratos(subcontratos){
 	eficiencia = (sumMontoSubcontratos/oferta) * 100;
 	
 	//$('#spnSumMontoSubs').text($.getFormattedCurrency(sumMontoSubcontratos));
-	if(tipoOrg == "empresa") $('#spnSumMontoSubs').text(sumMontoSubcontratos);
+	if(tipoOrg == "cliente") $('#spnSumMontoSubs').text(sumMontoSubcontratos);
 	//$('#spnUtilBruta').text($.getFormattedCurrency(utilBruta));
 	$('#spnUtilNeta').text($.getFormattedCurrency(utilNeta));
 	//$('#spnEficiencia').text(eficiencia.toFixed(2) + '%');
