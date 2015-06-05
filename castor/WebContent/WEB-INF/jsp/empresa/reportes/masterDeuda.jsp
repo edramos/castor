@@ -29,15 +29,13 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">Master Deuda OT</div>
-				<div class="actions">							
-					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
-				</div>
+				<div class="tools"></div>
 			</div>
 			<div id="divPortletBody" class="portlet-body">
 			
 			<form:form id="frmEditarFila" action="ajaxEditarOrden" modelAttribute="ordenBean" method="post">
 				
-			<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover">
+			<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-hover">
 			<thead>
 			<tr>
 				<th>idO</th><th>idC</th><th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Monto</th><th>Pagado</th>
@@ -58,8 +56,8 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">Total Estado OT</div>
-				<div class="actions">							
-					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
+				<div class="tools">							
+					
 				</div>
 			</div>
 			<div id="divPortletBodyDinamica" class="portlet-body">
@@ -180,13 +178,16 @@ function buscarOrden(tipo){
 </script>
 <script>
 function initTableMasterDinamicaOT(){
-	$('#tblMasterDinamicaOT').dataTable( {
+	$('#tblMasterDinamicaOT').dataTable({
 	    "order": [],
 	    "columnDefs": [{
 	    	"targets": [1,2,3,4,8,9,10,11,12], "visible": false
 	    }],
-	    
-	} );
+	    "dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+	    "tableTools": {
+            "sSwfPath": "assets/global/plugins/datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+        }
+	});
 	
 	/* var table = $('#tblMasterDinamicaOT');
 	var oTable = table.dataTable({
@@ -279,6 +280,8 @@ function initTableMasterDeudaOT(){
             [5, 15, 20, "All"] // change per page values here
         ],
         "pageLength": 10,
+        
+        
 
         "language": {
             "lengthMenu": " _MENU_ records"
@@ -298,9 +301,7 @@ function initTableMasterDeudaOT(){
         ] // set first column as a default sort by asc
     });
 	var tableWrapper = $("#tblMasterDeudaOT_wrapper");
-	tableWrapper.find(".dataTables_length select").select2({
-        showSearchInput: false //hide search box with special css class
-    }); // initialize select2 dropdown
+	tableWrapper.find(".dataTables_length select").select2({showSearchInput: false}); // initialize select2 dropdown
     
     
 	var nEditing = null;
