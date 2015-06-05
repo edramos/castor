@@ -118,7 +118,10 @@ public class OrdenController {
 	public List<OrdenBean> reporteMasterDeudaOT(@PathVariable("tipo")String tipo, HttpServletRequest req){
 		return ordenserv.mostrarMasterDeudaOT(tipo, req);
 	}
-	
+	@RequestMapping(value = "reporteMasterDinamicaOT", method = RequestMethod.POST) @ResponseBody
+	public List<OrdenBean> reporteMasterDinamicaOT(HttpServletRequest req){
+		return ordenserv.mostrarMasterDinamicaOT(req);
+	}
 	
 	//CHART GENERAL
 	@RequestMapping(value = "getChartOrden-{idOrden}", method = RequestMethod.GET) @ResponseBody

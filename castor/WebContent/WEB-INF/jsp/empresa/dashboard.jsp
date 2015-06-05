@@ -35,8 +35,14 @@
 	<div class="page-content">
 		<!-- BEGIN PAGE CONTENT INNER -->
 		<div class="row">
-			<div class="col-md-6">
-				<div class="portlet box blue-hoki">
+		
+		
+		
+		
+		
+			<!-- <div class="col-md-6">
+				
+				 <div class="portlet box blue-hoki">
 					<div class="portlet-title">
 						<div class="caption"><i class="icon-graph"></i>Diagrama</div>
 						<div class="tools">
@@ -49,8 +55,6 @@
 						<div id="divChart" class="chart" style="height: 300px;"></div>
 					</div>
 				</div>
-				
-				
 				
 				<div class="portlet box blue-hoki">
 					<div class="portlet-title">
@@ -88,13 +92,13 @@
 							</table>
 						</div>
 					</div>
-				</div>
+				</div> 
 				
-			</div>
+			</div> -->
 			
 			
-			<div class="col-md-6">
-				<div class="portlet box blue-hoki">
+			<!-- <div class="col-md-6">
+				 <div class="portlet box blue-hoki">
 					<div class="portlet-title">
 						<div class="caption"><i class="icon-bubbles"></i>Mensajes</div>
 						<div class="actions">							
@@ -189,7 +193,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>			
 		<!-- END PAGE CONTENT INNER -->
 	</div>
@@ -215,7 +219,7 @@ jQuery(document).ready(function() {
 });
 </script>
 <script type="text/javascript">
-AmCharts.loadJSON = function(url) {
+/* AmCharts.loadJSON = function(url) {
 	if(window.XMLHttpRequest){
 		  	// IE7+, Firefox, Chrome, Opera, Safari
 			var request = new XMLHttpRequest();
@@ -266,7 +270,7 @@ AmCharts.loadJSON = function(url) {
 			},
 			"dataProvider": AmCharts.loadJSON('getChartDashboard')
 		}
-	);
+	); */
 </script>
 <!-- END JAVASCRIPTS -->
 </body>

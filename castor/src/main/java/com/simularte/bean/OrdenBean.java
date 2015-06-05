@@ -70,6 +70,9 @@ public class OrdenBean {
 	private BigDecimal deudaCorrespondiente;
 	private BigDecimal pagado;
 	
+	//REPORTE ESTADO POR MES
+	private int[] contadorMeses = new int[12];
+	
 	
 	
 	public Integer getIdOrden() {
@@ -396,5 +399,11 @@ public class OrdenBean {
 	}
 	public void setPagado(BigDecimal pagado) {
 		this.pagado = pagado;
+	}
+	public int[] getContadorMeses() {
+		return contadorMeses;
+	}
+	public void setContadorMeses(int index, int contadorMes) {
+		contadorMeses[index] = contadorMes;
 	}
 }

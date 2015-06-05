@@ -23,6 +23,7 @@ public interface OrdenService {
 	List<OrdenBean> mostrarReporteOT(HttpServletRequest req);
 	List<OrdenBean> mostrarMasterOT(HttpServletRequest req);
 	List<OrdenBean> mostrarMasterDeudaOT(String tipo, HttpServletRequest req);
+	List<OrdenBean> mostrarMasterDinamicaOT(HttpServletRequest req);
 	
 	//CHART
 	List<CuentaBean> grafOrdenGeneral(int idOrden, HttpServletRequest req);

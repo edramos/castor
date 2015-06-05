@@ -1,6 +1,7 @@
 package com.simularte.service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -36,6 +37,89 @@ public class OrdenServiceImpl implements OrdenService {
 
 	@PersistenceContext 
 	EntityManager em;
+	
+	public List<OrdenBean> mostrarMasterDinamicaOT(HttpServletRequest req){
+		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
+
+		for(int x = 0; x < 6; x++){
+			switch(x){
+			case 0:
+				ordenes.add(obtenerFilaPorEstado("Sin inicio", req));
+				break;
+			case 1:
+				ordenes.add(obtenerFilaPorEstado("Por iniciar", req));
+				break;
+			case 2:
+				ordenes.add(obtenerFilaPorEstado("Proceso", req));
+				break;
+			case 3:
+				ordenes.add(obtenerFilaPorEstado("Terminado", req));
+				break;
+			case 4:
+				ordenes.add(obtenerFilaPorEstado("Aceptado", req));
+				break;
+			case 5:
+				ordenes.add(obtenerFilaPorEstado("sumar", req));
+			}
+		}
+		
+		return ordenes;
+	}
+	private OrdenBean obtenerFilaPorEstado(String estado, HttpServletRequest req){
+		OrdenBean fila = new OrdenBean();
+		Query q01 = null;
+				
+		if(!estado.equals("sumar")){
+			fila.setEstado(estado);
+			
+			q01 = em.createNativeQuery("SELECT "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 1 THEN o.fechaentrega END) as Jan, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 2 THEN o.fechaentrega END) as Feb, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 3 THEN o.fechaentrega END) as Mar, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 4 THEN o.fechaentrega END) as Apr, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 5 THEN o.fechaentrega END) as May, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 6 THEN o.fechaentrega END) as Jun, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 7 THEN o.fechaentrega END) as Jul, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 8 THEN o.fechaentrega END) as Aug, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 9 THEN o.fechaentrega END) as Sep, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 10 THEN o.fechaentrega END) as Oct, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 11 THEN o.fechaentrega END) as Nov, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 12 THEN o.fechaentrega END) as Dic  "	//No puse Dec porque es un keyword en MySQL
+					+ "FROM orden o WHERE o.estado = '"+ estado +"' AND o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' GROUP BY month(o.idorden)");
+		}else{
+			fila.setEstado("TOTAL");
+			
+			q01 = em.createNativeQuery("SELECT "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 1 THEN o.fechaentrega END) as Jan, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 2 THEN o.fechaentrega END) as Feb, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 3 THEN o.fechaentrega END) as Mar, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 4 THEN o.fechaentrega END) as Apr, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 5 THEN o.fechaentrega END) as May, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 6 THEN o.fechaentrega END) as Jun, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 7 THEN o.fechaentrega END) as Jul, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 8 THEN o.fechaentrega END) as Aug, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 9 THEN o.fechaentrega END) as Sep, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 10 THEN o.fechaentrega END) as Oct, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 11 THEN o.fechaentrega END) as Nov, "
+					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 12 THEN o.fechaentrega END) as Dic  "	//No puse Dec porque es un keyword en MySQL
+					+ "FROM orden o WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' GROUP BY month(o.idorden)");
+		}
+		
+		try{
+			Object[] row = (Object[])q01.getSingleResult();
+			
+			for(int x = 0; x < 12; x++){
+				BigInteger biContador = (BigInteger)row[x];
+				fila.setContadorMeses(x, biContador.intValue());
+			}
+		}catch(NoResultException e){
+			for(int x = 0; x < 12; x++){
+				fila.setContadorMeses(x, 0);
+			}
+		}
+		
+		return fila;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<OrdenBean> mostrarMasterDeudaOT(String tipo, HttpServletRequest req){

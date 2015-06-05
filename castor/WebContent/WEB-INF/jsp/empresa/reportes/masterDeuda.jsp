@@ -50,7 +50,29 @@
 			</table>
 			
 			</form:form>
+			
 				
+			</div>
+		</div>
+		
+		<div class="portlet box blue-hoki">
+			<div class="portlet-title">
+				<div class="caption">Total Estado OT</div>
+				<div class="actions">							
+					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
+				</div>
+			</div>
+			<div id="divPortletBodyDinamica" class="portlet-body">
+				<table id="tblMasterDinamicaOT" class="table table-striped table-bordered table-condensed table-hover">
+				<thead>
+				<tr>
+					<th></th><th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>Mayo</th><th>Junio</th><th>Julio</th><th>Agosto</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dic</th>
+				</tr>
+				</thead>
+				
+				<tbody id="viewMasterDinamicaOTHandlerbars">
+				</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -86,11 +108,12 @@ jQuery(document).ready(function() {
 	Layout.init(); // init current layout
 	
 	buscarOrden("cliente");
+	buscarOrdenDinamica();
 });
 </script>
 <script id="templateMasterDeudaOT" type="text/x-handlebars-template">
 <tr>
-	<td>{{idOrden}}"></td>
+	<td>{{idOrden}}</td>
 	<td>{{idCuenta}}</td>
 	<td><a href="ordenPag-{{idOrden}}" target="_blank">{{nombre}}<a/></td>
 	<td>{{nombreProveedor}}</td>
@@ -104,7 +127,36 @@ jQuery(document).ready(function() {
 	<td></td>
 </tr>
 </script>
+<script id="templateMasterDinamicaOT" type="text/x-handlebars-template">
+<tr>
+	<td>{{estado}}</td>
+	
+	{{#each contadorMeses}}
+  <td style="text-align:center;">{{this}}</td>
+  {{/each}}
+</tr>
+</script>
 <script>
+function buscarOrdenDinamica(){
+	var html = '';
+	
+	$.ajax({
+		url: 'reporteMasterDinamicaOT',
+		type: 'post',
+		dataType: 'json',
+		data: '',
+		success: function(ordenes){
+			$.each(ordenes, function(i, orden){
+ 				var source = $("#templateMasterDinamicaOT").html();
+ 				var template = Handlebars.compile(source);
+ 				html += template(orden);
+			});
+			removeAddTableDinamica();
+			$("#viewMasterDinamicaOTHandlerbars").html(html);
+			initTableMasterDinamicaOT();
+		}
+	});	
+}
 function buscarOrden(tipo){
 	var html = '';
 	
@@ -124,6 +176,47 @@ function buscarOrden(tipo){
 			initTableMasterDeudaOT();
 		}
 	});	
+}
+</script>
+<script>
+function initTableMasterDinamicaOT(){
+	$('#tblMasterDinamicaOT').dataTable( {
+	    "order": [],
+	    "columnDefs": [{
+	    	"targets": [1,2,3,4,8,9,10,11,12], "visible": false
+	    }],
+	    
+	} );
+	
+	/* var table = $('#tblMasterDinamicaOT');
+	var oTable = table.dataTable({
+        "lengthMenu": [
+            [5, 15, 20, -1],
+            [5, 15, 20, "All"] // change per page values here
+        ],
+        "pageLength": 5,
+
+        "language": {
+            "lengthMenu": " _MENU_ records"
+        },
+        "columnDefs": [
+        { 
+        	"visible": false, "targets": [1,2,3,4] 
+        },{ 
+            'orderable': false,
+            'targets': [0]
+        }, {
+            "searchable": true,
+            "targets": [0]
+        }],
+        "order": [
+            [0, "asc"]
+        ] // set first column as a default sort by asc
+    });
+	var tableWrapper = $("#tblMasterDinamicaOT_wrapper");
+	tableWrapper.find(".dataTables_length select").select2({
+        showSearchInput: false //hide search box with special css class
+    }); // initialize select2 dropdown */
 }
 </script>
 <script>
@@ -246,6 +339,7 @@ function initTableMasterDeudaOT(){
          		data: $('#frmEditarFila').serialize(),
          		success: function(resultado){
          			buscarOrden("cliente");
+         			buscarOrdenDinamica();
          		}
          	});
         	var idOrden = aData[1];
@@ -261,11 +355,18 @@ function initTableMasterDeudaOT(){
 }
 </script>
 <script>
+function removeAddTableDinamica(){
+	$('#tblMasterDinamicaOT').remove();
+	$('#tblMasterDinamicaOT_wrapper').remove();
+	
+	$('#divPortletBodyDinamica').append('<table id="tblMasterDinamicaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr><th></th><th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>Mayo</th><th>Junio</th><th>Julio</th><th>Ago</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dic</th></tr></thead><tbody id="viewMasterDinamicaOTHandlerbars"></tbody></table>');
+}
+
 function removeAddTable(){
 	$('#tblMasterDeudaOT').remove();
 	$('#tblMasterDeudaOT_wrapper').remove();
 	
-	$('#frmEditarFila').append('<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr><th>idO</th><th>idC</th>'+
+	$('#frmEditarFila').append('<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr style="text-align:center;"><th>idO</th><th>idC</th>'+
 		'<th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Monto</th><th>Pagado</th><th>Deuda Actual</th><th>Deuda Comprom.</th><th>Deuda Corresp.</th><th></th><th></th></tr></thead><tbody id="viewMasterDeudaOTHandlerbars"></tbody></table>');
 }
 </script>

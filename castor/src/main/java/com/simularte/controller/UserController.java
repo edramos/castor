@@ -50,11 +50,11 @@ public class UserController {
 		if(us.login(username, password, req)){
 			switch(req.getSession().getAttribute("tipo").toString()){
 			case "empresa":
-				model.addAttribute("panelOrden", os.buscarOrderPanel(req));
+				//model.addAttribute("panelOrden", os.buscarOrderPanel(req));
 				path = "empresa/dashboard";
 				break;
 			case "cliente":
-				model.addAttribute("panelOrden", os.buscarOrderPanel(req));
+				//model.addAttribute("panelOrden", os.buscarOrderPanel(req));
 				path = "empresa/dashboard";
 				break;
 			case "proveedor":
@@ -86,12 +86,11 @@ public class UserController {
 		
 		switch(req.getSession().getAttribute("tipo").toString()){
 		case "empresa":
-			model.addAttribute("panelOrden", os.buscarOrderPanel(req));
+			//model.addAttribute("panelOrden", os.buscarOrderPanel(req));
 			path = "empresa/dashboard";
 			break;
 		case "cliente":
-			System.out.println("CLIENTE");
-			model.addAttribute("panelOrden", os.buscarOrderPanel(req));
+			//model.addAttribute("panelOrden", os.buscarOrderPanel(req));
 			path = "empresa/dashboard";
 			break;
 		}
