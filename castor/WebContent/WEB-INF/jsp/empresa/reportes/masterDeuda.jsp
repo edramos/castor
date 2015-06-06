@@ -102,8 +102,8 @@ var rol = '<%=session.getAttribute("rol").toString()%>';
 var aEstados = ["Sin inicio", "Por iniciar", "Proceso", "Terminado", "Aceptado"];
 
 jQuery(document).ready(function() {   
-	Metronic.init(); // init metronic core components
-	Layout.init(); // init current layout
+	Metronic.init(); 
+	Layout.init(); 
 	
 	buscarOrden("cliente");
 	buscarOrdenDinamica();
