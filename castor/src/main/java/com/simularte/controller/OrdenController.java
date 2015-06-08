@@ -30,8 +30,6 @@ public class OrdenController {
 	public String crearOrden(@ModelAttribute("ordenBean")OrdenBean ordenBean, @RequestParam("cobroscliente") String[] cobrosCliente, @RequestParam("subcontratos") String[] subCont, 
 			@RequestParam("pagoproveedores") String[] pagProv, Model model, HttpServletRequest req){		
 		String path = "";
-		System.out.println("termino obra: " + subCont[4]);
-		
 		int idOrden = ordenserv.crearOrden(ordenBean, ordenBean.getIdCliente(), cobrosCliente, subCont, pagProv, req);
 		
 		if(idOrden != -1){
@@ -49,9 +47,9 @@ public class OrdenController {
 		return ordenes;
 	}
 	
-	@RequestMapping(value = "ajaxBuscarOrdenFactura", method = RequestMethod.POST) @ResponseBody
-	public List<OrdenBean> ajaxBuscarOrdenFactura(HttpServletRequest req){
-		return ordenserv.buscarOrdenFactura(req);
+	@RequestMapping(value = "ajaxBuscarOrdenFactura_{value}", method = RequestMethod.POST) @ResponseBody
+	public List<OrdenBean> ajaxBuscarOrdenFactura(@PathVariable("value")String value, HttpServletRequest req){
+		return ordenserv.buscarOrdenFactura(value, req);
 	}
 	
 	@RequestMapping("ordenPag-{idOrden}")

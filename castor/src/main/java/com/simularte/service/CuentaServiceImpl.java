@@ -98,10 +98,18 @@ public class CuentaServiceImpl implements CuentaService {
 	@SuppressWarnings("unchecked")
 	public List<CuentaBean> listarCuentasFactura(int idOrden, String tipo, HttpServletRequest req) {
 		List<CuentaBean> lcb = new ArrayList<CuentaBean>();
-		System.out.println("Listar Cuentas: " + idOrden + ", tipo: " + tipo);
-		Query q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND tipo = :tipo AND estado = 'Pendiente'", Cuenta.class);
-		q01.setParameter("idOrden", idOrden);		
-		q01.setParameter("tipo", tipo);
+		Query q01 = null;
+		switch(req.getSession().getAttribute("tipo").toString()){
+		case "empresa":
+			tipo = (tipo.equals("cobrar"))?"pagar":"cobrar";	//Solo por ahora hasta definir bien lo que el Proveedor
+			
+			q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND tipo = :tipo AND estado = 'Pendiente'", Cuenta.class);
+			q01.setParameter("idOrden", idOrden);
+			q01.setParameter("tipo", tipo);
+			break;
+		}
+		
+		
 		
 		List<Cuenta> cuentas = q01.getResultList();
 		
@@ -121,19 +129,19 @@ public class CuentaServiceImpl implements CuentaService {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<CuentaBean> listarCuentas(String tipo, Integer idOrder, HttpServletRequest req) {
+	public List<CuentaBean> listarCuentas(String tipo, Integer idOrden, HttpServletRequest req) {
 		List<CuentaBean> lcueBean = new ArrayList<CuentaBean>();
 		double totalConIgv = 0;
 		
 		try{
 			Query q01 = em.createNativeQuery("SELECT c.idcuenta, c.avance, c.creadopor, c.estado, c.estadotrabajo, c.fechacreacion, c.fechapagoprogramada, c.fechapagoreal, "
-					+ "c.fechavencimiento, c.monto, c.pagador, c.tipo, c.tipopago, c.idorden, c.idsubcontrato, f.codigo "
+					+ "c.fechavencimiento, c.monto, c.pagador, c.tipo, c.tipopago, c.idorden, c.idsubcontrato, f.codigo, sc.tipotrabajo "
 					+ "FROM cuenta c "
-					+ "LEFT JOIN factura f ON c.idcuenta = f.idcuenta "
-					+ "WHERE c.idorden = " + idOrder + " AND c.tipo = '" + tipo + "'");
+					+ "LEFT JOIN factura f ON c.idcuenta = f.idcuenta INNER JOIN subcontrato sc ON sc.idorden = c.idorden "
+					+ "WHERE c.idorden = " + idOrden + " AND c.tipo = '" + tipo + "'");
+			
 			
 			List<Object[]> rows = q01.getResultList();
-			
 			for(int x = 0; x < rows.size(); x++){
 				Object[] obj = rows.get(x);
 				CuentaBean cb = new CuentaBean();
@@ -142,7 +150,6 @@ public class CuentaServiceImpl implements CuentaService {
 				
 				if(obj[13] != null){
 					cb.setIdOrden((Integer)obj[13]);
-					//cb.setIdCliente(obj[0].getCuentaOrden().getOrdenCliente().getIdCliente());
 				}
 				if(obj[14] != null){
 					cb.setIdSubcontrato((Integer)obj[14]);
@@ -160,20 +167,17 @@ public class CuentaServiceImpl implements CuentaService {
 				if(obj[7] != null) cb.setFechaPagoReal(Dates.stringToStringFechaCorta(obj[7].toString()));
 				if(obj[8] != null) cb.setFechaVencimiento(Dates.stringToStringFechaCorta(obj[8].toString()));
 				
-				//cb.setMonto(Formatos.BigBecimalToString(obj[].getMonto().subtract(c.getMonto().multiply(Valores.IGV))));
-				//cb.setIgv(Formatos.BigBecimalToString(obj[].getMonto().multiply(Valores.IGV)));
-				cb.setConIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[9].toString())));
+				BigDecimal monto = Formatos.StringToBigDecimal(obj[9].toString());
+				BigDecimal igv = Formatos.StringToBigDecimal(obj[9].toString()).multiply(Valores.IGV);
+				BigDecimal montoDetraccion = (obj[16].toString().equals("Estudio"))?(monto.add(igv)).multiply(BigDecimal.valueOf(0.1)):(monto.add(igv)).multiply(BigDecimal.valueOf(0.04));
 				
-				//totalMonto += obj[].getMonto().subtract(obj[].getMonto().multiply(Valores.IGV)).doubleValue();
-				//cb.setTotalMonto(Formatos.BigBecimalToString(BigDecimal.valueOf(totalMonto)));
-				
-				//totalIgv += obj[].getMonto().multiply(Valores.IGV).doubleValue();
-				//cb.setTotalIgv(Formatos.BigBecimalToString(BigDecimal.valueOf(totalIgv)));
+				cb.setMonto(Formatos.BigBecimalToString(monto));
+				cb.setIgv(Formatos.BigBecimalToString(igv));
+				cb.setConIgv(Formatos.BigBecimalToString(monto.add(igv)));
+				cb.setMontoDetraccion(Formatos.BigBecimalToString(montoDetraccion));
 				
 				totalConIgv += Formatos.StringToBigDecimal(obj[9].toString()).doubleValue();
 				cb.setTotalConIgv((Formatos.BigBecimalToString(BigDecimal.valueOf(totalConIgv))));
-				
-				//cb.setPagador(obj[].getPagador());
 				
 				if(obj[4] != null){
 					cb.setEstadoTrabajo(obj[4].toString());	//Ahora puede ser null porque en CtasPagar no se ha puesto aun el estado de trabajo
@@ -183,8 +187,7 @@ public class CuentaServiceImpl implements CuentaService {
 						cb.setAvance("");
 					}
 				}
-				//cb.setCreadoPor(obj[].getCreadoPor());
-				//cb.setFechaCreacion(Dates.fechaHoraEspaniol(obj[].getFechaCreacion(), ""));
+
 				cb.setEstado(obj[3].toString());
 				if(obj[15] != null) cb.setCodigo(obj[15].toString());
 				
