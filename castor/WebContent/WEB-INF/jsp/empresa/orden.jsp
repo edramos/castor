@@ -253,7 +253,10 @@ function listarSubcontratos(idOrdenTemp){
  		data: '',
  		success: function(subcontratos){
  			initOrdenSubcontratos(subcontratos); 	        
- 		}
+ 		},
+ 		complete: function() {	 			
+ 			//removeNulls();
+  		}
  	});
 }
 function listarCuentasPagar(idOrdenTemp){

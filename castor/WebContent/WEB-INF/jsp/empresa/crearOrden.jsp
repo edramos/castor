@@ -92,14 +92,9 @@
 								</div>
 								<div class="col-md-6" style="padding-left: 5px">
 									<select id="sltDepartamento" class="form-control" name="departamento">
-										<option value="Amazonas">Amazonas</option><option value="Ancash">Ancash</option><option value="Apurimac">Apurimac</option>
-										<option value="Arequipa">Arequipa</option><option value="Ayacucho">Ayacucho</option><option value="Cajamarca">Cajamarca</option>
-										<option value="Cuzco">Cuzco</option><option value="Huancavelica">Huancavelica</option><option value="Huanuco">Huanuco</option>
-										<option value="Ica">Ica</option><option value="Junin">Junin</option><option value="La Libertad">La Libertad</option>
-										<option value="Lambayeque">Lambayeque</option><option value="Lima">Lima</option><option value="Loreto">Loreto</option>
-										<option value="Madre de Dios">Madre de Dios</option><option value="Moquegua">Moquegua</option><option value="Pasco">Pasco</option>
-										<option value="Piura">Piura</option><option value="Puno">Puno</option><option value="San Martin">San Martin</option>
-										<option value="Tacna">Tacna</option><option value="Tumbes">Tumbes</option><option value="Ucayali">Ucayali</option>
+										<option value="Lima">Lima</option>
+										<option value="Cajamarca">Cajamarca</option>
+										<option value="Ancash">Ancash</option>
 									</select>
 								</div>
 							</div>

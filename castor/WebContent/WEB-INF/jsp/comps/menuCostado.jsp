@@ -29,7 +29,7 @@
 			</li>
 			
 			<% if(session.getAttribute("tipo").equals("empresa")){ %>
-			    <li>
+			    <!-- <li>
 					<a href="javascript:;"><i class="icon-speedometer"></i>
 					<span class="title">Facturas</span>
 					<span class="arrow "></span>
@@ -48,7 +48,17 @@
 						<li><a href="toCajaBanco">Caja Banco</a></li>
 						<li><a href="toCajaChica">Caja Chica</a></li>
 					</ul>
-				</li> 
+				</li> -->
+				<!-- <li>
+					<a href="javascript:;"><i class="icon-diamond"></i>
+					<span class="title">Clientes</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<li><a href="#"><span class="badge badge-warning">new</span>Crear Cliente</a></li>
+						<li><a href="#">Buscar Cliente</a></li>
+					</ul>
+				</li> -->
 			<% }%>
 			    
 			

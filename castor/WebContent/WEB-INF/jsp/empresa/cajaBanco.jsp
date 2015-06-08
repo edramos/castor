@@ -329,7 +329,6 @@ function suggestFactura(tipo){
 		if(datum['idProveedor'] != 0){
 			$('#sltProveedor').val(datum['idProveedor']);
 		}else{
-			alert("IDCLIENTE: " + datum['idCliente']);
 			$('#sltCliente').val(datum['idCliente']);
 		}
 		

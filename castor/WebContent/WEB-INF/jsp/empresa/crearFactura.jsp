@@ -364,7 +364,7 @@ $('#sltTipoFactura').change(function(){
 		$('#divAccionCuenta').empty();
 		$('#divAccionCuenta').append('<span class="spanLabel">Disponible</span><span id="spnCobrar" class="value"></span>');
 		
-		listarOT(value);
+		listarOT();
 		
 		$('#sltOT').on('change', function(){
 			$('#sltCuentas').remove();
@@ -396,7 +396,7 @@ $('#sltTipoFactura').change(function(){
 		$('#divAccionCuenta').empty();
 		$('#divAccionCuenta').append('<span class="spanLabel">Pagar</span><span id="spnPagar" class="value"></span>');
 		
-		listarOT(value);
+		listarOT();
 		
 		$('#sltOT').on('change', function(){
 			$('#sltCuentas').remove();
@@ -474,15 +474,15 @@ function listarDetalleFactura(idOrden, tipo){
 	 	});
 	}
 }
-function listarOT(value){
+function listarOT(){
 	$.ajax({
- 		url: 'ajaxBuscarOrdenFactura_' + value,
+ 		url: 'ajaxBuscarOrdenFactura',
  		type: 'post',
  		dataType: 'json',
  		data: '',
  		success: function(ordenes){
  			$.each(ordenes, function(i, orden){
- 				$('#sltOT').append('<option value="' + orden.idOrden + '">' + orden.nombre + '</option>');
+ 				$('#sltOT').append('<option value="' + orden.idOrden + '">' + orden.codigo + '</option>');
  			});
  		}
  	});
