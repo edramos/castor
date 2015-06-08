@@ -15,7 +15,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -430,11 +429,14 @@ public class OrdenServiceImpl implements OrdenService {
 	@SuppressWarnings("unchecked")
 	public List<OrdenBean> buscarOrdenCaja(int idFactura, HttpServletRequest req){
 		List<OrdenBean> resultados = new ArrayList<OrdenBean>();
+		Query q01 = null;
+		//Se supone que la factura es unica en toda la app, por eso solo bastaria saber el idFactura
 		
-		Query q01 = em.createNativeQuery("SELECT o.idorden, o.codigo, f.idfactura FROM factura f "
-				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
-				+ "INNER JOIN orden o ON o.idorden = c.idorden "
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.idfactura = '" + idFactura + "'");
+		q01 = em.createNativeQuery("SELECT o.idorden, o.codigo, f.idfactura FROM factura f "
+			+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
+			+ "INNER JOIN orden o ON o.idorden = c.idorden "
+			+ "WHERE f.idfactura = '" + idFactura + "'");
+			
 		
 		List<Object[]> rows = q01.getResultList();
 		
@@ -452,21 +454,33 @@ public class OrdenServiceImpl implements OrdenService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<OrdenBean> buscarOrdenFactura(HttpServletRequest req){
+	public List<OrdenBean> buscarOrdenFactura(String value, HttpServletRequest req){
 		List<OrdenBean> resultados = new ArrayList<OrdenBean>();
+		Query q01 = null;
+		String query = "";
 		
-		Query q01 = em.createQuery("SELECT o FROM Orden o WHERE estado != :estado AND idempresa = :idEmpresa");
-		q01.setParameter("estado", "Aceptado");
-		q01.setParameter("idEmpresa", (Integer)req.getSession().getAttribute("idEmpresa"));
+		switch(req.getSession().getAttribute("tipo").toString()){
+		case "empresa":
+			//Solo por ahora se invierte, porque el rol Empresa no es igual que el rol Proveedor,
+			value = (value.equals("cobrar"))?"pagar":"cobrar";
+			
+			query = "SELECT o.idorden, o.nombre, o.idempresa, o.idcliente FROM orden o "
+				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+				+ "INNER JOIN cuenta c ON c.idorden = o.idorden "
+				+ "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' OR p.ruc = '"+ req.getSession().getAttribute("ruc") +"' "
+				+ "AND c.tipo = '"+ value +"' AND o.estado != 'Aceptado' AND o.estado != 'Aceptacion Pendiente' GROUP BY o.idorden";
+			break;
+		}
 		
-		List<Orden> ordenes = q01.getResultList();
+		q01 = em.createNativeQuery(query);		
+		List<Object[]> rows = q01.getResultList();
 		
-		for(int x = 0; x < ordenes.size(); x++){
-			Orden orden = ordenes.get(x);
+		for(int x = 0; x < rows.size(); x++){
+			Object[] obj = rows.get(x);
 			OrdenBean ob = new OrdenBean();
 			
-			ob.setIdOrden(orden.getIdOrden());
-			ob.setCodigo(orden.getCodigo());
+			ob.setIdOrden((Integer)obj[0]);
+			ob.setNombre(obj[1].toString());
 			
 			resultados.add(ob);
 		}
@@ -480,10 +494,9 @@ public class OrdenServiceImpl implements OrdenService {
 		//Preguntar si el IGV  y la Detraccion se redondea a 3 o 2 digitos, porque en algunos casos hay una diferencia de -1 centimo,
 		//EJEMPLO: Ofera = 10,344.24, igv = 1861.9632, redondeado a 2 IGV sale la detraccion 488.24, pero sin rendondeo sale 488.248128
 		//si lo ultimo que redondeo a 2 es 488.248128 entonces tengo 488.25 
-		try{
-			HttpSession session = req.getSession();
-			
-			Empresa empresa = em.find(Empresa.class, (Integer)session.getAttribute("idEmpresa"));
+		
+		try{		
+			Empresa empresa = em.find(Empresa.class, (Integer)req.getSession().getAttribute("idEmpresa"));
 			Cliente cliente = em.find(Cliente.class, idCliente);
 			
 			Orden orden = new Orden();
@@ -498,32 +511,50 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setLon(Double.parseDouble(ordenBean.getLon().replace("°", "")));
 			orden.setCiudad(ordenBean.getCiudad());
 			orden.setDepartamento(ordenBean.getDepartamento());
-			//orden.setOferta(ordenBean.getOferta());
-			orden.setOferta(BigDecimal.ZERO);
-			//orden.setOfertaIgv(ordenBean.getOfertaIgv());
-			orden.setOfertaIgv(BigDecimal.ZERO);
-			//orden.setMoneda(ordenBean.getMoneda());
 			orden.setMoneda("dolar americano");
-			
-			orden.setEficiencia(ordenBean.getEficiencia());
-			orden.setUtilidadBruta(ordenBean.getUtilidadBruta());
-			orden.setGastosGenerales(ordenBean.getGastosGenerales());
-			orden.setTotal(ordenBean.getTotal());	
 			orden.setFechaInicio(Dates.stringToDate(ordenBean.getFechaInicio(), "yyyy-MM-dd"));
 			orden.setFechaEntrega(Dates.stringToDate(ordenBean.getFechaEntrega(), "yyyy-MM-dd"));
 			orden.setDetraccion(ordenBean.getDetraccion());
-			orden.setGananciaProyectada(ordenBean.getGananciaProyectada());
-			orden.setGananciaDisponible(ordenBean.getGananciaDisponible());
-						
-			orden.setCreadoPor((Integer)session.getAttribute("idUser"));
+			
+			orden.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
 			orden.setFechaCreacion(Dates.fechaCreacion());
 			orden.setEstado("Aceptacion Pendiente");
 			orden.setPagado(BigDecimal.ZERO);
 			
+			switch(req.getSession().getAttribute("tipo").toString()){
+			case "cliente":
+				orden.setOferta(BigDecimal.ZERO);
+				orden.setOfertaIgv(BigDecimal.ZERO);
+				break;
+			case "empresa":
+				orden.setOferta(ordenBean.getOferta());
+				orden.setOfertaIgv(ordenBean.getOfertaIgv());
+				orden.setMoneda(ordenBean.getMoneda());
+				orden.setEficiencia(ordenBean.getEficiencia());
+				orden.setUtilidadBruta(ordenBean.getUtilidadBruta());
+				orden.setGastosGenerales(ordenBean.getGastosGenerales());
+				orden.setTotal(ordenBean.getTotal());	
+				orden.setGananciaProyectada(ordenBean.getGananciaProyectada());
+				orden.setGananciaDisponible(ordenBean.getGananciaDisponible());
+				break;
+			}
+
 			em.persist(orden);
 			
 			Orden ordenY = em.merge(orden);
 			ordenY.setCodigo("OT-" + orden.getTipoOrden() + "-" + String.format("%05d", orden.getIdOrden()));
+			
+			//Aca graba segun el tipo, cliente crea ctas x pagar, proveedor ctas x cobrar
+			switch(req.getSession().getAttribute("tipo").toString()){
+			case "cliente":
+				grabarCuentas(pagProv, grabarSubContratos(subCont, orden, req), orden, req, "pagar");
+				break;
+			case "empresa":
+				//Graba sus ctas x cobrar/pagar
+				break;
+			}
+			
+				
 		
 			/*ArrayList<Cuenta> cobros = new ArrayList<Cuenta>();
 			int restoCobros;
@@ -600,134 +631,133 @@ public class OrdenServiceImpl implements OrdenService {
 				facturaY.setCodigo(String.format("%05d", factura.getIdFactura())); (PROBABLEMENTE YA NO SE USE ASI)
 			}*/
 			
-			
-			
-			
-			//Convierte el array de String a un array de Subcontratos, con JSON esta parte ya seria automatica
-			ArrayList<Subcontrato> subContratos = new ArrayList<Subcontrato>();
-			int resto;		
-			System.out.println("subCont.length: " + subCont.length);
-			for(int x = 0; x < subCont.length; x++){
-				resto = x%6;
-				if(resto == 0){
-					System.out.println("resto: " + resto + "creo Proveedor");
-					Subcontrato subc = new Subcontrato();
-					
-					Proveedor proveedor = em.find(Proveedor.class, Integer.parseInt(subCont[x]));
-					
-					subc.setProveedorSubcontrato(proveedor);
-					subc.setOrdenSubcontrato(orden);
-					
-					subContratos.add(subc);
-				}else{
-					System.out.println("size Subcontratos: " + subContratos.size());
-					int index = subContratos.size()-1;
-					System.out.println("index: " + index);
-					switch(resto){
-					case 1:
-						System.out.println("resto " + resto + ", x: " + x + ", tipo trabajo: " + subCont[x]);
-						subContratos.get(index).setTipoTrabajo(subCont[x]);
-						break;
-					case 2:
-						System.out.println("resto " + resto + ", x: " + x + ", moneda: " + subCont[x]);
-						subContratos.get(index).setMoneda(subCont[x]);
-						break;
-					case 3:
-						subContratos.get(index).setMonto(Formatos.StringToBigDecimal(subCont[x]));
-						System.out.println("resto " + resto + ", x: " + x + ", monto: " + subContratos.get(index).getMonto());
-						break;
-					case 4:
-						System.out.println("resto " + resto + ", x: " + x + ", termino: " + subCont[x]);
-						subContratos.get(index).setFechaTerminoObra(Dates.stringToDate(subCont[x], "yyyy-MM-dd"));
-						break;
-					case 5:
-						System.out.println("resto " + resto + ", x: " + x + ", estado: " + subCont[x]);
-						subContratos.get(index).setEstado(subCont[x]);
-						break;	
-					}
-				}
-			}
-			
-			Map<Integer, Subcontrato> subcontratosMap = new HashMap<Integer, Subcontrato>();
-			
-			//El Array de Subcontratos se graba, con JSON esto ya seria directo aqui
-			for(int x = 0; x < subContratos.size(); x++){			
-				subContratos.get(x).setCreadoPor((Integer)session.getAttribute("idUser"));
-				subContratos.get(x).setFechaCreacion(Dates.fechaCreacion());
-				//subContratos.get(x).setEstado("enabled");
-				System.out.println("Grabar Subcontrato: " + subContratos.get(x).getMonto());
-				if(subContratos.get(x).getEstado().equals("enabled")){
-					em.persist(subContratos.get(x));
-					//
-					subcontratosMap.put(subContratos.get(x).getProveedorSubcontrato().getIdProveedor(), subContratos.get(x));
-				}				
-			}
-			
-			//Grabamos las cuentas de tipo pago
-			ArrayList<Cuenta> cuenta_prov = new ArrayList<Cuenta>();
-			int resto2;		
-			for(int x = 0; x < pagProv.length; x++){
-				resto2 = x%6;				
-				if(resto2 == 0){
-					System.out.println("resto " + resto2 + ", creo Cuenta Proveedor e idProveedor: " + pagProv[x]);
-					Cuenta cu = new Cuenta();
-					
-					Subcontrato sbcontrato = subcontratosMap.get(Integer.parseInt(pagProv[x]));
-					
-					cu.setCuentaSubcontrato(sbcontrato);
-					cu.setTipo("pagar");
-					cuenta_prov.add(cu);
-				}else{
-					System.out.println("size cuentas: " + cuenta_prov.size());
-					int index = cuenta_prov.size()-1;
-					System.out.println("index: " + index);
-					switch(resto2){
-						case 1:
-							System.out.println("resto " + resto2 + ", x: " + x + ", monto: " + pagProv[x]);
-							cuenta_prov.get(index).setMonto(Formatos.StringToBigDecimal(pagProv[x]));						
-							break;
-						case 2:
-							System.out.println("resto " + resto2 + ", x: " + x + ", tipo pago: " + pagProv[x]);
-							cuenta_prov.get(index).setTipoPago(pagProv[x]);						
-							break;	
-						case 3:
-							System.out.println("resto " + resto2 + ", x: " + x + ", condicion: " + pagProv[x]);
-							cuenta_prov.get(index).setEstadoTrabajo(pagProv[x]);	
-							break;
-						case 4:
-							System.out.println("resto " + resto2 + ", x: " + x + ", avance: " + pagProv[x]);
-							cuenta_prov.get(index).setAvance(Double.parseDouble(pagProv[x]));
-							break;
-						case 5:
-							System.out.println("resto " + resto2 + ", x: " + x + ", fecha ven: " + pagProv[x]);
-							cuenta_prov.get(index).setFechaVencimiento(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
-							break;
-					}
-				}
-					
-			}
-				
-						
-			//El Array de Subcontratos se graba, con JSON esto ya seria directo aqui
-			for(int x = 0; x < cuenta_prov.size(); x++){	
-				cuenta_prov.get(x).setCuentaOrden(orden);
-				cuenta_prov.get(x).setCreadoPor((Integer)session.getAttribute("idUser"));
-				cuenta_prov.get(x).setFechaCreacion(Dates.fechaCreacion());
-				cuenta_prov.get(x).setEstado("Pendiente");
-				em.persist(cuenta_prov.get(x));
-				
-				//if(pagosprov.get(x).getEstado().equals("enabled")){
-					//em.persist(pagosprov.get(x));
-				//}				
-			}
-			
-			
 			idOrden = orden.getIdOrden();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return idOrden;
 	}
+	/**********************************************************************************************************************/
+	/****************Convierte el array de String a un array de Subcontratos, con JSON esta parte ya seria automatica******/
+	/**********************************************************************************************************************/
+	private Map<Integer, Subcontrato> grabarSubContratos(String[] subCont, Orden orden, HttpServletRequest req){
+		ArrayList<Subcontrato> subContratos = new ArrayList<Subcontrato>();
+		int resto;		
+		System.out.println("subCont.length: " + subCont.length);
+		for(int x = 0; x < subCont.length; x++){
+			resto = x%6;
+			if(resto == 0){
+				System.out.println("resto: " + resto + "creo Proveedor");
+				Subcontrato subc = new Subcontrato();
+				
+				Proveedor proveedor = em.find(Proveedor.class, Integer.parseInt(subCont[x]));
+				
+				subc.setProveedorSubcontrato(proveedor);
+				subc.setOrdenSubcontrato(orden);
+				
+				subContratos.add(subc);
+			}else{
+				System.out.println("size Subcontratos: " + subContratos.size());
+				int index = subContratos.size()-1;
+				System.out.println("index: " + index);
+				switch(resto){
+				case 1:
+					System.out.println("resto " + resto + ", x: " + x + ", tipo trabajo: " + subCont[x]);
+					subContratos.get(index).setTipoTrabajo(subCont[x]);
+					break;
+				case 2:
+					System.out.println("resto " + resto + ", x: " + x + ", moneda: " + subCont[x]);
+					subContratos.get(index).setMoneda(subCont[x]);
+					break;
+				case 3:
+					subContratos.get(index).setMonto(Formatos.StringToBigDecimal(subCont[x]));
+					System.out.println("resto " + resto + ", x: " + x + ", monto: " + subContratos.get(index).getMonto());
+					break;
+				case 4:
+					System.out.println("resto " + resto + ", x: " + x + ", termino: " + subCont[x]);
+					subContratos.get(index).setFechaTerminoObra(Dates.stringToDate(subCont[x], "yyyy-MM-dd"));
+					break;
+				case 5:
+					System.out.println("resto " + resto + ", x: " + x + ", estado: " + subCont[x]);
+					subContratos.get(index).setEstado(subCont[x]);
+					break;	
+				}
+			}
+		}
+		
+		Map<Integer, Subcontrato> subcontratosMap = new HashMap<Integer, Subcontrato>();
+		
+		//El Array de Subcontratos se graba, con JSON esto ya seria directo aqui
+		for(int x = 0; x < subContratos.size(); x++){			
+			subContratos.get(x).setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
+			subContratos.get(x).setFechaCreacion(Dates.fechaCreacion());
+			//subContratos.get(x).setEstado("enabled");
+			
+			if(subContratos.get(x).getEstado().equals("enabled")){
+				em.persist(subContratos.get(x));
+				subcontratosMap.put(subContratos.get(x).getProveedorSubcontrato().getIdProveedor(), subContratos.get(x));
+			}				
+		}
+		return subcontratosMap;
+	}
+	private boolean grabarCuentas(String[] pagProv, Map<Integer, Subcontrato> subcontratosMap, Orden orden, HttpServletRequest req, String tipo){
+		//Grabamos las cuentas de tipo pago
+		ArrayList<Cuenta> cuenta_prov = new ArrayList<Cuenta>();
+		int resto2;		
+		for(int x = 0; x < pagProv.length; x++){
+			resto2 = x%6;				
+			if(resto2 == 0){
+				System.out.println("resto " + resto2 + ", creo Cuenta Proveedor e idProveedor: " + pagProv[x]);
+				Cuenta cu = new Cuenta();
+				
+				Subcontrato sbcontrato = subcontratosMap.get(Integer.parseInt(pagProv[x]));
+				
+				cu.setCuentaSubcontrato(sbcontrato);
+				cu.setTipo("pagar");
+				cuenta_prov.add(cu);
+			}else{
+				System.out.println("size cuentas: " + cuenta_prov.size());
+				int index = cuenta_prov.size()-1;
+				System.out.println("index: " + index);
+				switch(resto2){
+					case 1:
+						System.out.println("resto " + resto2 + ", x: " + x + ", monto: " + pagProv[x]);
+						cuenta_prov.get(index).setMonto(Formatos.StringToBigDecimal(pagProv[x]));						
+						break;
+					case 2:
+						System.out.println("resto " + resto2 + ", x: " + x + ", tipo pago: " + pagProv[x]);
+						cuenta_prov.get(index).setTipoPago(pagProv[x]);						
+						break;	
+					case 3:
+						System.out.println("resto " + resto2 + ", x: " + x + ", condicion: " + pagProv[x]);
+						cuenta_prov.get(index).setEstadoTrabajo(pagProv[x]);	
+						break;
+					case 4:
+						System.out.println("resto " + resto2 + ", x: " + x + ", avance: " + pagProv[x]);
+						cuenta_prov.get(index).setAvance(Double.parseDouble(pagProv[x]));
+						break;
+					case 5:
+						System.out.println("resto " + resto2 + ", x: " + x + ", fecha ven: " + pagProv[x]);
+						cuenta_prov.get(index).setFechaVencimiento(Dates.stringToDate(pagProv[x], "yyyy-MM-dd"));
+						break;
+				}
+			}
+				
+		}
+		//El Array de Subcontratos se graba, con JSON esto ya seria directo aqui
+		for(int x = 0; x < cuenta_prov.size(); x++){	
+			cuenta_prov.get(x).setCuentaOrden(orden);
+			cuenta_prov.get(x).setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
+			cuenta_prov.get(x).setFechaCreacion(Dates.fechaCreacion());
+			cuenta_prov.get(x).setEstado("Pendiente");
+			em.persist(cuenta_prov.get(x));			
+		}
+		return true;
+	}
+	
+	
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<OrdenBean> buscarOrden(OrdenBean ordenBean, HttpServletRequest req){

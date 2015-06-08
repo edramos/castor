@@ -97,15 +97,24 @@ public class FacturaServiceImpl implements FacturaService{
 	@SuppressWarnings("unchecked")
 	public List<FacturaBean> cargarFacturas(HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
-		//Hacer que el orden de los f sea igual que el de cargarFacturaOrden
-		Query q1 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.subtotal, f.conigv, f.total, f.montodetraccion, f.cobrarfactura, f.estadodetraccion, f.estado, f.fechaemision, "
-				+ "f.detraccion, f.fechacancelacion, f.fechacancelaciondetraccion "
-				+ "FROM factura f "
-				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
-				+ "INNER JOIN orden o ON o.idorden = c.idorden "
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' ORDER BY f.fechacreacion DESC");
+		Query q01 = null;
 		
-		List<Object[]> rows = q1.getResultList();
+		switch(req.getSession().getAttribute("tipo").toString()){
+		case "empresa":
+			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.subtotal, f.conigv, f.total, f.montodetraccion, f.cobrarfactura, f.estadodetraccion, f.estado, f.fechaemision, "
+					+ "f.detraccion, f.fechacancelacion, f.fechacancelaciondetraccion "
+					+ "FROM factura f "
+					+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
+					+ "INNER JOIN orden o ON o.idorden = c.idorden "
+					+ "INNER JOIN subcontrato sc ON sc.idsubcontrato = c.idsubcontrato "
+					+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+					+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' OR p.ruc = '"+ req.getSession().getAttribute("ruc") +"' "
+					+ "ORDER BY f.fechacreacion DESC");
+		}
+		
+		
+		
+		List<Object[]> rows = q01.getResultList();
 		
 		for(int x = 0; x < rows.size(); x++){
 			Object[] obj = rows.get(x);
@@ -200,16 +209,17 @@ public class FacturaServiceImpl implements FacturaService{
 		Query q01 = null;
 		
 		if(tipo.equals("cobrar")){
-		q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.subtotal, f.cobrarfactura, f.montodetraccion, o.idcliente FROM factura f "
+			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.subtotal, f.cobrarfactura, f.montodetraccion, o.idcliente FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
-				+ "INNER JOIN orden o ON o.idorden = c.idorden "
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado != 'Cancelado' AND f.estado != 'Falta Detraccion'");
+				+ "INNER JOIN orden o ON o.idorden = c.idorden INNER JOIN subcontrato sc ON sc.idsubcontrato = c.idsubcontrato "
+				+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' OR p.ruc = '205496100' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado != 'Cancelado' AND f.estado != 'Falta Detraccion'");
 		}else{
 			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.subtotal, f.cobrarfactura, f.montodetraccion, sc.idproveedor FROM factura f "
-					+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
-					+ "INNER JOIN orden o ON o.idorden = c.idorden " 
-					+ "INNER JOIN subcontrato sc ON c.idsubcontrato = sc.idsubcontrato " 
-					+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado != 'Cancelado' AND f.estado != 'Falta Detraccion'");
+				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
+				+ "INNER JOIN orden o ON o.idorden = c.idorden " 
+				+ "INNER JOIN subcontrato sc ON c.idsubcontrato = sc.idsubcontrato " 
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado != 'Cancelado' AND f.estado != 'Falta Detraccion'");
 		}
 		List<Object[]> rows = q01.getResultList();
 		

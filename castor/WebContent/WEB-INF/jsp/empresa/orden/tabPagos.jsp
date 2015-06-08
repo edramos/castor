@@ -15,11 +15,12 @@
 <% } %>
 <div id="viewPagos" class="portlet-body" style="margin-top: 20px">
 	<div class="table-responsive">
-		<table class="table table-bordered table-hover">
+		<table class="table table-condensed table-bordered table-hover">
 		<thead>
 		<tr class="heading">
-			<th>N° F.</th><th>Proveedor</th><th>Vencimiento</th><th>Monto</th><th>Tipo Pago</th><th>Condicion</th>
-			<th>Estado</th>
+			<th>N° F.</th><th style="text-align:center;">Proveedor</th><th style="text-align:center;">Vence</th><th style="text-align:center;">Condicion</th>
+			<th style="text-align:center;">Monto</th><th style="text-align:center;">IGV</th><th style="text-align:center;">Mon + IGV</th>
+			<th style="text-align:center;">Detraccion</th><th style="text-align:center;">Tipo Pago</th><th style="text-align:center;">Estado</th>
 		</tr>
 		</thead>
 	
@@ -133,11 +134,14 @@ function initFacturasPagar(facturasPagar){
 <script id="templatePagos" type="text/x-handlebars-template">
 <tr>
 	<td>{{codigo}}</td>
-	<td style="text-align:left;">{{nombreProveedor}}</td>
-	<td>{{fechaVencimiento}}</td>
+	<td style="text-align:center;">{{nombreProveedor}}</td>
+	<td style="text-align:center;">{{fechaVencimiento}}</td>
+	<td style="text-align:center;">{{estadoTrabajo}} {{avance}}</td>
+	<td style="text-align:right;">{{monto}}</td>
+	<td style="text-align:right;">{{igv}}</td>
 	<td style="text-align:right;">{{conIgv}}</td>
-	<td>{{tipoPago}}</td>
-	<td>{{estadoTrabajo}} {{avance}}</td>
+	<td style="text-align:right;">{{montoDetraccion}}</td>
+	<td style="text-align:center;">{{tipoPago}}</td>
 	<td>{{#ifEst estado 'Cancelado'}}<span class="label label-success">{{estado}}</span>{{/ifEst}}
 	{{#ifEst estado 'Pendiente'}}<span class="label label-warning">{{estado}}</span>{{/ifEst}}
 	{{#ifEst estado 'Facturado'}}<span class="label label-default">{{estado}}</span>{{/ifEst}}

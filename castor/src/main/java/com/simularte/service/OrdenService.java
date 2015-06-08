@@ -12,7 +12,7 @@ public interface OrdenService {
 	List<OrdenBean> buscarOrden(OrdenBean ordenBean , HttpServletRequest req);
 	OrdenBean obtenerInformacionOrden(int idOrden , String tipo, HttpServletRequest req);
 	List<OrdenBean> buscarOrderPanel(HttpServletRequest req);
-	List<OrdenBean> buscarOrdenFactura(HttpServletRequest req);
+	List<OrdenBean> buscarOrdenFactura(String value, HttpServletRequest req);
 	List<OrdenBean> buscarOrdenCaja(int idFactura, HttpServletRequest req);
 	List<OrdenBean> getOrdenesSuggest(String codigo, HttpServletRequest req);
 	
