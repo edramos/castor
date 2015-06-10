@@ -112,9 +112,9 @@ public class OrdenController {
 		return ordenserv.mostrarReporteOT(req);
 	}
 	/*MASTER DEUDA OT*/
-	@RequestMapping(value = "reporteMasterDeudaOT-{tipo}", method = RequestMethod.POST) @ResponseBody
-	public List<OrdenBean> reporteMasterDeudaOT(@PathVariable("tipo")String tipo, HttpServletRequest req){
-		return ordenserv.mostrarMasterDeudaOT(tipo, req);
+	@RequestMapping(value = "reporteMasterDeudaOT", method = RequestMethod.POST) @ResponseBody
+	public List<OrdenBean> reporteMasterDeudaOT(@ModelAttribute("ordenBean")OrdenBean ob, HttpServletRequest req){
+		return ordenserv.mostrarMasterDeudaOT(ob, req);	
 	}
 	@RequestMapping(value = "reporteMasterDinamicaOT", method = RequestMethod.POST) @ResponseBody
 	public List<OrdenBean> reporteMasterDinamicaOT(HttpServletRequest req){

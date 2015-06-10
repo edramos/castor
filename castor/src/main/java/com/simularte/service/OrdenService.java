@@ -22,7 +22,7 @@ public interface OrdenService {
 	//REPORTE
 	List<OrdenBean> mostrarReporteOT(HttpServletRequest req);
 	List<OrdenBean> mostrarMasterOT(HttpServletRequest req);
-	List<OrdenBean> mostrarMasterDeudaOT(String tipo, HttpServletRequest req);
+	List<OrdenBean> mostrarMasterDeudaOT(OrdenBean ob, HttpServletRequest req);
 	List<OrdenBean> mostrarMasterDinamicaOT(HttpServletRequest req);
 	
 	//CHART

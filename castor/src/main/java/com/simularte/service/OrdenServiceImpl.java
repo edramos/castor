@@ -121,32 +121,45 @@ public class OrdenServiceImpl implements OrdenService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<OrdenBean> mostrarMasterDeudaOT(String tipo, HttpServletRequest req){
+	public List<OrdenBean> mostrarMasterDeudaOT(OrdenBean obView, HttpServletRequest req){
 		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
+		System.out.println("idProveedor: " + obView.getIdProveedor());
 		//Funciona para 1 solo Proveedor, mejorarlo a n Proveedores
 		Query q01 = null;
-		/*if(tipo.equals("cliente")){
-			q01 = em.createNativeQuery("SELECT o.idorden, o.nombre, o.oferta, o.estado, o.pagado, sc.monto, p.nombre as np FROM orden o "
-					+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
-					+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
-					+ "WHERE o.idempresa = '"+ (Integer)req.getSession().getAttribute("idEmpresa") +"'");
-		}else{
-			q01 = em.createNativeQuery("SELECT o.idorden, o.nombre, o.oferta, o.estado, o.pagado, sc.monto, p.nombre as np, e.nombre as ne FROM orden o "
-					+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
-					+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
-					+ "INNER JOIN empresa e ON e.idempresa = o.idempresa "
-					+ "WHERE p.ruc = '"+ req.getSession().getAttribute("ruc") +"'");
-		}*/
-		switch(req.getSession().getAttribute("tipo").toString()){
-		case "cliente":
-			q01 = em.createNativeQuery("SELECT o.idorden, o.nombre, o.estado, p.nombre as Proveedor, sc.monto as Oferta, sc.monto *0.18 as IGV, sc.monto + sc.monto* 0.18 as Total, SUM(dl.monto) as Pagado "
+		String query01 = "SELECT o.idorden, o.nombre, o.estado, p.nombre as Proveedor, sc.monto as Oferta, sc.monto *0.18 as IGV, sc.monto + sc.monto* 0.18 as Total, SUM(dl.monto) as Pagado "
 				+ "FROM orden o "
 				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
 				+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
-				+ "LEFT JOIN detallelibro dl ON dl.idorden = o.idorden "
-				+ "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' GROUP BY o.idorden");
+				+ "LEFT JOIN detallelibro dl ON dl.idorden = o.idorden ";
+		String condiciones = "";
+		
+		switch(req.getSession().getAttribute("tipo").toString()){
+		case "cliente":
+			if(obView.getIdProveedor() == -1){
+				System.out.println("Entre con idP -1, ahora vere si las fechas estan vacias");
+				if(!obView.getFechaInicio().equals("") && !obView.getFechaEntrega().equals("")){
+					condiciones = "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' "
+						+ "AND o.fechaentrega BETWEEN '"+ Dates.stringToDate(obView.getFechaInicio(), "yyyy-MM-dd") +"' "
+						+ "AND '"+ Dates.stringToDate(obView.getFechaEntrega(), "yyyy-MM-dd") +"' "
+						+ "GROUP BY o.idorden"; 
+				}else{
+					System.out.println("idP -1 y Fechas vacias");
+					condiciones = "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' GROUP BY o.idorden";
+				}
+			}else{
+				if(!obView.getFechaInicio().equals("") && !obView.getFechaEntrega().equals("")){
+					condiciones = "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' "
+						+ "AND o.fechaentrega BETWEEN '"+ Dates.stringToDate(obView.getFechaInicio(), "yyyy-MM-dd") +"' "
+						+ "AND '"+ Dates.stringToDate(obView.getFechaEntrega(), "yyyy-MM-dd") +"' AND p.idproveedor = '"+ obView.getIdProveedor() +"' "
+						+ "GROUP BY o.idorden"; 
+				}else{
+					condiciones = "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' AND p.idproveedor = '"+ obView.getIdProveedor() +"' GROUP BY o.idorden";
+				}
+			}
 			break;
 		}
+		
+		q01 = em.createNativeQuery(query01 + condiciones);
 		
 		try{
 			BigDecimal gtPagado = BigDecimal.ZERO;
@@ -178,8 +191,6 @@ public class OrdenServiceImpl implements OrdenService {
 				ob.setIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj01[5].toString())));
 				ob.setsTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj01[6].toString())));				
 				
-				
-				
 				gtPagado = gtPagado.add(pagado);
 				ob.setGtPagado(Formatos.BigBecimalToString(gtPagado));
 								
@@ -189,13 +200,14 @@ public class OrdenServiceImpl implements OrdenService {
 				BigDecimal totalDeudaCorrespondiente = BigDecimal.ZERO;
 				BigDecimal deudaActual = BigDecimal.ZERO;
 				BigDecimal deudaComprometida = BigDecimal.ZERO;
-								
-				for(int y = 0; y < rows02.size(); y++){
+				
+				
+				for(int y = 0; y < rows02.size(); y++){	
 					Object[] obj02 = rows02.get(y);
-							
+					Query q03 = null;
+					
 					if(ob.getEstado().equals(obj02[1].toString())){
 						System.out.println("COINCIDIO: " + ob.getEstado() + ", idCuenta: " + obj02[0]);
-						Query q03 = null;
 						
 						switch(obj02[1].toString()){
 						case "Sin inicio":
@@ -220,25 +232,31 @@ public class OrdenServiceImpl implements OrdenService {
 							break;
 						}
 						
-						try{
-							totalDeudaCorrespondiente = (BigDecimal)q03.getSingleResult();
-							totalDeudaCorrespondiente = totalDeudaCorrespondiente.multiply(Valores.IGV).add(totalDeudaCorrespondiente);
-						}catch(NullPointerException e){
-							;
-						}
-						deudaActual = totalDeudaCorrespondiente.subtract(ob.getPagado()).setScale(2, RoundingMode.HALF_UP);
-						//deudaComprometida = ob.getOferta().subtract(ob.getPagado());
-						//System.out.println("ob.getsTotal(): " + ob.getsTotal());
-						deudaComprometida = Formatos.StringToBigDecimal(obj01[6].toString()).subtract(ob.getPagado());
+						
 					}else{
-						System.out.println("Conidicion de Pago no encotntrada: " + ob.getEstado());	//Se podria hacer un case con los estados parecido al anterior
+						System.out.println("Coindicion de Pago no encontrada: " + ob.getEstado());	//Se podria hacer un case con los estados parecido al anterior
+						switch(ob.getEstado()){
+						case "Proceso":
+							System.out.println("Aqui hacer algo cuando la condicion no tiene cuenta x pagar");
+							q03 = em.createNativeQuery("SELECT SUM(c.monto) as acumuladoDeudaComprometida FROM cuenta c "
+									+ "WHERE c.tipo = 'pagar' AND c.idorden = '"+ ob.getIdOrden() +"' AND (c.estadotrabajo = 'Sin inicio' OR c.estadotrabajo = 'Por iniciar' OR c.estadotrabajo = 'Proceso')");
+							break;
+						}
 					}
+					
+					try{
+						totalDeudaCorrespondiente = (BigDecimal)q03.getSingleResult();
+						totalDeudaCorrespondiente = totalDeudaCorrespondiente.multiply(Valores.IGV).add(totalDeudaCorrespondiente);
+					}catch(NullPointerException e){
+						;
+					}
+					deudaActual = totalDeudaCorrespondiente.subtract(ob.getPagado()).setScale(2, RoundingMode.HALF_UP);
+					deudaComprometida = Formatos.StringToBigDecimal(obj01[6].toString()).subtract(ob.getPagado());
+					
 				}
 				
 				ob.setDeudaCorrespondienteS(Formatos.BigBecimalToString(totalDeudaCorrespondiente));
-				//ob.setDeudaActual(deudaActual);
 				ob.setDeudaActualS(Formatos.BigBecimalToString(deudaActual));
-				//ob.setDeudaComprometida(deudaComprometida);
 				ob.setDeudaComprometidaS(Formatos.BigBecimalToString(deudaComprometida));
 				
 				gtDeudaActual = gtDeudaActual.add(deudaActual);

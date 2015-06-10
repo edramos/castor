@@ -10,11 +10,11 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
 <!-- END PAGE LEVEL STYLES -->
 <style type="text/css">
-.aligncenter{
-	text-align: center;
-}
+.aligncenter{text-align: center;}
+.alignright{text-align: right;}
 </style>
 </head>
 
@@ -34,7 +34,16 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">Master Deuda OT</div>
-				<div class="tools"></div>
+				<div class="actions">
+				<form:form id="frmBuscarOrden" modelAttribute="ordenBean" method="post">
+				    <div class="input-daterange input-group" id="datepicker">
+				    	<select id="sltProveedores" class="input-small" style="color:#333;" name="idProveedor"><option value="-1">Todos</option></select>
+				        <input id="txtInicio" type="text" class="input-xsmall" style="color:#333;" placeholder="Desde" name="fechaInicio" />
+				        <input id="txtFin" type="text" class="input-xsmall" style="color:#333;" placeholder="Hasta" name="fechaEntrega" />
+				        <a id="btnBuscar" class="btn btn-warning btn-sm eventBtn">Buscar</a>
+				    </div>
+				</form:form>
+				</div>
 			</div>
 			<div id="divPortletBody" class="portlet-body">
 			
@@ -97,6 +106,7 @@
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
 <script type="text/javascript" src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+<script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -106,14 +116,48 @@
 <script>
 var rol = '<%=session.getAttribute("rol").toString()%>';
 var aEstados = ["Sin inicio", "Por iniciar", "Proceso", "Terminado", "Aceptado"];
+var aProveedores = [];
 
 jQuery(document).ready(function() {   
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	
-	buscarOrden("cliente");
+	buscarOrden();
 	buscarOrdenDinamica();
+	
+	cargarProveedores();
+	
+    $('.input-daterange').datepicker({
+    	format: "dd/mm/yyyy",
+		autoclose: true,
+		todayHighlight: true
+    });
+
 });
+</script>
+<script>
+$(document).on('click','.eventBtn', function(e){
+	switch(this.id){
+	case "btnBuscar":
+		buscarOrden();
+		break;
+	}
+});
+function cargarProveedores(){
+	$.ajax({
+		url: 'ajaxListarProveedores',
+		type: 'post',
+		dataType: 'json',
+		success: function(proveedores){
+			$.each(proveedores, function(i, proveedor){
+				aProveedores[i] = proveedor;
+ 			});
+			for(var i = 0; i < aProveedores.length; i++){
+				$('<option/>').val(aProveedores[i].idProveedor).html(aProveedores[i].nombre).appendTo('#sltProveedores');
+			}
+		}
+	});	
+}
 </script>
 <script id="templateMasterDeudaOT" type="text/x-handlebars-template">
 <tr>
@@ -162,26 +206,32 @@ function buscarOrdenDinamica(){
 		}
 	});	
 }
-function buscarOrden(tipo){
+function buscarOrden(){
 	var html = '';
 	
 	$.ajax({
-		url: 'reporteMasterDeudaOT-' + tipo,
+		url: 'reporteMasterDeudaOT',
 		type: 'post',
 		dataType: 'json',
 		data: $('#frmBuscarOrden').serialize(),
 		success: function(ordenes){
-			$.each(ordenes, function(i, orden){
- 				var source = $("#templateMasterDeudaOT").html();
- 				var template = Handlebars.compile(source);
- 				html += template(orden);
-			});
-			removeAddTable();
-			$("#viewMasterDeudaOTHandlerbars").html(html);
-			$("#viewMasterDeudaOTHandlerbars").append('<tr class="success"><th>TOTALES</th><th></th><th>TOTAL</th><th></th><th></th><th></th>'+
-			'<th></th><th></th><th>'+ ordenes[ordenes.length - 1].gtPagado +'</th><th>'+ ordenes[ordenes.length - 1].gtDeudaActual +'</th><th></th><th></th><th></th><th></th></tr>');
-			
-			initTableMasterDeudaOT();
+			if(ordenes.length > 0){
+				$.each(ordenes, function(i, orden){
+	 				var source = $("#templateMasterDeudaOT").html();
+	 				var template = Handlebars.compile(source);
+	 				html += template(orden);
+				});
+				removeAddTable();
+				$("#viewMasterDeudaOTHandlerbars").html(html);
+				$("#viewMasterDeudaOTHandlerbars").append('<tr class="success" style="font-weight:bold;"><td>TOTAL</td><td></td><td style="color:#333;">TOTAL</td>'+
+				'<td></td><td></td><td></td><td></td><td></td><td style="color:#333;">'+ ordenes[ordenes.length - 1].gtPagado +'</td>'+
+				'<td style="color:#333;">'+ ordenes[ordenes.length - 1].gtDeudaActual +'</td><td></td><td></td><td></td><td></td>');
+				
+				initTableMasterDeudaOT();
+			}else{
+				removeAddTable();
+				initTableMasterDeudaOT();
+			}
 		}
 	});	
 }
@@ -261,8 +311,8 @@ function initTableMasterDeudaOT(){
 		}
 		
 		
-		jqTds[8].innerHTML = '<a class="btn green-meadow btn-xs edit" href=""><i class="fa fa-check"></i> Grabar</a>';
-        jqTds[9].innerHTML = '<a class="btn red btn-xs cancel" href=""><i class="fa fa-close"></i> Cancelar</a><input type="hidden" name="idOrden" value="'+ aData[0] +'">';
+		jqTds[10].innerHTML = '<a class="btn green-meadow btn-xs edit" href=""><i class="fa fa-check"></i> Grabar</a>';
+        jqTds[11].innerHTML = '<a class="btn red btn-xs cancel" href=""><i class="fa fa-close"></i> Cancelar</a><input type="hidden" name="idOrden" value="'+ aData[0] +'">';
 		
 		for(var i = 0; i < aEstados.length; i++){
        		$('<option/>').val(aEstados[i]).html(aEstados[i]).appendTo('#sltEstadoObra');
@@ -292,26 +342,19 @@ function initTableMasterDeudaOT(){
 	var table = $('#tblMasterDeudaOT');
 	var oTable = table.dataTable({
         "lengthMenu": [
-            [5, 15, 20, -1],
-            [5, 15, 20, "All"] // change per page values here
+            [25, 50, 100, -1],[25, 50, 100, "Todo"] // change per page values here
         ],
-        "pageLength": 10,
-        
-        
-
+        "pageLength": 25,
         "language": {
-            "lengthMenu": " _MENU_ records"
+            "lengthMenu": " _MENU_ resultados"
         },
-        "columnDefs": [
-        { 
-        	"visible": false, "targets": [0,1] 
-        },{ 
-            'orderable': false,
-            'targets': [0]
-        }, {
-            "searchable": true,
-            "targets": [0]
-        }],
+        "bFilter" : false,
+        "bSort" : false,
+        "aoColumnDefs": [
+        	{ "sClass": "alignright", "aTargets": [5,6,7,8,9,10,11] },
+        	{ "sClass": "aligncenter", "aTargets": [4] },
+        	{ "bVisible": false, "aTargets": [0,1] }
+        ],
         "order": [
             [0, "asc"]
         ] // set first column as a default sort by asc
@@ -355,7 +398,7 @@ function initTableMasterDeudaOT(){
          		dataType: 'json',
          		data: $('#frmEditarFila').serialize(),
          		success: function(resultado){
-         			buscarOrden("cliente");
+         			buscarOrden();
          			buscarOrdenDinamica();
          		}
          	});
