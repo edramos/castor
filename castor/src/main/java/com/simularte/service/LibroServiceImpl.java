@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.simularte.bean.DetalleLibroBean;
+import com.simularte.bean.LibroBean;
 import com.simularte.model.Cliente;
 import com.simularte.model.Cuenta;
 import com.simularte.model.DetalleLibro;
@@ -33,6 +36,32 @@ public class LibroServiceImpl implements LibroService{
 	
 	@Autowired
 	S3Service s3;
+	
+	@SuppressWarnings("unchecked") @JsonIgnore
+	public List<LibroBean> listarLibros(HttpServletRequest req){
+		List<LibroBean> libros = new ArrayList<LibroBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT l.idlibro, l.nombre FROM libro l WHERE l.estado = 'enabled' AND l.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"'");
+		
+		try{
+			List<Object[]> rows01 = q01.getResultList();
+			for(int x = 0; x < rows01.size(); x++){
+				Object[] obj = rows01.get(x);
+				LibroBean lb = new LibroBean();
+				
+				lb.setIdLibro((Integer)obj[0]);
+				lb.setNombre(obj[1].toString());
+				
+				libros.add(lb);
+			}
+			
+		}catch(NoResultException e){
+			System.out.println("No encontre nada");
+			e.printStackTrace();
+		}
+		
+		return libros;
+	}
 	
 	@Transactional
 	public boolean crearDetalleLibro(DetalleLibroBean dlb, Integer idLibro, HttpServletRequest req){

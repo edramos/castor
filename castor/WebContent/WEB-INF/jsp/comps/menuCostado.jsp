@@ -28,7 +28,7 @@
 				</ul>
 			</li>
 			
-			<% if(session.getAttribute("tipo").equals("empresa")){ %>
+			<% if(session.getAttribute("tipo").equals("empresa") || session.getAttribute("rol").equals("Contable")){ %>
 			    <li>
 					<a href="javascript:;"><i class="icon-speedometer"></i>
 					<span class="title">Facturas</span>
@@ -46,7 +46,7 @@
 					</a>
 					<ul class="sub-menu">
 						<li><a href="toCajaBanco">Caja Banco</a></li>
-						<li><a href="toCajaChica">Caja Chica</a></li>
+						<%if(session.getAttribute("tipo").equals("empresa")){%><li><a href="toCajaChica">Caja Chica</a></li><%}%>
 					</ul>
 				</li> 
 			<% }%>

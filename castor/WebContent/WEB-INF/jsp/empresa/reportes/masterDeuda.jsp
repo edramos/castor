@@ -11,6 +11,11 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css"/>
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
 <!-- END PAGE LEVEL STYLES -->
+<style type="text/css">
+.aligncenter{
+	text-align: center;
+}
+</style>
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
@@ -38,7 +43,7 @@
 			<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-hover">
 			<thead>
 			<tr>
-				<th>idO</th><th>idC</th><th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Monto</th><th>Pagado</th>
+				<th>idO</th><th>idC</th><th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Oferta</th><th>Pagado</th>
 				<th>Deuda Actual</th><th>Deuda Comprom.</th><th>Deuda Corresp.</th><th></th><th></th>
 			</tr>
 			</thead>
@@ -52,13 +57,14 @@
 				
 			</div>
 		</div>
-		
+</div>
+</div>
+<div class="row">
+<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption">Total Estado OT</div>
-				<div class="tools">							
-					
-				</div>
+				<div class="caption"><i class="fa fa-table"></i>Resumen por fecha de mes de termino</div>
+				<div class="actions"></div>
 			</div>
 			<div id="divPortletBodyDinamica" class="portlet-body">
 				<table id="tblMasterDinamicaOT" class="table table-striped table-bordered table-condensed table-hover">
@@ -116,11 +122,13 @@ jQuery(document).ready(function() {
 	<td><a href="ordenPag-{{idOrden}}" target="_blank">{{nombre}}<a/></td>
 	<td>{{nombreProveedor}}</td>
 	<td>{{estado}}</td>
-	<td>{{oferta}}</td>
-	<td>{{pagado}}</td>
-	<td>{{deudaActual}}</td>
-	<td>{{deudaComprometida}}</td>
-	<td>{{deudaCorrespondiente}}</td>
+	<td>{{ofertaS}}</td>
+	<td>{{igv}}</td>
+	<td>{{sTotal}}</td>
+	<td>{{pagadoS}}</td>
+	<td>{{deudaActualS}}</td>
+	<td>{{deudaComprometidaS}}</td>
+	<td>{{deudaCorrespondienteS}}</td>
 	<td><a class="btn green-meadow btn-xs edit" href="javascript:;"><i class="fa fa-edit"></i> Editar</a></td>
 	<td></td>
 </tr>
@@ -128,10 +136,9 @@ jQuery(document).ready(function() {
 <script id="templateMasterDinamicaOT" type="text/x-handlebars-template">
 <tr>
 	<td>{{estado}}</td>
-	
-	{{#each contadorMeses}}
-  <td style="text-align:center;">{{this}}</td>
-  {{/each}}
+{{#each contadorMeses}}
+	<td>{{this}}</td>
+{{/each}}
 </tr>
 </script>
 <script>
@@ -171,6 +178,9 @@ function buscarOrden(tipo){
 			});
 			removeAddTable();
 			$("#viewMasterDeudaOTHandlerbars").html(html);
+			$("#viewMasterDeudaOTHandlerbars").append('<tr class="success"><th>TOTALES</th><th></th><th>TOTAL</th><th></th><th></th><th></th>'+
+			'<th></th><th></th><th>'+ ordenes[ordenes.length - 1].gtPagado +'</th><th>'+ ordenes[ordenes.length - 1].gtDeudaActual +'</th><th></th><th></th><th></th><th></th></tr>');
+			
 			initTableMasterDeudaOT();
 		}
 	});	
@@ -178,46 +188,52 @@ function buscarOrden(tipo){
 </script>
 <script>
 function initTableMasterDinamicaOT(){
-	$('#tblMasterDinamicaOT').dataTable({
+	$.extend(true, $.fn.DataTable.TableTools.classes, {
+        "container": "btn-group tabletools-dropdown-on-portlet",
+        "buttons": {
+            "normal": "btn btn-sm default",
+            "disabled": "btn btn-sm default disabled"
+        },
+        "collection": {
+            "container": "DTTT_dropdown dropdown-menu tabletools-dropdown-menu"
+        }
+    });
+	
+	$('#tblMasterDinamicaOT').DataTable({
 	    "order": [],
-	    "columnDefs": [{
-	    	"targets": [1,2,3,4,8,9,10,11,12], "visible": false
-	    }],
-	    "dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
-	    "tableTools": {
-            "sSwfPath": "assets/global/plugins/datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+	    "paging": false,
+	    "bSort" : false,
+	    "bFilter" : false,
+	    "bInfo": false,
+	    "aoColumnDefs": [
+        	{ "sClass": "aligncenter", "aTargets": [1,2,3,4,5,6,7,8,9,10,11,12] },
+        	{ "bVisible": false, "aTargets": [ 1,2,3,4,8,9,10,11,12 ] }
+        ],
+	    "fnCreatedRow": function( nRow, aData, iDataIndex ){
+	    	if(aData[0] == "TOTAL"){
+	    		$('td', nRow).css({"background-color":"#dff0d8", "font-weight": "bold"});
+	    	}
+		},
+		"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+		"tableTools": {
+            "sSwfPath": "assets/global/plugins/datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+            "aButtons": [{
+                "sExtends": "pdf",
+                "sButtonText": "PDF"
+            }, {
+                "sExtends": "csv",
+                "sButtonText": "CSV"
+            }, {
+                "sExtends": "xls",
+                "sButtonText": "Excel"
+            }, {
+                "sExtends": "print",
+                "sButtonText": "Print",
+                "sInfo": 'Presiona "CTR+P" para Imprimir o "ESC" to regresar',
+                "sMessage": "Generated by Simularte"
+            }]
         }
 	});
-	
-	/* var table = $('#tblMasterDinamicaOT');
-	var oTable = table.dataTable({
-        "lengthMenu": [
-            [5, 15, 20, -1],
-            [5, 15, 20, "All"] // change per page values here
-        ],
-        "pageLength": 5,
-
-        "language": {
-            "lengthMenu": " _MENU_ records"
-        },
-        "columnDefs": [
-        { 
-        	"visible": false, "targets": [1,2,3,4] 
-        },{ 
-            'orderable': false,
-            'targets': [0]
-        }, {
-            "searchable": true,
-            "targets": [0]
-        }],
-        "order": [
-            [0, "asc"]
-        ] // set first column as a default sort by asc
-    });
-	var tableWrapper = $("#tblMasterDinamicaOT_wrapper");
-	tableWrapper.find(".dataTables_length select").select2({
-        showSearchInput: false //hide search box with special css class
-    }); // initialize select2 dropdown */
 }
 </script>
 <script>
@@ -368,7 +384,7 @@ function removeAddTable(){
 	$('#tblMasterDeudaOT_wrapper').remove();
 	
 	$('#frmEditarFila').append('<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr style="text-align:center;"><th>idO</th><th>idC</th>'+
-		'<th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Monto</th><th>Pagado</th><th>Deuda Actual</th><th>Deuda Comprom.</th><th>Deuda Corresp.</th><th></th><th></th></tr></thead><tbody id="viewMasterDeudaOTHandlerbars"></tbody></table>');
+		'<th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Oferta</th><th>IGV</th><th>Total</th><th>Pagado</th><th>Deuda Actual</th><th>Deuda Comp.</th><th>Deuda Corr.</th><th></th><th></th></tr></thead><tbody id="viewMasterDeudaOTHandlerbars"></tbody></table>');
 }
 </script>
 </body>

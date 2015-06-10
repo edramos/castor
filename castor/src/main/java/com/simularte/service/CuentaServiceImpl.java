@@ -99,10 +99,17 @@ public class CuentaServiceImpl implements CuentaService {
 	public List<CuentaBean> listarCuentasFactura(int idOrden, String tipo, HttpServletRequest req) {
 		List<CuentaBean> lcb = new ArrayList<CuentaBean>();
 		Query q01 = null;
+		
 		switch(req.getSession().getAttribute("tipo").toString()){
 		case "empresa":
 			tipo = (tipo.equals("cobrar"))?"pagar":"cobrar";	//Solo por ahora hasta definir bien lo que el Proveedor
 			
+			q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND tipo = :tipo AND estado = 'Pendiente'", Cuenta.class);
+			q01.setParameter("idOrden", idOrden);
+			q01.setParameter("tipo", tipo);
+			break;
+		case "cliente":
+			//Por ahora es el mismo query que empresa
 			q01 = em.createQuery("SELECT c FROM Cuenta c WHERE idOrden = :idOrden AND tipo = :tipo AND estado = 'Pendiente'", Cuenta.class);
 			q01.setParameter("idOrden", idOrden);
 			q01.setParameter("tipo", tipo);

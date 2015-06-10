@@ -125,7 +125,7 @@ public class OrdenServiceImpl implements OrdenService {
 		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
 		//Funciona para 1 solo Proveedor, mejorarlo a n Proveedores
 		Query q01 = null;
-		if(tipo.equals("cliente")){
+		/*if(tipo.equals("cliente")){
 			q01 = em.createNativeQuery("SELECT o.idorden, o.nombre, o.oferta, o.estado, o.pagado, sc.monto, p.nombre as np FROM orden o "
 					+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
 					+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
@@ -136,9 +136,22 @@ public class OrdenServiceImpl implements OrdenService {
 					+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
 					+ "INNER JOIN empresa e ON e.idempresa = o.idempresa "
 					+ "WHERE p.ruc = '"+ req.getSession().getAttribute("ruc") +"'");
+		}*/
+		switch(req.getSession().getAttribute("tipo").toString()){
+		case "cliente":
+			q01 = em.createNativeQuery("SELECT o.idorden, o.nombre, o.estado, p.nombre as Proveedor, sc.monto as Oferta, sc.monto *0.18 as IGV, sc.monto + sc.monto* 0.18 as Total, SUM(dl.monto) as Pagado "
+				+ "FROM orden o "
+				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
+				+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+				+ "LEFT JOIN detallelibro dl ON dl.idorden = o.idorden "
+				+ "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' GROUP BY o.idorden");
+			break;
 		}
 		
 		try{
+			BigDecimal gtPagado = BigDecimal.ZERO;
+			BigDecimal gtDeudaActual = BigDecimal.ZERO;
+			
 			List<Object[]> rows01 = q01.getResultList();
 			
 			for(int x = 0; x < rows01.size(); x++){
@@ -148,19 +161,28 @@ public class OrdenServiceImpl implements OrdenService {
 				
 				ob.setIdOrden((Integer)obj01[0]);
 				ob.setNombre(obj01[1].toString());
-				//El Cliente debe ver el monto que le tiene que pagar al Proveedor
-				//ob.setOferta(Formatos.StringToBigDecimal(obj01[2].toString()));
-				ob.setOferta(Formatos.StringToBigDecimal(obj01[5].toString()));
+				ob.setOfertaS(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj01[4].toString())));
 				
-				if(tipo.equals("cliente")){
-					ob.setNombreProveedor(obj01[6].toString());
+				if(req.getSession().getAttribute("tipo").toString().equals("cliente")){
+					ob.setNombreProveedor(obj01[3].toString());
 				}else{
-				ob.setNombreCliente(obj01[7].toString());
+					ob.setNombreCliente(obj01[7].toString());
 				}
 				
-				ob.setEstado(obj01[3].toString());
-				ob.setPagado(Formatos.StringToBigDecimal(obj01[4].toString()));
+				ob.setEstado(obj01[2].toString());
 				
+				BigDecimal pagado = (obj01[7] != null)?Formatos.StringToBigDecimal(obj01[7].toString()):BigDecimal.ZERO;
+				ob.setPagado(pagado);
+				ob.setPagadoS(Formatos.BigBecimalToString(pagado));
+				
+				ob.setIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj01[5].toString())));
+				ob.setsTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj01[6].toString())));				
+				
+				
+				
+				gtPagado = gtPagado.add(pagado);
+				ob.setGtPagado(Formatos.BigBecimalToString(gtPagado));
+								
 				Query q02 = em.createNativeQuery("SELECT c.idcuenta, c.estadotrabajo, c.monto FROM cuenta c WHERE c.tipo = 'pagar' AND c.idorden = '"+ ob.getIdOrden() +"'");
 				List<Object[]> rows02 = q02.getResultList();
 				
@@ -200,23 +222,27 @@ public class OrdenServiceImpl implements OrdenService {
 						
 						try{
 							totalDeudaCorrespondiente = (BigDecimal)q03.getSingleResult();
+							totalDeudaCorrespondiente = totalDeudaCorrespondiente.multiply(Valores.IGV).add(totalDeudaCorrespondiente);
 						}catch(NullPointerException e){
 							;
 						}
-						deudaActual = totalDeudaCorrespondiente.subtract(ob.getPagado());
-						deudaComprometida = ob.getOferta().subtract(ob.getPagado());
-						
+						deudaActual = totalDeudaCorrespondiente.subtract(ob.getPagado()).setScale(2, RoundingMode.HALF_UP);
+						//deudaComprometida = ob.getOferta().subtract(ob.getPagado());
+						//System.out.println("ob.getsTotal(): " + ob.getsTotal());
+						deudaComprometida = Formatos.StringToBigDecimal(obj01[6].toString()).subtract(ob.getPagado());
 					}else{
 						System.out.println("Conidicion de Pago no encotntrada: " + ob.getEstado());	//Se podria hacer un case con los estados parecido al anterior
 					}
 				}
 				
-					
+				ob.setDeudaCorrespondienteS(Formatos.BigBecimalToString(totalDeudaCorrespondiente));
+				//ob.setDeudaActual(deudaActual);
+				ob.setDeudaActualS(Formatos.BigBecimalToString(deudaActual));
+				//ob.setDeudaComprometida(deudaComprometida);
+				ob.setDeudaComprometidaS(Formatos.BigBecimalToString(deudaComprometida));
 				
-				
-				ob.setDeudaCorrespondiente(totalDeudaCorrespondiente);
-				ob.setDeudaActual(deudaActual);
-				ob.setDeudaComprometida(deudaComprometida);
+				gtDeudaActual = gtDeudaActual.add(deudaActual);
+				ob.setGtDeudaActual(Formatos.BigBecimalToString(gtDeudaActual));
 				
 				ordenes.add(ob);
 			}
@@ -432,7 +458,7 @@ public class OrdenServiceImpl implements OrdenService {
 		Query q01 = null;
 		//Se supone que la factura es unica en toda la app, por eso solo bastaria saber el idFactura
 		
-		q01 = em.createNativeQuery("SELECT o.idorden, o.codigo, f.idfactura FROM factura f "
+		q01 = em.createNativeQuery("SELECT o.idorden, o.codigo, o.nombre, f.idfactura FROM factura f "
 			+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 			+ "INNER JOIN orden o ON o.idorden = c.idorden "
 			+ "WHERE f.idfactura = '" + idFactura + "'");
@@ -446,6 +472,7 @@ public class OrdenServiceImpl implements OrdenService {
 			
 			ob.setIdOrden((Integer)obj[0]);
 			ob.setCodigo(obj[1].toString());
+			ob.setNombre(obj[2].toString());
 			
 			resultados.add(ob);
 		}
@@ -464,6 +491,14 @@ public class OrdenServiceImpl implements OrdenService {
 			//Solo por ahora se invierte, porque el rol Empresa no es igual que el rol Proveedor,
 			value = (value.equals("cobrar"))?"pagar":"cobrar";
 			
+			query = "SELECT o.idorden, o.nombre, o.idempresa, o.idcliente FROM orden o "
+				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+				+ "INNER JOIN cuenta c ON c.idorden = o.idorden "
+				+ "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' OR p.ruc = '"+ req.getSession().getAttribute("ruc") +"' "
+				+ "AND c.tipo = '"+ value +"' AND o.estado != 'Aceptado' AND o.estado != 'Aceptacion Pendiente' GROUP BY o.idorden";
+			break;
+		case "cliente":
+			//Por ahora empresa y cliente tienen el mismo query
 			query = "SELECT o.idorden, o.nombre, o.idempresa, o.idcliente FROM orden o "
 				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
 				+ "INNER JOIN cuenta c ON c.idorden = o.idorden "

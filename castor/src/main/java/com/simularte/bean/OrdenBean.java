@@ -69,6 +69,17 @@ public class OrdenBean {
 	private BigDecimal deudaComprometida;
 	private BigDecimal deudaCorrespondiente;
 	private BigDecimal pagado;
+	private String pagadoS;
+	private String igv;
+	private String sTotal;
+	private String deudaActualS;
+	private String deudaComprometidaS;
+	private String deudaCorrespondienteS;
+	private String ofertaS;
+	private String gtPagado;
+	private String gtDeudaActual;
+	private String gtDeudaComprometida;
+	private String gtDeudaCorrespondiente;
 	
 	//REPORTE ESTADO POR MES
 	private int[] contadorMeses = new int[12];
@@ -405,5 +416,71 @@ public class OrdenBean {
 	}
 	public void setContadorMeses(int index, int contadorMes) {
 		contadorMeses[index] = contadorMes;
+	}
+	public String getIgv() {
+		return igv;
+	}
+	public void setIgv(String igv) {
+		this.igv = igv;
+	}
+	public String getsTotal() {
+		return sTotal;
+	}
+	public void setsTotal(String sTotal) {
+		this.sTotal = sTotal;
+	}
+	public String getDeudaActualS() {
+		return deudaActualS;
+	}
+	public void setDeudaActualS(String deudaActualS) {
+		this.deudaActualS = deudaActualS;
+	}
+	public String getDeudaComprometidaS() {
+		return deudaComprometidaS;
+	}
+	public void setDeudaComprometidaS(String deudaComprometidaS) {
+		this.deudaComprometidaS = deudaComprometidaS;
+	}
+	public String getDeudaCorrespondienteS() {
+		return deudaCorrespondienteS;
+	}
+	public void setDeudaCorrespondienteS(String deudaCorrespondienteS) {
+		this.deudaCorrespondienteS = deudaCorrespondienteS;
+	}
+	public String getPagadoS() {
+		return pagadoS;
+	}
+	public void setPagadoS(String pagadoS) {
+		this.pagadoS = pagadoS;
+	}
+	public String getOfertaS() {
+		return ofertaS;
+	}
+	public void setOfertaS(String ofertaS) {
+		this.ofertaS = ofertaS;
+	}
+	public String getGtPagado() {
+		return gtPagado;
+	}
+	public void setGtPagado(String gtPagado) {
+		this.gtPagado = gtPagado;
+	}
+	public String getGtDeudaActual() {
+		return gtDeudaActual;
+	}
+	public void setGtDeudaActual(String gtDeudaActual) {
+		this.gtDeudaActual = gtDeudaActual;
+	}
+	public String getGtDeudaComprometida() {
+		return gtDeudaComprometida;
+	}
+	public void setGtDeudaComprometida(String gtDeudaComprometida) {
+		this.gtDeudaComprometida = gtDeudaComprometida;
+	}
+	public String getGtDeudaCorrespondiente() {
+		return gtDeudaCorrespondiente;
+	}
+	public void setGtDeudaCorrespondiente(String gtDeudaCorrespondiente) {
+		this.gtDeudaCorrespondiente = gtDeudaCorrespondiente;
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simularte.bean.DetalleLibroBean;
+import com.simularte.bean.LibroBean;
 import com.simularte.service.LibroService;
 
 @Controller
@@ -49,5 +50,10 @@ public class LibroController {
 		registros = cs.mostrarDetalleLibro(idDetalleLibro, req);
 	
 		return registros;
+	}
+	
+	@RequestMapping(value = "listarLibros", method = RequestMethod.GET) @ResponseBody
+	public List<LibroBean> listarLibros(HttpServletRequest req){	
+		return cs.listarLibros(req);
 	}
 }

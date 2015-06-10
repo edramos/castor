@@ -49,7 +49,7 @@ hr {
 						
 						<div class="col-md-2">
 							<select id="sltTipoFactura" class="form-control" name="tipo">
-								<option value="cobrar">Emitir</option>
+								<%if(session.getAttribute("tipo").equals("empresa")){%><option value="cobrar">Emitir</option><%}%>
 								<option value="pagar">Registrar</option>
 							</select>							
 						</div>
@@ -167,11 +167,17 @@ hr {
 <script src="assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
+var tipoOrg = '<%= session.getAttribute("tipo") %>';
+
 jQuery(document).ready(function() {   
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	
 	listarFacturas();
+	
+	if(tipoOrg == "cliente"){
+		prepararRegistrarFactura("pagar");
+	}
 	
 	 $("#btnEmitirFactura").click(function(){
 		//Despues se podria cambiar la logica para que se use el bean en cambio de las variables en el controller
@@ -252,7 +258,7 @@ function createTable(){
 	$('#divPortletBody').append(
 		"<table class='table table-striped table-hover' id='tblResultados'>"+
 		"<thead><tr><th style='width: 0px;display: none;'></th><th>N°</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th>"+
-		"<th>Cobrar</th><th>Estado Det.</th><th>Estado Fac.</th><th>Emision</th></thead>"+
+		"<th>Sin Detra.</th><th>Estado Det.</th><th>Estado Fac.</th><th>Emision</th></thead>"+
 		"<tbody id='viewResultadosHandlerbars'></tbody></table>"	
 	);
 }
@@ -382,38 +388,40 @@ $('#sltTipoFactura').change(function(){
 		});
 		
 	}else{
-		$('#txtCodigoFactura').prop('disabled', false);
-		
-		$('#sltOT').remove();
-		$('#divSltOT').append('<select id="sltOT" class="form-control" name="operacion"><option value="">Seleccione OT</option></select>');
-		$('#sltCuentas').remove();
-		$('#divSltCuentas').append('<select id="sltCuentas" class="form-control" name="operacion"><option value="">Seleccione Cuenta Pagar</option></select>');
-		
-		$('#divClienteProveedor').empty();
-		$('#divClienteProveedor').append('<span class="spanLabel">Proveedor</span><span id="spnNombreProveedor" class="value"></span>');
-		$('#divTrabajo').empty();
-		$('#divTrabajo').append('<span class="spanLabel">Trabajo</span><span id="spnTrabajoProveedor" class="value"></span>');
-		$('#divAccionCuenta').empty();
-		$('#divAccionCuenta').append('<span class="spanLabel">Pagar</span><span id="spnPagar" class="value"></span>');
-		
-		listarOT(value);
-		
-		$('#sltOT').on('change', function(){
-			$('#sltCuentas').remove();
-			$('#divSltCuentas').append('<select id="sltCuentas" class="form-control" name="operacion"><option value="">Seleccione Cuenta Pagar</option></select>');
-			var idOrden = $('#sltOT option:selected').val();
-			
-			listarDetalleFactura(idOrden, "pagar");
-			listarCuentas(idOrden, "pagar");
-			
-			$('#sltCuentas').on('change', function(){
-				var idCuenta = $('#sltCuentas option:selected').val();
-				listarDetalleCuenta(idCuenta, "pagar");
-			});
-		});
+		prepararRegistrarFactura();
 	}
 });
-
+function prepararRegistrarFactura(value){
+	$('#txtCodigoFactura').prop('disabled', false);
+	
+	$('#sltOT').remove();
+	$('#divSltOT').append('<select id="sltOT" class="form-control" name="operacion"><option value="">Seleccione OT</option></select>');
+	$('#sltCuentas').remove();
+	$('#divSltCuentas').append('<select id="sltCuentas" class="form-control" name="operacion"><option value="">Seleccione Cuenta Pagar</option></select>');
+	
+	$('#divClienteProveedor').empty();
+	$('#divClienteProveedor').append('<span class="spanLabel">Proveedor</span><span id="spnNombreProveedor" class="value"></span>');
+	$('#divTrabajo').empty();
+	$('#divTrabajo').append('<span class="spanLabel">Trabajo</span><span id="spnTrabajoProveedor" class="value"></span>');
+	$('#divAccionCuenta').empty();
+	$('#divAccionCuenta').append('<span class="spanLabel">Sin Detracion</span><span id="spnPagar" class="value"></span>');
+	
+	listarOT(value);
+	
+	$('#sltOT').on('change', function(){
+		$('#sltCuentas').remove();
+		$('#divSltCuentas').append('<select id="sltCuentas" class="form-control" name="operacion"><option value="">Seleccione Cuenta Pagar</option></select>');
+		var idOrden = $('#sltOT option:selected').val();
+		
+		listarDetalleFactura(idOrden, "pagar");
+		listarCuentas(idOrden, "pagar");
+		
+		$('#sltCuentas').on('change', function(){
+			var idCuenta = $('#sltCuentas option:selected').val();
+			listarDetalleCuenta(idCuenta, "pagar");
+		});
+	});
+}
 function listarDetalleCuenta(idCuenta, tipo){
 	if(idCuenta != ""){
 		$.ajax({

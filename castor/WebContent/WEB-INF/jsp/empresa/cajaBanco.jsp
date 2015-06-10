@@ -44,10 +44,7 @@
 			<div class="portlet-title">
 				<div class="caption"><i class="icon-share"></i>Caja Banco</div>
 				<div class="actions">
-					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
-						<option value="1">BCP Dolares</option>
-						<option value="2">BCP Soles</option>
-						<option value="3">Banco Nacion</option>
+					<select id="sltCuentaBanco01" class="form-control-head" name="idLibro">
 					</select>
 					<a id="btnToCrearDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-plus"></i> Nuevo </a>							
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
@@ -61,10 +58,7 @@
 			<div class="portlet-title">
 				<div class="caption"><i class="icon-share"></i>Caja Banco - Detalle</div>
 				<div class="actions">
-					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
-						<option value="1">BCP Dolares</option>
-						<option value="2">BCP Soles</option>
-						<option value="3">Banco Nacion</option>
+					<select id="sltCuentaBanco02" class="form-control-head" name="idLibro">
 					</select>
 					<a id="btnEditarDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-pencil"></i> Editar </a>
 					<a id="btnCancelarDetalleLibro" class="btn red-sunglo btn-sm eventBtn"><i class="fa fa-close"></i> Cancelar </a>							
@@ -85,10 +79,7 @@
 			<div class="portlet-title">
 				<div class="caption"><i class="icon-share"></i>Caja Banco - Nuevo</div>
 				<div class="actions">
-					<select id="sltCuentaBanco" class="form-control-head" name="idLibro">
-						<option value="1">BCP Dolares</option>
-						<option value="2">BCP Soles</option>
-						<option value="3">Banco Nacion</option>
+					<select id="sltCuentaBanco03" class="form-control-head" name="idLibro">
 					</select>
 					<a id="btnCrearDetalleLibro" class="btn green-meadow btn-sm eventBtn"><i class="fa fa-check"></i> Grabar </a>
 					<a id="btnCancelarCrearCajaBanco" class="btn red-sunglo btn-sm eventBtn"><i class="fa fa-close"></i> Cancelar </a>							
@@ -217,6 +208,7 @@
 <script src="assets/admin/pages/scripts/table-advanced.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
+var aLibros = [];
 var aClientes = [];
 var aProveedores = [];
 
@@ -224,6 +216,8 @@ jQuery(document).ready(function() {
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	Demo.init();
+	
+	llenarLibros();
 	
 	initDatePicker();
 		
@@ -233,7 +227,6 @@ jQuery(document).ready(function() {
 	llenarClientes();
 	
 	//listarSelectorClientes('sltCliente');
-	listarCaja();
 	suggestFactura("cobrar");
 	
 	$('#sltCuentaBanco').change(function(){
@@ -271,6 +264,23 @@ function initDatePicker(){
 		language: "es"
 	});
 }
+function llenarLibros(){
+	$.ajax({
+ 		url: 'listarLibros',
+ 		type: 'get',
+ 		success: function(libros){
+ 			$.each(libros, function(i, libro){
+ 				aLibros[i] = libro;
+ 			});
+ 			//depues de debe cambiar a 1 solo.
+ 			llenarSelect("sltCuentaBanco01", aLibros);
+ 			llenarSelect("sltCuentaBanco02", aLibros);
+ 			llenarSelect("sltCuentaBanco03", aLibros);
+ 			
+ 			listarCaja();
+ 		}
+ 	});
+}
 function llenarClientes(){
 	$.ajax({
  		url: 'ajaxListarClientes',
@@ -291,6 +301,24 @@ function llenarSelect(objeto, array){
 		$('#' + objeto).empty();
 		for(var i = 0; i < array.length; i++){
 			$('<option/>').val(array[i].idCliente).html(array[i].nombre).appendTo('#' + objeto);
+		}
+		break;
+	case "sltCuentaBanco01":
+		$('#' + objeto).empty();
+		for(var i = 0; i < array.length; i++){
+			$('<option/>').val(array[i].idLibro).html(array[i].nombre).appendTo('#' + objeto);
+		}
+		break;
+	case "sltCuentaBanco02":
+		$('#' + objeto).empty();
+		for(var i = 0; i < array.length; i++){
+			$('<option/>').val(array[i].idLibro).html(array[i].nombre).appendTo('#' + objeto);
+		}
+		break;
+	case "sltCuentaBanco03":
+		$('#' + objeto).empty();
+		for(var i = 0; i < array.length; i++){
+			$('<option/>').val(array[i].idLibro).html(array[i].nombre).appendTo('#' + objeto);
 		}
 		break;
 	}
@@ -378,7 +406,7 @@ function mostrarOrden(idFactura){
  		success: function(ordenes){
  			html = '';
  			$.each(ordenes, function(i, orden){
-	 			$('#txtOrdenTrabajo').val(orden.codigo); 
+	 			$('#txtOrdenTrabajo').val(orden.nombre); 
 	 			$('#hdnOrdenTrabajo').val(orden.idOrden);
  			});		      
  		}
@@ -628,7 +656,7 @@ function listarSelectorProveedores(nombreSelector){
 function listarCaja(){
 	var html = '';
 	$.ajax({
- 		url: 'listarDetalleLibro-' + $('#sltCuentaBanco').val(),
+ 		url: 'listarDetalleLibro-' + $('#sltCuentaBanco01').val(),
  		type: 'post',
  		dataType: 'json',
  		success: function(registros){
