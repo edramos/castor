@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.simularte.bean.CuentaBean;
 import com.simularte.bean.OrdenBean;
@@ -127,6 +128,13 @@ public class OrdenController {
 		return ordenserv.grafOrdenGeneral(idOrden, req);
 	}
 	
+	
+	//GENERADOR DE REPORTES EXCEL
+	@RequestMapping(value = "reporteMasterDeudaOTExcel", method = RequestMethod.POST)
+	public ModelAndView reporteMasterDeudaOTExcel(@ModelAttribute("ordenBean")OrdenBean ob, HttpServletRequest req){
+		return new ModelAndView("excelView", "tableData", ordenserv.mostrarMasterDeudaOT(ob, req));
+		
+	}
 	
 	
 	

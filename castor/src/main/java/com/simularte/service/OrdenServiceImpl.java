@@ -193,7 +193,7 @@ public class OrdenServiceImpl implements OrdenService {
 				
 				gtPagado = gtPagado.add(pagado);
 				ob.setGtPagado(Formatos.BigBecimalToString(gtPagado));
-								
+				
 				Query q02 = em.createNativeQuery("SELECT c.idcuenta, c.estadotrabajo, c.monto FROM cuenta c WHERE c.tipo = 'pagar' AND c.idorden = '"+ ob.getIdOrden() +"'");
 				List<Object[]> rows02 = q02.getResultList();
 				

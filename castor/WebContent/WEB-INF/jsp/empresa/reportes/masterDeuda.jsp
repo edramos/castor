@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
@@ -19,6 +20,9 @@
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
+
+
+
 <jsp:include page="../../comps/cabecera.jsp"/>
 <div class="clearfix"></div>
 
@@ -35,14 +39,17 @@
 			<div class="portlet-title">
 				<div class="caption">Master Deuda OT</div>
 				<div class="actions">
+				
 				<form:form id="frmBuscarOrden" modelAttribute="ordenBean" method="post">
 				    <div class="input-daterange input-group" id="datepicker">
 				    	<select id="sltProveedores" class="input-small" style="color:#333;" name="idProveedor"><option value="-1">Todos</option></select>
 				        <input id="txtInicio" type="text" class="input-xsmall" style="color:#333;" placeholder="Desde" name="fechaInicio" />
 				        <input id="txtFin" type="text" class="input-xsmall" style="color:#333;" placeholder="Hasta" name="fechaEntrega" />
 				        <a id="btnBuscar" class="btn btn-warning btn-sm eventBtn">Buscar</a>
+				        <a id="btnExcel" class="btn btn-success btn-sm eventBtn">Excel</a>
 				    </div>
 				</form:form>
+				
 				</div>
 			</div>
 			<div id="divPortletBody" class="portlet-body">
@@ -69,13 +76,14 @@
 </div>
 </div>
 <div class="row">
-<div class="col-md-12">
+	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption"><i class="fa fa-table"></i>Resumen por fecha de mes de termino</div>
 				<div class="actions"></div>
 			</div>
 			<div id="divPortletBodyDinamica" class="portlet-body">
+			
 				<table id="tblMasterDinamicaOT" class="table table-striped table-bordered table-condensed table-hover">
 				<thead>
 				<tr>
@@ -86,10 +94,16 @@
 				<tbody id="viewMasterDinamicaOTHandlerbars">
 				</tbody>
 				</table>
+				
+					
+				
 			</div>
 		</div>
 	</div>
-</div>	
+</div>
+
+
+	
 </div>
 </div>
 <!-- END CONTENT -->
@@ -140,6 +154,10 @@ $(document).on('click','.eventBtn', function(e){
 	switch(this.id){
 	case "btnBuscar":
 		buscarOrden();
+		break;
+	case "btnExcel":
+		$("#frmBuscarOrden").attr("action", "reporteMasterDeudaOTExcel");
+		$("#frmBuscarOrden").submit();
 		break;
 	}
 });
