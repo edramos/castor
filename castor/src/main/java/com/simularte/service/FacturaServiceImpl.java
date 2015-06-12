@@ -27,6 +27,38 @@ public class FacturaServiceImpl implements FacturaService{
 	@PersistenceContext 
 	EntityManager em;
 	
+	public List<FacturaBean> getFacturaCajaBanco(int idFactura, HttpServletRequest req){
+		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT f.codigo, o.idorden, o.nombre, p.nombre AS np, c.estadotrabajo, f.subtotal, f.conigv, f.total, f.montodetraccion, f.detraccion, "
+				+ "(f.total - f.montodetraccion) AS SinDetraccion FROM factura f "
+				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
+				+ "INNER JOIN orden o ON o.idorden = c.idorden "
+				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
+				+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+				+ "WHERE f.idfactura = '"+ idFactura +"'");
+		
+		Object[] obj =  (Object[])q01.getSingleResult();
+		FacturaBean fb = new FacturaBean();
+		
+		fb.setCodigo(obj[0].toString());
+		fb.setIdOrden((Integer)obj[1]);
+		fb.setNombreOrden(obj[2].toString());
+		fb.setNombreProveedor(obj[3].toString());
+		fb.setCondicionPago(obj[4].toString());
+		fb.setSubTotal(Formatos.BigBecimalToString((BigDecimal)obj[5]));
+		fb.setConIgv(Formatos.BigBecimalToString((BigDecimal)obj[6]));
+		fb.setTotal(Formatos.BigBecimalToString((BigDecimal)obj[7]));
+		fb.setMontoDetraccion(Formatos.BigBecimalToString((BigDecimal)obj[8]));
+		Integer detraccion = ((Double)obj[9]).intValue();
+		fb.setDetraccion(detraccion.toString());
+		fb.setSinDetraccion(Formatos.BigBecimalToString((BigDecimal)obj[10]));
+		
+		facturas.add(fb);
+		
+		return facturas;
+	}
+	
 	@Transactional
 	public boolean crearFactura(int idCuenta, String tipo, double detraccion, String codigo, HttpServletRequest req){
 		//Luego revisar para usar al bean Factura que viene del form de la UI

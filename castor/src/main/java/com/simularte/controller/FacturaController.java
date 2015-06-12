@@ -62,4 +62,9 @@ public class FacturaController {
 				
 		return fs.getFacturasDetraccionSuggested(codigoFactura, operacion, req);
 	}
+	
+	@RequestMapping(value = "cargarFacturaCajaBanco_{idFactura}", method = RequestMethod.POST) @ResponseBody
+	public List<FacturaBean> cargarFacturaCajaBanco(@PathVariable("idFactura")int idFactura, HttpServletRequest req){
+		return fs.getFacturaCajaBanco(idFactura, req);
+	}
 }

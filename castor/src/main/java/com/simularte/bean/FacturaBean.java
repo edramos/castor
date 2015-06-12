@@ -35,6 +35,9 @@ public class FacturaBean {
 	
 	private String nombreOrden;
 	private int idOrden;
+	private String nombreProveedor;
+	private String condicionPago;
+	private String sinDetraccion;
 	
 	
 	
@@ -199,5 +202,23 @@ public class FacturaBean {
 	}
 	public void setIdOrden(int idOrden) {
 		this.idOrden = idOrden;
+	}
+	public String getNombreProveedor() {
+		return nombreProveedor;
+	}
+	public void setNombreProveedor(String nombreProveedor) {
+		this.nombreProveedor = nombreProveedor;
+	}
+	public String getCondicionPago() {
+		return condicionPago;
+	}
+	public void setCondicionPago(String condicionPago) {
+		this.condicionPago = condicionPago;
+	}
+	public String getSinDetraccion() {
+		return sinDetraccion;
+	}
+	public void setSinDetraccion(String sinDetraccion) {
+		this.sinDetraccion = sinDetraccion;
 	}	
 }
