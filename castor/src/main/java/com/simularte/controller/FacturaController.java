@@ -21,7 +21,7 @@ public class FacturaController {
 	@Autowired
 	FacturaService fs;
 	
-	@RequestMapping(value = "crearFacturaAjax-{idCuenta}-{tipo}-{detraccion}-{codigo}", method = RequestMethod.POST) @ResponseBody
+	@RequestMapping(value = "crearFacturaAjax_{idCuenta}_{tipo}_{detraccion}_{codigo}", method = RequestMethod.POST) @ResponseBody	//Mejorar a enviar objeto y no vars
 	public List<FacturaBean> crearFacturaAjax (@PathVariable("idCuenta")int idCuenta, @PathVariable("tipo")String tipo, 
 			@PathVariable("detraccion")double detraccion, @PathVariable("codigo")String codigo, HttpServletRequest req){
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();

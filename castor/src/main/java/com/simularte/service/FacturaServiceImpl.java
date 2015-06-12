@@ -113,7 +113,7 @@ public class FacturaServiceImpl implements FacturaService{
 			break;
 		case "cliente":
 			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.subtotal, f.conigv, f.total, f.montodetraccion, f.cobrarfactura, f.estadodetraccion, f.estado, f.fechaemision, "
-					+ "f.detraccion, f.fechacancelacion, f.fechacancelaciondetraccion "
+					+ "f.detraccion, f.fechacancelacion, f.fechacancelaciondetraccion, o.idorden, o.nombre "
 					+ "FROM factura f "
 					+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 					+ "INNER JOIN orden o ON o.idorden = c.idorden "
@@ -141,6 +141,9 @@ public class FacturaServiceImpl implements FacturaService{
 			fb.setCobrarFactura(Formatos.BigBecimalToString(Formatos.StringToBigDecimal((obj[6].toString()))));
 			fb.setEstado(obj[8].toString());
 			fb.setFechaEmision(Dates.stringToStringFechaCorta(obj[9].toString()));
+			
+			fb.setIdOrden((Integer)obj[13]);
+			fb.setNombreOrden(obj[14].toString());
 			
 			facturas.add(fb);
 		}

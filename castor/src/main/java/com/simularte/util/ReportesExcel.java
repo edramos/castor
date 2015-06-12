@@ -31,7 +31,7 @@ public class ReportesExcel extends AbstractExcelView{
 		Font font = workbook.createFont();
 		
 		HSSFPalette palette = workbook.getCustomPalette();
-		HSSFColor myColor = palette.findSimilarColor(0, 255, 0);
+		HSSFColor myColor = palette.findSimilarColor(255, 255, 0);
 		short palIndex = myColor.getIndex();
 		style.setFillForegroundColor(palIndex);
 		

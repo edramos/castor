@@ -33,6 +33,9 @@ public class FacturaBean {
 	private String fechaCreacion;
 	private String estado;
 	
+	private String nombreOrden;
+	private int idOrden;
+	
 	
 	
 	public int getIdFactura() {
@@ -184,5 +187,17 @@ public class FacturaBean {
 	}
 	public void setIdCliente(int idCliente) {
 		this.idCliente = idCliente;
+	}
+	public String getNombreOrden() {
+		return nombreOrden;
+	}
+	public void setNombreOrden(String nombreOrden) {
+		this.nombreOrden = nombreOrden;
+	}
+	public int getIdOrden() {
+		return idOrden;
+	}
+	public void setIdOrden(int idOrden) {
+		this.idOrden = idOrden;
 	}	
 }

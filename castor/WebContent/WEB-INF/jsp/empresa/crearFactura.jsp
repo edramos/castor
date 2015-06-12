@@ -197,7 +197,7 @@ jQuery(document).ready(function() {
 
 function emitirFactura(idCuenta, tipo, detraccion, codigo){
 	$.ajax({
- 		url: 'crearFacturaAjax-' + idCuenta + '-' + tipo + '-' + detraccion + '-' + codigo,
+ 		url: 'crearFacturaAjax_' + idCuenta + '_' + tipo + '_' + detraccion + '_' + codigo,
  		type: 'post',
  		dataType: 'json',
  		data: $('#frmCrearFactura').serialize(),
@@ -211,6 +211,7 @@ function emitirFactura(idCuenta, tipo, detraccion, codigo){
 <script id="templateResultado" type="text/x-handlebars-template">
 <tr>
 	<td style="width: 0px;display: none;">{{idFactura}}</td>
+	<td><a href="ordenPag-{{idOrden}}" target="_blank">{{nombreOrden}}</a></td>
 	<td>{{codigo}}</td>
 	<td>{{subTotal}}</td>
 	<td>{{igv}}</td>
@@ -257,7 +258,7 @@ function removeTable(){
 function createTable(){
 	$('#divPortletBody').append(
 		"<table class='table table-striped table-hover' id='tblResultados'>"+
-		"<thead><tr><th style='width: 0px;display: none;'></th><th>N°</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th>"+
+		"<thead><tr><th style='width: 0px;display: none;'></th><th>Orden</th><th>N°</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th>"+
 		"<th>Sin Detra.</th><th>Estado Det.</th><th>Estado Fac.</th><th>Emision</th></thead>"+
 		"<tbody id='viewResultadosHandlerbars'></tbody></table>"	
 	);
