@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -27,10 +28,15 @@
 
 <div class="row">
 <div class="col-md-12">
+	
+	<form:form id="frmCrearDetalleLibro" modelAttribute="libroDetalleBean" method="post">
 	<div id="divCrearCajaBanco" class="portlet box blue-hoki">
+	
 		<div class="portlet-title">
 			<div class="caption"><i class="icon-notebook"></i>Caja Banco</div>
-			<div class="actions"><select class="form-control input-sm" style="color: #333;font-weight: bold;"><option>Scotiabank Dolares</option></select></div>
+			<div class="actions">
+				<select id="sltCuentaBanco" class="form-control input-sm" style="color: #333;font-weight: bold;" name="idLibro"></select>
+			</div>
 		</div>
 		
 		<div class="portlet-body form">
@@ -69,13 +75,14 @@
 					<%if(session.getAttribute("tipo").equals("empresa")){%>
 						<select id="sltCliente" class="form-control" name="idCliente"></select>
 					<%}else{%>
-						<select id="sltProveedor" class="form-control" name="idProveedor">
+						<select id="sltPague" class="form-control">
 							<option>Pague Total</option><option>Pague Detraccion</option><option>Pague Sin Detraccion</option>
 						</select>
 					<%}%>
 					</div>
 					<div class="col-md-2">
-						<a class="btn green"><i class="fa fa-check"></i> Grabar</a>
+						<!-- <a class="btn green" onclick="grabarDL()"><i class="fa fa-check"></i> Grabar</a> -->
+						<button type="submit" class="btn green"><i class="fa fa-check"></i> Grabar</button>
 					</div>
 				</div>
 				
@@ -88,7 +95,7 @@
 								<th>Total</th><th>Detraccion</th><th>Sin Detraccion</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="tbodyRegistro">
 							<tr id="trRegistro"></tr>
 						</tbody>
 						</table>
@@ -97,14 +104,21 @@
 				
 				<div class="row">
 					<div class="col-md-12">
-						<input class="form-control" placeholder="Comentario...">
+						<input class="form-control" placeholder="Descripcion...">
+						<input id="hdnMonto" type="hidden" name="monto">
+						<input id="hdnIdFactura" type="hidden" name="idFactura">
+						<input id="hdnIdOrden" type="hidden" name="idOrden">
+						<input id="hdnIdProveedor" type="hidden" name="idProveedor">
 					</div>
 				</div>
 				
+				
 			</div>
 		</div>
+	
 		
 	</div>
+	</form:form>
 </div>
 </div>
 
@@ -140,6 +154,7 @@
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="assets/global/plugins/typeahead/typeahead.bundle.min.js"></script>
+<script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -147,9 +162,16 @@
 <script src="assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
+var aLibros = [];
+var idOrden = null;
+var idProveedor = null;
+
 jQuery(document).ready(function() {   
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
+	
+	//init sltLibros
+	llenarLibros();
 	
 	//init fechaOperacion
 	$('#txtFechaOperacion').datepicker("setDate", new Date());
@@ -160,8 +182,38 @@ jQuery(document).ready(function() {
 		$(this).datepicker('hide');
 	});
 	
+	//Selecciona el monto que se pago
+	$('#sltPague').on('change', function(){
+		switch(this.value){
+		case "Pague Total":
+			$('#tdTotal').css("font-weight","bold");$('#tdDetraccion').css("font-weight","");$('#tdSinDetraccion').css("font-weight","");
+			break;
+		case "Pague Detraccion":
+			$('#tdDetraccion').css("font-weight","bold");$('#tdTotal').css("font-weight","");$('#tdSinDetraccion').css("font-weight","");
+			break;
+		case "Pague Sin Detraccion":
+			$('#tdSinDetraccion').css("font-weight","bold");$('#tdTotal').css("font-weight","");$('#tdDetraccion').css("font-weight","");
+			break;
+		}
+	});
+	
 	//init suggestFacturas por pagar
 	suggestFactura("pagar");
+	
+	//validar form
+	$('#frmCrearDetalleLibro').validate({
+		ignore: ":hidden",
+		rules: {
+			fechaOperacion:{required:true}, factura:{required:true} 
+		},
+		messages: {
+			fechaOperacion:"*", factura:"*"
+		},
+		submitHandler: function(){
+			grabarDL();
+			return false;
+		}
+	});
 });
 </script>
 <script>
@@ -186,19 +238,86 @@ function suggestFactura(tipo){
 	});
 	
 	$('#txtFactura').on('typeahead:selected', function (e, datum){
+		$('#hdnIdFactura').val(datum['idFactura']);
+		
 		$.ajax({
 	 		url: 'cargarFacturaCajaBanco_' + datum['idFactura'],
 	 		type: 'post',
 	 		dataType: 'json',
 	 		success: function(filas){
+	 			$('#trRegistro').remove();
+	 			$('#tbodyRegistro').append('<tr id="trRegistro"></tr>');
 	 			$.each(filas, function(i, fila){
-		 			$('#trRegistro').append('<td>'+ fila.codigo +'</td><td><a>'+ fila.nombreOrden +'</a></td><td>'+ fila.nombreProveedor +'</td><td>'+ fila.condicionPago +'</td>'+
-		 				'<td>'+ fila.subTotal +'</td><td>'+ fila.conIgv +'</td><td>'+ fila.total +'</td><td>'+ fila.montoDetraccion +' ('+ fila.detraccion +'%)</td><td>'+ fila.sinDetraccion +'</td>');
-	 			});		      
+	 				$('#hdnIdOrden').val(fila.idOrden);
+	 				$('#hdnIdProveedor').val(fila.idProveedor);
+		 			$('#trRegistro').append('<td>'+ fila.codigo +'</td><td><a href="ordenPag-'+ fila.idOrden +'" target="_blank">'+ fila.nombreOrden +'</a></td>'+
+		 				'<td>'+ fila.nombreProveedor +'</td><td>'+ fila.condicionPago +'</td><td>'+ fila.subTotal +'</td><td>'+ fila.conIgv +'</td><td id="tdTotal">'+ fila.total +'</td>'+
+		 				'<td id="tdDetraccion">'+ fila.montoDetraccion +' ('+ fila.detraccion +'%)</td><td id="tdSinDetraccion">'+ fila.sinDetraccion +'</td>');
+	 			});	
+	 			$('#tdTotal').css("font-weight","bold");
 	 		}
 	 	});
 		
 	});
+}
+</script>
+<script>
+function grabarDL(){
+	var monto = null;
+	
+	switch($('#sltPague option:selected').text()){
+	case "Pague Total":
+		monto = Number($('#tdTotal').html().replace(/[^0-9\.]+/g,""));
+		break;
+	case "Pague Detraccion":
+		var temp = $('#tdDetraccion').html();
+		var aTemp = temp.split('(');
+		monto = Number(aTemp[0].replace(/[^0-9\.]+/g,""));
+		break;
+	case "Pague Sin Detraccion":
+		monto = Number($('#tdSinDetraccion').html().replace(/[^0-9\.]+/g,""));
+		break;
+	}
+	//alert(monto);
+	//alert($('#hdnIdFactura').val());
+	//alert($('#sltCuentaBanco').val());
+	//alert($('#hdnIdProveedor').val());
+	$('#hdnMonto').val(monto);
+	
+	/* $.ajax({
+ 		url: 'ajaxCrearRegistroLibro',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		data: $('#frmCrearDetalleLibro').serialize(),
+ 		success: function(resultado){
+ 			
+ 		}
+ 	}); */
+}
+</script>
+<script>
+function llenarLibros(){
+	$.ajax({
+ 		url: 'listarLibros',
+ 		type: 'get',
+ 		success: function(libros){
+ 			$.each(libros, function(i, libro){
+ 				aLibros[i] = libro;
+ 			});	
+ 			llenarSelect("sltCuentaBanco", aLibros);
+ 		}
+ 	});
+}
+function llenarSelect(objeto, array){
+	$('#' + objeto).empty();
+	
+	switch(objeto){
+	case "sltCuentaBanco":
+		for(var i = 0; i < array.length; i++){
+			$('<option/>').val(array[i].idLibro).html(array[i].nombre).appendTo('#' + objeto);
+		}
+		break;
+	}
 }
 </script>
 </body>

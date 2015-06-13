@@ -31,7 +31,7 @@ public class FacturaServiceImpl implements FacturaService{
 		List<FacturaBean> facturas = new ArrayList<FacturaBean>();
 		
 		Query q01 = em.createNativeQuery("SELECT f.codigo, o.idorden, o.nombre, p.nombre AS np, c.estadotrabajo, f.subtotal, f.conigv, f.total, f.montodetraccion, f.detraccion, "
-				+ "(f.total - f.montodetraccion) AS SinDetraccion FROM factura f "
+				+ "(f.total - f.montodetraccion) AS SinDetraccion, p.idproveedor FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden "
 				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
@@ -53,6 +53,7 @@ public class FacturaServiceImpl implements FacturaService{
 		Integer detraccion = ((Double)obj[9]).intValue();
 		fb.setDetraccion(detraccion.toString());
 		fb.setSinDetraccion(Formatos.BigBecimalToString((BigDecimal)obj[10]));
+		fb.setIdProveedor((Integer)obj[11]);
 		
 		facturas.add(fb);
 		
