@@ -10,7 +10,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,7 +67,6 @@ public class LibroServiceImpl implements LibroService{
 		boolean result = false;
 		
 		try{
-			HttpSession session = req.getSession();
 			DetalleLibro detalleLibro = new DetalleLibro();
 			Libro libro = em.find(Libro.class, idLibro);
 		
@@ -91,7 +89,7 @@ public class LibroServiceImpl implements LibroService{
 			detalleLibro.setCodigoDocumento(dlb.getCodigoDocumento());
 			detalleLibro.setNombreTercero(dlb.getNombreTercero());
 			
-			detalleLibro.setCreadoPor((Integer)session.getAttribute("idUser"));
+			detalleLibro.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
 			detalleLibro.setFechaCreacion(Dates.fechaCreacion());
 			detalleLibro.setEstado("enabled");
 		
@@ -195,7 +193,7 @@ public class LibroServiceImpl implements LibroService{
 			Query q01 = em.createNativeQuery("SELECT o.idorden, c.estadotrabajo, c.avance FROM factura f "
 					+ "INNER JOIN cuenta c ON f.idcuenta = c.idcuenta "
 					+ "INNER JOIN orden o ON c.idorden = o.idorden "
-					+ "WHERE f.tipo = 'Recibida' AND f.codigo = '" + detalleLibro.getFactura() + "' AND o.idempresa = '" + session.getAttribute("idEmpresa") + "'");
+					+ "WHERE f.tipo = 'Recibida' AND f.codigo = '" + detalleLibro.getFactura() + "' AND o.idempresa = '" + req.getSession().getAttribute("idEmpresa") + "'");
 			
 			Object[] obj = (Object[])q01.getSingleResult();				//Cuando se inicializa DB da un error 500 porque no encuentra nada
 			System.out.println("AVANCE: " + obj[2].toString());
