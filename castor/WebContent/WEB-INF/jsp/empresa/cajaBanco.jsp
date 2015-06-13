@@ -75,8 +75,9 @@
 					<%if(session.getAttribute("tipo").equals("empresa")){%>
 						<select id="sltCliente" class="form-control" name="idCliente"></select>
 					<%}else{%>
-						<select id="sltPague" class="form-control">
-							<option>Pague Total</option><option>Pague Detraccion</option><option>Pague Sin Detraccion</option>
+						<select id="sltPague" class="form-control" name="action">
+							<option value="pTotal">Pague Total</option><option value="pDetraccion">Pague Detraccion</option>
+							<option value="pSinDetraccion">Pague Sin Detraccion</option>
 						</select>
 					<%}%>
 					</div>
@@ -104,7 +105,8 @@
 				
 				<div class="row">
 					<div class="col-md-12">
-						<input class="form-control" placeholder="Descripcion...">
+						<input id="txtDescripcion" class="form-control" placeholder="Descripcion..." name="descripcion">
+						
 						<input id="hdnMonto" type="hidden" name="monto">
 						<input id="hdnIdFactura" type="hidden" name="idFactura">
 						<input id="hdnIdOrden" type="hidden" name="idOrden">
@@ -127,18 +129,10 @@
 	<div id="divRegistrosCajaBanco" class="portlet box blue-hoki">
 		<div class="portlet-title">
 			<div class="caption"><i class="icon-notebook"></i>Registros Caja Banco</div>
-			<div class="actions"></div>
+			<div class="actions">
+			</div>
 		</div>
-		<div id="divPortletBody" class="portlet-body">
-			<table class='table table-striped table-hover' id='tblResultados'>
-			<thead>
-			<tr>
-				<th>Fecha</th><th>Factura</th><th>Orden</th><th>Proveedor</th><th>Ingreso</th><th>Egreso</th><th>Saldo</th>
-			</tr>
-			</thead>
-			<tbody id='viewResultadosHandlerbars'>
-			</tbody>
-			</table>					
+		<div id="divPortletBodyCajaBanco" class="portlet-body">		
 		</div>
 	</div>
 </div>
@@ -167,10 +161,10 @@ var idOrden = null;
 var idProveedor = null;
 
 jQuery(document).ready(function() {   
-	Metronic.init(); // init metronic core components
-	Layout.init(); // init current layout
+	Metronic.init();
+	Layout.init();
 	
-	//init sltLibros
+	//init sltLibros y cargo registros
 	llenarLibros();
 	
 	//init fechaOperacion
@@ -185,13 +179,13 @@ jQuery(document).ready(function() {
 	//Selecciona el monto que se pago
 	$('#sltPague').on('change', function(){
 		switch(this.value){
-		case "Pague Total":
+		case "pTotal":
 			$('#tdTotal').css("font-weight","bold");$('#tdDetraccion').css("font-weight","");$('#tdSinDetraccion').css("font-weight","");
 			break;
-		case "Pague Detraccion":
+		case "pDetraccion":
 			$('#tdDetraccion').css("font-weight","bold");$('#tdTotal').css("font-weight","");$('#tdSinDetraccion').css("font-weight","");
 			break;
-		case "Pague Sin Detraccion":
+		case "pSinDetraccion":
 			$('#tdSinDetraccion').css("font-weight","bold");$('#tdTotal').css("font-weight","");$('#tdDetraccion').css("font-weight","");
 			break;
 		}
@@ -254,7 +248,26 @@ function suggestFactura(tipo){
 		 				'<td>'+ fila.nombreProveedor +'</td><td>'+ fila.condicionPago +'</td><td>'+ fila.subTotal +'</td><td>'+ fila.conIgv +'</td><td id="tdTotal">'+ fila.total +'</td>'+
 		 				'<td id="tdDetraccion">'+ fila.montoDetraccion +' ('+ fila.detraccion +'%)</td><td id="tdSinDetraccion">'+ fila.sinDetraccion +'</td>');
 	 			});	
-	 			$('#tdTotal').css("font-weight","bold");
+	 			
+	 			
+	 			switch(datum['estado']){
+	 			case "Recibido":
+	 				$('#sltPague').empty();
+	 				$('#sltPague').append('<option value="pTotal">Pague Total</option><option value="pDetraccion">Pague Detraccion</option>'+
+	 					'<option value="pSinDetraccion">Pague Sin Detraccion</option>');
+	 				$('#tdTotal').css("font-weight","bold");
+	 				break;
+	 			case "Falta Detraccion":
+	 				$('#sltPague').empty();
+	 				$('#sltPague').append('<option value="pDetraccion">Pague Detraccion</option>');
+	 				$('#tdDetraccion').css("font-weight","bold");$('#tdTotal').css("font-weight","");$('#tdSinDetraccion').css("font-weight","");
+	 				break;
+	 			case "Solo Detraccion":
+	 				$('#sltPague').empty();
+	 				$('#sltPague').append('<option value="pSinDetraccion">Pague Sin Detraccion</option>');
+	 				$('#tdSinDetraccion').css("font-weight","bold");$('#tdTotal').css("font-weight","");$('#tdDetraccion').css("font-weight","");
+	 				break;
+	 			}
 	 		}
 	 	});
 		
@@ -278,22 +291,65 @@ function grabarDL(){
 		monto = Number($('#tdSinDetraccion').html().replace(/[^0-9\.]+/g,""));
 		break;
 	}
-	//alert(monto);
-	//alert($('#hdnIdFactura').val());
-	//alert($('#sltCuentaBanco').val());
-	//alert($('#hdnIdProveedor').val());
-	$('#hdnMonto').val(monto);
 	
-	/* $.ajax({
+	$('#hdnMonto').val(monto);
+		
+	$.ajax({
  		url: 'ajaxCrearRegistroLibro',
  		type: 'post',
  		dataType: 'json',
  		data: $('#frmCrearDetalleLibro').serialize(),
  		success: function(resultado){
- 			
+ 			resetForm();
+ 			getDetalleLibro($('#sltCuentaBanco').val());
  		}
- 	}); */
+ 	});
 }
+function getDetalleLibro(idLibro){
+	var html = '';
+	$.ajax({
+ 		url: 'listarDetalleLibro-' + idLibro,
+ 		type: 'post',
+ 		dataType: 'json',
+ 		success: function(registros){
+ 			removeCreateTable();
+ 			$.each(registros, function(i, registro){
+	 			var source = $("#templateCajaBanco").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(registro);
+ 			});
+ 			
+ 			$("#viewCajaBancoHandlerbars").html(html);
+ 			//initTable();
+ 		}
+ 	});
+}
+function resetForm(){
+	$('#txtFactura').val("");
+	$('#txtDescripcion').val("");
+	$('#sltPague').empty();
+	$('#sltPague').append('<option value="pTotal">Pague Total</option><option value="pDetraccion">Pague Detraccion</option>'+
+		'<option value="pSinDetraccion">Pague Sin Detraccion</option>');
+}
+function removeCreateTable(){
+	$('#tblCajaBanco').remove();
+	$('#tblCajaBanco_wrapper').remove();
+	$('#divPortletBodyCajaBanco').append('<table id="tblCajaBanco" class="table table-striped table-hover table-condensed table-bordered"><thead><tr>'+
+		'<th>Fecha</th><th>Concepto</th><th>Proveedor</th><th>Factura</th><th>Orden</th><th>Descripcion</th><th>Egreso</th><th>Total</th>'+
+		'</tr></thead><tbody id="viewCajaBancoHandlerbars"></tbody></table>');
+}
+</script>
+<script id="templateCajaBanco" type="text/x-handlebars-template">
+<tr>
+	<td>{{fechaOperacion}}</td>
+	<td>{{tipoOperacion}}</td>
+	<td>{{nombreProveedor}}</td>
+	<td>{{codigoDocumento}}</td>
+	<td><a href="ordenPag-{{idOrden}}" target="_blank">{{nombreOrden}}</a></td>
+	<td style="text-align:left;">{{descripcion}}</td>
+	<td style="text-align:right;">{{egreso}}</td>
+	<td style="text-align:right;">{{saldo}}</td>
+</tr>
 </script>
 <script>
 function llenarLibros(){
@@ -305,6 +361,7 @@ function llenarLibros(){
  				aLibros[i] = libro;
  			});	
  			llenarSelect("sltCuentaBanco", aLibros);
+ 			getDetalleLibro($('#sltCuentaBanco').val());
  		}
  	});
 }

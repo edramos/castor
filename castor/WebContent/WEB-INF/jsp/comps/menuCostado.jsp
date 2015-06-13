@@ -30,7 +30,7 @@
 			
 			<% if(session.getAttribute("tipo").equals("empresa") || session.getAttribute("rol").equals("Contable")){ %>
 			    <li>
-					<a href="javascript:;"><i class="icon-speedometer"></i>
+					<a href="javascript:;"><i class="icon-layers"></i>
 					<span class="title">Facturas</span>
 					<span class="arrow "></span>
 					</a>

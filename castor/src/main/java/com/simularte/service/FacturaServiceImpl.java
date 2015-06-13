@@ -259,13 +259,15 @@ public class FacturaServiceImpl implements FacturaService{
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden INNER JOIN subcontrato sc ON sc.idsubcontrato = c.idsubcontrato "
 				+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' OR p.ruc = '205496100' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado != 'Cancelado' AND f.estado != 'Falta Detraccion'");
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' OR p.ruc = '205496100' AND f.codigo LIKE '%" + codigoFactura + "%' "
+				+ "AND f.estado != 'Cancelado' AND f.estado != 'Falta Detraccion'");
 		}else{
 			q01 = em.createNativeQuery("SELECT f.idfactura, f.codigo, f.estado, f.subtotal, f.cobrarfactura, f.montodetraccion, sc.idproveedor FROM factura f "
 				+ "INNER JOIN cuenta c ON c.idcuenta = f.idcuenta "
 				+ "INNER JOIN orden o ON o.idorden = c.idorden " 
 				+ "INNER JOIN subcontrato sc ON c.idsubcontrato = sc.idsubcontrato " 
-				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' AND f.estado != 'Cancelado' AND f.estado != 'Falta Detraccion'");
+				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' "
+				+ "AND f.estado != 'Cancelado' OR f.estadodetraccion != 'Cancelado'");
 		}
 		List<Object[]> rows = q01.getResultList();
 		
@@ -278,6 +280,7 @@ public class FacturaServiceImpl implements FacturaService{
 			fb.setSubTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[3].toString())));
 			fb.setCobrarFactura(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[4].toString())));
 			fb.setMontoDetraccion(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[5].toString())));
+			fb.setEstado(obj[2].toString());
 			
 			if(tipo.equals("cobrar")){
 				fb.setIdCliente((Integer)obj[6]);

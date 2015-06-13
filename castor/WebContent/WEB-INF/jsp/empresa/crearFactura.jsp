@@ -35,7 +35,7 @@ hr {
 	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption"><i class="icon-share"></i>Crear Factura</div>
+				<div class="caption"><i class="icon-layers"></i>Crear Factura</div>
 				<div class="tools">
 					<a title="" data-original-title="" href="javascript:;" class="collapse"></a>
 					<a title="" data-original-title="" href="#portlet-config" data-toggle="modal" class="config"></a>
@@ -133,7 +133,7 @@ hr {
 	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption"><i class="icon-share"></i>Facturas</div>
+				<div class="caption"><i class="icon-layers"></i>Facturas</div>
 				<div class="actions">							
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>

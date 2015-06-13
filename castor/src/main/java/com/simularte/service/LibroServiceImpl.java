@@ -76,14 +76,16 @@ public class LibroServiceImpl implements LibroService{
 			detalleLibro.setTipoOperacion(dlb.getTipoOperacion());
 			detalleLibro.setDescripcion(dlb.getDescripcion());
 			detalleLibro.setMonto(Formatos.StringToBigDecimal(dlb.getMonto()));	
+			
 			detalleLibro.setIdCliente(dlb.getIdCliente());
 			detalleLibro.setIdProveedor(dlb.getIdProveedor());
-			detalleLibro.setFactura(dlb.getFactura());
 			detalleLibro.setIdOrden(dlb.getIdOrden());
+			detalleLibro.setIdEmpleado(dlb.getIdEmpleado());
+			detalleLibro.setIdFactura(dlb.getIdFactura());
+			
 			detalleLibro.setCuentaBancoOrigen(dlb.getCuentaBancoOrigen());
 			detalleLibro.setCuentaBancoDestino(dlb.getCuentaBancoDestino());
 			detalleLibro.setCodigoOperacion(dlb.getCodigoOperacion());
-			detalleLibro.setIdEmpleado(dlb.getIdEmpleado());
 			detalleLibro.setTipoCompra(dlb.getTipoCompra());
 			detalleLibro.setTipoDocumento(dlb.getTipoDocumento());
 			detalleLibro.setCodigoDocumento(dlb.getCodigoDocumento());
@@ -95,30 +97,57 @@ public class LibroServiceImpl implements LibroService{
 		
 			em.persist(detalleLibro);
 			
-			/*if(dlb.getTipoOperacion().equals("Cobranza Venta/Servicio") || dlb.getTipoOperacion().equals("Pago Proveedor")){
-				Factura facturaX = em.find(Factura.class, dlb.getIdFactura());
-				Factura facturaY = em.merge(facturaX);
-				
-				facturaY.setEstado("Falta Detraccion");	//Ha pagao el total - detraccion, con el checkbox Pagar Detraccion se cambiaria a Cancelado
-				facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
-			}*/
+
 			Factura facturaX = null;
 			Factura facturaY = null;
 			
 			switch(dlb.getTipoOperacion()){
-			case "Pago Proveedor":
+			case "Pago Proveedor":				
 				facturaX = em.find(Factura.class, dlb.getIdFactura());
-				facturaY = em.merge(facturaX);
-				if(facturaX.getEstado().equals("Solo Detraccion")){
+				facturaY = em.merge(facturaX);	//Esta y la de arriba linea podrian ir al comienzo 
+				
+				switch(dlb.getAction()){
+				case "pTotal":
 					facturaY.setEstado("Cancelado");
-					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Cancelado");
-				}else{
-					facturaY.setEstado("Falta Detraccion");	//Ha pagao el total - detraccion, con el checkbox Pagar Detraccion se cambiaria a Cancelado
+					facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
+					facturaY.setEstadoDetraccion("Cancelado");
+					facturaY.setFechaCancelacionDetraccion(detalleLibro.getFechaOperacion());
 					
-					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Falta Detraccion");
+					actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Cancelado");
+					break;
+				case "pDetraccion":
+					if(facturaX.getEstado().equals("Falta Detraccion")){
+						facturaY.setEstado("Cancelado");
+						facturaY.setEstadoDetraccion("Cancelado");
+						facturaY.setFechaCancelacionDetraccion(detalleLibro.getFechaOperacion());
+						
+						actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Cancelado");
+					}else{
+						facturaY.setEstado("Solo Detraccion");
+						facturaY.setEstadoDetraccion("Cancelado");
+						facturaY.setFechaCancelacionDetraccion(detalleLibro.getFechaOperacion());
+					
+						actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Solo Detraccion");
+					}
+					break;
+				case "pSinDetraccion":
+					if(facturaX.getEstado().equals("Solo Detraccion")){
+						facturaY.setEstado("Cancelado");
+						facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
+						
+						actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Cancelado");
+					}else{
+						facturaY.setEstado("Falta Detraccion");
+						facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
+					
+						actualizarEstadoCuenta(facturaX.getFacturaCuenta().getIdCuenta(), "Falta Detraccion");
+					}
+					break;
 				}
-				facturaY.setFechaCancelacion(detalleLibro.getFechaOperacion());
 				break;
+				
+				
+				
 			case "Detraccion Proveedor":
 				facturaX = em.find(Factura.class, dlb.getIdFactura());
 				facturaY = em.merge(facturaX);
@@ -164,48 +193,7 @@ public class LibroServiceImpl implements LibroService{
 				facturaY.setFechaCancelacionDetraccion(detalleLibro.getFechaOperacion());
 				break;
 			}
-			
-			
-			
-			/*if(dlb.getTipoOperacion().equals("Detraccion")){
-				Factura facturaX = em.find(Factura.class, dlb.getIdFactura());
-				Factura facturaY = em.merge(facturaX);
-				
-				facturaY.setEstadoDetraccion("Cancelado");
-				facturaY.setFechaCancelacionDetraccion(detalleLibro.getFechaOperacion());
-				
-				//Se asume que primero pagan el monto de la factura y luego la detraccion, asi se cambia el estado de la cuenta
-				if(facturaX.getEstado().equals("Cancelado") && facturaX.getEstadoDetraccion().equals("Cancelado")){
-					Query q01 = em.createNativeQuery("SELECT c.idcuenta FROM cuenta c "
-							+ "INNER JOIN factura f "
-							+ "ON c.idcuenta = f.idcuenta WHERE f.idfactura = '" + facturaX.getIdFactura() + "'");
-					
-					int idCuenta = (Integer)q01.getSingleResult();
-					Query q02 = em.createNativeQuery("UPDATE cuenta SET estado = 'Cancelado' WHERE idcuenta = '" + idCuenta + "'");
-					
-					q02.executeUpdate();
-					
-				}
-				
-			}*/
-			//Por ahora mientras se crea el modulo de Gestion de Obras el estado se cambia segun la condicion de pago al Proveedor 
-			//Recordas que podria traer problemas si 2 o mas proveedores vienen con el mismo codigo de factura
-			Query q01 = em.createNativeQuery("SELECT o.idorden, c.estadotrabajo, c.avance FROM factura f "
-					+ "INNER JOIN cuenta c ON f.idcuenta = c.idcuenta "
-					+ "INNER JOIN orden o ON c.idorden = o.idorden "
-					+ "WHERE f.tipo = 'Recibida' AND f.codigo = '" + detalleLibro.getFactura() + "' AND o.idempresa = '" + req.getSession().getAttribute("idEmpresa") + "'");
-			
-			Object[] obj = (Object[])q01.getSingleResult();				//Cuando se inicializa DB da un error 500 porque no encuentra nada
-			System.out.println("AVANCE: " + obj[2].toString());
-			String estadoObra = "";
-			if(obj[2].toString().equals("0.0")){
-				estadoObra = obj[1].toString();
-			}else{
-				estadoObra = obj[1].toString() + " " + obj[2].toString() + "%";
-			}
-			
-			Query q02 = em.createNativeQuery("UPDATE orden SET estado = '" + estadoObra + "' WHERE idorden = '" + (Integer)obj[0] + "'");
-			q02.executeUpdate();
+
 			
 			result = true;
 		}catch(Exception e){
@@ -226,34 +214,49 @@ public class LibroServiceImpl implements LibroService{
 		List<DetalleLibroBean> registros = new ArrayList<DetalleLibroBean>();
 		
 		double saldo = 0;
-		Query q = em.createNativeQuery("SELECT iddetallelibro, fechaoperacion, tipooperacion, operacion, monto, descripcion "
-				+ "FROM detallelibro "
-				+ "WHERE idlibro = '" + idLibro + "' ORDER BY fechaoperacion");
+		Query q01 = em.createNativeQuery("SELECT dl.iddetallelibro, dl.fechaoperacion, dl.tipooperacion, dl.operacion, dl.monto, dl.descripcion, f.codigo, "
+			+ "o.idorden, o.nombre, p.nombre AS np FROM detallelibro dl "
+			+ "INNER JOIN factura f ON f.idfactura = dl.idfactura "
+			+ "INNER JOIN orden o ON o.idorden = dl.idorden "
+			+ "INNER JOIN proveedor p ON p.idproveedor = dl.idproveedor "
+			+ "WHERE dl.idlibro = '"+ idLibro +"' ORDER BY dl.fechaoperacion AND dl.estado = 'enabled'");
 		
 		try{
-			List<Object[]> rows = q.getResultList();
+			List<Object[]> rows = q01.getResultList();
 			
 			for(int x = 0; x < rows.size(); x++){
-				Object[] caja = rows.get(x);
+				Object[] obj = rows.get(x);
 				DetalleLibroBean dlb = new DetalleLibroBean();
 				
-				dlb.setIdDetalleLibro((Integer)caja[0]);
-				dlb.setFechaOperacion(Dates.stringToStringFechaCorta(caja[1].toString()));
-				dlb.setTipoOperacion(caja[2].toString());
+				dlb.setIdDetalleLibro((Integer)obj[0]);
+				dlb.setFechaOperacion(Dates.stringToStringFechaCorta(obj[1].toString()));
+				dlb.setTipoOperacion(obj[2].toString());
 				
-				if(caja[3].equals("Ingreso")){
-					dlb.setIngreso(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(caja[4].toString())));
-					saldo += Formatos.StringToBigDecimal(caja[4].toString()).doubleValue();
+				dlb.setCodigoDocumento(obj[6].toString());
+				dlb.setIdOrden((Integer)obj[7]);
+				dlb.setNombreOrden(obj[8].toString());
+				dlb.setNombreProveedor(obj[9].toString());
+				
+				if(obj[3].equals("Ingreso")){
+					dlb.setIngreso(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[4].toString())));
+					saldo += Formatos.StringToBigDecimal(obj[4].toString()).doubleValue();
 					
 					System.out.println("Ingreso Saldo" + saldo);
 				}else{
-					dlb.setEgreso(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(caja[4].toString())));
-					saldo -= Formatos.StringToBigDecimal(caja[4].toString()).doubleValue();
+					dlb.setEgreso(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj[4].toString())));
+					saldo -= Formatos.StringToBigDecimal(obj[4].toString()).doubleValue();
 					System.out.println("Egreso Saldo" + saldo);
 				}
 				
-				dlb.setDescripcion(caja[5].toString());
-				dlb.setSaldo(Formatos.BigBecimalToString(BigDecimal.valueOf(saldo)));
+				dlb.setDescripcion(obj[5].toString());
+				
+				switch(req.getSession().getAttribute("tipo").toString()){
+				case "cliente":
+					dlb.setSaldo(Formatos.BigBecimalToString(BigDecimal.valueOf(saldo * -1)));
+					break;
+				}
+				
+				//dlb.setSaldo(Formatos.BigBecimalToString(BigDecimal.valueOf(saldo)));
 				
 				registros.add(dlb);
 			}
@@ -297,7 +300,7 @@ public class LibroServiceImpl implements LibroService{
 			dlb.setCuentaBancoOrigen(dl.getCuentaBancoOrigen());
 			dlb.setDescripcion(dl.getDescripcion());
 			dlb.setEstado(dl.getEstado());
-			dlb.setFactura(dl.getFactura());
+			
 			
 			dlb.setFechaCreacion(Dates.fechaHoraEspaniol(dl.getFechaCreacion(), "s"));
 			dlb.setFechaOperacion(Dates.fechaEspaniol(dl.getFechaOperacion()));

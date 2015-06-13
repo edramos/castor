@@ -30,6 +30,8 @@ public class DetalleLibro {
 	private Integer idOrden;
 	@Column(name = "idempleado", nullable = true)
 	private Integer idEmpleado;
+	@Column(name = "idfactura", nullable = true)
+	private Integer idFactura;
 	
 	// Fields
 	@Column(name = "fechaoperacion", nullable = false)
@@ -40,15 +42,13 @@ public class DetalleLibro {
 	private String operacion;
 	@Column(name = "tipooperacion", length = 30, nullable = false)
 	private String tipoOperacion;
-	@Column(length = 280, nullable = false)
+	@Column(length = 280, nullable = true)
 	private String descripcion;
 	
 	@Column(name = "cuentabancoorigen", length = 30, nullable = true)
 	private String cuentaBancoOrigen;
 	@Column(name = "cuentabancodestino", length = 30, nullable = true)
 	private String cuentaBancoDestino;
-	@Column(length = 30, nullable = true)
-	private String factura;
 	/*Este campo deberia desaparecer porque creo que hace lo mismo que bancoOrigen*/
 	@Column(name = "cuentaorigen", length = 30, nullable = true)
 	private String cuentaOrigen;
@@ -108,12 +108,6 @@ public class DetalleLibro {
 	}
 	public void setCuentaBancoDestino(String cuentaBancoDestino) {
 		this.cuentaBancoDestino = cuentaBancoDestino;
-	}
-	public String getFactura() {
-		return factura;
-	}
-	public void setFactura(String factura) {
-		this.factura = factura;
 	}
 	public String getCuentaOrigen() {
 		return cuentaOrigen;
@@ -210,5 +204,11 @@ public class DetalleLibro {
 	}
 	public void setNombreTercero(String nombreTercero) {
 		this.nombreTercero = nombreTercero;
+	}
+	public Integer getIdFactura() {
+		return idFactura;
+	}
+	public void setIdFactura(Integer idFactura) {
+		this.idFactura = idFactura;
 	}
 }

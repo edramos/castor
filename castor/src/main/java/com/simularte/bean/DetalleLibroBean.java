@@ -19,6 +19,7 @@ public class DetalleLibroBean {
 	private String nombreProveedor;
 	private String nombreEmpleado;
 	private String nombreCreadoPor;
+	private String nombreOrden;
 	
 	private String descripcion;
 	private String fechaOperacion;
@@ -46,6 +47,9 @@ public class DetalleLibroBean {
 	//Archivo
 	private List<CommonsMultipartFile> files;
 	private List<S3Bean> archivosS3;
+	
+	private String action;	//Se usa como un comodin para las acciones
+	
 	
 	
 	
@@ -246,5 +250,17 @@ public class DetalleLibroBean {
 	}
 	public void setNombreTercero(String nombreTercero) {
 		this.nombreTercero = nombreTercero;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
+	public String getNombreOrden() {
+		return nombreOrden;
+	}
+	public void setNombreOrden(String nombreOrden) {
+		this.nombreOrden = nombreOrden;
 	}
 }
