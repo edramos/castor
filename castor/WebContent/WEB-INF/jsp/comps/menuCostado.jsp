@@ -21,56 +21,43 @@
 				<span class="arrow "></span>
 				</a>
 				<ul class="sub-menu">
-					<% if(session.getAttribute("tipo").equals("cliente") && session.getAttribute("rol").equals("Coordinador")){ %>
-					<li><a href="toCrearOrden"><span class="badge badge-warning">new</span>Crear Orden</a></li>
-					<% }%>
+					<%if(session.getAttribute("tipo").equals("cliente")){
+						if(session.getAttribute("rol").equals("Administrador") || session.getAttribute("rol").equals("Coordinador")){%>
+						<li><a href="toCrearOrden">Crear Orden</a></li>
+					<% }
+					}%>
 					<li><a href="toBuscarOrden">Buscar Orden</a></li>
 				</ul>
 			</li>
 			
-			<% if(session.getAttribute("tipo").equals("empresa") || session.getAttribute("rol").equals("Contable")){ %>
+			<%if(session.getAttribute("rol").equals("Administrador") || session.getAttribute("rol").equals("Contable")){ %>
 			    <li>
 					<a href="javascript:;"><i class="icon-layers"></i>
-					<span class="title">Facturas</span>
-					<span class="arrow "></span>
+						<span class="title">Facturas</span><span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><a href="toCrearFactura"><span class="badge badge-warning">new</span>Crear Factura</a></li>
-						<li><a href="#">Buscar Factura</a></li>
+						<li><a href="toCrearFactura">Crear Factura</a></li>
 					</ul>
 				</li>
 				<li>
 					<a href="javascript:;"><i class="icon-notebook"></i>
-					<span class="title">Libros</span>
-					<span class="arrow "></span>
+						<span class="title">Libros</span><span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
 						<li><a href="toCajaBanco">Caja Banco</a></li>
-						<%if(session.getAttribute("tipo").equals("empresa")){%><li><a href="toCajaChica">Caja Chica</a></li><%}%>
+						<%if(session.getAttribute("tipo").equals("empresa")){%>
+						<li><a href="toCajaChica">Caja Chica</a></li>
+						<%}%>
 					</ul>
 				</li> 
 			<% }%>
-			    
+	
 			
-			
-			
-			<!-- <li>
-				<a href="javascript:;"><i class="icon-puzzle"></i>
-				<span class="title">Proveedores</span>
-				<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li><a href="#"><span class="badge badge-warning">new</span>Crear Proveedor</a></li>
-					<li><a href="#">Buscar Proveedor</a></li>
-				</ul>
-			</li> -->
-			
-			<% if(session.getAttribute("tipo").equals("empresa")){ %>
+			<%if(session.getAttribute("tipo").equals("empresa")){ %>
 			<li>
 				<a href="javascript:;"><i class="icon-paper-plane"></i><span class="title">Reportes</span><span class="arrow "></span></a>
 				<ul class="sub-menu">
-					<!-- <li><a href="toMasterOT">Master Orden</a></li>
-					<li><a href="toReporte">Deuda</a></li> -->
+					<li><a href="toReporte">Deuda</a></li>
 					<li><a href="toMasterDeudaProveedor">Master Deuda</a></li>
 				</ul>
 			</li>
@@ -82,19 +69,6 @@
 				</ul>
 			</li>
 			<%} %>
-			
-			<!-- <li>
-				<a href="javascript:;"><i class="icon-settings"></i>
-				<span class="title">Configuracion</span>
-				<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li><a href="#">Form Controls</a></li>
-					
-					
-				</ul>
-			</li> -->
-			
 			
 		</ul>
 		<!-- END SIDEBAR MENU -->

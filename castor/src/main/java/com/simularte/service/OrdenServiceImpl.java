@@ -37,6 +37,79 @@ public class OrdenServiceImpl implements OrdenService {
 	@PersistenceContext 
 	EntityManager em;
 	
+	@SuppressWarnings("unchecked")
+	public List<OrdenBean> mostrarMasterDinamicaOTOrdenes(String tipo, String estado, HttpServletRequest req){
+		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
+		
+		if(!tipo.equals("fila")){
+			/*for(int x = 0; x < 5; x++){
+				switch(x){
+				case 0:
+					for(int y = 1; y < 13; y++){
+						ordenes.add(getOrdenesPorEstado("Sin inicio", y, req));
+					}
+					break;
+				case 1:
+					for(int y = 1; y < 13; y++){
+						ordenes.add(getOrdenesPorEstado("Por iniciar", y, req));
+					}
+					break;
+				case 2:
+					for(int y = 1; y < 13; y++){
+						ordenes.add(getOrdenesPorEstado("Proceso", y, req));
+					}
+					break;
+				case 3:
+					for(int y = 1; y < 13; y++){
+						ordenes.add(getOrdenesPorEstado("Terminado", y, req));
+					}
+					break;
+				case 4:
+					for(int y = 1; y < 13; y++){
+						ordenes.add(getOrdenesPorEstado("Aceptado", y, req));
+					}
+					break;
+				}
+			}*/
+		}else{
+			for(int y = 1; y < 13; y++){
+				//ordenes.add(getOrdenesPorEstado(estado, y, req));
+				Query q01 = em.createNativeQuery("SELECT o.idorden, o.nombre FROM orden o "
+						+ "WHERE MONTH(o.fechaentrega) = '"+ y +"' AND o.estado = '"+ estado +"' AND o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"'");
+				
+				try{
+					List<Object[]> rows01 = q01.getResultList();
+					if(rows01.size() != 0){
+						for(int z = 0; z < rows01.size(); z++){
+							Object[] obj01 = rows01.get(z);
+							OrdenBean ob = new OrdenBean();
+							
+							ob.setIdMes(y);
+							ob.setIdOrden((Integer)obj01[0]);
+							ob.setNombre(obj01[1].toString());
+							
+							ordenes.add(ob);
+						}
+					}else{
+						OrdenBean ob = new OrdenBean();
+						
+						ob.setIdMes(y);
+						ob.setIdOrden(-1);
+						ob.setNombre("");
+						
+						ordenes.add(ob);
+					}
+					
+				}catch(NullPointerException e){
+					;
+				}
+			}
+		}
+		
+		return ordenes;
+	}
+
+	
 	public List<OrdenBean> mostrarMasterDinamicaOT(HttpServletRequest req){
 		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
 
@@ -85,6 +158,7 @@ public class OrdenServiceImpl implements OrdenService {
 					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 11 THEN o.fechaentrega END) as Nov, "
 					+ "COUNT(CASE WHEN MONTH(o.fechaentrega) = 12 THEN o.fechaentrega END) as Dic  "	//No puse Dec porque es un keyword en MySQL
 					+ "FROM orden o WHERE o.estado = '"+ estado +"' AND o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' GROUP BY month(o.idorden)");
+			
 		}else{
 			fila.setEstado("TOTAL");
 			
@@ -189,7 +263,9 @@ public class OrdenServiceImpl implements OrdenService {
 				ob.setPagadoS(Formatos.BigBecimalToString(pagado));
 				
 				ob.setIgv(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj01[5].toString())));
-				ob.setsTotal(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj01[6].toString())));				
+				
+				BigDecimal totalPagado = (BigDecimal)obj01[6];
+				ob.setsTotal(Formatos.BigBecimalToString(totalPagado));				
 				
 				gtPagado = gtPagado.add(pagado);
 				ob.setGtPagado(Formatos.BigBecimalToString(gtPagado));
@@ -262,6 +338,9 @@ public class OrdenServiceImpl implements OrdenService {
 				gtDeudaActual = gtDeudaActual.add(deudaActual);
 				ob.setGtDeudaActual(Formatos.BigBecimalToString(gtDeudaActual));
 				
+				double percentagePagado = (pagado.doubleValue() * 100)/ totalPagado.doubleValue();
+				ob.setPerPagado(BigDecimal.valueOf(percentagePagado).setScale(1,RoundingMode.HALF_UP) + "%");
+				
 				ordenes.add(ob);
 			}
 		}catch(NoResultException e){
@@ -310,13 +389,8 @@ public class OrdenServiceImpl implements OrdenService {
 			ordenY.setEstado(ob.getEstado());
 			break;		
 		case "masDeu":
-			switch(req.getSession().getAttribute("rol").toString()){
-			case "Supervisor":
+			if(req.getSession().getAttribute("rol").toString().equals("Administrador") || req.getSession().getAttribute("rol").toString().equals("Supervisor")){
 				ordenY.setEstado(ob.getEstado());
-				break;
-			case "Contable":
-				ordenY.setPagado(ob.getPagado());
-				break;
 			}
 			break;
 		}

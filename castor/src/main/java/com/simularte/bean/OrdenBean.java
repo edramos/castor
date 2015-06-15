@@ -80,6 +80,8 @@ public class OrdenBean {
 	private String gtDeudaActual;
 	private String gtDeudaComprometida;
 	private String gtDeudaCorrespondiente;
+	private String perPagado;
+	private int idMes;
 	
 	//REPORTE ESTADO POR MES
 	private int[] contadorMeses = new int[12];
@@ -482,5 +484,17 @@ public class OrdenBean {
 	}
 	public void setGtDeudaCorrespondiente(String gtDeudaCorrespondiente) {
 		this.gtDeudaCorrespondiente = gtDeudaCorrespondiente;
+	}
+	public String getPerPagado() {
+		return perPagado;
+	}
+	public void setPerPagado(String perPagado) {
+		this.perPagado = perPagado;
+	}
+	public int getIdMes() {
+		return idMes;
+	}
+	public void setIdMes(int idMes) {
+		this.idMes = idMes;
 	}
 }

@@ -40,6 +40,8 @@ public class Empresa {
 	private String website;
 	@Column(length = 270, nullable = true)
 	private String facebook;
+	@Column(length = 30, nullable = true)
+	private String codigo;
 	
 	@Column(name = "fechacreacion", nullable = false)
 	private Timestamp fechaCreacion;
@@ -131,5 +133,11 @@ public class Empresa {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 }

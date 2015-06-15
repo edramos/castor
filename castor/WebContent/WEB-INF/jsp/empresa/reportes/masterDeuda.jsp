@@ -14,14 +14,25 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
 <!-- END PAGE LEVEL STYLES -->
 <style type="text/css">
+.table td, th{text-align: center;}
 .aligncenter{text-align: center;}
 .alignright{text-align: right;}
+.bigHeader{white-space: normal;font-size: 12px; vertical-align: middle;}
+.dataTable .details td, .dataTable .details th {
+background-color: #ffffff;
+}
+.dataTable .details tr:nth-child(2n+1) td, .dataTable .details tr:nth-child(2n+1) th {
+    background-color: #ffffff;
+}
+ul
+{
+    list-style-type: none;
+}
+
 </style>
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
-
-
 
 <jsp:include page="../../comps/cabecera.jsp"/>
 <div class="clearfix"></div>
@@ -41,13 +52,22 @@
 				<div class="actions">
 				
 				<form:form id="frmBuscarOrden" modelAttribute="ordenBean" method="post">
+				
 				    <div class="input-daterange input-group" id="datepicker">
 				    	<select id="sltProveedores" class="input-small" style="color:#333;" name="idProveedor"><option value="-1">Todos</option></select>
 				        <input id="txtInicio" type="text" class="input-xsmall" style="color:#333;" placeholder="Desde" name="fechaInicio" />
 				        <input id="txtFin" type="text" class="input-xsmall" style="color:#333;" placeholder="Hasta" name="fechaEntrega" />
-				        <a id="btnBuscar" class="btn btn-warning btn-sm eventBtn">Buscar</a>
-				        <a id="btnExcel" class="btn btn-success btn-sm eventBtn">Excel</a>
+				        <a id="btnBuscar" class="btn blue btn-sm eventBtn"><i class="fa fa-search"></i>&nbsp;&nbsp;</a>
+				        <div class="btn-group">
+				        	<a class="btn green btn-sm eventBtn" data-toggle="dropdown">Exportar <i class="fa fa-angle-down"></i></a>
+				        	<ul class="dropdown-menu pull-right">
+								<li><a id="btnExcel" class="eventBtn"  href="javascript:;"><i class="fa fa-pencil"></i> Excel </a></li>
+								<li><a href="javascript:;"><i class="fa fa-trash-o"></i> PDF </a></li>
+							</ul>
+				        </div>
+				    	
 				    </div>
+				  
 				</form:form>
 				
 				</div>
@@ -56,17 +76,7 @@
 			
 			<form:form id="frmEditarFila" action="ajaxEditarOrden" modelAttribute="ordenBean" method="post">
 				
-			<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-hover">
-			<thead>
-			<tr>
-				<th>idO</th><th>idC</th><th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Oferta</th><th>Pagado</th>
-				<th>Deuda Actual</th><th>Deuda Comprom.</th><th>Deuda Corresp.</th><th></th><th></th>
-			</tr>
-			</thead>
 			
-			<tbody id="viewMasterDeudaOTHandlerbars">
-			</tbody>
-			</table>
 			
 			</form:form>
 			
@@ -95,14 +105,10 @@
 				</tbody>
 				</table>
 				
-					
-				
 			</div>
 		</div>
 	</div>
 </div>
-
-
 	
 </div>
 </div>
@@ -146,7 +152,6 @@ jQuery(document).ready(function() {
 		autoclose: true,
 		todayHighlight: true
     });
-
 });
 </script>
 <script>
@@ -181,23 +186,24 @@ function cargarProveedores(){
 <tr>
 	<td>{{idOrden}}</td>
 	<td>{{idCuenta}}</td>
-	<td><a href="ordenPag-{{idOrden}}" target="_blank">{{nombre}}<a/></td>
-	<td>{{nombreProveedor}}</td>
-	<td>{{estado}}</td>
-	<td>{{ofertaS}}</td>
-	<td>{{igv}}</td>
-	<td>{{sTotal}}</td>
-	<td>{{pagadoS}}</td>
-	<td>{{deudaActualS}}</td>
-	<td>{{deudaComprometidaS}}</td>
-	<td>{{deudaCorrespondienteS}}</td>
+	<td style="text-align:left;" width="16%"><a href="ordenPag-{{idOrden}}" target="_blank">{{nombre}}<a/></td>
+	<td width="8%">{{nombreProveedor}}</td>
+	<td style="text-align:right;" width="8%">{{ofertaS}}</td>
+	<td style="text-align:right;" width="8%">{{igv}}</td>
+	<td style="text-align:right;" width="8%">{{sTotal}}</td>
+	<td width="8%">{{estado}}</td>
+	<td style="text-align:right;" width="8%">{{deudaCorrespondienteS}}</td>
+	<td style="text-align:right;" width="8%">{{pagadoS}}</td>
+	<td style="text-align:right;" width="8%">{{deudaActualS}}</td>
+	<td style="text-align:right;" width="8%">{{deudaComprometidaS}}</td>
+	<td width="8%">{{perPagado}}</td>
 	<td><a class="btn green-meadow btn-xs edit" href="javascript:;"><i class="fa fa-edit"></i> Editar</a></td>
 	<td></td>
 </tr>
 </script>
 <script id="templateMasterDinamicaOT" type="text/x-handlebars-template">
 <tr>
-	<td>{{estado}}</td>
+	<td style="text-align:left;" width="10%">{{estado}}</td>
 {{#each contadorMeses}}
 	<td>{{this}}</td>
 {{/each}}
@@ -240,22 +246,24 @@ function buscarOrden(){
 	 				html += template(orden);
 				});
 				removeAddTable();
-				$("#viewMasterDeudaOTHandlerbars").html(html);
-				$("#viewMasterDeudaOTHandlerbars").append('<tr class="success" style="font-weight:bold;"><td>TOTAL</td><td></td><td style="color:#333;">TOTAL</td>'+
-				'<td></td><td></td><td></td><td></td><td></td><td style="color:#333;">'+ ordenes[ordenes.length - 1].gtPagado +'</td>'+
-				'<td style="color:#333;">'+ ordenes[ordenes.length - 1].gtDeudaActual +'</td><td></td><td></td><td></td><td></td>');
+				$("#viewMasterDeudaOTHandlerbars").html(html); 
+				$("#viewMasterDeudaOTHandlerbars").append('<tr class="success" style="font-weight:bold;"><td>TOTAL</td><td></td><td style="color:#333;text-align:left;">TOTAL</td>'+
+				'<td></td><td></td><td></td><td></td><td></td><td></td><td style="color:#333;text-align:right;">'+ ordenes[ordenes.length - 1].gtPagado +'</td>'+
+				'<td style="color:#333;text-align:right;">'+ ordenes[ordenes.length - 1].gtDeudaActual +'</td><td></td><td></td><td></td><td></td>');
 				
 				initTableMasterDeudaOT();
 			}else{
 				removeAddTable();
 				initTableMasterDeudaOT();
 			}
+				
 		}
 	});	
 }
 </script>
 <script>
 function initTableMasterDinamicaOT(){
+	//Exporta Excel, PDF, candidato a desaparecer
 	$.extend(true, $.fn.DataTable.TableTools.classes, {
         "container": "btn-group tabletools-dropdown-on-portlet",
         "buttons": {
@@ -267,18 +275,34 @@ function initTableMasterDinamicaOT(){
         }
     });
 	
-	$('#tblMasterDinamicaOT').DataTable({
+	var table = $('#tblMasterDinamicaOT');
+	
+	// Insert a 'details' column to the table
+	var nCloneTh = document.createElement('th');
+	nCloneTh.className = "table-checkbox";
+	
+	var nCloneTd = document.createElement('td');
+	nCloneTd.innerHTML = '<span class="row-details row-details-close"></span>';
+	
+	table.find('thead tr').each(function () {
+	    this.insertBefore(nCloneTh, this.childNodes[0]);
+	});
+	table.find('tbody tr').each(function () {
+		//alert(this.childNodes[0]);
+	    this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
+	});
+	
+	var oTable = table.dataTable({
 	    "order": [],
 	    "paging": false,
 	    "bSort" : false,
 	    "bFilter" : false,
 	    "bInfo": false,
 	    "aoColumnDefs": [
-        	{ "sClass": "aligncenter", "aTargets": [1,2,3,4,5,6,7,8,9,10,11,12] },
-        	{ "bVisible": false, "aTargets": [ 1,2,3,4,8,9,10,11,12 ] }
+        	{ "bVisible": false, "aTargets": [2,3,4,5,9,10,11,12,13] }
         ],
 	    "fnCreatedRow": function( nRow, aData, iDataIndex ){
-	    	if(aData[0] == "TOTAL"){
+	    	if(aData[1] == "TOTAL"){
 	    		$('td', nRow).css({"background-color":"#dff0d8", "font-weight": "bold"});
 	    	}
 		},
@@ -302,7 +326,70 @@ function initTableMasterDinamicaOT(){
             }]
         }
 	});
+	
+	table.on('click', ' tbody td .row-details', function (){
+	    var nTr = $(this).parents('tr')[0];
+	    if (oTable.fnIsOpen(nTr)) {
+	        // This row is already open - close it 
+	        $(this).addClass("row-details-close").removeClass("row-details-open");
+	        oTable.fnClose(nTr);
+	    } else {
+	        // Open this row 
+	        $(this).addClass("row-details-open").removeClass("row-details-close");
+	        oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+	        
+	        $('#tblDetalle').DataTable({
+	        	"paging": false,
+	    	    "bSort" : false,
+	    	    "bFilter" : false,
+	    	    "bInfo": false,
+	        	"aoColumnDefs": [
+  	             	{ "bVisible": false, "aTargets": [2,3,4,5,9,10,11,12,13] }
+  	             ]
+	        });
+	    }
+	});
+	
+	function fnFormatDetails(oTable, nTr){
+		var aData = oTable.fnGetData(nTr);
+
+	    $.ajax({
+	 		url: 'reporteMasterDinamicaOTOrdenes_fila_' + aData[1],
+	 		type: 'post',
+	 		dataType: 'json',
+	 		success: function(ordenes){
+	 			var primeraLista = 0;
+	 			var iguales = false;
+	 			var idLista = -1;
+	 			
+	 			$.each(ordenes, function(i, orden){			
+	 				
+	 				$('#ul' + orden.idMes).append('<li><a href="ordenPag-' + orden.idOrden + '" target="_blank">'+ orden.nombre +'</a></li>');
+	 					
+	 						
+	 			});
+	 				        
+	 		}
+	 	});
+		
+	    var sOut = '<table id="tblDetalle" class="table table-bordered table-condensed" style="margin-bottom:0px;"><thead></thead><tbody><tr><td></td><td></td>'+
+	    '<td><ul id="ul1"></ul></td><td><ul id="ul2"></ul></td>'+
+	    '<td><ul id="ul3"></ul></td><td><ul id="ul4"></ul></td><td><ul id="ul5"></ul></td><td><ul id="ul6"></ul></td><td><ul id="ul7"></ul></td>'+
+	    '<td><ul id="ul8"></ul></td><td><ul id="ul9"></ul></td><td><ul id="ul10"></ul></td><td><ul id="ul11"></ul></td><td><ul id="ul12"></ul></td></tr></tbody></table>';
+	
+	    return sOut;
+	}
 }
+</script>
+<script id="templateListaOrdenesUno" type="text/x-handlebars-template">
+<td>
+	<ul id="ulMes_{{idMes}}">
+		<li>{{nombre}}</li>
+	</ul>
+</td>
+</script>
+<script id="templateListaOrdenesVarios" type="text/x-handlebars-template">
+<li>{{nombre}}</li>
 </script>
 <script>
 function initTableMasterDeudaOT(){
@@ -319,15 +406,9 @@ function initTableMasterDeudaOT(){
 		var aData = oTable.fnGetData(nRow);
 		var jqTds = $('>td', nRow);
 		
-		switch(rol){
-		case "Supervisor":
-			jqTds[2].innerHTML = '<select id="sltEstadoObra" name="estado"></select>';
-			break;
-		case "Contable":
-			jqTds[4].innerHTML = '<input id="txtPago" type="text" class="form-control input-sm" name="pagado" value="' + aData[6] + '">';
-			break;
+		if(rol == "Administrador" || rol == "Supervisor"){
+			jqTds[4].innerHTML = '<select id="sltEstadoObra" name="estado"></select>';
 		}
-		
 		
 		jqTds[10].innerHTML = '<a class="btn green-meadow btn-xs edit" href=""><i class="fa fa-check"></i> Grabar</a>';
         jqTds[11].innerHTML = '<a class="btn red btn-xs cancel" href=""><i class="fa fa-close"></i> Cancelar</a><input type="hidden" name="idOrden" value="'+ aData[0] +'">';
@@ -335,7 +416,7 @@ function initTableMasterDeudaOT(){
 		for(var i = 0; i < aEstados.length; i++){
        		$('<option/>').val(aEstados[i]).html(aEstados[i]).appendTo('#sltEstadoObra');
         }
-        $('#sltEstadoObra').val(aData[4]);
+        $('#sltEstadoObra').val(aData[7]);
 	}
 	function saveRow(oTable, nRow, idOrden){
 		var jqInputs = $('input', nRow);
@@ -344,9 +425,6 @@ function initTableMasterDeudaOT(){
 		switch(rol){
 		case "Supervisor":
 			oTable.fnUpdate(jqSelects[0].value, nRow, 4, false);
-			break;
-		case "Contable":
-			oTable.fnUpdate(jqInputs[0].value, nRow, 6, false);
 			break;
 		}
 		
@@ -369,9 +447,7 @@ function initTableMasterDeudaOT(){
         "bFilter" : false,
         "bSort" : false,
         "aoColumnDefs": [
-        	{ "sClass": "alignright", "aTargets": [5,6,7,8,9,10,11] },
-        	{ "sClass": "aligncenter", "aTargets": [4] },
-        	{ "bVisible": false, "aTargets": [0,1] }
+        	{ "bVisible": false, "aTargets": [0,1,5] }
         ],
         "order": [
             [0, "asc"]
@@ -430,6 +506,14 @@ function initTableMasterDeudaOT(){
             nEditing = nRow;
         }
     });
+    
+    //Muestra columnas segun rol
+    var table = $('#tblMasterDeudaOT').DataTable();
+	
+	if(rol == "Coordinador" || rol == "Contable"){
+    	table.column(13).visible( false );
+    	table.column(14).visible( false );
+    }
 }
 </script>
 <script>
@@ -444,8 +528,10 @@ function removeAddTable(){
 	$('#tblMasterDeudaOT').remove();
 	$('#tblMasterDeudaOT_wrapper').remove();
 	
-	$('#frmEditarFila').append('<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr style="text-align:center;"><th>idO</th><th>idC</th>'+
-		'<th>Nombre</th><th>Proveedor</th><th>Estado</th><th>Oferta</th><th>IGV</th><th>Total</th><th>Pagado</th><th>Deuda Actual</th><th>Deuda Comp.</th><th>Deuda Corr.</th><th></th><th></th></tr></thead><tbody id="viewMasterDeudaOTHandlerbars"></tbody></table>');
+	$('#frmEditarFila').append('<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr>'+
+		'<th>idO</th><th>idC</th><th>Nombre</th><th>Proveedor</th><th>Oferta</th><th>IGV</th><th>Total</th><th>Estado</th>'+
+		'<th>Corresp.</th><th>Pagado</th><th>Actual</th><th>Comprom.</th><th>% Pagado</th><th></th><th></th></tr></thead>'+
+		'<tbody id="viewMasterDeudaOTHandlerbars"></tbody></table>');
 }
 </script>
 </body>
