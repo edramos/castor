@@ -29,7 +29,7 @@ function modificarProveedor(){
  		data: $('#frmModificarProveedor').serialize(),
  		beforeSend: function(){
  			var formy = $('#frmModificarProveedor').serialize();
- 			alert(formy);
+ 			//alert(formy);
  		},
  		success: function(resultado){
  			$('#txtNombreProvE').val('');

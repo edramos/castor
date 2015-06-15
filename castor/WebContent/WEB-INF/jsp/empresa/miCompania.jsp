@@ -49,10 +49,12 @@
 									<a aria-expanded="false" href="#tab_1_1_4" data-toggle="tab">
 									<span class="caption-subject font-blue-madison bold uppercase">Clientes</span></a>
 								</li>
+								<%if(!session.getAttribute("tipo").equals("proveedor")){%>
 								<li class="">
 									<a aria-expanded="false" href="#tab_1_1_5" data-toggle="tab">
 									<span class="caption-subject font-blue-madison bold uppercase">Proveedores</span></a>
 								</li>
+								<%} %>
 							</ul>
 						</div>
 						
@@ -70,9 +72,11 @@
 							<div class="tab-pane" id="tab_1_1_4">
 								<jsp:include page="miCompania/tabClientes.jsp"/>
 							</div>
+							
 							<div class="tab-pane" id="tab_1_1_5">
 								<jsp:include page="miCompania/tabProveedores.jsp"/>
 							</div>
+							
 						</div>
 						<!-- END TABS -->
 					</div>
@@ -107,7 +111,9 @@
 <script src="assets/admin/pages/scripts/table-editable.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
+var tipo = '<%=session.getAttribute("tipo").toString()%>';
 var flag = 0;
+
 jQuery(document).ready(function() {    
     Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
@@ -203,8 +209,9 @@ jQuery(document).ready(function() {
 	});
 	extraerInformacionEmpresa(); 
 	listarClientes();
-	
-	listarProveedores();
+	if(tipo != "proveedor"){
+		listarProveedores();
+	}
 	listarOficinas();
 	listarEmpleados();
 	

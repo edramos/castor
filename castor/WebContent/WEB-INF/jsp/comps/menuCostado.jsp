@@ -30,7 +30,8 @@
 				</ul>
 			</li>
 			
-			<%if(session.getAttribute("rol").equals("Administrador") || session.getAttribute("rol").equals("Contable")){ %>
+			<%if(session.getAttribute("tipo").equals("cliente")){
+				if(session.getAttribute("rol").equals("Administrador") || session.getAttribute("rol").equals("Contable")){ %>
 			    <li>
 					<a href="javascript:;"><i class="icon-layers"></i>
 						<span class="title">Facturas</span><span class="arrow "></span>
@@ -50,7 +51,8 @@
 						<%}%>
 					</ul>
 				</li> 
-			<% }%>
+			<% }
+			}%>
 	
 			
 			<%if(session.getAttribute("tipo").equals("empresa")){ %>

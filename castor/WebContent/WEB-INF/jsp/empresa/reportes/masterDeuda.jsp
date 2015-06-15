@@ -75,9 +75,7 @@ ul
 			<div id="divPortletBody" class="portlet-body">
 			
 			<form:form id="frmEditarFila" action="ajaxEditarOrden" modelAttribute="ordenBean" method="post">
-				
-			
-			
+
 			</form:form>
 			
 				
@@ -135,6 +133,7 @@ ul
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 var rol = '<%=session.getAttribute("rol").toString()%>';
+var tipo = '<%=session.getAttribute("tipo").toString()%>';
 var aEstados = ["Sin inicio", "Por iniciar", "Proceso", "Terminado", "Aceptado"];
 var aProveedores = [];
 
@@ -528,10 +527,17 @@ function removeAddTable(){
 	$('#tblMasterDeudaOT').remove();
 	$('#tblMasterDeudaOT_wrapper').remove();
 	
+	if(tipo == "cliente"){
 	$('#frmEditarFila').append('<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr>'+
 		'<th>idO</th><th>idC</th><th>Nombre</th><th>Proveedor</th><th>Oferta</th><th>IGV</th><th>Total</th><th>Estado</th>'+
 		'<th>Corresp.</th><th>Pagado</th><th>Actual</th><th>Comprom.</th><th>% Pagado</th><th></th><th></th></tr></thead>'+
 		'<tbody id="viewMasterDeudaOTHandlerbars"></tbody></table>');
+	}else{
+		$('#frmEditarFila').append('<table id="tblMasterDeudaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr>'+
+			'<th>idO</th><th>idC</th><th>Nombre</th><th>Cliente</th><th>Oferta</th><th>IGV</th><th>Total</th><th>Estado</th>'+
+			'<th>Corresp.</th><th>Pagado</th><th>Actual</th><th>Comprom.</th><th>% Pagado</th><th></th><th></th></tr></thead>'+
+			'<tbody id="viewMasterDeudaOTHandlerbars"></tbody></table>');	
+	}
 }
 </script>
 </body>

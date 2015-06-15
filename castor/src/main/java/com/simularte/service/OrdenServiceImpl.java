@@ -197,18 +197,20 @@ public class OrdenServiceImpl implements OrdenService {
 	@SuppressWarnings("unchecked")
 	public List<OrdenBean> mostrarMasterDeudaOT(OrdenBean obView, HttpServletRequest req){
 		List<OrdenBean> ordenes = new ArrayList<OrdenBean>();
-		System.out.println("idProveedor: " + obView.getIdProveedor());
+
 		//Funciona para 1 solo Proveedor, mejorarlo a n Proveedores
 		Query q01 = null;
-		String query01 = "SELECT o.idorden, o.nombre, o.estado, p.nombre as Proveedor, sc.monto as Oferta, sc.monto *0.18 as IGV, sc.monto + sc.monto* 0.18 as Total, SUM(dl.monto) as Pagado "
-				+ "FROM orden o "
-				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
-				+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
-				+ "LEFT JOIN detallelibro dl ON dl.idorden = o.idorden ";
+		String query01 = "";
 		String condiciones = "";
 		
 		switch(req.getSession().getAttribute("tipo").toString()){
 		case "cliente":
+			query01 = "SELECT o.idorden, o.nombre, o.estado, p.nombre as Proveedor, sc.monto as Oferta, sc.monto *0.18 as IGV, sc.monto + sc.monto* 0.18 as Total, SUM(dl.monto) as Pagado "
+				+ "FROM orden o "
+				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
+				+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+				+ "LEFT JOIN detallelibro dl ON dl.idorden = o.idorden ";
+			
 			if(obView.getIdProveedor() == -1){
 				System.out.println("Entre con idP -1, ahora vere si las fechas estan vacias");
 				if(!obView.getFechaInicio().equals("") && !obView.getFechaEntrega().equals("")){
@@ -231,6 +233,16 @@ public class OrdenServiceImpl implements OrdenService {
 				}
 			}
 			break;
+		//PROVEEDOR
+		case "proveedor":
+			query01 = "SELECT o.idorden, o.nombre, o.estado, e.nombre AS nc, sc.monto as Oferta, sc.monto *0.18 as IGV, sc.monto + sc.monto* 0.18 as Total, SUM(dl.monto) as Pagado "
+				+ "FROM orden o "
+				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden "
+				+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
+				+ "LEFT JOIN detallelibro dl ON dl.idorden = o.idorden "
+				+ "INNER JOIN empresa e ON e.idempresa = o.idempresa ";
+			condiciones = "WHERE p.ruc = '"+ req.getSession().getAttribute("ruc") +"' GROUP BY o.idorden;";
+			break;
 		}
 		
 		q01 = em.createNativeQuery(query01 + condiciones);
@@ -250,11 +262,11 @@ public class OrdenServiceImpl implements OrdenService {
 				ob.setNombre(obj01[1].toString());
 				ob.setOfertaS(Formatos.BigBecimalToString(Formatos.StringToBigDecimal(obj01[4].toString())));
 				
-				if(req.getSession().getAttribute("tipo").toString().equals("cliente")){
+				//if(req.getSession().getAttribute("tipo").toString().equals("cliente")){ SOLUCION TEMPORAL
 					ob.setNombreProveedor(obj01[3].toString());
-				}else{
-					ob.setNombreCliente(obj01[7].toString());
-				}
+				//}else{
+				//	ob.setNombreCliente(obj01[3].toString());
+				//}
 				
 				ob.setEstado(obj01[2].toString());
 				
@@ -913,11 +925,17 @@ public class OrdenServiceImpl implements OrdenService {
 			join += "INNER JOIN empresa empr ON empr.idempresa = o.idempresa ";
 			condiciones = "WHERE empr.idempresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") + "' OR o.idcliente = '"+ idClienteEmp +"'";
 			break;
+		case "proveedor":
+			campos = "o.idorden, o.codigo, o.nombre, e.nombre AS nc, sc.monto, o.estado ";
+			join = "INNER JOIN subcontrato sc ON sc.idorden = o.idorden INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor INNER JOIN empresa e ON e.idempresa = o.idempresa ";
+			condiciones = "WHERE p.ruc = '"+ req.getSession().getAttribute("ruc") +"' AND o.estado != 'disabled'";
+			break;
 		case "empresa":
 			campos = "o.idorden, o.codigo, o.nombre, o.oferta, o.estado, o.idempresa, o.idcliente ";
 			join = "INNER JOIN subcontrato sc ON sc.idorden = o.idorden ";
 			join += "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor ";
 			condiciones = "WHERE p.ruc = '"+ req.getSession().getAttribute("ruc") +"' OR o.idempresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") +"'";
+			break;
 		}
 		/*if(!ordenBean.getCodigo().equals("")){
 			condiciones += "AND o.codigo LIKE :codigo AND o.estado != 'disable' ";
@@ -941,7 +959,7 @@ public class OrdenServiceImpl implements OrdenService {
 		
 		
 		Query q = em.createNativeQuery("SELECT " + campos + from + join + condiciones);
-		System.out.println("QUERY: SELECT DISTINCT " + campos + from + join + condiciones + "--- BASIC" );
+		System.out.println("QUERY: SELECT " + campos + from + join + condiciones + "--- BASIC" );
 		/*Query q = em.createQuery("SELECT DISTINCT " + campos + from + join + condiciones);
 
 		q.setParameter("idEmpresa", (Integer)session.getAttribute("idEmpresa"));
@@ -991,6 +1009,21 @@ public class OrdenServiceImpl implements OrdenService {
 				ordenB.setNombre(ord[2].toString());
 				ordenB.setNombreCliente(ord[3].toString());			
 				ordenB.setOferta(new BigDecimal(ord[4].toString()));
+				ordenB.setEstado(ord[5].toString());
+				
+				ordenBeans.add(ordenB);
+			}
+			break;
+		case "proveedor":
+			for(int x = 0; x < rows.size(); x++){
+				Object[] ord = rows.get(x);
+				OrdenBean ordenB = new OrdenBean();
+				
+				ordenB.setIdOrden((Integer)ord[0]);
+				ordenB.setCodigo(ord[1].toString());
+				ordenB.setNombre(ord[2].toString());
+				ordenB.setNombreCliente(ord[3].toString());			
+				ordenB.setOferta((BigDecimal)(ord[4]));
 				ordenB.setEstado(ord[5].toString());
 				
 				ordenBeans.add(ordenB);

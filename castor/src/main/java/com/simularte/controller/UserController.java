@@ -58,6 +58,7 @@ public class UserController {
 				path = "empresa/dashboard";
 				break;
 			case "proveedor":
+				path = "empresa/dashboard";
 				break;
 			}
 		}else{
@@ -93,6 +94,9 @@ public class UserController {
 			//model.addAttribute("panelOrden", os.buscarOrderPanel(req));
 			path = "empresa/dashboard";
 			break;
+		case "proveedor":
+			path = "empresa/dashboard";
+			break;
 		}
 		return path;
 	}
@@ -109,6 +113,7 @@ public class UserController {
 			path = "empresa/miCompania";
 			break;
 		case "proveedor":
+			path = "empresa/miCompania";
 			break;
 		}
 		
