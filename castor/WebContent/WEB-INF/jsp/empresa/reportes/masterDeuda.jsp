@@ -287,7 +287,6 @@ function initTableMasterDinamicaOT(){
 	    this.insertBefore(nCloneTh, this.childNodes[0]);
 	});
 	table.find('tbody tr').each(function () {
-		//alert(this.childNodes[0]);
 	    this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
 	});
 	
@@ -328,50 +327,48 @@ function initTableMasterDinamicaOT(){
 	
 	table.on('click', ' tbody td .row-details', function (){
 	    var nTr = $(this).parents('tr')[0];
-	    if (oTable.fnIsOpen(nTr)) {
-	        // This row is already open - close it 
-	        $(this).addClass("row-details-close").removeClass("row-details-open");
-	        oTable.fnClose(nTr);
-	    } else {
-	        // Open this row 
-	        $(this).addClass("row-details-open").removeClass("row-details-close");
-	        oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
-	        
-	        $('#tblDetalle').DataTable({
-	        	"paging": false,
-	    	    "bSort" : false,
-	    	    "bFilter" : false,
-	    	    "bInfo": false,
-	        	"aoColumnDefs": [
-  	             	{ "bVisible": false, "aTargets": [2,3,4,5,9,10,11,12,13] }
-  	             ]
-	        });
+	    var aData = oTable.fnGetData(nTr);
+	    var table = $('#tblMasterDinamicaOT').DataTable();
+	    var rowIndex = table.row(nTr).index();
+	    
+	    if(rowIndex != 5){
+		    if(oTable.fnIsOpen(nTr)){
+		        // This row is already open - close it 
+		        $(this).addClass("row-details-close").removeClass("row-details-open");
+		        oTable.fnClose(nTr);
+		    }else{
+		        // Open this row 
+		        $(this).addClass("row-details-open").removeClass("row-details-close");
+		        oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr, rowIndex), 'details');
+		        
+		        $('#tblDetalle_' + rowIndex).DataTable({
+		        	"paging": false,
+		    	    "bSort" : false,
+		    	    "bFilter" : false,
+		    	    "bInfo": false,
+		        	"aoColumnDefs": [
+	  	             	{ "bVisible": false, "aTargets": [2,3,4,5,9,10,11,12,13] }
+	  	             ]
+		        });
+		    }
 	    }
 	});
 	
-	function fnFormatDetails(oTable, nTr){
+	function fnFormatDetails(oTable, nTr, idTabla){
 		var aData = oTable.fnGetData(nTr);
-
+		
 	    $.ajax({
 	 		url: 'reporteMasterDinamicaOTOrdenes_fila_' + aData[1],
 	 		type: 'post',
 	 		dataType: 'json',
 	 		success: function(ordenes){
-	 			var primeraLista = 0;
-	 			var iguales = false;
-	 			var idLista = -1;
-	 			
 	 			$.each(ordenes, function(i, orden){			
-	 				
-	 				$('#ul' + orden.idMes).append('<li><a href="ordenPag-' + orden.idOrden + '" target="_blank">'+ orden.nombre +'</a></li>');
-	 					
-	 						
-	 			});
-	 				        
+	 				$('#ul' + orden.idMes).append('<li><a href="ordenPag-' + orden.idOrden + '" target="_blank">'+ orden.nombre +'</a></li>');			
+	 			});	        
 	 		}
 	 	});
 		
-	    var sOut = '<table id="tblDetalle" class="table table-bordered table-condensed" style="margin-bottom:0px;"><thead></thead><tbody><tr><td></td><td></td>'+
+	    var sOut = '<table id="tblDetalle_'+ idTabla +'" class="table table-bordered table-condensed" style="margin-bottom:0px;"><thead></thead><tbody><tr><td></td><td></td>'+
 	    '<td><ul id="ul1"></ul></td><td><ul id="ul2"></ul></td>'+
 	    '<td><ul id="ul3"></ul></td><td><ul id="ul4"></ul></td><td><ul id="ul5"></ul></td><td><ul id="ul6"></ul></td><td><ul id="ul7"></ul></td>'+
 	    '<td><ul id="ul8"></ul></td><td><ul id="ul9"></ul></td><td><ul id="ul10"></ul></td><td><ul id="ul11"></ul></td><td><ul id="ul12"></ul></td></tr></tbody></table>';
@@ -520,7 +517,9 @@ function removeAddTableDinamica(){
 	$('#tblMasterDinamicaOT').remove();
 	$('#tblMasterDinamicaOT_wrapper').remove();
 	
-	$('#divPortletBodyDinamica').append('<table id="tblMasterDinamicaOT" class="table table-striped table-bordered table-condensed table-hover"><thead><tr><th></th><th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>Mayo</th><th>Junio</th><th>Julio</th><th>Ago</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dic</th></tr></thead><tbody id="viewMasterDinamicaOTHandlerbars"></tbody></table>');
+	$('#divPortletBodyDinamica').append('<table id="tblMasterDinamicaOT" class="table table-striped table-bordered table-condensed table-hover">'+
+		'<thead><tr><th></th><th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>Mayo</th><th>Junio</th><th>Julio</th><th>Ago</th><th>Sep</th><th>Oct</th>'+
+		'<th>Nov</th><th>Dic</th></tr></thead><tbody id="viewMasterDinamicaOTHandlerbars"></tbody></table>');
 }
 
 function removeAddTable(){
