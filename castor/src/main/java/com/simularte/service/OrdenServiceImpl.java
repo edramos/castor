@@ -602,12 +602,12 @@ public class OrdenServiceImpl implements OrdenService {
 				+ "AND c.tipo = '"+ value +"' AND o.estado != 'Aceptado' AND o.estado != 'Aceptacion Pendiente' GROUP BY o.idorden";
 			break;
 		case "cliente":
-			//Por ahora empresa y cliente tienen el mismo query
+			
 			query = "SELECT o.idorden, o.nombre, o.idempresa, o.idcliente FROM orden o "
 				+ "INNER JOIN subcontrato sc ON sc.idorden = o.idorden INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
 				+ "INNER JOIN cuenta c ON c.idorden = o.idorden "
-				+ "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' OR p.ruc = '"+ req.getSession().getAttribute("ruc") +"' "
-				+ "AND c.tipo = '"+ value +"' AND o.estado != 'Aceptado' AND o.estado != 'Aceptacion Pendiente' GROUP BY o.idorden";
+				+ "WHERE o.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' AND c.tipo = '"+ value +"' AND c.estado = 'Pendiente' AND o.estado != 'Aceptacion Pendiente' "
+				+ "GROUP BY o.idorden";
 			break;
 		}
 		
@@ -920,7 +920,7 @@ public class OrdenServiceImpl implements OrdenService {
 		//condiciones = "WHERE empr.idEmpresa = :idEmpresa AND cli.idCliente = :idEmpresa";
 		switch(req.getSession().getAttribute("tipo").toString()){
 		case "cliente":
-			campos = "o.idorden, o.codigo, o.nombre, cli.nombre as CN, o.oferta, o.estado ";
+			campos = "o.idorden, o.codigo, o.nombre, cli.nombre as CN, o.oferta, o.estado, o.lat, o.lon, o.tipotrabajo, o.ciudad, o.departamento ";
 			join = "INNER JOIN cliente cli ON cli.idcliente = o.idcliente ";
 			join += "INNER JOIN empresa empr ON empr.idempresa = o.idempresa ";
 			condiciones = "WHERE empr.idempresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") + "' OR o.idcliente = '"+ idClienteEmp +"'";
@@ -1010,6 +1010,11 @@ public class OrdenServiceImpl implements OrdenService {
 				ordenB.setNombreCliente(ord[3].toString());			
 				ordenB.setOferta(new BigDecimal(ord[4].toString()));
 				ordenB.setEstado(ord[5].toString());
+				ordenB.setLat(ord[6].toString());
+				ordenB.setLon(ord[7].toString());
+				ordenB.setTipoTrabajo(ord[8].toString());
+				ordenB.setCiudad(ord[9].toString());
+				ordenB.setDepartamento(ord[10].toString());
 				
 				ordenBeans.add(ordenB);
 			}

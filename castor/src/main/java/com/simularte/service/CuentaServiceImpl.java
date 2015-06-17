@@ -139,13 +139,28 @@ public class CuentaServiceImpl implements CuentaService {
 	public List<CuentaBean> listarCuentas(String tipo, Integer idOrden, HttpServletRequest req) {
 		List<CuentaBean> lcueBean = new ArrayList<CuentaBean>();
 		double totalConIgv = 0;
+		Query q01 = null;
 		
 		try{
-			Query q01 = em.createNativeQuery("SELECT c.idcuenta, c.avance, c.creadopor, c.estado, c.estadotrabajo, c.fechacreacion, c.fechapagoprogramada, c.fechapagoreal, "
-					+ "c.fechavencimiento, c.monto, c.pagador, c.tipo, c.tipopago, c.idorden, c.idsubcontrato, f.codigo, sc.tipotrabajo "
-					+ "FROM cuenta c "
-					+ "LEFT JOIN factura f ON c.idcuenta = f.idcuenta INNER JOIN subcontrato sc ON sc.idorden = c.idorden "
+			
+			switch(req.getSession().getAttribute("tipo").toString()){
+			case "cliente":
+				q01 = em.createNativeQuery("SELECT c.idcuenta, c.avance, c.creadopor, c.estado, c.estadotrabajo, c.fechacreacion, c.fechapagoprogramada, c.fechapagoreal, "
+					+ "c.fechavencimiento, c.monto, c.pagador, c.tipo, c.tipopago, c.idorden, c.idsubcontrato, f.codigo, sc.tipotrabajo, p.idproveedor, p.nombre as np FROM cuenta c "
+					+ "LEFT JOIN factura f ON c.idcuenta = f.idcuenta "
+					+ "INNER JOIN subcontrato sc ON sc.idorden = c.idorden "
+					+ "INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor "
 					+ "WHERE c.idorden = " + idOrden + " AND c.tipo = '" + tipo + "'");
+				break;
+			case "proveedor":
+				q01 = em.createNativeQuery("SELECT c.idcuenta, c.avance, c.creadopor, c.estado, c.estadotrabajo, c.fechacreacion, c.fechapagoprogramada, c.fechapagoreal, "
+					+ "c.fechavencimiento, c.monto, c.pagador, c.tipo, c.tipopago, c.idorden, c.idsubcontrato, f.codigo, sc.tipotrabajo, e.nombre as nc FROM cuenta c "
+					+ "LEFT JOIN factura f ON c.idcuenta = f.idcuenta "
+					+ "INNER JOIN subcontrato sc ON sc.idorden = c.idorden "
+					+ "INNER JOIN orden o ON o.idorden = c.idorden "
+					+ "INNER JOIN empresa e ON e.idempresa = o.idempresa "
+					+ "WHERE c.idorden = " + idOrden + " AND c.tipo = '" + tipo + "'");
+			}
 			
 			
 			List<Object[]> rows = q01.getResultList();
@@ -154,20 +169,19 @@ public class CuentaServiceImpl implements CuentaService {
 				CuentaBean cb = new CuentaBean();
 				
 				cb.setIdCuenta((Integer)obj[0]);
+				cb.setIdOrden((Integer)obj[13]);
 				
-				if(obj[13] != null){
-					cb.setIdOrden((Integer)obj[13]);
+				switch(req.getSession().getAttribute("tipo").toString()){
+				case "cliente":
+					cb.setIdProveedor((Integer)obj[17]);
+					cb.setNombreProveedor(obj[18].toString());
+					break;
+				case "proveedor":
+					cb.setNombreProveedor(obj[17].toString());	//Sobreescribe, envia el nombre de la empresa duena del Order - el cliente
+					break;
 				}
-				if(obj[14] != null){
-					cb.setIdSubcontrato((Integer)obj[14]);
-					
-					Query q02 = em.createNativeQuery("SELECT p.idproveedor, p.nombre FROM subcontrato sc "
-							+ "INNER JOIN proveedor p ON sc.idproveedor = p.idproveedor WHERE sc.idsubcontrato = '" + cb.getIdSubcontrato() + "'");
-					Object[] obj02 = (Object[])q02.getSingleResult();
-					
-					cb.setIdProveedor((Integer)obj02[0]);
-					cb.setNombreProveedor(obj02[1].toString());
-				}				
+				
+								
 				cb.setTipo(obj[11].toString());
 				cb.setTipoPago(obj[12].toString());
 				if(obj[6] != null) cb.setFechaPagoProgramada(Dates.stringToStringFechaCorta(obj[6].toString()));

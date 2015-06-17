@@ -139,6 +139,7 @@ public class UserServiceImpl implements UserService{
 				session.setAttribute("tipo", empresaSR.getTipo());
 				session.setAttribute("ruc", empresaSR.getRuc());
 				session.setAttribute("nombreEmpresa", empresaSR.getNombre());
+				session.setAttribute("codigo",empresaSR.getCodigo());
 				
 				result = true;
 			}			

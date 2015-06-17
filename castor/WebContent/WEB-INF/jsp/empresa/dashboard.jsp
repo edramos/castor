@@ -20,6 +20,12 @@
     border: 1px solid #DDD;
     margin: 0px 0px !important;
 }
+.note {
+    margin: 0px;
+    padding: 15px 30px 15px 15px;
+    border-left: 5px solid #EEE;
+    border-radius: 0px 4px 4px 0px;
+}
 </style>
 </head>
 
@@ -33,169 +39,27 @@
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
 	<div class="page-content">
-		<!-- BEGIN PAGE CONTENT INNER -->
-		<div class="row">
-		
-		
-		
-		
-		
-			<!-- <div class="col-md-6">
-				
-				 <div class="portlet box blue-hoki">
-					<div class="portlet-title">
-						<div class="caption"><i class="icon-graph"></i>Diagrama</div>
-						<div class="tools">
-							<a title="" data-original-title="" href="javascript:;" class="collapse"></a>
-							<a title="" data-original-title="" href="javascript:;" class="reload"></a>
-							<a title="" data-original-title="" href="javascript:;" class="fullscreen"></a>	
-						</div>
-					</div>
-					<div class="portlet-body form">
-						<div id="divChart" class="chart" style="height: 300px;"></div>
+	<!-- BEGIN PAGE CONTENT INNER -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="portlet box blue-hoki">
+				<div class="portlet-title">
+					<div class="caption">Ordenes</div>
+					<div class="actions">
+						<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 					</div>
 				</div>
-				
-				<div class="portlet box blue-hoki">
-					<div class="portlet-title">
-						<div class="caption"><i class="icon-basket"></i>Ordenes</div>
-						<div class="actions">
-							<a id="btnBuscarOrden" href="toBuscarOrden" class="btn btn-default btn-sm eventBtn"><i class="fa fa-search"></i> Buscar </a>	
-							<a id="btnCrearProy" href="toCrearOrden" class="btn btn-default btn-sm eventBtn"><i class="fa fa-plus"></i> Crear </a>
-							<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title="">
-							</a>
-						</div>
-					</div>
-					<div class="portlet-body">
-						<div class="table-scrollable table-scrollable-borderless">
-							<table class="table table-hover table-light">
-							<thead>
-							<tr class="uppercase">
-								<th>N°</th>
-								<th>Estado</th>
-								<th>Oferta</th>
-								<th>Costos</th>
-								<th>Utilidad</th>
-							</tr>
-							</thead>
-							<tbody>
-							<c:forEach items="${panelOrden}" var="panelOrdenFila" varStatus="loop"> 
-							<tr> 
-						  		<td><span class="bold theme-font-color">${panelOrdenFila.contador}</span></td>
-						  		<td>${panelOrdenFila.estado}</td>
-						  		<td>${panelOrdenFila.sumOferta}</td>
-						  		<td>${panelOrdenFila.sumMonto}</td>
-						  		<td><span class="bold theme-font-color">${panelOrdenFila.utilidad}</span></td>  
-							</tr>
-							</c:forEach>
-							</tbody>
-							</table>
-						</div>
-					</div>
-				</div> 
-				
-			</div> -->
-			
-			
-			<!-- <div class="col-md-6">
-				 <div class="portlet box blue-hoki">
-					<div class="portlet-title">
-						<div class="caption"><i class="icon-bubbles"></i>Mensajes</div>
-						<div class="actions">							
-							<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
-						</div>
-					</div>
-					<div class="portlet-body">
-						<div class="scroller" style="height: 706px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
-						<div class="general-item-list">
-							<div class="item">
-								<div class="item-head">
-									<div class="item-details">
-										<img class="item-pic" src="assets/admin/layout3/img/avatar4.jpg">
-										<a href="" class="item-name primary-link">Nick Larson</a>
-										<span class="item-label">3 hrs ago</span>
-									</div>
-									<span class="item-status"><span class="badge badge-empty badge-success"></span> Open</span>
-								</div>
-								<div class="item-body">
-									 Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-								</div>
-							</div>
-							<div class="item">
-								<div class="item-head">
-									<div class="item-details">
-										<img class="item-pic" src="assets/admin/layout3/img/avatar3.jpg">
-										<a href="" class="item-name primary-link">Mark</a>
-										<span class="item-label">5 hrs ago</span>
-									</div>
-									<span class="item-status"><span class="badge badge-empty badge-warning"></span> Pending</span>
-								</div>
-								<div class="item-body">
-									 Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat tincidunt ut laoreet.
-								</div>
-							</div>
-							<div class="item">
-								<div class="item-head">
-									<div class="item-details">
-										<img class="item-pic" src="assets/admin/layout3/img/avatar6.jpg">
-										<a href="" class="item-name primary-link">Nick Larson</a>
-										<span class="item-label">8 hrs ago</span>
-									</div>
-									<span class="item-status"><span class="badge badge-empty badge-primary"></span> Closed</span>
-								</div>
-								<div class="item-body">
-									 Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.
-								</div>
-							</div>
-							<div class="item">
-								<div class="item-head">
-									<div class="item-details">
-										<img class="item-pic" src="assets/admin/layout3/img/avatar7.jpg">
-										<a href="" class="item-name primary-link">Nick Larson</a>
-										<span class="item-label">12 hrs ago</span>
-									</div>
-									<span class="item-status"><span class="badge badge-empty badge-danger"></span> Pending</span>
-								</div>
-								<div class="item-body">
-									 Consectetuer adipiscing elit Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-								</div>
-							</div>
-							<div class="item">
-								<div class="item-head">
-									<div class="item-details">
-										<img class="item-pic" src="assets/admin/layout3/img/avatar9.jpg">
-										<a href="" class="item-name primary-link">Richard Stone</a>
-										<span class="item-label">2 days ago</span>
-									</div>
-									<span class="item-status"><span class="badge badge-empty badge-danger"></span> Open</span>
-								</div>
-								<div class="item-body">
-									 Lorem ipsum dolor sit amet, consectetuer adipiscing elit, ut laoreet dolore magna aliquam erat volutpat.
-								</div>
-							</div>
-							<div class="item">
-								<div class="item-head">
-									<div class="item-details">
-										<img class="item-pic" src="assets/admin/layout3/img/avatar8.jpg">
-										<a href="" class="item-name primary-link">Dan</a>
-										<span class="item-label">3 days ago</span>
-									</div>
-									<span class="item-status"><span class="badge badge-empty badge-warning"></span> Pending</span>
-								</div>
-								<div class="item-body">
-									 Lorem ipsum dolor sit amet, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-									 Lorem ipsum dolor sit amet, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-									 Lorem ipsum dolor sit amet, sed diam nonummy nibh euismod tincidunt.
-								</div>
-							</div>
-							
-						</div>
-						</div>
-					</div>
+				<div class="portlet-body">
+					<div id="map-container" class="gmaps" style="height: 700px;"></div>
+					
+					<table class="table table-scrollable table-hover">
+						<tbody id="viewOficinasHandlerbars"></tbody>
+					</table>
 				</div>
-			</div> -->
-		</div>			
-		<!-- END PAGE CONTENT INNER -->
+			</div>
+		</div>		
+	</div>			
+	<!-- END PAGE CONTENT INNER -->
 	</div>
 </div>
 <!-- END CONTENT -->
@@ -206,6 +70,7 @@
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
 <script src="assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -215,8 +80,66 @@
 <script>
 jQuery(document).ready(function() {    
 	Metronic.init(); // init metronic core componets
-    Layout.init(); // init layout    
+    Layout.init(); // init layout 
+    
+    getOrdenes();
 });
+</script>
+<script>
+function getOrdenes(){
+	$.ajax({
+ 		url: 'ajaxBuscarOrden',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		success: function(ordenes){
+ 			
+ 			initMapa(ordenes);
+ 			
+ 		}
+ 	});
+}
+function initMapa(entidades){
+	
+	var var_location = new google.maps.LatLng(-10.045, -75.030);
+	
+    var var_mapoptions = {
+      center: var_location,
+      zoom: 6,
+      mapTypeId: google.maps.MapTypeId.TERRAIN 
+    };
+    
+    var var_map = new google.maps.Map(document.getElementById("map-container"), var_mapoptions);
+    var infowindow = new google.maps.InfoWindow({});
+    var image = 'assets/admin/layout4/img/marker-red_00.png';
+    $.each(entidades, function(i, entidad){
+    	var var_location2 = new google.maps.LatLng(entidad.lat, entidad.lon);
+		var marker = new google.maps.Marker({
+			position: var_location2,
+			map: var_map,
+			title: entidad.nombre,
+			icon: image,
+			animation: google.maps.Animation.DROP
+		});
+	
+		marker.setMap(var_map);
+		
+		var contentString = '<div class="note note-warning" style="width:250px;">'+
+		'<h4><strong>'+ entidad.nombre +'</strong></h4><ul style="padding-left:10px;"><li>Operador: '+ entidad.nombreCliente +'</li>'+
+		'<li>Tipo: '+ entidad.tipoTrabajo +'</li><li>Estado: '+ entidad.estado +'</li><li>Ubicacion: '+ entidad.ciudad + ', ' + entidad.departamento +'</li></ul></div>';
+	    
+	    
+		
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.setContent(contentString);
+			infowindow.open(var_map, this);
+	    });
+    });
+    
+    
+    
+    
+
+}
 </script>
 <script type="text/javascript">
 /* AmCharts.loadJSON = function(url) {

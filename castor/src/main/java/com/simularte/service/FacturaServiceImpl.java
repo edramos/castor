@@ -267,7 +267,7 @@ public class FacturaServiceImpl implements FacturaService{
 				+ "INNER JOIN orden o ON o.idorden = c.idorden " 
 				+ "INNER JOIN subcontrato sc ON c.idsubcontrato = sc.idsubcontrato " 
 				+ "WHERE o.idempresa = '" + (Integer)req.getSession().getAttribute("idEmpresa") + "' AND f.codigo LIKE '%" + codigoFactura + "%' "
-				+ "AND f.estado != 'Cancelado' OR f.estadodetraccion != 'Cancelado'");
+				+ "AND (f.estado != 'Cancelado' OR f.estadodetraccion != 'Cancelado')");
 		}
 		List<Object[]> rows = q01.getResultList();
 		

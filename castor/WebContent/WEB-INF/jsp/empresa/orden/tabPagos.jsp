@@ -1,10 +1,15 @@
+<style>
+h4{margin-top: 0px;}
+</style>
 <% if(session.getAttribute("tipo").equals("cliente")){ %>
+<h4>Proveedores</h4>
 <div id="viewSubcontratos" class="portlet-body">
 	<div class="table-responsive">
-		<table class="table table-bordered table-hover">
+		<table class="table table-bordered table-hover table-condensed">
 		<thead>
 		<tr class="heading">
-			<th>Proveedor</th><th>Tipo Trabajo</th><th>Monto</th><th>Termino Obra</th><th>Estado</th><th>Supervisor</th>
+			<th>Proveedor</th><th style="text-align:center;">Tipo Trabajo</th><th style="text-align:center;">Monto</th><th style="text-align:center;">Termino Obra</th>
+			<th style="text-align:center;">Estado</th><th style="text-align:center;">Supervisor</th>
 		</tr>
 		</thead>
 		<tbody id="viewSubcontratosHandlerbars">
@@ -13,12 +18,14 @@
 	</div>
 </div>
 <% } %>
-<div id="viewPagos" class="portlet-body" style="margin-top: 20px">
+<h4>Cuentas por <%if(session.getAttribute("tipo").equals("cliente")){%>Pagar<%}else{%>Cobrar<%}%></h4>
+<div id="viewPagos" class="portlet-body">
 	<div class="table-responsive">
 		<table class="table table-condensed table-bordered table-hover">
 		<thead>
 		<tr class="heading">
-			<th>N° F.</th><th style="text-align:center;">Proveedor</th><th style="text-align:center;">Vence</th><th style="text-align:center;">Condicion</th>
+			<th>N° F.</th><th style="text-align:center;"><%if(session.getAttribute("tipo").equals("cliente")){%>Proveedor<%}else{%>Cliente<%}%></th>
+			<th style="text-align:center;">Vence</th><th style="text-align:center;">Condicion</th>
 			<th style="text-align:center;">Monto</th><th style="text-align:center;">IGV</th><th style="text-align:center;">Mon + IGV</th>
 			<th style="text-align:center;">Detraccion</th><th style="text-align:center;">Tipo Pago</th><th style="text-align:center;">Estado</th>
 		</tr>
@@ -29,14 +36,14 @@
 		</table>
 	</div>
 </div>
-
+<h4>Facturas</h4>
 <div class="portlet-body">
 	<div class="table-scrollable">
-		<table class="table table-bordered table-hover">
+		<table class="table table-bordered table-hover table-condensed">
 			<thead>
 			<tr class="heading">
-				<th>N° F.</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th><th>Pagar</th><th>Estado D.</th>
-				<th>Estado F.</th><th>Emitido</th><th>Pago D.</th><th>Pago F.</th>
+				<th>N° F.</th><th>Monto</th><th>IGV</th><th>Mon + IGV</th><th>Detraccion</th><th>Pagar</th><th>Recibida</th><th>Pago Det.</th><th>Pago Fac.</th>
+				<th>Estado D.</th><th>Estado F.</th>
 			</tr>
 			</thead>
 			<tbody id="viewDatosFacturaPagar">
@@ -64,7 +71,7 @@ function initOrdenSubcontratos(subcontratos){
 	eficiencia = (sumMontoSubcontratos/oferta) * 100;
 	
 	//$('#spnSumMontoSubs').text($.getFormattedCurrency(sumMontoSubcontratos));
-	if(tipoOrg == "cliente") $('#spnSumMontoSubs').text(sumMontoSubcontratos);
+	if(tipo == "cliente") $('#spnSumMontoSubs').text(sumMontoSubcontratos);
 	//$('#spnUtilBruta').text($.getFormattedCurrency(utilBruta));
 	$('#spnUtilNeta').text($.getFormattedCurrency(utilNeta));
 	//$('#spnEficiencia').text(eficiencia.toFixed(2) + '%');
@@ -124,17 +131,17 @@ function initFacturasPagar(facturasPagar){
 	<td>{{conIgv}}</td>
 	<td>{{montoDetraccion}} ({{detraccion}}%)</td>
 	<td>{{cobrarFactura}}</td>
-	<td style="text-align:center;">{{#ifDet estadoDetraccion Cancelado}}<span class="label label-success">{{estadoDetraccion}}</span>{{else}}{{estadoDetraccion}}{{/ifDet}}</td>
-	<td style="text-align:center;">{{#ifFactura estado Cancelado}}<span class="label label-success">{{estado}}</span>{{else}}{{estado}}{{/ifFactura}}</td>
 	<td style="text-align:center;">{{fechaEmision}}</td>
 	<td style="text-align:center;">{{fechaCancelacionDetraccion}}</td>
 	<td style="text-align:center;">{{fechaCancelacion}}</td>
+	<td style="text-align:center;">{{#ifDet estadoDetraccion Cancelado}}<span class="label label-success">{{estadoDetraccion}}</span>{{else}}{{estadoDetraccion}}{{/ifDet}}</td>
+	<td style="text-align:center;">{{#ifFactura estado Cancelado}}<span class="label label-success">{{estado}}</span>{{else}}{{estado}}{{/ifFactura}}</td>
 </tr>
 </script>
 <script id="templatePagos" type="text/x-handlebars-template">
 <tr>
 	<td>{{codigo}}</td>
-	<td style="text-align:center;">{{nombreProveedor}}</td>
+	<td style="text-align:left;">{{nombreProveedor}}</td>
 	<td style="text-align:center;">{{fechaVencimiento}}</td>
 	<td style="text-align:center;">{{estadoTrabajo}} {{avance}}</td>
 	<td style="text-align:right;">{{monto}}</td>
@@ -142,7 +149,7 @@ function initFacturasPagar(facturasPagar){
 	<td style="text-align:right;">{{conIgv}}</td>
 	<td style="text-align:right;">{{montoDetraccion}}</td>
 	<td style="text-align:center;">{{tipoPago}}</td>
-	<td>{{#ifEst estado 'Cancelado'}}<span class="label label-success">{{estado}}</span>{{/ifEst}}
+	<td style="text-align:center;">{{#ifEst estado 'Cancelado'}}<span class="label label-success">{{estado}}</span>{{/ifEst}}
 	{{#ifEst estado 'Pendiente'}}<span class="label label-warning">{{estado}}</span>{{/ifEst}}
 	{{#ifEst estado 'Facturado'}}<span class="label label-default">{{estado}}</span>{{/ifEst}}
 	{{#ifEst estado 'Falta Detraccion'}}<span class="label label-primary">{{estado}}</span>{{/ifEst}}
@@ -152,9 +159,10 @@ function initFacturasPagar(facturasPagar){
 <script id="templateSubcontratos" type="text/x-handlebars-template">
 <tr>
 	<td>{{nombreProveedor}}</td>
-	<td>{{tipoTrabajo}}</td>
-	<td>{{monto}}</td>
-	<td>{{fechaTerminoObra}}</td>
-	<td>{{estado}}</td><td>Eduardo Ramos</td>
+	<td style="text-align:center;">{{tipoTrabajo}}</td>
+	<td style="text-align:right;">{{monto}}</td>
+	<td style="text-align:center;">{{fechaTerminoObra}}</td>
+	<td style="text-align:center;">{{estado}}</td>
+	<td style="text-align:center;">Eduardo Ramos</td>
 </tr>
 </script>

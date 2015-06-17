@@ -10,9 +10,7 @@
 <link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
 <!-- END PAGE LEVEL STYLES -->
 <style>
-#map-container img { 
-	max-width: none;
-}
+#map-container img {max-width: none;}
 </style>
 </head>
 
@@ -227,12 +225,12 @@ jQuery(document).ready(function() {
 $(document).ready(function(){
 	$("#frmCrearCliente").validate({
 		rules: {
-			nombre: {
-				required: true,
-			}                                   
+			nombre: {required: true},
+			ruc: {required: true}
 		},
 		messages: {
-			nombre: "*"
+			nombre: "*",
+			ruc: "*"
 		},
 		submitHandler: function(form){
 			crearCliente();
@@ -241,12 +239,12 @@ $(document).ready(function(){
 	
 	$("#frmModificarCliente").validate({
 		rules: {
-			nombre: {
-				required: true,
-			}                                   
+			nombre: {required: true},
+			ruc: {required: true}
 		},
 		messages: {
-			nombre: "*"
+			nombre: "*",
+			ruc: "*"
 		},
 		submitHandler: function(form){
 			modificarCliente();
@@ -255,12 +253,12 @@ $(document).ready(function(){
 	
 	$("#frmCrearProveedor").validate({
 		rules: {
-			nombre: {
-				required: true,
-			}                                   
+			nombre: {required: true},
+			ruc: {required: true}
 		},
 		messages: {
-			nombre: "*"
+			nombre: "*",
+			ruc: "*"
 		},
 		submitHandler: function(form){
 			crearProveedor();
@@ -269,12 +267,12 @@ $(document).ready(function(){
 	
 	$("#frmModificarProveedor").validate({
 		rules: {
-			nombre: {
-				required: true,
-			}                                   
+			nombre: {required: true},
+			ruc: {required: true}
 		},
 		messages: {
-			nombre: "*"
+			nombre: "*",
+			ruc: "*"
 		},
 		submitHandler: function(form){
 			modificarProveedor();
@@ -326,29 +324,14 @@ $(document).ready(function(){
 	//EMPLEADO
 	$("#frmCrearEmpleado").validate({
 		rules: {
-			primerNombre: {
-				required: true,
-			}, 
-			segundoNombre: {
-				required: true,
-			}, 
-			apellidoPaterno: {
-				required: true,
-			}, 
-			apellidoMaterno: {
-				required: true,
-			}, 
-			rol: {
-				required: true,
-			}, 
-			email: {
-				required: true,
-				email: true
-			}
+			primerNombre: {required: true}, 
+			apellidoPaterno: {required: true}, 
+			apellidoMaterno: {required: true}, 
+			rol: {required: true}, 
+			email: {required: true, email: true}
 		},
 		messages: {
 			primerNombre: "*",
-			segundoNombre: "*",
 			apellidoPaterno: "*",
 			apellidoMaterno: "*",
 			rol: "*",
@@ -361,29 +344,14 @@ $(document).ready(function(){
 	
 	$("#frmModificarEmpleado").validate({
 		rules: {
-			primerNombre: {
-				required: true,
-			}, 
-			segundoNombre: {
-				required: true,
-			}, 
-			apellidoPaterno: {
-				required: true,
-			}, 
-			apellidoMaterno: {
-				required: true,
-			}, 
-			rol: {
-				required: true,
-			}, 
-			email: {
-				required: true,
-				email: true
-			}                                   
+			primerNombre: {required: true},  
+			apellidoPaterno: {required: true}, 
+			apellidoMaterno: {required: true}, 
+			rol: {required: true}, 
+			email: {required: true, email: true}                                   
 		},
 		messages: {
 			primerNombre: "*",
-			segundoNombre: "*",
 			apellidoPaterno: "*",
 			apellidoMaterno: "*",
 			rol: "*",

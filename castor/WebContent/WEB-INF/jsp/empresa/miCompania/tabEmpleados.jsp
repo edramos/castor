@@ -1,103 +1,9 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <style>
-.input-circle-left {
-    border-radius: 4px 0px 0px 4px !important;
-}
-.btn-circle-right {
-    border-radius: 0px 4px 4px 0px !important;
-}
+.input-circle-left {border-radius: 4px 0px 0px 4px !important;}
+.btn-circle-right {border-radius: 0px 4px 4px 0px !important;}
 </style>
-
-
 <script>
-/* $(document).ready(function(){
-	$("#frmCrearEmpleado").validate({
-		rules: {
-			primerNombre: {
-				required: true,
-			}, 
-			segundoNombre: {
-				required: true,
-			}, 
-			apellidoPaterno: {
-				required: true,
-			}, 
-			apellidoMaterno: {
-				required: true,
-			}, 
-			rol: {
-				required: true,
-			}
-		},
-		messages: {
-			primerNombre: "*",
-			segundoNombre: "*",
-			apellidoPaterno: "*",
-			apellidoMaterno: "*",
-			rol: "*"
-		},
-		submitHandler: function(form){
-			crearEmpleado();
-		}
-	});
-	
-	$("#frmModificarEmpleado").validate({
-		rules: {
-			primerNombre: {
-				required: true,
-			}, 
-			segundoNombre: {
-				required: true,
-			}, 
-			apellidoPaterno: {
-				required: true,
-			}, 
-			apellidoMaterno: {
-				required: true,
-			}, 
-			rol: {
-				required: true,
-			}                                   
-		},
-		messages: {
-			primerNombre: "*",
-			segundoNombre: "*",
-			apellidoPaterno: "*",
-			apellidoMaterno: "*",
-			rol: "*"
-		},
-		submitHandler: function(form){
-			modificarEmpleado();
-		}
-	});
-});	 */
-/* $(document).ready(function(e) {
-	
-	$(document).on('click','.eventBtn', function(e){
-		switch(this.id){
-		//EMPLEADO
-		case "btnIrCrearEmpleado":
-			$('#empleadoInit').hide();
-			$('#empleadoCrear').show();
-			break;
-		case "btnCancelarEmpleado":
-			$('#empleadoCrear').hide();
-			$('#empleadoModificar').hide();
-			$('#empleadoInit').show();
-			break;
-		case "btnCrearEmpleado":
-			$('#frmCrearEmpleado').submit();
-			break;
-		case "btnModificarEmpleado":
-			$('#frmModificarEmpleado').submit();
-			break;	
-		}
-		
-	});
-	
-	listarEmpleados();
-}); */
-
 function crearEmpleado(){
 	$.ajax({
  		url: 'ajaxCrearEmpleado',
@@ -192,8 +98,10 @@ function listarEmpleados(){
   		}
  	});
 }
-
 </script>
+
+<div class="row">
+<div class="col-md-12">
 
 <div id="empleadoInit" class="portlet box blue-hoki">
 	<div class="portlet-title">
@@ -237,22 +145,6 @@ function listarEmpleados(){
 </div>
 
 
-<script id="templateEmpleados" type="text/x-handlebars-template">
-	<tr>
-		<td><span id="spnPrimerNombre_{{idPerfil}}">{{primerNombre}}</span> <span id="spnSegundoNombre_{{idPerfil}}">{{segundoNombre}}</span> <span id="spnApellidoPaterno_{{idPerfil}}">{{apellidoPaterno}}</span> <span id="spnApellidoMaterno_{{idPerfil}}">{{apellidoMaterno}}</span></td>
-		<td><span id="spnEmail_{{idPerfil}}">{{email}}</span></td>
-		<td><span id="spnCelularPrimario_{{idPerfil}}">{{celularPrimario}}</span></td>
-		<td><span id="spnTelefonoCasa_{{idPerfil}}">{{telefonoCasa}}</span></td>
-		<td><span id="spnRol_{{idPerfil}}">{{rol}}</span></td>
-		<td><span class="label label-sm label-success">{{estado}}</span></td>	
-		<td>
-			<a id="btnEditarEmpleado_{{idPerfil}}" class="btn bg-green-meadow btn-sm" onclick="editarEmpleado({{idPerfil}});" ><i class="fa fa-pencil"></i></a>
-			<a id="btnBorrarEmpleado_{{idPerfil}}" class="btn red-sunglo btn-sm" onclick="eliminarEmpleado({{idPerfil}});" ><i class="fa fa-trash"></i></a>
-		</td>			
-	</tr>
-</script>
-
-
 <div id="empleadoCrear" class="portlet box blue-hoki" style="display: none;">
 	<div class="portlet-title">
 		<div class="caption">Empleados</div>
@@ -262,42 +154,30 @@ function listarEmpleados(){
 			<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 		</div>
 	</div>
-	<div class="portlet-body">
-		<div class="form-horizontal">
-			<div class="form-body">
+	
+	
+	<div class="portlet-body form">
+	<form:form id="frmCrearEmpleado" class="form-horizontal" commandName="empleado">
+		<div class="form-body">
 			
-			<form:form id="frmCrearEmpleado" commandName="empleado">
+			<div class="row">
+			<div class="col-md-12">
 				<div class="form-group">
-					<label class="control-label col-md-2">Primer Nombre:</label>
-					<div class="col-md-8"><input id="txtPrimerNombreEmp" class="form-control" type="text" name="primerNombre"></div>
+					<div class="col-md-3"><input id="txtPrimerNombreEmp" class="form-control" type="text" name="primerNombre" placeholder="Primer Nombre"></div>
+					<div class="col-md-3"><input id="txtSegundoNombreEmp" class="form-control" type="text" name="segundoNombre" placeholder="Segundo Nombre"></div>
+					<div class="col-md-3"><input id="txtApellidoPaternoEmp" class="form-control" type="text" name="apellidoPaterno" placeholder="Apellido Paterno"></div>
+					<div class="col-md-3"><input id="txtApellidoMaternoEmp" class="form-control" type="text" name="apellidoMaterno" placeholder="Apellido Materno"></div>
 				</div>
+			</div>
+			</div>
+			
+			<div class="row">
+			<div class="col-md-12">	
 				<div class="form-group">
-					<label class="control-label col-md-2">Segundo Nombre:</label>
-					<div class="col-md-8"><input id="txtSegundoNombreEmp" class="form-control" type="text" name="segundoNombre"></div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-2">Apellido Paterno:</label>
-					<div class="col-md-8"><input id="txtApellidoPaternoEmp" class="form-control" type="text" name="apellidoPaterno"></div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-2">Apellido Materno:</label>
-					<div class="col-md-8"><input id="txtApellidoMaternoEmp" class="form-control" type="text" name="apellidoMaterno"></div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-2">Email:</label>
-					<div class="col-md-8"><input id="txtEmailEmp" class="form-control" type="text" name="email"></div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-2">Celular:</label>
-					<div class="col-md-8"><input id="txtCelularPrimarioEmp" class="form-control" type="text" name="celularPrimario"></div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-2">Telefono:</label>
-					<div class="col-md-8"><input id="txtTelefonoCasaEmp" class="form-control" type="text" name="telefonoCasa"></div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-2">Rol:</label>
-					<div class="col-md-8">
+					<div class="col-md-3"><input id="txtEmailEmp" class="form-control" type="text" name="email" placeholder="Email"></div>
+					<div class="col-md-3"><input id="txtCelularPrimarioEmp" class="form-control" type="text" name="celularPrimario" placeholder="Celular"></div>
+					<div class="col-md-3"><input id="txtTelefonoCasaEmp" class="form-control" type="text" name="telefonoCasa" placeholder="Telefono"></div>
+					<div class="col-md-3">
 						<select id="sltRolEmp" class="form-control" name="rol">
 							<option value="Administrador">Administrador</option>
 							<option value="Coordinador">Coordinador</option>
@@ -305,12 +185,16 @@ function listarEmpleados(){
 							<option value="Contable">Contable</option>
 						</select>
 					</div>
+				</div>	
 				</div>
-			</form:form>
-			
 			</div>
+			
+			
+			
 		</div>
+	</form:form>
 	</div>
+	
 </div>
 
 
@@ -377,3 +261,20 @@ function listarEmpleados(){
 		</div>
 	</div>
 </div>
+
+</div>
+</div>
+<script id="templateEmpleados" type="text/x-handlebars-template">
+	<tr>
+		<td><span id="spnPrimerNombre_{{idPerfil}}">{{primerNombre}}</span> <span id="spnSegundoNombre_{{idPerfil}}">{{segundoNombre}}</span> <span id="spnApellidoPaterno_{{idPerfil}}">{{apellidoPaterno}}</span> <span id="spnApellidoMaterno_{{idPerfil}}">{{apellidoMaterno}}</span></td>
+		<td><span id="spnEmail_{{idPerfil}}">{{email}}</span></td>
+		<td><span id="spnCelularPrimario_{{idPerfil}}">{{celularPrimario}}</span></td>
+		<td><span id="spnTelefonoCasa_{{idPerfil}}">{{telefonoCasa}}</span></td>
+		<td><span id="spnRol_{{idPerfil}}">{{rol}}</span></td>
+		<td><span class="label label-sm label-success">{{estado}}</span></td>	
+		<td>
+			<a id="btnEditarEmpleado_{{idPerfil}}" class="btn bg-green-meadow btn-sm" onclick="editarEmpleado({{idPerfil}});" ><i class="fa fa-pencil"></i></a>
+			<a id="btnBorrarEmpleado_{{idPerfil}}" class="btn red-sunglo btn-sm" onclick="eliminarEmpleado({{idPerfil}});" ><i class="fa fa-trash"></i></a>
+		</td>			
+	</tr>
+</script>

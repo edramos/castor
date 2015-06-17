@@ -113,7 +113,7 @@
 <script src="assets/global/plugins/plupload/js/plupload.full.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
-var tipoOrg = '<%= session.getAttribute("tipo") %>';
+var tipo = '<%= session.getAttribute("tipo") %>';
 var rol = '<%= session.getAttribute("rol") %>';
 
 jQuery(document).ready(function() { 
@@ -224,10 +224,10 @@ function extraerInformacionOrden(idOrdenTemp){
  		dataType: 'json',
  		data: '',
  		success: function(orden){
- 			$('#spnCodigo').text('ORDEN ' + orden.codigo);
+ 			$('#spnCodigo').text('ORDEN - ' + orden.nombre);
  			$('#lblOrdenEstado').text(orden.estado);
  			
- 			if(orden.estado == "Aceptacion Pendiente" && tipoOrg == "cliente" && rol == "Administrador"){
+ 			if(orden.estado == "Aceptacion Pendiente" && tipo == "cliente" && rol == "Administrador"){
  				$('#dynamicActions').append('<a id="btnAceptar" class="btn green eventBtn"><i class="fa fa-check"></i> Aceptar</a><a id="btnRechazar" class="btn red eventBtn"><i class="fa fa-times"></i> Rechazar</a>');
  			}
  			initOrdenGeneral(orden);
@@ -275,7 +275,7 @@ function listarCuentasPagar(idOrdenTemp){
 var idOrden = $('#txtIdOrden').val();
 
 
-/* if(tipoOrg == "empresa"){
+/* if(tipo == "empresa"){
 AmCharts.loadJSON = function(url){
 	if(window.XMLHttpRequest){
 		  	// IE7+, Firefox, Chrome, Opera, Safari

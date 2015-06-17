@@ -11,7 +11,13 @@
 					<span class="spanLabel">Nombre</span><span id="spnNombre" class="value"></span>
 				</div>
 				<div class="summaryBodyItem">
-					<span class="spanLabel">Cliente</span><span id="spnNombreCliente" class="value"></span>
+					<span class="spanLabel">
+					<%if(session.getAttribute("tipo").equals("cliente") && session.getAttribute("codigo").equals("CT")){%>
+					Operador
+					<%}else{%>
+					Cliente
+					<%} %>
+					</span><span id="spnNombreCliente" class="value"></span>
 				</div>
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Tipo</span><span id="spnTipo" class="value"></span>
@@ -119,12 +125,19 @@ function initOrdenGeneral(orden){
 	$('#spnCreador').text(orden.creadoPorNombre);
 	//Financiera
 	//$('#spnMoneda').text(orden.moneda);
-	$('#spnOferta').text($.getFormattedCurrency(orden.oferta));
-	if(tipoOrg == "cliente") $('#spnGastosGenerales').text($.getFormattedCurrency(orden.gastosGenerales));
-	if(tipoOrg == "cliente") $('#spnEficiencia').text(orden.eficiencia + "%");
-	if(tipoOrg == "cliente") $('#spnUtilBruta').text($.getFormattedCurrency(orden.utilidadBruta));
-	if(tipoOrg == "cliente") $('#spnDetraccion').text($.getFormattedCurrency(orden.detraccion));
-	//$('#spnGananciaProyectada').text($.getFormattedCurrency(orden.gananciaProyectada));
-	if(tipoOrg == "cliente") $('#spnGananciaDisponible').text($.getFormattedCurrency(orden.gananciaDisponible));
+	switch(tipo){
+	case "cliente":
+		break;
+	
+	case "proveedor":
+		break;
+	}
+	/* $('#spnOferta').text($.getFormattedCurrency(orden.oferta));
+	if(tipo == "cliente") $('#spnGastosGenerales').text($.getFormattedCurrency(orden.gastosGenerales));
+	if(tipo == "cliente") $('#spnEficiencia').text(orden.eficiencia + "%");
+	if(tipo == "cliente") $('#spnUtilBruta').text($.getFormattedCurrency(orden.utilidadBruta));
+	if(tipo == "cliente") $('#spnDetraccion').text($.getFormattedCurrency(orden.detraccion));
+	$('#spnGananciaProyectada').text($.getFormattedCurrency(orden.gananciaProyectada));
+	if(tipo == "cliente") $('#spnGananciaDisponible').text($.getFormattedCurrency(orden.gananciaDisponible)); */
 }
 </script>

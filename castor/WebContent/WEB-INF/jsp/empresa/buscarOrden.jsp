@@ -103,22 +103,7 @@
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>
 			</div>
-			<div id="divPortletBody" class="portlet-body">
-				<table class="table table-striped table-hover" id="sample_1">
-				<thead>
-				<tr>
-					<th>Codigo</th>
-					<th>Nombre</th>
-					<th>Cliente</th>
-					<th>Estado</th>
-					<th>Oferta</th>
-				</tr>
-				</thead>
-				
-				<tbody id="viewOrdenesHandlerbars">
-				</tbody>
-				</table>		
-					
+			<div id="divPortletBody" class="portlet-body">					
 			</div>
 		</div>
 	</div>
@@ -149,6 +134,9 @@
 <script src="assets/admin/pages/scripts/table-advanced.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
+var tipo = '<%= session.getAttribute("tipo") %>';
+var codigo = '<%= session.getAttribute("codigo") %>';
+
 jQuery(document).ready(function() { 
 	var table;
 	
@@ -195,10 +183,11 @@ function removeTable(){
 	$('#sample_1_wrapper').remove();
 }
 function createTable(){
-	$('#divPortletBody').append(
-			"<table class='table table-striped table-hover' id='sample_1'><thead><tr><th>Codigo</th><th>Nombre</th><th>Cliente</th><th>Estado</th><th>Oferta</th>"+
-			"</tr></thead><tbody id='viewOrdenesHandlerbars'></tbody></table>"	
-	);
+	var header = (tipo == "cliente" && codigo == "CT")?"Operador":"Cliente";
+	var html = '<table id="sample_1" class="table table-striped table-hover table-condensed"><thead><tr><th>Codigo</th><th>Nombre</th><th>'+ header +'</th><th>Estado</th>'+
+	'<th>Oferta</th></tr></thead><tbody id="viewOrdenesHandlerbars"></tbody></table>';
+	
+	$('#divPortletBody').append(html);
 }
 function datePickerInit(){
 	$('.date-picker').datepicker({
