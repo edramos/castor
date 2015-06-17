@@ -78,6 +78,8 @@
 <script src="assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
+var tipo = '<%= session.getAttribute("tipo") %>';
+
 jQuery(document).ready(function() {    
 	Metronic.init(); // init metronic core componets
     Layout.init(); // init layout 
@@ -108,6 +110,8 @@ function initMapa(entidades){
       mapTypeId: google.maps.MapTypeId.TERRAIN 
     };
     
+    var tipoCliente = (tipo == "cliente")? "Operador":"Cliente";
+    
     var var_map = new google.maps.Map(document.getElementById("map-container"), var_mapoptions);
     var infowindow = new google.maps.InfoWindow({});
     var image = 'assets/admin/layout4/img/marker-red_00.png';
@@ -124,7 +128,7 @@ function initMapa(entidades){
 		marker.setMap(var_map);
 		
 		var contentString = '<div class="note note-warning" style="width:250px;">'+
-		'<h4><strong>'+ entidad.nombre +'</strong></h4><ul style="padding-left:10px;"><li>Operador: '+ entidad.nombreCliente +'</li>'+
+		'<h4><strong>'+ entidad.nombre +'</strong></h4><ul style="padding-left:10px;"><li>'+ tipoCliente +': '+ entidad.nombreCliente +'</li>'+
 		'<li>Tipo: '+ entidad.tipoTrabajo +'</li><li>Estado: '+ entidad.estado +'</li><li>Ubicacion: '+ entidad.ciudad + ', ' + entidad.departamento +'</li></ul></div>';
 	    
 	    
