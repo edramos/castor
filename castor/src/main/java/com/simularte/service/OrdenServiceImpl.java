@@ -926,9 +926,10 @@ public class OrdenServiceImpl implements OrdenService {
 			condiciones = "WHERE empr.idempresa = '"+ (Integer) req.getSession().getAttribute("idEmpresa") + "' OR o.idcliente = '"+ idClienteEmp +"'";
 			break;
 		case "proveedor":
-			campos = "o.idorden, o.codigo, o.nombre, e.nombre AS nc, sc.monto, o.estado ";
+			
+			campos = "o.idorden, o.codigo, o.nombre, e.nombre AS nc, sc.monto, o.estado, o.lat, o.lon, o.tipotrabajo, o.ciudad, o.departamento ";
 			join = "INNER JOIN subcontrato sc ON sc.idorden = o.idorden INNER JOIN proveedor p ON p.idproveedor = sc.idproveedor INNER JOIN empresa e ON e.idempresa = o.idempresa ";
-			condiciones = "WHERE p.ruc = '"+ req.getSession().getAttribute("ruc") +"' AND o.estado != 'disabled'";
+			condiciones = "WHERE p.ruc = '"+ req.getSession().getAttribute("ruc") +"' AND o.estado != 'Aceptacion Pendiente'";
 			break;
 		case "empresa":
 			campos = "o.idorden, o.codigo, o.nombre, o.oferta, o.estado, o.idempresa, o.idcliente ";
@@ -1030,6 +1031,11 @@ public class OrdenServiceImpl implements OrdenService {
 				ordenB.setNombreCliente(ord[3].toString());			
 				ordenB.setOferta((BigDecimal)(ord[4]));
 				ordenB.setEstado(ord[5].toString());
+				ordenB.setLat(ord[6].toString());
+				ordenB.setLon(ord[7].toString());
+				ordenB.setTipoTrabajo(ord[8].toString());
+				ordenB.setCiudad(ord[9].toString());
+				ordenB.setDepartamento(ord[10].toString());
 				
 				ordenBeans.add(ordenB);
 			}
