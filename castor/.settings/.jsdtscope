@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="WebContent"/>
+	<classpathentry excluding="assets/admin/pages/scripts/jqgrid-advance.js|assets/admin/pages/scripts/jqgrid-inline.js|assets/admin/pages/scripts/jqgrid-modal.js|assets/admin/pages/scripts/table-tree.js|assets/global/plugins/angularjs/|assets/global/plugins/bootstrap-daterangepicker/|assets/global/plugins/bootstrap-markdown/|assets/global/plugins/ckeditor/|assets/global/plugins/fullcalendar/" kind="src" path="WebContent"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.WebProject">
 		<attributes>
