@@ -83,6 +83,7 @@ ul
 		</div>
 </div>
 </div>
+<%if(session.getAttribute("tipo").equals("cliente")){%>
 <div class="row">
 	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
@@ -107,6 +108,7 @@ ul
 		</div>
 	</div>
 </div>
+<%}%>
 	
 </div>
 </div>
@@ -506,7 +508,7 @@ function initTableMasterDeudaOT(){
     //Muestra columnas segun rol
     var table = $('#tblMasterDeudaOT').DataTable();
 	
-	if(rol == "Coordinador" || rol == "Contable"){
+	if(rol == "Coordinador" || rol == "Contable" || tipo == "proveedor"){
     	table.column(13).visible( false );
     	table.column(14).visible( false );
     }

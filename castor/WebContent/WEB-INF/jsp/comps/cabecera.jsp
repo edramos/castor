@@ -4,7 +4,7 @@
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-			<a href="#"><img src="assets/frontend/onepage/img/logo/red.png" alt="" class="logo-default"/></a>
+			<a href="#"><img src="assets/frontend/onepage/img/logo/simularte.png" alt="" class="logo-default"/></a>
 			<div class="menu-toggler sidebar-toggler"><!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header --></div>
 		</div>
 		<!-- END LOGO -->
@@ -27,8 +27,8 @@
 					<li class="dropdown dropdown-user dropdown-dark">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 							<span <% if(session.getAttribute("tipo").equals("cliente")) { %>style="color:#EFA800;"<% } %>>
-								<%=session.getAttribute("nombreEmpresa")%>&nbsp;&nbsp;(<%=session.getAttribute("rol")%>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							</span>
+								<%=session.getAttribute("nombreEmpresa")%>&nbsp;&nbsp;<strong>(<%=session.getAttribute("rol")%>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</strong></span>
 						    <span class="username username-hide-on-mobile" ><%=session.getAttribute("nombreUsuario")%> </span>
 							<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
 							<img alt="" class="img-circle" src="assets/admin/layout4/img/avatar.png"/>
