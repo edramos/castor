@@ -201,7 +201,7 @@ function datePickerInit(){
 </script>
 <script id="templateOrden" type="text/x-handlebars-template">
 <tr>
-	<td><a href="ordenPag-{{idOrden}}">{{codigo}}<a/></td>
+	<td><a href="ordenPag-{{idOrden}}" target="_blank">{{codigo}}<a/></td>
 	<td>{{nombre}}</td>
 	<td>{{nombreCliente}}</td>
 	<td>{{estado}}</td>

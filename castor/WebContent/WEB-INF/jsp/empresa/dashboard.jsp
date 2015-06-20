@@ -128,7 +128,7 @@ function initMapa(entidades){
 		marker.setMap(var_map);
 		
 		var contentString = '<div class="note note-warning" style="width:250px;">'+
-		'<h4><strong>'+ entidad.nombre +'</strong></h4><ul style="padding-left:10px;"><li>'+ tipoCliente +': '+ entidad.nombreCliente +'</li>'+
+		'<h4><strong><a href="ordenPag-'+ entidad.idOrden +'" target="_blank">'+ entidad.nombre +'</a></strong></h4><ul style="padding-left:10px;"><li>'+ tipoCliente +': '+ entidad.nombreCliente +'</li>'+
 		'<li>Tipo: '+ entidad.tipoTrabajo +'</li><li>Estado: '+ entidad.estado +'</li><li>Ubicacion: '+ entidad.ciudad + ', ' + entidad.departamento +'</li></ul></div>';
 	    
 	    
