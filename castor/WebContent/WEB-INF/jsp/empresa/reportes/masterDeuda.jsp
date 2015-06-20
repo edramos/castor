@@ -18,9 +18,7 @@
 .aligncenter{text-align: center;}
 .alignright{text-align: right;}
 .bigHeader{white-space: normal;font-size: 12px; vertical-align: middle;}
-.dataTable .details td, .dataTable .details th {
-background-color: #ffffff;
-}
+.dataTable .details td, .dataTable .details th {background-color: #ffffff;}
 .dataTable .details tr:nth-child(2n+1) td, .dataTable .details tr:nth-child(2n+1) th {
     background-color: #ffffff;
 }
