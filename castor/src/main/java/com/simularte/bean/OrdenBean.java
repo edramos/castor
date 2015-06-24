@@ -84,7 +84,7 @@ public class OrdenBean {
 	private int idMes;
 	
 	//REPORTE ESTADO POR MES
-	private int[] contadorMeses = new int[12];
+	private int[] contadorMeses = new int[12];	//Su get-set es diferente, no sobreescribirlo!
 	
 	
 	

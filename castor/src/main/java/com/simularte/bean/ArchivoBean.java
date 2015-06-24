@@ -11,6 +11,7 @@ public class ArchivoBean {
 	
 	private int idArchivo;
 	private int idEntidad;
+	private String tipo;
 	private String tipoEntidad;
 	private String descripcion;
 	private String nombre;
@@ -72,5 +73,11 @@ public class ArchivoBean {
 	}
 	public void setTamanio(String tamanio) {
 		this.tamanio = tamanio;
+	}
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 }

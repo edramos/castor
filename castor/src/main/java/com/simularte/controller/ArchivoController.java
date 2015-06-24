@@ -26,8 +26,8 @@ public class ArchivoController {
 	@RequestMapping(value = "subirArchivoAjax", method = RequestMethod.POST) @ResponseBody
 	public List<ArchivoBean> cargarArchivoAjax(@ModelAttribute("arregloArchivos")ArchivoBean ab, HttpServletRequest req, Model map){
 		List<ArchivoBean> resultados = new ArrayList<ArchivoBean>();
-		
 		System.out.println("size: " + ab.getFiles().size());
+		System.out.println("tipo:" + ab.getTipo());
 		
 		if(s3.subirArchivo(ab, req)){
 			resultados = s3.cargarArchivos(ab.getIdEntidad(), ab.getTipoEntidad());

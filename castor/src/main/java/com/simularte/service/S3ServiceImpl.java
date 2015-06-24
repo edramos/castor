@@ -2,6 +2,7 @@ package com.simularte.service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -42,6 +43,8 @@ public class S3ServiceImpl implements S3Service{
 		try{
 			for(int i = 0; i < ab.getFiles().size(); i++){				
 				
+				
+				
 				ObjectMetadata metadata = new ObjectMetadata(); 				//Prepara toda la informacion neceasria para que se pueda subir al S3
 				InputStream is = ab.getFiles().get(i).getInputStream();			//Puente de bytes
 				byte[] contentBytes= IOUtils.toByteArray(is);
@@ -56,16 +59,22 @@ public class S3ServiceImpl implements S3Service{
 				}			
 				
 				key = key + "/" + ab.getFiles().get(i).getOriginalFilename(); 
-				
+				System.out.println("PATH: " + key);
 				PutObjectRequest por = new PutObjectRequest(S3_BUCKET, key, ab.getFiles().get(i).getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead);
 				s3.putObject(por);
 				
-				
+				//Si subo un mismo archivo para el mismo objeto por ejemplo una Orden, S3 lo sobreescribe pero se guarda en la tabla
+				//Poner algun mecanismo para que no suceda esto
 				try{
+					List<String> tipos = Arrays.asList(ab.getTipo().split("\\s*,\\s*"));
+					//Los comentarios tiene la logica parecia al tipos, pero en los comentarios puede haber comas, pensar otra manera para eso
+					System.out.println("tipos[]:" + tipos.get(i));
+					
 					Archivo archivo = new Archivo();
 					Usuario usuario = em.find(Usuario.class, (Integer)req.getSession().getAttribute("idUser"));
 					
 					archivo.setIdEntidad(ab.getIdEntidad());
+					archivo.setTipo(tipos.get(i));
 					archivo.setTipoEntidad(ab.getTipoEntidad());
 					archivo.setArchivoUsuario(usuario);
 					
@@ -110,7 +119,7 @@ public class S3ServiceImpl implements S3Service{
 	public List<ArchivoBean> cargarArchivos(int idEntidad, String tipoEntidad){
 		List<ArchivoBean> archivos = new ArrayList<ArchivoBean>();
 		System.out.println("idEntidad: " + idEntidad + " tipoEntidad: " + tipoEntidad);
-		Query q1 = em.createNativeQuery("SELECT nombre, url, tamanio, descripcion FROM archivo "
+		Query q1 = em.createNativeQuery("SELECT nombre, url, tamanio, descripcion, tipo FROM archivo "
 				+ "WHERE identidad = '" + idEntidad + "' AND tipoentidad = '" + tipoEntidad + "' AND estado = 'enabled'");
 		
 		
@@ -125,6 +134,7 @@ public class S3ServiceImpl implements S3Service{
 				ab.setUrl(obj[1].toString());
 				ab.setTamanio(Formatos.bytesToString(Long.parseLong(obj[2].toString())));
 				ab.setDescripcion(obj[3].toString());
+				ab.setTipo(obj[4].toString());
 				
 				archivos.add(ab);
 			}
