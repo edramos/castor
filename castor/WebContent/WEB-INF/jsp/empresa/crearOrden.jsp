@@ -121,6 +121,16 @@
 							</div>	
 						</div>	
 					</div>
+					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="col-md-3">
+									<select id="sltSupervisor" class="form-control" name="supervisor"></select>
+								</div>
+							</div>
+						</div>
+					</div>
 						
 						
 					<!-- INFORMACION FINANCIERA -->
@@ -435,7 +445,7 @@
 						</div>
 					</div>
 					
-					<a id="btnGrabar" class="btn btn-default btn-sm eventBtn" onclick="grabarProyecto();"><i class="fa fa-plus"></i> Grabar</a>
+					<a id="btnGrabar" class="btn green btn-sm eventBtn" onclick="grabarProyecto();"><i class="fa fa-check"></i> Grabar</a>
 					
 					</div>
 					
@@ -480,6 +490,9 @@
 <!-- <script src="assets/global/scripts/castor/crearOrden.js"></script> -->
 <!-- END PAGE LEVEL STYLES -->
 <script>
+var tipo = '<%=session.getAttribute("tipo").toString()%>';
+var codigo = '<%=session.getAttribute("codigo").toString()%>';
+
 jQuery(document).ready(function(){   
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
@@ -492,6 +505,8 @@ jQuery(document).ready(function(){
 	listarSelectorClientes('sltCliente');
 	listarSelectorProveedores('sltProveedor_0');
 	listarSelectorProveedores('sltProveedorSC_0');
+	
+	listarSelectorSupervisores('sltSupervisor');
 	
 	$("#txtMontoSC_0").inputmask("decimal",{
 		radixPoint: ".", 
@@ -764,6 +779,25 @@ function datePickerInit(){
     })
 }
 
+function listarSelectorSupervisores(nombreSelector){
+	var html = '';
+    $.ajax({
+ 		url: 'ajaxListarSupervisor',
+ 		type: 'post',
+ 		dataType: 'json',
+ 		success: function(supervisores){
+ 			html = '<option value="0">Escoger Supervisor</option>';
+ 			
+ 			$.each(supervisores, function(i, supervisor){
+	 			var source = $("#templateSelectorSupervisores").html();
+	 			var template = Handlebars.compile(source);
+	 			html += template(supervisor);
+	 			
+ 			});		
+ 			$("#" + nombreSelector).html(html);	        
+ 		}
+ 	});
+}
 function listarSelectorClientes(nombreSelector){
 	var html = '';
     $.ajax({
@@ -772,7 +806,11 @@ function listarSelectorClientes(nombreSelector){
  		dataType: 'json',
  		data: '',
  		success: function(clientes){
- 			html = '<option value="">Escoger Cliente</option>';
+ 			if(tipo == "cliente" && codigo == "CT"){
+ 				html = '<option value="">Escoger Operador</option>';
+ 			}else{
+ 				html = '<option value="">Escoger Cliente</option>';
+ 			}
  			$.each(clientes, function(i, cliente){
 	 			var source = $("#templateSelectorClientes").html();
 	 			var template = Handlebars.compile(source);
@@ -1126,6 +1164,10 @@ function removerFilaPagos_Prov(idFilaProvTemp, idFilaTemp){
 	$('#txtEstado_pago_'+idFilaProvTemp+'_'+idFilaTemp).val('disabled');
 }
 
+</script>
+<!-- Quizas para estos Selects es mas facil poner append arriba y borrarlos aqui -->
+<script id="templateSelectorSupervisores" type="text/x-handlebars-template">
+	<option value="{{idUsuario}}">{{primerNombre}} {{apellidoPaterno}}</option>
 </script>
 <script id="templateSelectorClientes" type="text/x-handlebars-template">
 	<option value="{{idCliente}}">{{nombre}}</option>

@@ -654,6 +654,7 @@ public class OrdenServiceImpl implements OrdenService {
 			orden.setFechaInicio(Dates.stringToDate(ordenBean.getFechaInicio(), "yyyy-MM-dd"));
 			orden.setFechaEntrega(Dates.stringToDate(ordenBean.getFechaEntrega(), "yyyy-MM-dd"));
 			orden.setDetraccion(ordenBean.getDetraccion());
+			orden.setSupervisor(ordenBean.getSupervisor());
 			
 			orden.setCreadoPor((Integer)req.getSession().getAttribute("idUser"));
 			orden.setFechaCreacion(Dates.fechaCreacion());
@@ -1189,11 +1190,24 @@ public class OrdenServiceImpl implements OrdenService {
 		System.out.println("orden.getCreadoPor(): " + orden.getCreadoPor());
 		Query q01 = em.createNativeQuery("SELECT primernombre, apellidopaterno FROM perfil WHERE idusuario = '"+ orden.getCreadoPor() +"' AND estado != 'disable' ");
 		
+		
+		if(orden.getSupervisor() != 0){
+			Query q02 = em.createNativeQuery("SELECT primernombre, apellidopaterno FROM perfil WHERE idusuario = '"+ orden.getSupervisor() +"' AND estado != 'disable'");
+			
+			Object[] perfil = (Object[])q02.getSingleResult();
+			String primerNombre = (perfil[0] != null) ? perfil[0].toString() : "";
+			String apellidoPaterno = (perfil[1] != null) ? perfil[1].toString() : "";
+			ordenB.setSupervisorNombre(primerNombre + " " + apellidoPaterno);
+		}
+		
 		try{
 			Object[] perfil = (Object[])q01.getSingleResult();
 			String primerNombre = (perfil[0] != null) ? perfil[0].toString() : "";
 			String apellidoPaterno = (perfil[1] != null) ? perfil[1].toString() : "";
 			ordenB.setCreadoPorNombre(primerNombre + " " + apellidoPaterno);
+			
+			
+			
 		}catch(NullPointerException e){
 			;
 		}

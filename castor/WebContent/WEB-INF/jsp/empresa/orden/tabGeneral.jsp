@@ -25,6 +25,9 @@
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Trabajo</span><span id="spnTrabajo" class="value"></span>
 				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel">Supervisor</span><span id="spnSupervisor" class="value"></span>
+				</div>
 			</div>
 			<div class="summaryBodyMiddle">
 				<div class="summaryBodyItem">
@@ -39,6 +42,9 @@
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Departamento</span><span id="spnDepartamento" class="value"></span>
 				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel"></span><span id="" class="value"></span>
+				</div>
 			</div>
 			<div class="summaryBodyRight">
 				<div class="summaryBodyItem">
@@ -52,6 +58,9 @@
 				</div>
 				<div class="summaryBodyItem">
 					<span class="spanLabel">Creador</span><span id="spnCreador" class="value"></span>
+				</div>
+				<div class="summaryBodyItem">
+					<span class="spanLabel"></span><span id="" class="value"></span>
 				</div>
 			</div>
 		
@@ -123,6 +132,7 @@ function initOrdenGeneral(orden){
 	$('#spnEntrega').text(orden.fechaEntrega);
 	$('#spnCreacion').text(orden.fechaCreacion);
 	$('#spnCreador').text(orden.creadoPorNombre);
+	$('#spnSupervisor').text(orden.supervisorNombre);
 	//Financiera
 	//$('#spnMoneda').text(orden.moneda);
 	switch(tipo){

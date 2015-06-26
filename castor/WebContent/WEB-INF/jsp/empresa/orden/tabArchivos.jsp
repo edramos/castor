@@ -169,10 +169,10 @@ function initArchivos(archivos){
 </script>
 <script id="templateArchivos" type="text/x-handlebars-template">
 <tr>
-	<td><a href="{{url}}" class="fancybox-button" data-rel="fancybox-button" rel='gallery'><img class="img-responsive" src="{{url}}" alt=""></a></td>
+	<td><a href="{{url}}" class="fancybox-button" data-rel="fancybox-button" rel='gallery' title="{{sDescripcion}}"><img class="img-responsive" src="{{url}}" alt=""></a></td>
 	<td>{{nombre}}</td>
 	<td>{{tamanio}}</td>
-	<td>{{tipo}}</td>
-	<td>{{descripcion}}</td>
+	<td>{{sTipo}}</td>
+	<td>{{sDescripcion}}</td>
 </tr>
 </script>

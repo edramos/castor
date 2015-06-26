@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,36 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
 	@PersistenceContext 
 	EntityManager em;
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<EmpleadoBean> listarSupervisores(HttpServletRequest req){
+		List<EmpleadoBean> lcb = new ArrayList<EmpleadoBean>();
+		
+		Query q01 = em.createNativeQuery("SELECT p.idusuario, p.primernombre, p.apellidopaterno, p.rol FROM perfil p "
+			+ "INNER JOIN usuario u ON u.idusuario = p.idusuario "
+			+ "INNER JOIN empresa e ON e.idempresa = u.idempresa "
+			+ "WHERE u.idempresa = '"+ req.getSession().getAttribute("idEmpresa") +"' AND p.rol = 'Supervisor' AND u.estado = 'enabled'");
+		
+		try{
+			List<Object[]> rows01 = q01.getResultList();
+			for(int x = 0; x < rows01.size(); x++){
+				Object[] obj = rows01.get(x);
+				EmpleadoBean eb = new EmpleadoBean();
+				
+				eb.setIdUsuario((Integer)obj[0]);
+				eb.setPrimerNombre(obj[1].toString());
+				eb.setApellidoPaterno(obj[2].toString());
+				
+				lcb.add(eb);
+			}
+		}catch(NoResultException e){
+			e.printStackTrace();
+		}
+		
+		return lcb;
+	}
+	
 	
 	@Transactional
 	public boolean crearEmpleado(EmpleadoBean empb, HttpServletRequest req) {

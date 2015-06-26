@@ -159,7 +159,17 @@ jQuery(document).ready(function(){
 	Demo.init(); // init demo features
 	//FormFileUpload.init();
 	
-	$(".fancybox-button").fancybox();
+	$(".fancybox-button").fancybox({
+		groupAttr: 'data-rel',
+        prevEffect: 'none',
+        nextEffect: 'none',
+        closeBtn: true,
+        helpers: {
+            title: {
+                type: 'inside'
+            }
+        }
+	});
 	
 	$(document).on('click','.eventBtn', function(e){
 		var ajaxUrl = "";

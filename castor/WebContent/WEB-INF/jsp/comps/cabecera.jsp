@@ -1,3 +1,8 @@
+<style>
+.page-header.navbar.navbar-fixed-top {
+    z-index: 8010;
+}
+</style>
 <!-- BEGIN HEADER -->
 <div class="page-header navbar navbar-fixed-top">
 	<!-- BEGIN HEADER INNER -->

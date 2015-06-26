@@ -28,6 +28,7 @@ public class ArchivoController {
 		List<ArchivoBean> resultados = new ArrayList<ArchivoBean>();
 		System.out.println("size: " + ab.getFiles().size());
 		System.out.println("tipo:" + ab.getTipo());
+		System.out.println("descr size: " + ab.getDescripcion().length);
 		
 		if(s3.subirArchivo(ab, req)){
 			resultados = s3.cargarArchivos(ab.getIdEntidad(), ab.getTipoEntidad());

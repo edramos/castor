@@ -71,4 +71,9 @@ public class EmpleadoController {
 		System.out.println("nombreEmp: " + nombreEmp);
 		return empleadoservice.getEmpleadosAutocomplete(nombreEmp, req);
 	}
+	
+	@RequestMapping(value = "ajaxListarSupervisor", method = RequestMethod.POST) @ResponseBody
+	public List<EmpleadoBean> ajaxListarSupervisor(HttpServletRequest req){
+		return empleadoservice.listarSupervisores(req);
+	}
 }

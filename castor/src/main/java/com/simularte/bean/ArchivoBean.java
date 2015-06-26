@@ -11,9 +11,11 @@ public class ArchivoBean {
 	
 	private int idArchivo;
 	private int idEntidad;
-	private String tipo;
 	private String tipoEntidad;
-	private String descripcion;
+	private String [] tipo;			
+	private String [] descripcion;
+	private String sTipo;
+	private String sDescripcion;
 	private String nombre;
 	private String url;
 	private String tamanio;
@@ -44,12 +46,6 @@ public class ArchivoBean {
 	public void setTipoEntidad(String tipoEntidad) {
 		this.tipoEntidad = tipoEntidad;
 	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
 	public List<CommonsMultipartFile> getFiles() {
 		return files;
 	}
@@ -74,10 +70,28 @@ public class ArchivoBean {
 	public void setTamanio(String tamanio) {
 		this.tamanio = tamanio;
 	}
-	public String getTipo() {
+	public String[] getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String[] descripcion) {
+		this.descripcion = descripcion;
+	}
+	public String[] getTipo() {
 		return tipo;
 	}
-	public void setTipo(String tipo) {
+	public void setTipo(String[] tipo) {
 		this.tipo = tipo;
+	}
+	public String getsTipo() {
+		return sTipo;
+	}
+	public void setsTipo(String sTipo) {
+		this.sTipo = sTipo;
+	}
+	public String getsDescripcion() {
+		return sDescripcion;
+	}
+	public void setsDescripcion(String sDescripcion) {
+		this.sDescripcion = sDescripcion;
 	}
 }

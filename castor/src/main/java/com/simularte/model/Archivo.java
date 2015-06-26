@@ -42,7 +42,7 @@ public class Archivo {
 	private String otrosDetalles;
 	@Column(length = 60, nullable = true)	
 	private String visibility;
-	@Column(length = 300, nullable = true)	
+	@Column(length = 300, nullable = false)	
 	private String descripcion;
 	
 	@Column(name = "creadopor", nullable = false)
@@ -51,7 +51,6 @@ public class Archivo {
 	private Timestamp fechaCreacion;
 	@Column(length = 30, nullable = false)
 	private String estado;
-	
 	
 	
 	

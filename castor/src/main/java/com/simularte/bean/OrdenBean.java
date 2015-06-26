@@ -31,9 +31,11 @@ public class OrdenBean {
 	
 	private String busqueda;
 	private String campo;
-		
+	private int supervisor;
+	
 	private Integer creadoPor;
 	private String creadoPorNombre;
+	private String supervisorNombre;
 	private String fechaCreacion;	
 	private String estado;		
 	
@@ -496,5 +498,17 @@ public class OrdenBean {
 	}
 	public void setIdMes(int idMes) {
 		this.idMes = idMes;
+	}
+	public int getSupervisor() {
+		return supervisor;
+	}
+	public void setSupervisor(int supervisor) {
+		this.supervisor = supervisor;
+	}
+	public String getSupervisorNombre() {
+		return supervisorNombre;
+	}
+	public void setSupervisorNombre(String supervisorNombre) {
+		this.supervisorNombre = supervisorNombre;
 	}
 }

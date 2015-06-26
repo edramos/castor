@@ -6,6 +6,7 @@ public class S3Bean {
 	private String size;
 	private String url;
 	private String deleteType;
+	private String descripcion;
 	
 	
 	
@@ -32,5 +33,11 @@ public class S3Bean {
 	}
 	public void setDeleteType(String deleteType) {
 		this.deleteType = deleteType;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 }

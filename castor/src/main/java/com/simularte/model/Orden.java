@@ -76,6 +76,8 @@ public class Orden {
 	//Si CT nos contrata entonces revisar bien el analisis, diseño, pruebas e impacto
 	@Column(name = "pagado", nullable = true)
 	private BigDecimal pagado;
+	@Column(nullable = true)
+	private Integer supervisor;
 	
 	@Column(name = "creadopor", nullable = false)
 	private Integer creadoPor;
@@ -259,5 +261,11 @@ public class Orden {
 	}
 	public void setPagado(BigDecimal pagado) {
 		this.pagado = pagado;
+	}
+	public Integer getSupervisor() {
+		return supervisor;
+	}
+	public void setSupervisor(Integer supervisor) {
+		this.supervisor = supervisor;
 	}	
 }
