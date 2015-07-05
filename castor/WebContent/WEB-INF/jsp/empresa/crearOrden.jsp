@@ -38,7 +38,7 @@
 	<div class="col-md-12">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-				<div class="caption"><i class="icon-share"></i>Crear Orden de Trabajo</div>
+				<div class="caption"><i class="icon-basket"></i>Crear Orden de Trabajo</div>
 				<div class="actions">							
 					<a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title=""></a>
 				</div>

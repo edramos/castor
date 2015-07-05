@@ -65,5 +65,9 @@ public class OficinaController {
 		oficinas = Oficinaservice.listarOficinas(req);
 		return oficinas;
 	}
-	
+	/*TEMPORAL PARA ALOJAR A SIMULARTE*/
+	@RequestMapping("simularte")
+	public String toReporte(){
+		return "simularte";
+	}
 }
