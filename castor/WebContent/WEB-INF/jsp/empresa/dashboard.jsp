@@ -27,13 +27,14 @@
     border-radius: 0px 4px 4px 0px;
 }
 .gm-style-iw {
-    width: 150px !important;
-    top: 1px !important;
-    left: 0px !important;
+    width: 120px !important;
+    left: 85px !important;
+    /* top: 1px !important;
+    
     background-color: #fff;
     box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
     border: 1px solid rgba(108, 108, 108, 0.6);
-   	border-radius: 2px 2px 0 0;
+   	border-radius: 2px 2px 0 0; */
 }
 
 </style>
@@ -91,6 +92,7 @@
 <script src="assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
 <script src="assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+<script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -132,8 +134,37 @@ function initMapa(entidades){
     
     var var_map = new google.maps.Map(document.getElementById("map-container"), var_mapoptions);
     var infowindow = new google.maps.InfoWindow({});
-    var image = 'assets/admin/layout4/img/marker-red_00.png';
+    var image = '';
+    var markers  = [];
+    
     $.each(entidades, function(i, entidad){
+    	var contentString = '';
+		
+		switch(entidad.estado){
+		case "Sin inicio":
+			image = 'assets/admin/layout4/img/markers/m_grey00.png';
+			break;
+		case "Por iniciar":
+			image = 'assets/admin/layout4/img/markers/m_yellow00.png';
+			break;
+		case "Proceso":
+			image = 'assets/admin/layout4/img/markers/m_orange00.png';
+			
+			break;
+		case "Aceptado":
+			image = 'assets/admin/layout4/img/markers/m_green00.png';
+			break;
+		case "Terminado":
+			image = 'assets/admin/layout4/img/markers/m_blue00.png';
+			break;
+		case "Aceptacion Pendiente":
+			image = 'assets/admin/layout4/img/markers/m_black00.png';
+			break;
+		}
+    	
+		contentString = '<div><strong><a href="ordenPag-'+ entidad.idOrden +'" target="_blank" style="color: #333;">'+ entidad.nombre +'</a></strong>'+
+		'<br>'+ tipoCliente +': '+ entidad.nombreCliente+'</div>';
+		
     	var var_location2 = new google.maps.LatLng(entidad.lat, entidad.lon);
 		var marker = new google.maps.Marker({
 			position: var_location2,
@@ -145,35 +176,7 @@ function initMapa(entidades){
 	
 		marker.setMap(var_map);
 		
-		var contentString = '';
-			
-		switch(entidad.estado){
-		case "Sin inicio":
-			contentString = '<div><strong><a href="ordenPag-'+ entidad.idOrden +'" target="_blank" style="color: #939393;">'+ entidad.nombre +'</a></strong>'+
-			'<br>'+ tipoCliente +': '+ entidad.nombreCliente+'</div>';
-			break;
-		case "Por iniciar":
-			contentString = '<div><strong><a href="ordenPag-'+ entidad.idOrden +'" target="_blank" style="color: #428bca;">'+ entidad.nombre +'</a></strong>'+
-			'<br>'+ tipoCliente +': '+ entidad.nombreCliente+'</div>';
-			break;
-		case "Proceso":
-			contentString = '<div><strong><a href="ordenPag-'+ entidad.idOrden +'" target="_blank" style="color: #dfba49;">'+ entidad.nombre +'</a></strong>'+
-			'<br>'+ tipoCliente +': '+ entidad.nombreCliente+'</div>';
-			break;
-		case "Aceptado":
-			contentString = '<div><strong><a href="ordenPag-'+ entidad.idOrden +'" target="_blank" style="color: #428bca;">'+ entidad.nombre +'</a></strong>'+
-			'<br>'+ tipoCliente +': '+ entidad.nombreCliente+'</div>';
-			break;
-		case "Terminado":
-			contentString = '<div><strong><a href="ordenPag-'+ entidad.idOrden +'" target="_blank" style="color: #45b6af;">'+ entidad.nombre +'</a></strong>'+
-			'<br>'+ tipoCliente +': '+ entidad.nombreCliente+'</div>';
-			break;
-		case "Aceptacion Pendiente":
-			contentString = '<div><strong><a href="ordenPag-'+ entidad.idOrden +'" target="_blank" style="color: #cb5a5e;">'+ entidad.nombre +'</a></strong>'+
-			'<br>'+ tipoCliente +': '+ entidad.nombreCliente+'</div>';
-			break;
-		}
-		
+		markers.push(marker);
 			
 		var infowindow = new google.maps.InfoWindow({
 		      content: contentString
@@ -185,11 +188,11 @@ function initMapa(entidades){
 	    });
 		infowindow.open(var_map, marker);
 		
-		google.maps.event.addListener(infowindow, 'domready', function() {
+		google.maps.event.addListener(infowindow, 'domready', function(){
 			// Reference to the DIV which receives the contents of the infowindow using jQuery
 			var iwOuter = $('.gm-style-iw');
 			
-			
+			iwOuter.css({'background-color' : 'rgba(255,255,255,0.9)'});
 			
 			   /* The DIV we want to change is above the .gm-style-iw DIV.
 			    * So, we use jQuery and create a iwBackground variable,
@@ -198,18 +201,18 @@ function initMapa(entidades){
 			var iwBackground = iwOuter.prev();
 			
 			// Moves the infowindow
-			iwOuter.parent().parent().css({top: '50px'});
+			iwOuter.parent().parent().css({top: '45px'});
 			
-			   // Remove the background shadow DIV
+			  // Remove the background shadow DIV
 			iwBackground.children(':nth-child(2)').css({'display' : 'none'});
 
-			   // Remove the white background DIV
+			  // Remove the white background DIV
 			iwBackground.children(':nth-child(4)').css({'display' : 'none'});
 			
 			var iwCloseBtn = iwOuter.next();
-			//Mueve el 'x'
+			//Mueve la 'x'
 			iwCloseBtn.css({
-				right: '20px', top: '3px'
+				right: '-40px', top: '3px'
 			});
 			//Oculta la punta del infowindow y su sombra , 3 es la sombra y 1 es el grafico
 			iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'opacity: 0 !important;'});
@@ -217,6 +220,9 @@ function initMapa(entidades){
 		});
 		
     });
+    
+    var mcOptions = {gridSize: 50, maxZoom: 15};
+	var mc = new MarkerClusterer(var_map, markers, mcOptions);
     
 }
 </script>

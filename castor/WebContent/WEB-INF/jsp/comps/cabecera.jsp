@@ -18,6 +18,11 @@
 		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"></a>
 		<!-- END RESPONSIVE MENU TOGGLER -->
 		
+		<div style="height: 75px;display: inline-block;padding: 25px 10px 18px;float: left;font-size: 14px;font-weight: 600">
+		<span <% if(session.getAttribute("tipo").equals("cliente")) { %>style="color:#EFA800;"<% } %>>
+			<%=session.getAttribute("nombreEmpresa")%>&nbsp;&nbsp;</span>			    
+		</div>
+		
 		<!-- BEGIN PAGE TOP -->
 		<div class="page-top">
 			<!-- BEGIN TOP NAVIGATION MENU -->
@@ -31,10 +36,8 @@
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 					<li class="dropdown dropdown-user dropdown-dark">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-							<span <% if(session.getAttribute("tipo").equals("cliente")) { %>style="color:#EFA800;"<% } %>>
-								<%=session.getAttribute("nombreEmpresa")%>&nbsp;&nbsp;<strong>(<%=session.getAttribute("rol")%>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							</strong></span>
-						    <span class="username username-hide-on-mobile" ><%=session.getAttribute("nombreUsuario")%> </span>
+						    <span class="username username-hide-on-mobile" ><%=session.getAttribute("nombreUsuario")%></span>
+						    <span style="font-weight: 800">(<%=session.getAttribute("rol")%>)</span>
 							<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
 							<img alt="" class="img-circle" src="assets/admin/layout4/img/avatar.png"/>
 						</a>
