@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simularte.bean.OficinaBean;
 import com.simularte.service.OficinaService;
+import com.simularte.service.YelpAPIServiceImpl;
 
 
 @Controller
 public class OficinaController {
 
-	@Autowired
-	OficinaService Oficinaservice;
+	@Autowired OficinaService Oficinaservice;
+	@Autowired YelpAPIServiceImpl yelpAPI;
 	
 	@RequestMapping(value = "ajaxCrearOficina", method = RequestMethod.POST)
 	@ResponseBody
@@ -69,5 +70,15 @@ public class OficinaController {
 	@RequestMapping("simularte")
 	public String toReporte(){
 		return "simularte";
+	}
+	/*TEMPORAL PARA ALOJAR A YELP IREX*/
+	@RequestMapping("yelp")
+	public String toYelp(){
+		return "yelp";
+	}
+	@RequestMapping(value = "ajaxYelp", method = RequestMethod.POST)@ResponseBody
+	public String ajaxYelp(@ModelAttribute("oficina") OficinaBean oficina){
+		System.out.println("C: " + oficina.getCiudad());
+		return yelpAPI.searchForBusinessesByLocation("video game", "790 Grand St Brooklyn, NY 11211", oficina);
 	}
 }
